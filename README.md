@@ -16,8 +16,7 @@
 5.部署到gitee上
 
 #### 网站效果图
-
-[输入图片说明](https://images.gitee.com/uploads/images/2020/0717/154742_56287ac3_1981977.jpeg "1594972033(1).jpg")
+![输入图片说明](https://images.gitee.com/uploads/images/2020/0717/155102_fe3b92ed_1981977.jpeg "1594972033(1).jpg")
 
 #### 网站预览网址
 地址：[点击预览网站](https://taisan.gitee.io/ds/)
