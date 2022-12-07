@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>TARZAN-CMS</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <link rel="stylesheet" th:href="@{/assets/libs/bootstrap/bootstrap.min.css}"/>
+    <link rel="stylesheet" th:href="@{/assets/libs/font-awesome/font-awesome.min.css}"/>
+    <link rel="stylesheet" th:href="@{|/${WEB_THEME}/source/css/web-common.css|}"/>
+    <script th:src="@{/libs/jquery/jquery.min.js}"></script>
+</head>
+<body>
+<header id="header">
+    <div th:replace="@{|${WEB_THEME}/module/navbar.html|}"></div>
+</header>
+<div class="main-content" style="margin:150px 0 80px; text-align: center"><span>您已被踢出！ 点此<a th:href="@{/login}">重新登录</a></span></div>
+
+
+<div th:replace="@{|${WEB_THEME}/module/footer.html|}"></div>
+
+<script th:src="@{/libs/bootstrap/bootstrap.min.js}"></script>
+<script th:src="@{/libs/layer/layer.js}"></script>
+<script>
+    window.onload=function(){
+        var new_scroll_position = 0;
+        var last_scroll_position;
+        var header = document.getElementById("header");
+        window.addEventListener('scroll', function(e) {
+            last_scroll_position = window.scrollY;
+            if (new_scroll_position < last_scroll_position && last_scroll_position > 55) {
+                header.classList.remove("slideDown");
+                header.classList.add("slideUp");
+
+            } else if (new_scroll_position > last_scroll_position) {
+                header.classList.remove("slideUp");
+                header.classList.add("slideDown");
+            }
+            new_scroll_position = last_scroll_position;
+        });
+
+    }
+</script>
+</body>
+</html>

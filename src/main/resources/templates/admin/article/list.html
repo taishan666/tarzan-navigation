@@ -1,0 +1,296 @@
+<div class="row">
+    <div class="colxl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="page-title-wrapper">
+            <div class="page-title-box">
+                <h4 class="page-title bold">文章列表</h4>
+            </div>
+            <div class="breadcrumb-list">
+                <ul>
+                    <li class="breadcrumb-link"><a th:href="@{admin}"><i class="fas fa-home mr-2"></i>首页</a></li>
+                    <li class="breadcrumb-link active">文章管理</li>
+                    <li class="breadcrumb-link active">文章列表</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main content -->
+<section class="content">
+    <div class="card card-info card-header">
+        <form id="searchForm" class="needs-validation form-inline" novalidate="">
+            <div class="form-group">
+                <label for="keywords">关键字:</label>
+                <input type="text" class="form-control m-2" id="keywords" required="">
+            </div>
+            <div class="form-group">
+                <label for="categoryId">分类:</label>
+                <select id="categoryId" class="form-control m-2" required="">
+                    <option selected disabled>选择分类</option>
+                    <option th:each="category:${categories}" th:value="${category.id}"
+                            th:text="${category.name}"></option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="status">状态:</label>
+                <select id="status" class="form-control m-2" required="">
+                    <option selected disabled>选择状态</option>
+                    <option value="1">已发布</option>
+                    <option value="0">草稿</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary ml-3" type="submit">查询</button>
+                <button class="btn btn-light ml-2" type="reset">重置</button>
+            </div>
+        </form>
+    </div>
+    <div class="card table-card card-body">
+        <div id="toolbar" class="btn-group">
+            <shiro:hasPermission name="article:add">
+                <button id="btn_add" type="button" class="btn btn-primary">
+                    <span class="fa fa-plus" aria-hidden="true"></span>写文章
+                </button>
+            </shiro:hasPermission>
+            <shiro:hasPermission name="article:batchPush">
+                <button id="btn_batch_push" type="button" class="btn btn-warning">
+                    <span class="fas fa-paper-plane" aria-hidden="true"></span>百度推送
+                </button>
+            </shiro:hasPermission>
+            <shiro:hasPermission name="article:batchDelete">
+                <button id="btn_batch_delete" type="button" class="btn btn-danger">
+                    <span class="fas fa-trash-alt" aria-hidden="true"></span>批量删除
+                </button>
+            </shiro:hasPermission>
+        </div>
+        <table class="table-sm" id="table"></table>
+    </div>
+</section>
+
+<script>
+    var editFlag = "[[${@perms.hasPerm('article:edit')}]]";
+    var deleteFlag = "[[${@perms.hasPerm('article:delete')}]]";
+    window.operateEvents = {
+        // 点击编辑
+        'click .btn_edit': function (e, value, row, index) {
+            editRow(row.id)
+        },
+        // 预览图片
+        'click .btn_preview': function (e, value, row, index) {
+            previewImg(value)
+        },
+        // 点击删除
+        'click .btn_del': function (e, value, row, index) {
+            deleteRow(row.id)
+        }
+    }
+    var columns = [
+        {checkbox: true},
+        {
+            field: 'title',
+            title: '标题',
+            align: "center"
+        }, {
+            field: 'bizCategory',
+            title: '分类',
+            align: "center",
+            width: 100,
+            formatter: function (value) {
+                return value.name;
+            }
+        }, /*{
+            field: 'tags',
+            title: '标签',
+            class: 'table-tags',
+            align: "center",
+            formatter: function (tags) {
+                var tagHtml = '';
+                if (tags) {
+                    for (var i = 0, len = tags.length; i < len; i++) {
+                        var tag = tags[i];
+                        tagHtml += '<span class="badge badge-info">' + tag.name + '</span> ';
+                    }
+                }
+                return tagHtml;
+            }
+        }, */{
+            field: 'coverImage',
+            title: '缩略图',
+            align: "center",
+            class: "link-pre",
+            events: operateEvents,
+            formatter: function (value, row, index) {
+                return '<img src="' + value + '" style="width: 100px"  class="btn_preview"/>'
+            }
+        }, {
+            field: 'slider',
+            title: '轮播',
+            align: "center",
+            formatter: function (value) {
+                return value ? '是' : '否'
+            }
+        }, {
+            field: 'top',
+            title: '置顶',
+            align: "center",
+            formatter: function (value) {
+                return value ? '是' : '否'
+            }
+        }, {
+            field: 'recommended',
+            title: '推荐',
+            align: "center",
+            formatter: function (value) {
+                return value ? '是' : '否'
+            }
+        }, {
+            field: 'status',
+            title: '状态',
+            align: "center",
+            formatter: function (value) {
+                return value ? '已发布' : '草稿'
+            }
+        }, {
+            field: 'lookCount',
+            title: '浏览',
+            align: "center",
+        }, {
+            field: 'commentCount',
+            title: '评论',
+            align: "center",
+        }, {
+            field: 'loveCount',
+            title: '喜欢',
+            align: "center",
+        },
+        {
+            field: 'operation',
+            title: '操作',
+            align: "center",
+            width: 150,
+            events: operateEvents,
+            formatter: function (value, row, index) {
+                var edit = editFlag === 'true' ? '<button class="effect-btn btn btn-info mt-2 mr-2 icon-lg btn_edit"><i class="fas fa-edit"></i></button>' : '';
+                var del = deleteFlag === 'true' ? '<button class="effect-btn btn btn-danger mt-2 mr-2 icon-lg btn_del"><i class="fas fa-trash-alt"></i></button>' : '';
+                return edit + del;
+            }
+        }];
+    var options = {
+        id: "#table",
+        url: '/article/list',
+        columns: columns,
+        toolbar: '#toolbar',
+        showRefresh: true,
+        queryParams: queryParams
+    }
+    Core.initTable(options);
+
+    function refreshTable() {
+        Core.refreshTable("#table")
+    }
+
+    /*查询参数*/
+    function queryParams(params) {
+        return {
+            pageNumber: params.pageNumber,
+            pageSize: params.pageSize,
+            keywords: $("#keywords").val(),
+            categoryId: $("#categoryId").val(),
+            status: $("#status").val(),
+        };
+    }
+
+    /*编辑*/
+    function editRow(id) {
+        window.location.href = "#article/edit?id=" + id
+    }
+
+    /*删除*/
+    function deleteRow(id) {
+        Core.confirm("确定删除该分类？", function () {
+            Core.postAjax("/article/delete", {"id": id}, function (data) {
+                if (data.status === 200) {
+                    refreshTable();
+                }
+                layer.msg(data.msg);
+            })
+        })
+    }
+
+    $(function () {
+        // 查询
+        $('#searchForm').submit(function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            refreshTable();
+        })
+
+        // 新增
+        $("#btn_add").click(function () {
+            window.location.href = "#article/add"
+        });
+        // 批量删除
+        $("#btn_batch_delete").click(function () {
+            var checkedRows = Core.selectMutiData("#table");
+            if (checkedRows) {
+                Core.confirm("确定删除选中的" + checkedRows.length + "条记录？", function () {
+                    var ids = [];
+                    $.each(checkedRows, function (i, item) {
+                        ids.push(item.id);
+                    })
+                    var jsonStr = JSON.stringify(ids);
+                    Core.postAjax("/article/batch/delete", jsonStr, function (data) {
+                        if (data.status === 200) {
+                            refreshTable();
+                        }
+                        layer.msg(data.msg);
+                    }, function (err) {
+                        layer.msg(err)
+                    }, "POST", "application/json; charset=UTF-8")
+                })
+            }
+        });
+        /*批量推送*/
+        $("#btn_batch_push").click(function () {
+            var checkedRows = Core.selectMutiData("#table");
+            if (checkedRows) {
+                Core.confirm("确定推送选中的" + checkedRows.length + "条记录？", function () {
+                    var baseUrl = window.location.protocol + "//" + window.location.host + "/blog/article/";
+                    var urls = [];
+                    $.each(checkedRows, function (i, item) {
+                        urls.push(baseUrl + item.id);
+                    })
+                    Core.postAjax("/article/batch/push", {"urls": urls}, function (data) {
+                        if (data.status === 200) {
+                            layer.msg(data.msg);
+                        } else {
+                            if (null !== data.data) {
+                                var msg = "推送成功" + data.data.success + "条;";
+                                var notSameSiteLength = data.data.notSameSite == null ? 0 : data.data.notSameSite.length;
+                                var notValidLength = data.data.notValid == null ? 0 : data.data.notValid.length;
+                                msg += ("推送失败" + (notSameSiteLength + notValidLength) + "条");
+                                layer.msg(msg);
+                            } else {
+                                layer.msg(data.msg);
+                            }
+                        }
+
+                    })
+                })
+            }
+        });
+
+    });
+
+    function previewImg(src) {
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: '45%',
+            skin: 'layui-layer-nobg', //没有背景色
+            shadeClose: true,
+            content: '<img style="width: 100%" alt="link" src="' + src + '">'
+        });
+    }
+
+</script>

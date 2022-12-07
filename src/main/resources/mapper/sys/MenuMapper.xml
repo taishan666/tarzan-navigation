@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tarzan.nacigation.modules.admin.mapper.sys.MenuMapper" >
+
+
+  <select id="findPermsByUserId" resultType="java.lang.String">
+    SELECT  m.perms FROM sys_menu m
+    WHERE  m.perms is not null and m.perms!='' and m.status=1
+  </select>
+
+
+  <select id="selectMenuByUserId" parameterType="integer" resultType="com.tarzan.nacigation.modules.admin.model.sys.Menu">
+    SELECT  m.id, m.name, m.url, m.parent_id, m.icon, m.order_num FROM sys_menu m
+    WHERE  m.type in(0,1) and m.status=1
+    ORDER BY m.order_num
+  </select>
+
+</mapper>

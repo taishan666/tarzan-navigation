@@ -1,0 +1,68 @@
+<form id="themeForm">
+    <div class="mfh-machine-profile">
+        <ul class="nav nav-tabs" id="myTab1" role="tablist">
+            <li class="nav-item"><a aria-controls="home" aria-selected="true" class="nav-link active" data-toggle="tab" href="#home0"
+                                    id="home-tab1" role="tab">本地上传</a></li>
+            <li class="nav-item"><a aria-controls="profile" aria-selected="false" class="nav-link" data-toggle="tab" href="#profile0"
+                                    id="profile-tab20" role="tab">远程下载</a></li>
+        </ul>
+        <div class="tab-content web-content2" id="myTabContent2">
+            <div class="tab-pane fade show active" id="home0" role="tabpanel">
+                <div id="container">
+                    <div id="uploader">
+                        <div class="queueList">
+                            <div class="placeholder" id="dndArea">
+                                <div id="filePicker"></div>
+                                <p>点击选择主题包，或将主题包拖拽到此处</p>
+                                <p>仅支持zip格式的文件</p>
+                            </div>
+                        </div>
+                       <!-- <div class="statusBar" style="display:none;">
+                            <div class="progress">
+                                <span class="text">0%</span>
+                                <span class="percentage"></span>
+                            </div>
+                            <div class="info"></div>
+                            <div class="btns">
+                                <div id="filePicker2"></div>
+                                <div class="uploadBtn">开始上传</div>
+                            </div>
+                        </div>-->
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="profile0" role="tabpanel" style="text-align: left ">
+                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                    <div class="form-group">
+                        <label class="col-form-label">远程地址:</label>
+                        <input class="form-control" placeholder="请输入主题网址" type="text" name="url" required>
+                        <p>* 支持 Git 仓库地址，ZIP 链接。</p>
+                    </div>
+                    <div class="form-group mb-0">
+                        <button class="btn btn-primary" id="download" type="button">下载</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    // 保存或更新
+    $('#download').on('click', function () {
+        var $f = $('#themeForm');
+        var valid = $f[0].checkValidity();
+        if (valid) {
+            Core.mask("#download");
+            Core.postAjax('/theme/download', $f.serialize(), function (data) {
+                Core.unmask("#download");
+                if (data.status === 200) {
+                    $("#formModal").modal("hide");
+                }
+                layer.msg(data.msg);
+            }, function () {
+                Core.unmask("#download");
+            })
+        }
+        $f.addClass("was-validated")
+    })
+</script>

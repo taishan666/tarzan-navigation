@@ -1,0 +1,113 @@
+<!DOCTYPE html><!--[if IE 8]><html lang="en" class="ie8 no-js"><![endif]--><!--[if IE 9]><html lang="en" class="ie9 no-js"><![endif]--><!--[if!IE]><!-->
+<html lang="zxx">
+<!--<![endif]--><!-- Begin Head -->
+<head>
+<title>泰山CMS内容管理系统</title>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta name="description" content="泰山CMS内容管理系统">
+<meta name="keywords" content="cms">
+<meta name="author" content="tarzan">
+<meta name="MobileOptimized" content="320">
+<!--Start Style -->
+<link rel="stylesheet" type="text/css" th:href="@{/assets/libs/font-awesome/font-awesome.min.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/assets/libs/bootstrap/css/bootstrap.min.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/auth.css}">
+  <!-- Favicon Link -->
+  <link rel="shortcut icon" type="image/png" th:href="@{/favicon.ico}">
+</head>
+<body>
+<div class="cms-auth-wrapper">
+  <div class="cms-auth-box">
+    <div class="row align-items-center">
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+        <div class="cms-auth-img"><img th:src="@{/assets/img/auth-img.png}" alt="" /></div>
+      </div>
+      <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+        <div class="cms-auth-content">
+          <form id="registerForm">
+            <img th:src="@{/assets/img/logo_black.png}" alt="" />
+            <h2>Hello,Welcome!</h2>
+            <div class="cms-auth-form">
+              <div class="cms-auth-feilds mb-30">
+                <input type="text" name="username"  class="cms-input" placeholder="请输入用户名"  max="14" min="3" require="必填项" >
+                <div class="cms-auth-icon">
+                  <i class="fas fa-user"></i>
+                </div>
+              </div>
+              <div class="cms-auth-feilds mb-30">
+                <input  name="password"  type="password" class="cms-input" placeholder="请输入密码"  require="必填项" nochinese="密码不能包括中文" >
+                <div class="cms-auth-icon">
+                  <i class="fas fa-lock"></i>
+                </div>
+              </div>
+              <div class="cms-auth-feilds mb-30">
+                <input  name="confirmPassword"  type="password" class="cms-input" placeholder="确认密码"  require="必填项" nochinese="密码不能包括中文" >
+                <div class="cms-auth-icon">
+                  <i class="fas fa-lock"></i>
+                </div>
+              </div>
+
+              <div class="cms-auth-feilds" style="display: none">
+                <input type="text"  name="verification"  class="form-control vcode-input" placeholder="验证码" require="必填项" data-position="position-a">
+                <div class="cms-auth-icon">
+                  <i class="fas fa-lock"></i>
+                </div>
+              </div>
+            <div class="cms-other-feilds">
+            <div class="cms-auth-btn"><a href="javascript:void(0);" id="registerBtn" class="cms-btn cms-login-member">注册</a></div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script th:src="@{/assets/libs/jquery/jquery.min.js}"></script>
+<script th:src="@{/assets/libs/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/assets/libs/layer/layer.js}"></script>
+<script th:src="@{/assets/libs/validate/validate.js}"></script>
+<script th:inline="javascript">
+  var ctx = [[@{/}]];
+</script>
+<script>
+  $(function(){
+    $(".vcode-img").on('click', function () {
+      $(this).attr('src', '/verificationCode?' + Math.floor(Math.random() * 100));
+    });
+
+    $("#registerBtn").on('click', function () {
+      if (!doValidForm(registerForm)) {
+        //没有通过验证
+        return;
+      }
+      $.ajax({
+        type: "POST",
+        url: "/system/register",
+        data: $("#registerForm").serialize(),
+        dataType: "json",
+        success: function (data) {
+          if (data.status == 200) {
+            layer.msg(data.msg, {
+              offset:'30%',
+              time:800
+            }, function(){
+              window.location.href = (ctx + "/system/login").replace('//', '/');
+            });
+          }else {
+            layer.msg(data.msg);
+            $("#verificationCode").click();
+          }
+        }
+      });
+    });
+
+    $(document).keyup(function(event){
+      if(event.keyCode ==13){
+        $("#registerBtn").click();
+      }
+    });
+  })
+</script>
+</body>
+</html>

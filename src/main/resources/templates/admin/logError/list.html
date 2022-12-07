@@ -1,0 +1,190 @@
+<div class="row">
+    <div class="colxl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="page-title-wrapper">
+            <div class="page-title-box">
+                <h4 class="page-title bold">错误日志</h4>
+            </div>
+            <div class="breadcrumb-list">
+                <ul>
+                    <li class="breadcrumb-link"><a th:href="@{admin}"><i class="fas fa-home mr-2"></i>首页</a></li>
+                    <li class="breadcrumb-link active">运维管理</li>
+                    <li class="breadcrumb-link active">错误日志</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main content -->
+<section class="content">
+   <!-- <div class="card card-info card-header">
+            <form id="searchForm" class="needs-validation form-inline" novalidate="">
+                <div class="form-group">
+                    <label for="loginName">登录名:</label>
+                    <input type="text" class="form-control m-2" id="loginName" required="">
+                </div>
+                <div class="form-group">
+                    <label for="phone">手机号:</label>
+                    <input type="text" class="form-control m-2" id="phone" required="">
+                </div>
+                <div class="form-group">
+                    <label for="sourceIp">IP:</label>
+                    <input type="text" class="form-control m-2" id="sourceIp" required="">
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary ml-3" type="submit">查询</button>
+                    <button class="btn btn-light ml-2" type="reset">重置</button>
+                </div>
+            </form>
+    </div>-->
+    <div class="card table-card card-body">
+        <div id="toolbar" class="btn-group">
+            <shiro:hasPermission name="tag:batchDelete">
+                <button id="btn_batch_delete" type="button" class="btn btn-danger">
+                    <span class="fa fa-trash" aria-hidden="true"></span>批量删除
+                </button>
+            </shiro:hasPermission>
+        </div>
+        <table class="table-sm" id="table"></table>
+    </div>
+    </div>
+</section>
+<!-- 表单模态框 -->
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" id="formModal" aria-hidden="true" >
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">×</span> </button>
+            </div>
+            <div class="modal-body" style="overflow: auto;">
+                <div id="formContent"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        window.operateEvents = {
+            // 点击编辑
+            'click .btn_view': function (e, value, row, index) {
+                RowView(value)
+            }
+        }
+        var columns = [
+            {checkbox: true},
+            {
+                field: 'remoteIp',
+                title: '远程Ip',
+                align: "center"
+            },
+            {
+                field: 'userAgent',
+                title: '用户代理',
+                align: "center"
+            }, {
+                field: 'requestUri',
+                title: '请求接口',
+                align: "center"
+            },
+            {
+                field: 'method',
+                title: '请求方式',
+                align: "center"
+            },
+            {
+                field: 'methodClass',
+                title: '方法类',
+                align: "center"
+            },
+            {
+                field: 'methodName',
+                title: '方法名',
+                align: "center"
+            },
+            {
+                field: 'params',
+                title: '参数',
+                align: "center",
+                events: operateEvents,
+                formatter: function (value, row, index) {
+                   return  '<button class="effect-btn btn btn-info mt-2 mr-2 icon-lg btn_view"><i class="fas fa-eye"></i></button>';
+                }
+            },
+            {
+                field: 'stackTrace',
+                title: '堆栈跟踪',
+                align: "center",
+                events: operateEvents,
+                formatter: function (value, row, index) {
+                    return  '<button class="effect-btn btn btn-danger mt-2 mr-2 icon-lg btn_view"><i class="fas fa-eye"></i></button>';
+                }
+            },
+            {
+                field: 'exceptionName',
+                title: '异常名称',
+                align: "center"
+            },
+            {
+                field: 'message',
+                title: '信息',
+                align: "center"
+            },
+            {
+                field: 'fileName',
+                title: '文件名',
+                align: "center"
+            },
+            {
+                field: 'lineNumber',
+                title: '错误行数',
+                align: "center"
+            },
+            {
+                field: 'createTime',
+                title: '创建时间',
+                align: "center"
+            }];
+
+
+        var options = {
+            id: "#table",
+            url: '/log/error/list',
+            columns: columns,
+            toolbar: '#toolbar',
+            showRefresh: true
+        }
+
+        Core.initTable(options);
+
+        function refreshTable() {
+            Core.refreshTable("#table")
+        }
+
+        //查看
+        function RowView(value) {
+                $('#formContent').html(value);
+                $("#formModal").modal('show');
+        }
+        // 批量删除
+        $("#btn_batch_delete").on('click', function () {
+            var checkedRows = Core.selectMutiData("#table");
+            if (checkedRows) {
+                Core.confirm("确定删除选中的" + checkedRows.length + "条记录？", function () {
+                    var ids = [];
+                    $.each(checkedRows, function (i, item) {
+                        ids.push(item.id);
+                    })
+                    var jsonStr = JSON.stringify(ids);
+                    Core.postAjax("/log/error/batch/delete", jsonStr, function (data) {
+                        if (data.status === 200) {
+                            refreshTable();
+                        }
+                        layer.msg(data.msg);
+                    },function (err) {
+                        layer.msg(err)
+                    }, "POST", "application/json; charset=UTF-8")
+                })
+            }
+        })
+
+    });
+</script>

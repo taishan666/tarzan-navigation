@@ -1,0 +1,190 @@
+<div class="row">
+    <div class="colxl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="page-title-wrapper">
+            <div class="page-title-box">
+                <h4 class="page-title bold">个人资料</h4>
+            </div>
+            <div class="breadcrumb-list">
+                <ul>
+                    <li class="breadcrumb-link"><a th:href="@{admin}"><i class="fas fa-home mr-2"></i>首页</a></li>
+                    <li class="breadcrumb-link active">用户</li>
+                    <li class="breadcrumb-link active">个人资料</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main content -->
+<section class="content">
+<div class="card table-info card-body">
+    <form id="userInfoForm" class="row">
+        <input type="hidden" name="id" th:value="${user?.id}">
+            <div class="col-xl-4">
+                    <div class="card-header">
+                        <h4 class="card-title mb-0">头像</h4>
+                        <div class="card-options"><a class="card-options-collapse" href="javascript:;" data-bs-toggle="card-collapse" data-bs-original-title="" title=""><i class="fe fe-chevron-up"></i></a><a class="card-options-remove" href="javascript:;" data-bs-toggle="card-remove" data-bs-original-title="" title=""><i class="fe fe-x"></i></a></div>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">更换头像:</label>
+                            <div class="col-md-9 upload-content">
+                                <div class="content-img">
+                                    <ul id="fileList" class="content-img-list">
+                                        <block th:if="${user?.img!=null && user?.img!=''}">
+                                            <li class="content-img-list-item"><img th:src="${user?.img}">
+                                                <div class="hide">
+                                                    <a class="delete-btn"><i class="gcl gcllajitong"></i></a>
+                                                    <a class="big-btn" ><i class="gcl gclfangda"></i></a>
+                                                </div>
+                                            </li>
+                                        </block>
+                                    </ul>
+                                    <div class="file"  id="filePicker">
+                                        <i class="fa fa-plus"></i>
+                                        <input id="uploadImage" type="text" name="img"  th:value="${user?.img}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+            <div class="col-xl-8">
+                    <div class="card-header">
+                        <h4 class="card-title mb-0">资料</h4>
+                        <div class="card-options"><a class="card-options-collapse" href="javascript:;" data-bs-toggle="card-collapse" data-bs-original-title="" title=""><i class="fe fe-chevron-up"></i></a><a class="card-options-remove" href="javascript:;" data-bs-toggle="card-remove" data-bs-original-title="" title=""><i class="fe fe-x"></i></a></div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="mb-3">
+                                    <label class="form-label">用户名:</label>
+                                    <input class="form-control" type="text" th:value="${user?.username}" readonly="readonly"
+                                           name="username" placeholder="请填写用户名" data-bs-original-title="" title="">
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="mb-3">
+                                    <label class="form-label">昵称:</label>
+                                    <input class="form-control" th:value="${user?.nickname}" name="nickname" type="text" placeholder="请填写昵称" data-bs-original-title="" title="">
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">邮箱:</label>
+                                    <input class="form-control" th:value="${user?.email}" name="email" type="email" placeholder="请填写邮箱" data-bs-original-title="" title="">
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-5">
+                                <div class="mb-3">
+                                    <label class="form-label">电话:</label>
+                                    <input class="form-control" th:value="${user?.phone}" name="phone"  type="text" placeholder="请填写电话" data-bs-original-title="" title="">
+                                </div>
+                            </div>
+                            <div class="col-sm-6 col-md-3">
+                                <div class="mb-3">
+                                    <label class="form-label">性别:</label>
+                                    <select id="sex" name="sex" class="form-control" required>
+                                        <option th:selected="${user?.sex==1}" value="1">男</option>
+                                        <option th:selected="${user?.sex==2}" value="2">女</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">年龄:</label>
+                                    <input class="form-control" th:value="${user?.age}" name="age" type="number" placeholder="请填写年龄" data-bs-original-title="" title="">
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary squer-btn" id="saveInfo" type="submit"  title="">保存</button>
+                    </div>
+            </div>
+    </form>
+</div>
+</section>
+<script>
+    $(function() {
+        var uploadImage = $('#uploadImage').val();
+        if(uploadImage!=null && uploadImage.length!=0){
+            $('.content-img .file').hide();
+        }
+    });
+    // 初始化Web Uploader
+    var uploader = WebUploader.create({
+        // 选完文件后，是否自动上传。
+        auto: true,
+        // swf文件路径
+        swf: '/admin1/img/Uploader.swf',
+        // 文件接收服务端。
+        server: '[[@{/attachment/upload}]]',
+        // 选择文件的按钮。可选。
+        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+        pick: '#filePicker',
+        // 只允许选择图片文件。
+        accept: {
+            title: 'Images',
+            extensions: 'gif,jpg,jpeg,bmp,png',
+            mimeTypes: 'image/*'
+        }
+    });
+    // 文件上传成功，给item添加成功class, 用样式标记上传成功。
+    var  $list=$('#fileList');
+    uploader.on( 'uploadSuccess', function( file,data ) {
+        var $li = $(
+            '<li class="content-img-list-item"><img src="' + data.url + '" >' +
+            '<div class="hide"><a class="delete-btn"><i class="gcl gcllajitong"></i></a>' +
+            '<a class="big-btn"><i class="gcl gclfangda"></i></a></div></li>'
+        );
+        $list.append( $li );
+        $("#uploadImage").val(data.url);
+        $('.content-img .file').hide();
+    });
+    // 文件上传失败，显示上传出错。
+    uploader.on( 'uploadError', function( file ) {
+        console.log('上传失败');
+    });
+    // 鼠标经过显示删除按钮
+    $('.content-img-list').on('mouseover', '.content-img-list-item', function() {
+        $(this).children('div').removeClass('hide');
+    });
+    // 鼠标离开隐藏删除按钮
+    $('.content-img-list').on('mouseleave', '.content-img-list-item', function() {
+        $(this).children('div').addClass('hide');
+    });
+    // 单个图片删除
+    $(".content-img-list").on("click", '.content-img-list-item a .gcllajitong', function() {
+        $(this).parent().parent().parent().remove();
+        $('.content-img .file').show();
+    });
+    // 单个图片放大
+    $(".content-img-list").on("click", '.content-img-list-item a .gclfangda', function() {
+        const imgSrc = $('.content-img-list-item img').attr("src");
+        previewImg(imgSrc);
+    });
+
+    function previewImg(src) {
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: '45%',
+            skin: 'layui-layer-nobg', //没有背景色
+            shadeClose: true,
+            content: '<img style="width: 100%" alt="link" src="' + src + '">'
+        });
+    }
+</script>
+<script type="text/javascript">
+    $(function () {
+        $("#saveInfo").on('click', function () {
+            Core.mask("#saveInfo");
+            Core.postAjax("/user/edit",$("#userInfoForm").serialize(),function (data) {
+                Core.unmask("#saveInfo");
+                layer.msg(data.msg);
+            })
+
+        })
+    });
+</script>
+
+

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>404</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <link rel="stylesheet" href="/assets/libs/bootstrap/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="/assets/css/web-common.css" />
+  <script src="/assets/libs/jquery/jquery.min.js"></script>
+</head>
+<body>
+<div class="main-content error-content">
+  <div class="error-img-content mt-160 mb-70 text-center"><img th:src="@{/assets/img/404.png}"></div>
+  <p class="error-text">很抱歉，页面好像去火星了~</p>
+  <div class="error-btn-content">
+    <button class="btn btn-danger" type="button">
+      <a href="/">返回主页</a>
+    </button>
+  </div>
+</div>
+</body>
+</html>

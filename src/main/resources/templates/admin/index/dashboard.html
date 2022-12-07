@@ -1,0 +1,164 @@
+<div class="row">
+    <div class="colxl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="page-title-wrapper">
+            <div class="page-title-box">
+                <h4 class="page-title bold">工作台</h4>
+            </div>
+            <div class="breadcrumb-list">
+                <ul>
+                    <li class="breadcrumb-link"><a th:href="@{admin}"><i class="fas fa-home mr-2"></i>主页</a></li>
+                    <li class="breadcrumb-link active">工作台</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Dashboard Start -->
+<div class="row">
+    <!-- Start Card-->
+    <div class="col-xl-3 col-lg-3 col-md-6">
+        <div class="card web-info-card">
+            <div class="card-body dd-flex align-items-center">
+                <div class="icon-info">
+                    <i class="fa fa-newspaper fa-4x"></i>
+                </div>
+                <div class="icon-info-text">
+                    <h5 class="web-title">文章数量</h5>
+                    <h4 class="web-card-title" th:text="${statistic.articleCount}">15</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Start Card-->
+    <div class="col-xl-3 col-lg-3 col-md-6">
+        <div class="card web-info-card">
+            <div class="card-body dd-flex align-items-center">
+                <div class="icon-info">
+                    <i class="fa fa-comments fa-4x"></i>
+                </div>
+                <div class="icon-info-text">
+                    <h5 class="web-title">评论数量</h5>
+                    <h4 class="web-card-title" th:text="${statistic.commentCount}"></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Start Card-->
+    <div class="col-xl-3 col-lg-3 col-md-6">
+        <div class="card web-info-card">
+            <div class="card-body dd-flex align-items-center">
+                <div class="icon-info">
+                    <i class="fa fa-eye fa-4x"></i>
+                </div>
+                <div class="icon-info-text">
+                    <h5 class="web-title">访问次数</h5>
+                    <h4 class="web-card-title" th:text="${statistic.lookCount}"></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Start Card-->
+    <div class="col-xl-3 col-lg-3 col-md-6">
+        <div class="card web-info-card">
+            <div class="card-body dd-flex align-items-center">
+                <div class="icon-info">
+                    <i class="fa fa-users fa-4x"></i>
+                </div>
+                <div class="icon-info-text">
+                    <h5 class="web-title">访问人数</h5>
+                    <h4 class="web-card-title" th:text="${statistic.userCount}"></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Area Spaline Chart -->
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"><!-- Area Spaline Chart -->
+        <div class="card chart-card">
+            <div class="card-header">
+                <h4>访问统计</h4>
+            </div>
+            <div class="card-body">
+                <div class="chart-holder">
+                    <div id="visitChart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" th:inline="javascript">
+    var lookCountByDay = [[${statistic.lookCountByDay}]]
+    var userCountByDay = [[${statistic.userCountByDay}]]
+</script>
+<script>
+
+    $(function() {
+        visitChart();
+    });
+
+    /* Area Spaline Chart  */
+    function visitChart() {
+        var options = {
+            chart: {
+                height: 350,
+                type: 'area',
+                fontFamily: 'Poppins, sans-serif',
+                toolbar: {
+                    show: false
+                },
+                zoom: {
+                    enabled: false
+                },
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                curve: 'smooth'
+            },
+            series: [{
+                name: '近7日访问量',
+                data: Object.values(lookCountByDay)
+            }, {
+                name: '近7日用户量',
+                data: Object.values(userCountByDay)
+            }],
+            xaxis: {
+                type: 'datetime',
+                categories: Object.keys(lookCountByDay),
+                labels: {
+                    format:"yyyy-MM-dd",
+                    style: {
+                        colors: '#10163a',
+                        background: '#10163a',
+                        fontFamily: 'Poppins, sans-serif',
+                    }
+                }
+            },
+            yaxis: {
+                labels: {
+                    style: {
+                        color: '#10163a',
+                        fontFamily: 'Poppins, sans-serif',
+                    }
+                }
+            },
+            tooltip: {
+                x: {
+                    format: 'yyyy-MM-dd'
+                },
+            },
+            colors: ['#ffa000', '#11a0fd']
+        }
+
+        var chart = new ApexCharts(
+            document.querySelector("#visitChart"),
+            options
+        );
+
+        chart.render();
+    }
+
+</script>

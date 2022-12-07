@@ -1,0 +1,75 @@
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: org.h2.Driver
+    url:  jdbc:h2:file:${user.home}/.tarzan-cms/db/cms;MODE=MYSQL
+    username: root
+    password: 123456
+  h2:
+    console:
+      enabled: true
+      settings:
+        web-allow-others: true
+      path: /h2-console
+      #jpa:
+      #show-sql: true
+      #hibernate:
+      #ddl-auto: update
+    #generate-ddl: false
+  redis:
+    host: localhost
+    port: 6379
+    password: 666666
+    timeout: 5000
+    database: 0
+    jedis:
+      pool:
+        max-idle: 8
+        min-idle: 0
+        max-active: 8
+        max-wait: -1
+server:
+  servlet:
+    context-path: /
+
+file:
+  #上传的文件对外暴露的访问路径
+  access-path-pattern: /u/**
+  #文件上传目录
+  upload-folder: /file/upload/
+  #文件预览、下载的访问路径前缀
+  access-prefix-url: http://localhost:80/u
+
+static:
+  #静态html对外访问路径
+  access-path-pattern: /html/**
+  #静态html路径
+  folder: /tarzanCms/html/path
+
+cms:
+  shiro-key: ${user.home}/.tarzan-cms/shiro_key.pub
+  theme-dir: ${user.home}/.tarzan-cms/theme
+  use-theme: ${user.home}/.tarzan-cms/source
+  backup-dir: ${user.home}/.tarzan-cms/backup
+  embedded-redis-enabled: true
+  embedded-redis-port: 6379
+  embedded-redis-password: 666666
+  preview-enabled: false
+
+social:
+  enabled: true
+  domain: http://127.0.0.1
+  oauth:
+    QQ:
+      client-id: xxx
+      client-secret: xxx
+      redirect-uri: http://127.0.0.1:8443/oauth/gitee/callback
+    WECHAT_OPEN:
+      client-id: xxxxxx
+      client-secret: xxxxxx
+      redirect-uri: http://127.0.0.1:8443/oauth/baidu/callback
+    GITEE:
+      client-id: 5b693811f8229e38146f2c482e3f4e4dfbdf2b496d494698b6308d6f35dcb2e0
+      client-secret: 428ff220b5aa5704c55a8cf91f13aa4466258a6e7c357c7e30a5bca1d1cbe4e2
+      redirect-uri: http://127.0.0.1/auth/oauth/callback/GITEE
+

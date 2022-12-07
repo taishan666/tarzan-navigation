@@ -1,0 +1,164 @@
+<div class="row">
+    <div class="colxl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="page-title-wrapper">
+            <div class="page-title-box">
+                <h4 class="page-title bold">基础信息</h4>
+            </div>
+            <div class="breadcrumb-list">
+                <ul>
+                    <li class="breadcrumb-link"><a th:href="@{admin}"><i class="fas fa-home mr-2"></i>首页</a></li>
+                    <li class="breadcrumb-link active">网站管理</li>
+                    <li class="breadcrumb-link active">基础信息</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main content -->
+<section class="content">
+ <div class="card card-body">
+            <ul class="nav nav-tabs" id="myTab2" role="tablist">
+                <li class="nav-item"><a class="nav-link active" id="home-tab2" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">常规设置</a></li>
+                <li class="nav-item"><a class="nav-link" id="profile-tab19" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">SEO设置</a></li>
+                <li class="nav-item"><a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">其他设置</a></li>
+            </ul>
+            <div class="tab-content web-content2" id="myTabContent">
+
+                <div class="tab-pane fade show active" id="home" role="tabpanel">
+                    <form id="siteInfoForm">
+                        <div class="form-group row">
+                            <label for="SITE_NAME" class="col-sm-2 col-form-label">网站名称:</label>
+                            <div class="col-sm-10">
+                                <input type="text" th:value="${siteInfo?.SITE_NAME}" name="SITE_NAME" class="form-control"
+                                       id="SITE_NAME"
+                                       placeholder="填写网站名称" required>
+                                <div class="invalid-feedback">请填写网站名称</div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="SITE_PERSON_PIC" class="col-sm-2 col-form-label">站长头像:</label>
+                            <div class="col-sm-10">
+                                <input type="text" th:value="${siteInfo?.SITE_PERSON_PIC}" name="SITE_PERSON_PIC"
+                                       class="form-control" id="SITE_PERSON_PIC"
+                                       placeholder="填写站长头像地址" required>
+                                <div class="invalid-feedback">请填写站长头像地址</div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="SITE_PERSON_NAME" class="col-sm-2 col-form-label">站长名称:</label>
+                            <div class="col-sm-10">
+                                <input type="text" th:value="${siteInfo?.SITE_PERSON_NAME}" name="SITE_PERSON_NAME"
+                                       class="form-control" id="SITE_PERSON_NAME"
+                                       placeholder="填写站长名称" required>
+                                <div class="invalid-feedback">请填写站长名称</div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="SITE_PERSON_DESC" class="col-sm-2 col-form-label">站长描述:</label>
+                            <div class="col-sm-10">
+                    <textarea th:text="${siteInfo?.SITE_PERSON_DESC}" rows="2" type="text" class="form-control"
+                              id="SITE_PERSON_DESC" name="SITE_PERSON_DESC"></textarea>
+                                <div class="invalid-feedback">请填写站长描述</div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="SITE_STATIC" class="col-sm-2 col-form-label">网站静态化:</label>
+                            <div class="col-sm-10" align="left">
+                                <input id="SITE_STATIC" name="SITE_STATIC" type="checkbox" th:checked="${#bools.isTrue(siteInfo?.get('SITE_STATIC'))}">
+                            </div>
+                        </div>
+                        <shiro:hasPermission name="siteInfo:edit">
+                            <div class="col-sm-12">
+                                <button type="submit" id="btn_save" class="btn btn-info">保存配置</button>
+                            </div>
+                        </shiro:hasPermission>
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="profile" role="tabpanel">
+                    <form id="siteInfoForm">
+                    <div class="form-group row">
+                        <label for="SITE_KWD" class="col-sm-2 col-form-label">网站关键字:</label>
+                        <div class="col-sm-10">
+                <textarea th:text="${siteInfo?.SITE_KWD}" rows="2" type="text" class="form-control" id="SITE_KWD"
+                          name="SITE_KWD"></textarea>
+                            <div class="invalid-feedback">请填写网站关键字</div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="SITE_DESC" class="col-sm-2 col-form-label">网站描述:</label>
+                        <div class="col-sm-10">
+                <textarea th:text="${siteInfo?.SITE_DESC}" rows="2" type="text" class="form-control" id="SITE_DESC"
+                          name="SITE_DESC"></textarea>
+                            <div class="invalid-feedback">请填写网站描述</div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="BAIDU_PUSH_URL" class="col-sm-2 col-form-label">百度推送地址:</label>
+                        <div class="col-sm-10">
+                            <input type="text" th:value="${siteInfo?.BAIDU_PUSH_URL}" name="BAIDU_PUSH_URL" class="form-control"
+                                   id="BAIDU_PUSH_URL"
+                                   placeholder="填写百度推送地址" required>
+                            <div class="invalid-feedback">请填写百度推送地址</div>
+                        </div>
+                    </div>
+                    <shiro:hasPermission name="siteInfo:edit">
+                        <div class="col-sm-12">
+                            <button type="submit" id="btn_save" class="btn btn-info">保存配置</button>
+                        </div>
+                    </shiro:hasPermission>
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="contact" role="tabpanel">
+                    <form id="siteInfoForm">
+                    <div class="form-group row">
+                        <label for="SITE_KWD" class="col-sm-2 col-form-label">统计代码:</label>
+                        <div class="col-sm-10">
+                    <textarea th:text="${siteInfo?.SITE_KWD}" rows="2" type="text" class="form-control" id="SITE_KWD"
+                              name="SITE_KWD"></textarea>
+                            <div class="invalid-feedback">请填写网站关键字</div>
+                        </div>
+                    </div>
+                    <shiro:hasPermission name="siteInfo:edit">
+                        <div class="col-sm-12">
+                            <button type="submit" id="btn_save" class="btn btn-info">保存配置</button>
+                        </div>
+                    </shiro:hasPermission>
+                    </form>
+                </div>
+            </div>
+        </div>
+</section>
+
+<script>
+
+    $(function () {
+
+        $("#SITE_STATIC").bootstrapSwitch({
+            onText : "启用",      // 设置ON文本
+            offText : "禁用",    // 设置OFF文本
+            onSwitchChange : function(event, state) {
+                if(state==true){
+                    this.value="on";
+                }else{
+                    this.value="off";
+                }
+            }
+        });
+
+        $('#btn_save').on('click', function () {
+            var $f = $('#siteInfoForm');
+            var valid = $f[0].checkValidity();
+           if (valid) {
+                $f.addClass("was-validated")
+                Core.mask("#btn_save");
+                Core.postAjax('/siteInfo/edit', $f.serialize(), function (data) {
+                    Core.unmask("#btn_save");
+                    layer.msg(data.msg);
+                    $f.removeClass("was-validated")
+                }, function () {
+                    Core.unmask("#btn_save");
+                })
+            }
+        })
+    })
+</script>

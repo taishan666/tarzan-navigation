@@ -1,0 +1,142 @@
+<div class="row">
+    <div class="colxl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="page-title-wrapper">
+            <div class="page-title-box">
+                <h4 class="page-title bold">数据备份</h4>
+            </div>
+            <div class="breadcrumb-list">
+                <ul>
+                    <li class="breadcrumb-link"><a th:href="@{admin}"><i class="fas fa-home mr-2"></i>首页</a></li>
+                    <li class="breadcrumb-link active">运维管理</li>
+                    <li class="breadcrumb-link active">数据备份</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main content -->
+<section class="content">
+    <div class="card table-card card-body">
+    <div id="toolbar" class="btn-group">
+            <shiro:hasPermission name="dbBackup:add">
+                <button id="btn_add" type="button" class="btn btn-primary">
+                    <span class="fa fa-plus" aria-hidden="true"></span>备份
+                </button>
+            </shiro:hasPermission>
+        </div>
+        <table class="table-sm" id="table"></table>
+    </div>
+</section>
+<!-- Script Start -->
+<script>
+    $(function () {
+        var rollbackFlag = Core.parseBool("[[${@perms.hasPerm('dbBackup:rollback')}]]");
+        var deleteFlag = Core.parseBool("[[${@perms.hasPerm('dbBackup:delete')}]]");
+        window.operateEvents = {
+            // 点击恢复
+            'click .btn_rollback': function (e, value, row, index) {
+                rollback(row.fileName)
+            },
+            // 点击删除
+            'click .btn_del': function (e, value, row, index) {
+                deleteRow(row.fileName)
+            }
+        }
+        var columns = [
+            {checkbox: true},
+            {
+                field: 'fileName',
+                title: '文件名称',
+                align: "center"
+            },
+            {
+                field: 'size',
+                title: '文件大小',
+                align: "center"
+            },
+            {
+                field: 'createTime',
+                title: '创建时间',
+                align: "center"
+            },{
+                field: 'operation',
+                title: '操作',
+                align: "center",
+                width: 200,
+                events: operateEvents,
+                formatter: operationFormatter
+            }];
+
+
+        var options = {
+            id: "#table",
+            url: '/backup/list',
+            columns: columns,
+            toolbar: '#toolbar',
+            showRefresh: true,
+            queryParams: queryParams
+        }
+        Core.initTable(options);
+
+        function refreshTable() {
+            Core.refreshTable("#table")
+        }
+
+        function operationFormatter(value, row, index) {
+            var rollback = rollbackFlag ? '<button class="effect-btn btn btn-info mt-2 mr-2 icon-lg btn_rollback"><i class="fas fa-play"></i></button>' : '';
+            var del = deleteFlag ? '<button class="effect-btn btn btn-danger mt-2 mr-2 icon-lg btn_del"><i class="fas fa-trash-alt"></i></button>' : '';
+            return rollback + del;
+        }
+        // 查询参数
+        function queryParams(params) {
+            return {
+                pageNumber: params.pageNumber,
+                pageSize: params.pageSize,
+                fileName: $("#fileName").val()
+            };
+        }
+
+        // 查询
+        $('#searchForm').submit(function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            refreshTable();
+        })
+
+        // 备份
+        $("#btn_add").on('click', function () {
+                Core.confirm("确定备份数据记录？", function () {
+                    Core.postAjax("/backup/add", {}, function (data) {
+                        if (data.status === 200) {
+                            refreshTable();
+                        }
+                        layer.msg(data.msg);
+                    })
+                })
+        })
+
+        // 删除
+        function deleteRow(fileName) {
+            Core.confirm("确定删除？", function () {
+                Core.postAjax("/backup/delete", {"fileName": fileName}, function (data) {
+                    if (data.status === 200) {
+                        refreshTable();
+                    }
+                    layer.msg(data.msg);
+                })
+            })
+        }
+
+        // 恢复
+        function rollback(fileName) {
+            Core.confirm("确定恢复？", function () {
+                Core.postAjax("/backup/rollback", {"fileName": fileName}, function (data) {
+                    if (data.status === 200) {
+                        refreshTable();
+                    }
+                    layer.msg(data.msg);
+                })
+            })
+        }
+    });
+</script>

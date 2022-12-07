@@ -1,0 +1,432 @@
+<div class="row">
+    <div class="colxl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="page-title-wrapper">
+            <div class="page-title-box">
+                <h4 class="page-title bold">编辑文章</h4>
+            </div>
+            <div class="breadcrumb-list">
+                <ul>
+                    <li class="breadcrumb-link"><a th:href="@{admin}"><i class="fas fa-home mr-2"></i>首页</a></li>
+                    <li class="breadcrumb-link active">文章管理</li>
+                    <li class="breadcrumb-link active">编辑文章</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- From Start -->
+<div class="from-wrapper">
+    <form id="articleForm" class="row">
+        <input th:value="${article?.id}" type="hidden" name="id">
+        <input id="status" type="hidden" name="status">
+        <input id="articleContent" type="hidden" name="content" th:value="${article?.content}">
+        <input id="articleContentMd" type="hidden" name="contentMd">
+        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="title" name="title" th:value="${article?.title}"
+                               placeholder="请输入文章标题">
+                    </div>
+                    <div class="form-group">
+                        <textarea  id="articleEditor" th:text="${article?.content}"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">文章分类:</label>
+                            <div class="col-md-9">
+                                <select id="category-select" class="form-control" name="categoryId" data-style="btn-info squer-btn" >
+                                    <block th:each="category: ${categories}">
+                                        <option th:if="${#lists.isEmpty(category.children)}" th:value="${category.id}" th:text="${category.name}" th:selected="${article?.categoryId == category.id}"></option>
+                                        <optgroup th:unless="${#lists.isEmpty(category.children)}" th:label="${category.name}">
+                                            <option th:each="child: ${category.children}" th:value="${child.id}" th:text="${child.name}" th:selected="${article?.categoryId == child.id}"></option>
+                                        </optgroup>
+                                    </block>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">文章标签:</label>
+                            <div class="col-md-9">
+                                <select id="tag-select" class="form-control" name="tagIds" data-live-search="true" data-style="btn-info squer-btn" multiple>
+                                    <block th:each="tag: ${tags}">
+                                        <option  th:value="${tag.id}" th:text="${tag.name}" th:selected="${#lists.contains(article?.tags,tag)}"></option>
+                                    </block>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">文章封面:</label>
+                           <div class="col-md-9 upload-content">
+                                <div class="content-img">
+                                    <ul id="fileList" class="content-img-list">
+                                        <block th:if="${article?.coverImage!=null && article?.coverImage!=''}">
+                                        <li class="content-img-list-item"><img th:src="${article?.coverImage}">
+                                        <div class="hide">
+                                            <a class="delete-btn"><i class="gcl gcllajitong"></i></a>
+                                            <a class="big-btn" ><i class="gcl gclfangda"></i></a>
+                                        </div>
+                                        </li>
+                                        </block>
+                                    </ul>
+                                    <div class="file"  id="filePicker">
+                                        <i class="fa fa-plus"></i>
+                                        <input id="sliderImg" type="hidden" name="sliderImg" th:value="${article.sliderImg}">
+                                        <input id="coverImage" type="text" name="coverImage"  th:value="${article?.coverImage}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="form-group row">
+                            <label for="description" class="col-sm-2 col-form-label">文章摘要:</label>
+                            <div class="col-sm-10">
+                                <textarea th:text="${article?.description}" rows="3" type="text" class="form-control" id="description" name="description"></textarea>
+                                <div class="invalid-feedback">请填文章摘要</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">文章类型:</label>
+                            <div class="col-md-9">
+                                <input id="original" name="original" type="checkbox" th:checked="${article?.original == 1}" th:value="${article?.original}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">是否轮播:</label>
+                            <div class="col-md-9">
+                                <input id="slider" name="slider" type="checkbox" th:checked="${article?.slider == 1}" th:value="${article?.slider}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">是否置顶:</label>
+                            <div class="col-md-9">
+                                <input id="top" name="top" type="checkbox" th:checked="${article?.top == 1}" th:value="${article?.top}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">是否推荐:</label>
+                            <div class="col-md-9">
+                                <input id="recommended" name="recommended" type="checkbox" th:checked="${article?.recommended == 1}" th:value="${article?.recommended}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">开启评论:</label>
+                            <div class="col-md-9">
+                                <input id="comment" name="comment" type="checkbox" th:checked="${article?.comment == 1}" th:value="${article?.comment}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-10 offset-sm-2">
+                                <button type="button" th:if="${article?.id == null}" class="btn btn-primary"
+                                        onclick="addOrUpdateArticle(1, true)">发布文章
+                                </button>
+                                <button type="button" th:if="${article?.id == null}" class="btn btn-secondary"
+                                        onclick="addOrUpdateArticle(0, true)">保存草稿
+                                </button>
+                                <button type="button" th:unless="${article?.id == null}" class="btn btn-primary"
+                                        onclick="addOrUpdateArticle(1, false)">发布更新
+                                </button>
+                                <button type="button" th:unless="${article?.id == null}" class="btn btn-secondary"
+                                        onclick="addOrUpdateArticle(0, false)">更新草稿
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    $(function() {
+        var coverImage = $('#coverImage').val();
+        if(coverImage!=null && coverImage.length!=0){
+            $('.content-img .file').hide();
+        }
+    });
+    // 初始化Web Uploader
+    var uploader = WebUploader.create({
+        // 选完文件后，是否自动上传。
+        auto: true,
+        // swf文件路径
+        swf: '/admin1/img/Uploader.swf',
+        // 文件接收服务端。
+        server: '[[@{/attachment/upload}]]',
+        // 选择文件的按钮。可选。
+        // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+        pick: '#filePicker',
+        // 只允许选择图片文件。
+        accept: {
+            title: 'Images',
+            extensions: 'gif,jpg,jpeg,bmp,png',
+            mimeTypes: 'image/*'
+        }
+    });
+    // 文件上传成功，给item添加成功class, 用样式标记上传成功。
+    var  $list=$('#fileList');
+    uploader.on( 'uploadSuccess', function( file,data ) {
+        var $li = $(
+            '<li class="content-img-list-item"><img src="' + data.url + '" >' +
+            '<div class="hide"><a class="delete-btn"><i class="gcl gcllajitong"></i></a>' +
+            '<a class="big-btn"><i class="gcl gclfangda"></i></a></div></li>'
+            );
+        $list.append( $li );
+        $("#coverImage").val(data.url);
+        $("#sliderImg").val(data.url);
+        $('.content-img .file').hide();
+    });
+    // 文件上传失败，显示上传出错。
+    uploader.on( 'uploadError', function( file ) {
+       console.log('上传失败');
+    });
+    // 鼠标经过显示删除按钮
+    $('.content-img-list').on('mouseover', '.content-img-list-item', function() {
+        $(this).children('div').removeClass('hide');
+    });
+    // 鼠标离开隐藏删除按钮
+    $('.content-img-list').on('mouseleave', '.content-img-list-item', function() {
+        $(this).children('div').addClass('hide');
+    });
+    // 单个图片删除
+    $(".content-img-list").on("click", '.content-img-list-item a .gcllajitong', function() {
+        $(this).parent().parent().parent().remove();
+        $('.content-img .file').show();
+    });
+    // 单个图片放大
+    $(".content-img-list").on("click", '.content-img-list-item a .gclfangda', function() {
+        const imgSrc = $('.content-img-list-item img').attr("src");
+        previewImg(imgSrc);
+    });
+
+    function previewImg(src) {
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: '45%',
+            skin: 'layui-layer-nobg', //没有背景色
+            shadeClose: true,
+            content: '<img style="width: 100%" alt="link" src="' + src + '">'
+        });
+    }
+</script>
+<script>
+    var content;
+    //自定义编辑器菜单
+    ice.editor("articleEditor",function(e){
+        this.uploadUrl = '[[@{/attachment/editor/upload}]]';
+        this.pasteText = true;
+        this.screenshot = true;
+        this.screenshotUpload = true;
+        this.height='820px'; //高度
+        //第二步，自定义菜单，默认加载全部
+        this.menu = [
+            'backColor', //字体背景颜色
+            'fontSize', //字体大小
+            'foreColor', //字体颜色
+            'bold', //粗体
+            'italic', //斜体
+            'underline', //下划线
+            'strikeThrough', //删除线
+            'justifyLeft', //左对齐
+            'justifyCenter', //居中对齐
+            'justifyRight', //右对齐
+            'indent', //增加缩进
+            'outdent', //减少缩进
+            'insertOrderedList', //有序列表
+            'insertUnorderedList', //无序列表
+            'superscript', //上标
+            'subscript', //下标
+            'createLink', //创建连接
+            'unlink', //取消连接
+            'hr', //水平线
+            'face', //表格
+            'table', //表格
+            'files', //附件
+            'music', //音乐
+            'video', //视频
+            'insertImage', //图片
+            'removeFormat', //格式化样式
+            'paste', //富文本粘贴
+            'code', //源码
+            'line' //菜单分割线
+        ];
+        //关闭窗口最大化
+        this.maxWindow = false;
+        //下拉菜单类型
+        this.plugin({
+            menu:'代码段',
+            name:'codeLanguages',
+            dropdown:`
+				<div class="iceEditor-codeLanguages" style="padding:10px 20px;">
+					<select>
+						<option disabled selected><没有设置></option>
+						<option value ="html">HTML/XTML</option>
+						<option value ="css">CSS</option>
+						<option value ="js">JS</option>
+						<option value="php">PHP</option>
+						<option value="python">Python</option>
+						<option value="java">JAVA</option>
+						<option value="sql">SQL</option>
+						<option value="go">GO</option>
+						<option value="cpp">C++</option>
+						<option value="csharp">C#</option>
+						<option value="c">C</option>
+					</select>
+				</div>`,
+            success:function(e,z){
+                //获取content中的按钮
+                var select = e.getElementsByTagName('select')[0];
+                //设置点击事件
+                select.onchange=function(){
+                    //判断光标是否在pre标签中
+                    if(z.inNodeParent(z.range.getRangeAt(0).endContainer,'pre')){
+                        var pre = z.range.getRangeAt(0).endContainer.parentNode;
+                        if(pre.tagName == 'PRE'){
+                            pre.className = 'iceCode:'+select.value;
+                        }
+                        return;
+                    }
+                    var str = z.getSelectHTML().replace(/<\s*\/p\s*>/ig,"\n").replace(/<[^>]+>/g,'').replace(/\n/g,'<br>').trim();
+                    str = str.length?str:' ';
+                    z.element.focus();
+                    var range = z.range.getRangeAt(0);
+                    var frag = range.createContextualFragment('<pre class="iceCode:'+select.value+'">'+str+'</pre>');
+                    var lastNode = frag.firstChild.lastChild;
+                    range.insertNode(frag);
+                    range.setStart(lastNode,0);
+                    range.setEnd(lastNode,0);
+                    range.collapse();
+                    select.getElementsByTagName('option')[0].selected = true;
+                }
+            }
+        });
+        this.create();
+        content=this.getHTML();
+        this.inputCallback(function(html,text){
+             content=html;
+        });
+        //this.setValue(html);
+    })
+</script>
+
+<script>
+    $('#category-select').selectpicker({});
+    $('#tag-select').selectpicker({maxOptions:3});
+
+   $("#original").bootstrapSwitch({
+       onText : "原创",      // 设置ON文本
+       offText : "转载",    // 设置OFF文本
+       onColor:"success",
+       offColor:"info",
+       onSwitchChange : function(event, state) {
+           if(state==true){
+               this.value=1;
+           }else{
+               this.value=0;
+           }
+       }
+   });
+   $("#slider").bootstrapSwitch({
+        onText : "启用",      // 设置ON文本
+        offText : "禁用",    // 设置OFF文本
+        onSwitchChange : function(event, state) {
+            if(state==true){
+                this.value=1;
+            }else{
+                this.value=0;
+            }
+        }
+    });
+    $("#top").bootstrapSwitch({
+        onText : "启用",      // 设置ON文本
+        offText : "禁用",    // 设置OFF文本
+        onSwitchChange : function(event, state) {
+            if(state==true){
+                this.value=1;
+            }else{
+                this.value=0;
+            }
+        }
+    });
+    $("#recommended").bootstrapSwitch({
+        onText : "启用",      // 设置ON文本
+        offText : "禁用",    // 设置OFF文本
+        onSwitchChange : function(event, state) {
+            if(state==true){
+                this.value=1;
+            }else{
+                this.value=0;
+            }
+        }
+    });
+    $("#comment").bootstrapSwitch({
+        onText : "启用",      // 设置ON文本
+        offText : "禁用",    // 设置OFF文本
+        onSwitchChange : function(event, state) {
+            if(state==true){
+                this.value=1;
+            }else{
+                this.value=0;
+            }
+        }
+    });
+
+    function addOrUpdateArticle(status, addFlag) {
+        if (validArticle()) {
+            Core.confirm("确认保存文章？", function () {
+                $("#status").val(status);
+                if (addFlag) {
+                    Core.postAjax("/article/add", $("#articleForm").serialize(), function (data) {
+                        if (data.status === 200) {
+                            Core.load("#content", "article/add");
+                        }
+                        layer.msg(data.msg)
+                    })
+                } else {
+                    Core.postAjax("/article/edit", $("#articleForm").serialize(), function (data) {
+                        layer.msg(data.msg)
+                    })
+                }
+            })
+        }
+    }
+
+   function validArticle() {
+        if (content) {
+            $("#articleContentMd").val(content);
+            $("#articleContent").val(content);
+            // 文章标签必填项校验
+            var tags = [];
+            $('input[name="tag"]:checked').each(function () {
+                tags.push($(this).val());
+            });
+            return true;
+        } else {
+            layer.msg("请输入文章内容！")
+            return false;
+        }
+    }
+
+</script>
+
+
+
+

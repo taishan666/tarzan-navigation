@@ -1,0 +1,257 @@
+<div class="row">
+    <div class="colxl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="page-title-wrapper">
+            <div class="page-title-box">
+                <h4 class="page-title bold">菜单管理</h4>
+            </div>
+            <div class="breadcrumb-list">
+                <ul>
+                    <li class="breadcrumb-link"><a th:href="@{admin}"><i class="fas fa-home mr-2"></i>首页</a></li>
+                    <li class="breadcrumb-link active">权限管理</li>
+                    <li class="breadcrumb-link active">菜单管理</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main content -->
+<section class="content">
+    <div class="card card-body">
+        <div id="toolbar">
+            <shiro:hasPermission name="menu:add">
+                <button id="btn_add" type="button" class="btn btn-primary">
+                    <span class="fa fa-plus" aria-hidden="true"></span>新增
+                </button>
+            </shiro:hasPermission>
+        </div>
+        <table id="menuTable" class="mt-2" data-mobile-responsive="true" data-click-to-select="true"></table>
+    </div>
+</section>
+
+<!-- 表单模态框 -->
+<div class="modal fade" id="formModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="formTitle"></h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="formContent"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="saveOrUpdateBtn" onclick="saveOrUpdate()">保存
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 权限分配模态框 -->
+<section id="menuModalWrapper">
+    <div class="modal fade" id="menuModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="menuTitle">选择菜单</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul id="permissionTree" class="ztree"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    var editFlag = Core.parseBool("[[${@perms.hasPerm('menu:edit')}]]");
+    var deleteFlag = Core.parseBool("[[${@perms.hasPerm('menu:delete')}]]");
+    var menuType = "1";/*默认选中菜单类型*/
+    var menuCheckedType = 0;/*选中的上级的菜单类型*/
+    var detailMenuCheckedType;/*详情中选中的上级的菜单类型*/
+    var treeTableConf = {
+        id: "menuTable",
+        table: null,
+        columns: [
+            {
+                field: 'selectItem',
+                radio: true
+            },
+            {
+                title: '菜单名称',
+                field: 'name',
+                align: 'center',
+            },
+            {
+                title: '菜单URL',
+                field: 'url',
+                align: 'center',
+            },
+            {
+                title: '权限标识',
+                field: 'perms',
+                align: 'center',
+            },
+            {
+                title: '类型',
+                field: 'type',
+                align: 'center',
+                width: '60px',
+                formatter: function (row, index) {
+                    switch (row.type) {
+                        case 0 :
+                            return '<label class="badge badge-primary ">目录</label>';
+                        case 1 :
+                            return '<label class="badge badge-secondary">菜单</label>';
+                        case 2 :
+                            return '<label class="badge badge-info">按钮</label>';
+                    }
+                }
+            },
+            {
+                title: '图标',
+                field: 'icon',
+                align: 'center',
+                width: '60px',
+                formatter: function (row, index) {
+                    if (row.type !== 2) {
+                        return '<i class="' + row.icon + ' fa-lg"></i>';
+                    } else {
+                        return "";
+                    }
+                }
+            },
+            {
+                title: '排序',
+                field: 'orderNum',
+                align: 'center',
+                width: '60px'
+            },
+            {
+                title: '权限描述',
+                field: 'description',
+                align: 'center',
+            },
+            {
+                field: 'operation',
+                title: '操作',
+                align: "center",
+                width: '150px',
+                formatter: function (row) {
+                    var edit = editFlag && row.status === 1 ? '<button class="effect-btn btn btn-info mt-2 mr-2 icon-lg" onclick="editRow(' + row.id + ')"><i class="fas fa-edit"></i></button>' : '';
+                    var del = deleteFlag ? '<button class="effect-btn btn btn-danger mt-2 mr-2 icon-lg" onclick="deleteRow(' + row.id + ')"><i class="fas fa-trash-alt"></i></button>' : '';
+                    return edit + del;
+                }
+            }
+        ]
+    }
+
+    $(function () {
+        var table = new TreeTable(treeTableConf.id, "/menu/list", treeTableConf.columns, "id");
+        table.setExpandColumn(1);
+        table.setIdField("id");
+        table.setCodeField("id");
+        table.setParentCodeField("parentId");
+        /*table.setExpandAll(true);*/
+        table.setStriped(false);
+        table.init();
+        treeTableConf.table = table;
+    })
+
+    // 新增
+    $('#btn_add').on('click', function () {
+        Core.load("#formContent", "/menu/add", function () {
+            $('#formTitle').text('新增')
+            $("#formModal").modal('show');
+        });
+    })
+
+
+    function saveOrUpdate() {
+        var $f = $('#permissionForm');
+        var valid = $f[0].checkValidity();
+        var url = $f.find("input[name='id']").val() ? "/menu/edit" : "/menu/add"
+        if (valid) {
+            if (detailMenuCheckedType != null) {
+                var detailMenuType = $f.find("input[name='type']:checked").val();
+                if ((detailMenuType === "0" || detailMenuType === "1") && detailMenuCheckedType !== 0) {
+                    layer.msg("上级资源只能是目录类型！")
+                    return;
+                } else if (detailMenuType === "2" && detailMenuCheckedType !== 1) {
+                    layer.msg("上级资源只能是菜单类型！")
+                    return;
+                }
+            }
+            Core.mask("#saveOrUpdateBtn");
+            Core.postAjax(url, $f.serialize(), function (data) {
+                Core.unmask("#saveOrUpdateBtn");
+                if (data.status === 200) {
+                    $("#formModal").modal("hide");
+                    treeTableConf.table.refresh();
+                }
+                layer.msg(data.msg);
+            }, function () {
+                Core.unmask("#saveOrUpdateBtn");
+            })
+        }
+        $f.addClass("was-validated")
+    }
+
+    /*编辑*/
+    function editRow(id) {
+        Core.load("#formContent", "/menu/edit?id=" + id, function () {
+            $('#formTitle').text('编辑')
+            $("#formModal").modal('show');
+        });
+    }
+
+    /*删除*/
+    function deleteRow(id) {
+        Core.confirm("确定删除该分类？", function () {
+            Core.postAjax("/menu/delete", {"id": id}, function (data) {
+                if (data.status === 200) {
+                    treeTableConf.table.refresh();
+                }
+                layer.msg(data.msg);
+            })
+        })
+    }
+
+    var ztree;
+    function showMenu(flag) {
+        //树-初始化设置
+        var treeSetting = {
+            data: {
+                simpleData: {
+                    enable: true,
+                    idKey: "id",
+                    pIdKey: "parentId"
+                }
+            }
+        };
+        Core.postAjax('/menu/list', {flag: flag}, function (data) {
+            var topMenu = {
+                name: "顶层菜单",
+                id: 0,
+                parentId: "",
+                type: 0
+            }
+            data.unshift(topMenu);
+            //过滤数据
+            data = eval(data).filter(function (e) { return e.type != 2; })
+            $.each(data, function (i, item) {
+                    item.open = true;
+                    item.url = "";
+            })
+            ztree = $.fn.zTree.init($("#permissionTree"), treeSetting, data);
+            $("#menuModal").modal("show");
+
+        });
+    };
+
+</script>
