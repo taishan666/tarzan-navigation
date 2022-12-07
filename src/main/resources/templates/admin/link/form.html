@@ -43,11 +43,6 @@
                 </div>
             </div>
         </div>
-      <!--  <div class="col-sm-9">
-            <input type="text" th:value="${link?.img}" name="img" class="form-control"
-                   id="img"
-                   placeholder="填写站长图片" >
-        </div>-->
     </div>
     <div class="form-group row">
         <label for="email" class="col-sm-3 col-form-label">站长邮箱:</label>
@@ -79,6 +74,17 @@
         </div>
     </div>-->
 </form>
+<div class="card table-card card-body">
+    <div id="toolbar" class="btn-group">
+        <button id="btn_add" type="button" class="btn btn-primary">
+            <span class="fa fa-plus" aria-hidden="true"></span>新增
+        </button>
+        <button id="btn_batch_delete" type="button" class="btn btn-danger">
+            <span class="fa fa-trash" aria-hidden="true"></span>批量删除
+        </button>
+    </div>
+    <table class="table-sm" id="table"></table>
+</div>
 <script>
 
 

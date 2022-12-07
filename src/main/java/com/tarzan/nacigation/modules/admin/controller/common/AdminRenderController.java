@@ -13,6 +13,7 @@ import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -137,6 +138,15 @@ public class AdminRenderController {
     @GetMapping("/categories")
     public String categories() {
         return CoreConst.ADMIN_PREFIX + "category/list";
+    }
+
+    /**
+     * 分类
+     */
+    @GetMapping("/categories/{id}")
+    public String categories(@PathVariable("id")Integer id,Model model) {
+        model.addAttribute("categoryId", id);
+        return CoreConst.ADMIN_PREFIX + "categoryLinK/list";
     }
 
     /**

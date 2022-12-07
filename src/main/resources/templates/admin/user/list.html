@@ -38,16 +38,12 @@
     </div>
     <div class="card table-card card-body">
         <div id="toolbar" class="btn-group">
-            <shiro:hasPermission name="user:add">
                 <button id="btn_add" type="button" class="btn btn-primary">
                     <span class="fa fa-plus" aria-hidden="true"></span>新增
                 </button>
-            </shiro:hasPermission>
-            <shiro:hasPermission name="user:batchDelete">
                 <button id="btn_batch_delete" type="button" class="btn btn-danger">
                     <span class="fa fa-trash" aria-hidden="true"></span>批量删除
                 </button>
-            </shiro:hasPermission>
         </div>
         <table class="table-sm" id="table"></table>
     </div>

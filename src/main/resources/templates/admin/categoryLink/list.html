@@ -2,7 +2,8 @@
     <div class="colxl-12 col-lg-12 col-md-12 col-sm-12 col-12">
         <div class="page-title-wrapper">
             <div class="page-title-box">
-                <h4 class="page-title bold">友链管理</h4>
+                <h4 class="page-title bold">分类管理</h4>
+                <h5 class="page-title bold">友链管理</h5>
             </div>
             <div class="breadcrumb-list">
                 <ul>
@@ -74,9 +75,12 @@
         </div>
     </div>
 </div>
-<script>
 
+<script>
+    var categoryId=[[${categoryId}]]
     $(function () {
+        var editFlag = "[[${@perms.hasPerm('link:edit')}]]";
+        var deleteFlag = "[[${@perms.hasPerm('link:delete')}]]";
         window.operateEvents = {
             // 点击编辑
             'click .btn_edit': function (e, value, row, index) {
@@ -122,18 +126,6 @@
                 field: 'qq',
                 title: '站长QQ',
                 align : "center",
-            },{
-                field: 'status',
-                title: '状态',
-                align : "center",
-                formatter: typeSwitch
-            }, {
-                field: 'operation',
-                title: '操作',
-                align: "center",
-                width: 200,
-                events: operateEvents,
-                formatter: operationFormatter
             }];
         var onLoadSuccess=function () {	//在成功加载远程数据时触发
             $("[name='switch']").bootstrapSwitch({
@@ -164,15 +156,10 @@
                 return "<input value=" + row.id + " name='switch' type='checkbox' />";
             }
         }
-        function operationFormatter(value, row, index) {
-            var edit =  '<button class="effect-btn btn btn-info mt-2 mr-2 icon-lg btn_edit"><i class="fas fa-edit"></i></button>';
-            var del =  '<button class="effect-btn btn btn-danger mt-2 mr-2 icon-lg btn_del"><i class="fas fa-trash-alt"></i></button>';
-            return edit + del;
-        }
 
         var options = {
             id: "#table",
-            url: '/link/list',
+            url: '/categoryLink/list/'+categoryId,
             columns: columns,
             toolbar: '#toolbar',
             showRefresh: true,
@@ -189,10 +176,7 @@
         function queryParams(params) {
             return {
                 pageNumber: params.pageNumber,
-                pageSize: params.pageSize,
-                name: $("#name").val(),
-                url: $("#url").val(),
-                status: $("#status").val(),
+                pageSize: params.pageSize
             };
         }
 
@@ -205,7 +189,7 @@
 
         // 新增
         $('#btn_add').on('click', function () {
-            Core.load("#formContent", "/link/add", function () {
+            Core.load("#formContent", "/categoryLink/add", function () {
                 $('#formTitle').text('新增')
                 $("#formModal").modal('show');
             });
