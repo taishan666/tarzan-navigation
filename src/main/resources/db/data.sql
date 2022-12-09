@@ -2,12 +2,36 @@
 -- ----------------------------
 -- Records of biz_category
 -- ----------------------------
-INSERT INTO `biz_category` VALUES (1, 0, '前端技术', '主要收集、整理的基础前端类文章', 1, 'fa fa-css3', 1, '2021-01-14 21:34:54', '2021-07-25 17:57:50');
-INSERT INTO `biz_category` VALUES (2, 0, '后端技术', '网站中记录的后端类文章，包括Java、Spring、SpringBoot、MySQL、大数据和其他在日常工作学习中所用的后端技术', 10, 'fa fa-coffee', 1, '2021-01-14 21:34:57', '2021-09-14 15:28:24');
-INSERT INTO `biz_category` VALUES (3, 0, '其他文章', '记录网站建设以及日常工作、学习中的闲言碎语', 50, 'fa fa-folder-open-o', 1, '2021-01-20 22:28:03', '2021-09-14 15:28:50');
-INSERT INTO `biz_category` VALUES (4, 0, '领悟', '记录个人生活等文章', 40, NULL, 1, '2021-08-02 11:20:26', '2021-09-14 15:28:38');
-INSERT INTO `biz_category` VALUES (5, 3, '总结', '总结反思', 1, NULL, 1, '2021-09-11 11:28:15', '2021-09-11 11:28:15');
-INSERT INTO `biz_category` VALUES (6, 0, '工具资源', '开发工具、服务端工具、中间件', 20, NULL, 1, '2021-09-14 15:26:39', '2021-09-14 15:28:28');
+INSERT INTO biz_category VALUES (8,0,'常用推荐',null,1,null,1,'2022-12-09 21:37:32','2022-12-09 21:37:32');
+INSERT INTO biz_category VALUES (9,0,'社区资讯',null,2,null,1,'2022-12-09 21:37:50','2022-12-09 21:37:50');
+INSERT INTO biz_category VALUES (10,0,'灵感采集',null,3,null,1,'2022-12-09 21:38:15','2022-12-09 21:38:15');
+INSERT INTO biz_category VALUES (11,0,'素材资源',null,4,null,1,'2022-12-09 21:39:08','2022-12-09 21:39:08');
+INSERT INTO biz_category VALUES (12,0,'常用工具',null,5,null,1,'2022-12-09 21:39:30','2022-12-09 21:39:30');
+INSERT INTO biz_category VALUES (13,0,'学习教程',null,6,null,1,'2022-12-09 21:39:50','2022-12-09 21:39:50');
+INSERT INTO biz_category VALUES (14,0,'UED团队',null,7,null,1,'2022-12-09 21:40:35','2022-12-09 21:40:35');
+INSERT INTO biz_category VALUES (15,10,'发现产品',null,1,null,1,'2022-12-09 21:41:23','2022-12-09 21:41:23');
+INSERT INTO biz_category VALUES (16,10,'界面灵感',null,2,null,1,'2022-12-09 21:41:55','2022-12-09 21:42:06');
+INSERT INTO biz_category VALUES (17,10,'网页灵感',null,3,null,1,'2022-12-09 21:42:36','2022-12-09 21:42:36');
+INSERT INTO biz_category VALUES (18,11,'图标素材',null,1,null,1,'2022-12-09 21:45:05','2022-12-09 21:45:05');
+INSERT INTO biz_category VALUES (19,11,'LOGO设计',null,2,null,1,'2022-12-09 21:45:43','2022-12-09 21:45:43');
+INSERT INTO biz_category VALUES (20,11,'平面素材',null,3,null,1,'2022-12-09 21:52:53','2022-12-09 21:52:53');
+INSERT INTO biz_category VALUES (21,11,'UI资源',null,4,null,1,'2022-12-09 21:53:15','2022-12-09 21:53:15');
+INSERT INTO biz_category VALUES (22,11,'Sketch资源',null,5,null,1,'2022-12-09 21:53:58','2022-12-09 22:05:43');
+INSERT INTO biz_category VALUES (23,11,'字体资源',null,6,null,1,'2022-12-09 21:54:38','2022-12-09 22:06:03');
+INSERT INTO biz_category VALUES (24,11,'Mockup',null,7,null,1,'2022-12-09 21:55:25','2022-12-09 21:55:25');
+INSERT INTO biz_category VALUES (25,11,'摄影图库',null,8,null,1,'2022-12-09 21:55:52','2022-12-09 21:55:52');
+INSERT INTO biz_category VALUES (26,11,'PPT资源',null,9,null,1,'2022-12-09 21:56:58','2022-12-09 21:56:58');
+INSERT INTO biz_category VALUES (27,12,'图形创意',null,1,null,1,'2022-12-09 21:58:06','2022-12-09 21:58:06');
+INSERT INTO biz_category VALUES (28,12,'界面设计',null,2,null,1,'2022-12-09 21:58:21','2022-12-09 21:58:21');
+INSERT INTO biz_category VALUES (29,12,'交互动效',null,3,null,1,'2022-12-09 21:58:40','2022-12-09 21:58:40');
+INSERT INTO biz_category VALUES (30,12,'在线配色',null,4,null,1,'2022-12-09 21:59:14','2022-12-09 21:59:14');
+INSERT INTO biz_category VALUES (31,12,'Chrome插件',null,6,null,1,'2022-12-09 21:59:33','2022-12-09 22:03:07');
+INSERT INTO biz_category VALUES (32,13,'设计规范',null,1,null,1,'2022-12-09 22:00:13','2022-12-09 22:02:10');
+INSERT INTO biz_category VALUES (33,13,'视频教程',null,2,null,1,'2022-12-09 22:00:34','2022-12-09 22:04:52');
+INSERT INTO biz_category VALUES (34,12,'在线工具',null,5,null,1,'2022-12-09 22:02:30','2022-12-09 22:02:40');
+INSERT INTO biz_category VALUES (35,13,'设计文章',null,3,null,1,'2022-12-09 22:03:45','2022-12-09 22:03:45');
+INSERT INTO biz_category VALUES (36,13,'设计电台',null,4,null,1,'2022-12-09 22:04:18','2022-12-09 22:04:18');
+INSERT INTO biz_category VALUES (37,13,'交互设计',null,5,null,1,'2022-12-09 22:04:35','2022-12-09 22:04:35');
 
 -- ----------------------------
 -- Records of biz_link

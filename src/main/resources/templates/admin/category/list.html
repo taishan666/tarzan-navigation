@@ -66,14 +66,24 @@
                 field: 'name',
                 title: '分类名称',
                 align: "left"
-            }, {
+            },
+        /*    {
                 field: 'description',
                 title: '分类描述',
                 align: "center"
-            }, {
+            },*/
+            {
                 field: 'sort',
                 title: '排序',
                 align: "center",
+            },
+            {
+                field: 'manage',
+                title: '管理',
+                align: "center",
+                formatter: function (value, row, index) {
+                    return '<a href="/admin#categories/' + value.id + '">网站管理</a>'
+                }
             },
             {
                 field: 'operation',
