@@ -54,16 +54,6 @@
 
 
 <script>
-    window.operateEvents = {
-        // 点击审核
-        'click .btn_edit': function (e, value, row, index) {
-            editRow(row.id)
-        },
-        // 点击删除
-        'click .btn_del': function (e, value, row, index) {
-            deleteRow(row.id)
-        }
-    }
     var treeTableConf = {
         id: "table",
         table: null,
@@ -86,23 +76,13 @@
                 align: "center",
             },
             {
-                field: 'id',
-                title: '管理',
-                align: "center",
-                events: operateEvents,
-                formatter: function (value, row, index) {
-                    return '<a href="/admin#categories/' + value.id + '">网站管理</a>'
-                }
-            },
-            {
                 field: 'operation',
                 title: '操作',
                 align: "center",
-                events: operateEvents,
                 formatter: function (row, index) {
-                    var edit = '<button type="button" class="effect-btn btn btn-info mt-2 mr-2 icon-lg btn_edit"><i class="fas fa-edit"></i></button>';
-                    var del ='<button type="button"  class="effect-btn btn btn-danger mt-2 mr-2 icon-lg btn_del"><i class="fas fa-trash-alt"></i></button>';
-                    return edit +del;
+                    var edit = '<button type="button" class="effect-btn btn btn-info mt-2 mr-2 icon-lg" onclick="editRow(' + row.id + ')"><i class="fas fa-edit"></i></button>';
+                    var del = '<button type="button"  class="effect-btn btn btn-danger mt-2 mr-2 icon-lg" onclick="deleteRow(' + row.id + ')"><i class="fas fa-trash-alt"></i></button>';
+                    return edit + del;
                 }
             }]
     };
