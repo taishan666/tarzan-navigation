@@ -28,6 +28,8 @@ public class Category extends BaseVo {
     private String icon;
 
     @TableField(exist = false)
+    private String parentName;
+    @TableField(exist = false)
     private Category parent;
     @TableField(exist = false)
     private List<Category> children;

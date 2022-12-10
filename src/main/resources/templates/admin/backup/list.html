@@ -21,6 +21,9 @@
                 <button id="btn_add" type="button" class="btn btn-primary">
                     <span class="fa fa-plus" aria-hidden="true"></span>备份
                 </button>
+        <button id="btn_import" type="button" class="btn btn-primary">
+            <span class="fa fa-upload" aria-hidden="true"></span>导入
+        </button>
         </div>
         <table class="table-sm" id="table"></table>
     </div>
@@ -28,8 +31,6 @@
 <!-- Script Start -->
 <script>
     $(function () {
-        var rollbackFlag = Core.parseBool("[[${@perms.hasPerm('dbBackup:rollback')}]]");
-        var deleteFlag = Core.parseBool("[[${@perms.hasPerm('dbBackup:delete')}]]");
         window.operateEvents = {
             // 点击恢复
             'click .btn_rollback': function (e, value, row, index) {
@@ -38,10 +39,14 @@
             // 点击删除
             'click .btn_del': function (e, value, row, index) {
                 deleteRow(row.fileName)
+            },
+            // 点击下载
+            'click .btn_download': function (e, value, row, index) {
+                download(row.fileName)
             }
         }
         var columns = [
-            {checkbox: true},
+       /*     {checkbox: true},*/
             {
                 field: 'fileName',
                 title: '文件名称',
@@ -81,9 +86,10 @@
         }
 
         function operationFormatter(value, row, index) {
-            var rollback = rollbackFlag ? '<button class="effect-btn btn btn-info mt-2 mr-2 icon-lg btn_rollback"><i class="fas fa-play"></i></button>' : '';
-            var del = deleteFlag ? '<button class="effect-btn btn btn-danger mt-2 mr-2 icon-lg btn_del"><i class="fas fa-trash-alt"></i></button>' : '';
-            return rollback + del;
+            var download = '<button class="effect-btn btn btn-info mt-2 mr-2 icon-lg btn_download"><i class="fas fa-download"></i></button>';
+            var rollback = '<button class="effect-btn btn btn-info mt-2 mr-2 icon-lg btn_rollback"><i class="fas fa-play"></i></button>';
+            var del = '<button class="effect-btn btn btn-danger mt-2 mr-2 icon-lg btn_del"><i class="fas fa-trash-alt"></i></button>';
+            return download+rollback + del;
         }
         // 查询参数
         function queryParams(params) {
@@ -115,7 +121,18 @@
 
         // 删除
         function deleteRow(fileName) {
-            Core.confirm("确定删除？", function () {
+            Core.confirm("确定删除"+fileName+"？", function () {
+                Core.postAjax("/backup/delete", {"fileName": fileName}, function (data) {
+                    if (data.status === 200) {
+                        refreshTable();
+                    }
+                    layer.msg(data.msg);
+                })
+            })
+        }
+        // 下载
+        function download(fileName){
+            Core.confirm("确定下载"+fileName+"？", function () {
                 Core.postAjax("/backup/delete", {"fileName": fileName}, function (data) {
                     if (data.status === 200) {
                         refreshTable();
@@ -127,7 +144,7 @@
 
         // 恢复
         function rollback(fileName) {
-            Core.confirm("确定恢复？", function () {
+            Core.confirm("确定恢复"+fileName+"？", function () {
                 Core.postAjax("/backup/rollback", {"fileName": fileName}, function (data) {
                     if (data.status === 200) {
                         refreshTable();

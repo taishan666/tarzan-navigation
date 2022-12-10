@@ -44,8 +44,9 @@ public class CategoryController {
         Category bizCategory = new Category();
         long count=categoryService.lambdaQuery().eq(Category::getPid,CoreConst.TOP_CATEGORY_ID).count();
         bizCategory.setSort((int) (count+1));
+        bizCategory.setPid(CoreConst.TOP_CATEGORY_ID);
+        bizCategory.setParentName(CoreConst.TOP_CATEGORY_NAME);
         model.addAttribute("category", bizCategory);
-        model.addAttribute("categories", getCategories());
         return CoreConst.ADMIN_PREFIX + "category/form";
     }
 
@@ -55,8 +56,9 @@ public class CategoryController {
         bizCategory.setPid(pid);
         long count=categoryService.lambdaQuery().eq(Category::getPid,pid).count();
         bizCategory.setSort((int) (count+1));
+        bizCategory.setPid(pid);
+        bizCategory.setParentName(getCategoryName(pid));
         model.addAttribute("category", bizCategory);
-        model.addAttribute("categories", getCategories());
         return CoreConst.ADMIN_PREFIX + "category/form";
     }
 
@@ -82,8 +84,13 @@ public class CategoryController {
     @GetMapping("/edit")
     public String edit(Model model, Integer id) {
         Category bizCategory = categoryService.selectById(id);
+        bizCategory.setPid(bizCategory.getPid());
+        if(bizCategory.getPid().equals(CoreConst.TOP_CATEGORY_ID)){
+            bizCategory.setParentName(CoreConst.TOP_CATEGORY_NAME);
+        }else{
+            bizCategory.setParentName(getCategoryName(bizCategory.getPid()));
+        }
         model.addAttribute("category", bizCategory);
-        model.addAttribute("categories", getCategories());
         return CoreConst.ADMIN_PREFIX + "category/form";
     }
 
@@ -119,18 +126,13 @@ public class CategoryController {
         }
     }
 
-    private List<Category> getCategories(){
-        List<Category> categories=new ArrayList<>(10);
-        Category root=new Category();
-        root.setId(CoreConst.TOP_CATEGORY_ID);
-        root.setName(CoreConst.TOP_CATEGORY_NAME);
-        categories.add(root);
-        categories.addAll(categoryService.selectCategories(CoreConst.STATUS_VALID));
-        return categories;
-    }
-
     private boolean existArticles(Integer id){
             return categoryLinkService.lambdaQuery().eq(CategoryLink::getCategoryId,id).count()!=0L;
+    }
+
+    private String getCategoryName(Integer id){
+        Category category=categoryService.getById(id);
+        return category==null?"":category.getName();
     }
 
 }

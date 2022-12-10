@@ -31,16 +31,9 @@
         <label for="img" class="col-sm-3 col-form-label">站长图片:</label>
         <div class="upload-content">
             <div class="content-img">
-                <ul id="fileList" class="content-img-list">
-                    <block th:if="${link?.img!=null}">
-                        <li class="content-img-list-item"><img th:src="${link?.img}">
-                            <div class="hide"><button class="btn-outline secondary-outline mt-2 mr-2 icon-sm"><i class="fas fa-trash-alt"></i></button></div>
-                        </li>
-                    </block>
-                </ul>
-                <div class="file"  id="filePicker">
-                    <i class="fa fa-plus"></i>
-                    <input type="text" th:value="${link?.img}" name="img" class="form-control" id="img" placeholder="填写站长图片" >
+                <div class="file"  id="filePicker" >
+             <!--       <i  class="fa fa-plus"></i>-->
+                    <img th:src="${link?.img==null?'/assets/img/img_add.png':link?.img}" height="150px;" id="img">
                 </div>
             </div>
         </div>
