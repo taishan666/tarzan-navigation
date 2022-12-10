@@ -22,9 +22,10 @@ public class CoreConst {
     public static final Integer ONE = 1;
     public static final Integer PAGE_SIZE = 10;
     public static final Integer ADMINISTRATOR_ID = 1;
-    public static final Integer TOP_MENU_ID = 0;
     public static final String ADMIN_NAME = "管理员";
-    public static final String TOP_MENU_NAME = "顶层菜单";
+    public static final Integer TOP_MENU_ID = 0;
+    public static final Integer TOP_CATEGORY_ID = 0;
+    public static final String TOP_CATEGORY_NAME = "顶级分类";
     public static final String TARZAN_REDIS_CMS_PREFIX = "tarzan:cms:";
     public static final String SHIRO_REDIS_SESSION_PREFIX = "tarzan:cms:session:";
     public static final String SHIRO_REDIS_CACHE_NAME = "shiro_tarzan_cms";

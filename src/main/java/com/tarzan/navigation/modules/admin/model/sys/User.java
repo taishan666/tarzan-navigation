@@ -54,7 +54,7 @@ public class User implements Serializable {
     private String phone;
 
     /**
-     * 年龄：1男2女
+     * 性别：1男2女
      */
     private Integer sex;
 

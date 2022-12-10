@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -40,6 +41,21 @@ public class CategoryController {
 
     @GetMapping("/add")
     public String add(Model model) {
+        Category bizCategory = new Category();
+        long count=categoryService.lambdaQuery().eq(Category::getPid,CoreConst.TOP_CATEGORY_ID).count();
+        bizCategory.setSort((int) (count+1));
+        model.addAttribute("category", bizCategory);
+        model.addAttribute("categories", getCategories());
+        return CoreConst.ADMIN_PREFIX + "category/form";
+    }
+
+    @GetMapping("/add/child")
+    public String addChild(Model model,Integer pid) {
+        Category bizCategory = new Category();
+        bizCategory.setPid(pid);
+        long count=categoryService.lambdaQuery().eq(Category::getPid,pid).count();
+        bizCategory.setSort((int) (count+1));
+        model.addAttribute("category", bizCategory);
         model.addAttribute("categories", getCategories());
         return CoreConst.ADMIN_PREFIX + "category/form";
     }
@@ -104,7 +120,13 @@ public class CategoryController {
     }
 
     private List<Category> getCategories(){
-        return categoryService.selectCategories(CoreConst.STATUS_VALID);
+        List<Category> categories=new ArrayList<>(10);
+        Category root=new Category();
+        root.setId(CoreConst.TOP_CATEGORY_ID);
+        root.setName(CoreConst.TOP_CATEGORY_NAME);
+        categories.add(root);
+        categories.addAll(categoryService.selectCategories(CoreConst.STATUS_VALID));
+        return categories;
     }
 
     private boolean existArticles(Integer id){

@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS `biz_link` (
                                           `name` varchar(50) NOT NULL COMMENT '链接名',
     `url` varchar(200) NOT NULL COMMENT '链接地址',
     `description` varchar(255) NULL DEFAULT NULL COMMENT '链接介绍',
-    `img` varchar(255) NULL DEFAULT NULL COMMENT '友链图片地址',
+    `image_id` int NULL  DEFAULT NULL COMMENT 'logo图片id',
     `email` varchar(100) NULL DEFAULT NULL COMMENT '友链站长邮箱',
     `qq` varchar(50) NULL DEFAULT NULL COMMENT '友链站长qq',
     `status` int UNSIGNED NULL DEFAULT NULL COMMENT '状态',
@@ -30,9 +30,16 @@ CREATE TABLE IF NOT EXISTS `biz_link` (
 DROP TABLE IF EXISTS `biz_category_link`;
 CREATE TABLE IF NOT EXISTS `biz_category_link` (
                                             `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
-                                            `category_id` int UNSIGNED NULL DEFAULT NULL,
-                                            `link_id` varchar(50) NULL DEFAULT NULL COMMENT '文章类型名',
+                                            `category_id` int  NULL DEFAULT NULL COMMENT '分类id',
+                                            `link_id` int NULL DEFAULT NULL COMMENT '网址id',
                                             `create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '添加时间'
+    );
+
+DROP TABLE IF EXISTS `biz_image`;
+CREATE TABLE IF NOT EXISTS `biz_image` (
+                                                   `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+                                                   `base64` text NULL DEFAULT NULL COMMENT '图片base64码',
+    `create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '添加时间'
     );
 
 DROP TABLE IF EXISTS `biz_comment`;

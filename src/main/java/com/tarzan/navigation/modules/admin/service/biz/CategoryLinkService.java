@@ -5,6 +5,9 @@ import com.tarzan.navigation.modules.admin.mapper.biz.CategoryLinkMapper;
 import com.tarzan.navigation.modules.admin.model.biz.CategoryLink;
 import org.springframework.stereotype.Service;
 
+/**
+ * @author tarzan
+ */
 @Service
 public class CategoryLinkService extends ServiceImpl<CategoryLinkMapper, CategoryLink> {
 }

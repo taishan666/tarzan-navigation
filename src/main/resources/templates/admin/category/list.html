@@ -90,9 +90,10 @@
                 title: '操作',
                 align: "center",
                 formatter: function (row, index) {
+                    var add = '<button type="button" class="effect-btn btn btn-warning mt-2 mr-2 icon-lg" onclick="addRow(' + row.id + ')"><i class="fas fa-plus"></i></button>';
                     var edit = '<button type="button" class="effect-btn btn btn-info mt-2 mr-2 icon-lg" onclick="editRow(' + row.id + ')"><i class="fas fa-edit"></i></button>';
                     var del = '<button type="button"  class="effect-btn btn btn-danger mt-2 mr-2 icon-lg" onclick="deleteRow(' + row.id + ')"><i class="fas fa-trash-alt"></i></button>';
-                    return edit + del;
+                    return add+edit + del;
                 }
             }]
     };
@@ -113,6 +114,14 @@
     function addCategory() {
         Core.load("#formContent", "/category/add", function () {
             $('#formTitle').text('新增')
+            $("#formModal").modal('show');
+        }, 2);
+    }
+
+    /*添加子集*/
+    function addRow(id) {
+        Core.load("#formContent", "/category/add/child?pid=" + id, function () {
+            $('#formTitle').text('新增下级')
             $("#formModal").modal('show');
         }, 2);
     }
@@ -140,7 +149,14 @@
     function saveOrUpdate() {
         var $f = $('#categoryForm');
         var valid = $f[0].checkValidity();
-        var url = $f.find("input[name='id']").val() ? "/category/edit" : "/category/add"
+        var url ="/category/add";
+        if( $f.find("input[name='id']").val()){
+            url= "/category/edit"
+        }else {
+            if($f.find("select[name='pid']").val()){
+                url ="/category/add/child";
+            }
+        }
         if (valid) {
             Core.mask("#saveOrUpdateBtn");
             Core.postAjax(url, $f.serialize(), function (data) {

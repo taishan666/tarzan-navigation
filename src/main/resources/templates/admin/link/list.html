@@ -75,7 +75,6 @@
     </div>
 </div>
 <script>
-
     $(function () {
         window.operateEvents = {
             // 点击编辑
@@ -212,14 +211,18 @@
         })
         //只是在点击后初始化的时候生成
         $("#formModal").on("shown.bs.modal", function () {
+            var imageId = $('#imageId').val();
+            if(imageId!=null && imageId.length!=0){
+                $('.content-img .file').hide();
+            }
             // 初始化Web Uploader
             var uploader = WebUploader.create({
                 // 选完文件后，是否自动上传。
                 auto: true,
                 // swf文件路径
-                swf: '/admin1/img/Uploader.swf',
+                swf: '/admin/img/Uploader.swf',
                 // 文件接收服务端。
-                server: '[[@{/attachment/upload}]]',
+                server: '[[@{/image/upload}]]',
                 // 选择文件的按钮。可选。
                 // 内部根据当前运行是创建，可能是input元素，也可能是flash.
                 pick: '#filePicker',
@@ -234,11 +237,11 @@
             var  $list=$('#fileList');
             uploader.on( 'uploadSuccess', function( file,data ) {
                 var $li = $(
-                    '<li class="content-img-list-item"><img src="' + data.url + '" >' +
+                    '<li class="content-img-list-item"><img src="' + data.base64 + '" >' +
                     '<div ><button class="btn-outline secondary-outline mt-2 mr-2 icon-sm"><i class="fas fa-trash-alt"></i></button></div></i>'
                 );
                 $list.append( $li );
-                $("#img").val(data.url);
+                $("#imageId").val(data.imageId);
                 $('.content-img .file').hide();
             });
             // 文件上传失败，显示上传出错。

@@ -11,8 +11,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  */
 @EnableScheduling
 @SpringBootApplication
-public class CmsApplication {
+public class NavigationApplication {
     public static void main(String[] args){
-        SpringApplication.run(CmsApplication.class, args);
+        SpringApplication.run(NavigationApplication.class, args);
     }
 }

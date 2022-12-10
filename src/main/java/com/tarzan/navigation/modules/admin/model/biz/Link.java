@@ -1,5 +1,6 @@
 package com.tarzan.navigation.modules.admin.model.biz;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.tarzan.navigation.modules.admin.vo.base.BaseVo;
 import lombok.Data;
@@ -20,11 +21,14 @@ public class Link extends BaseVo {
     private String url;
     private String name;
     private String description;
-    private String img;
+    private Integer imageId;
     private String email;
     private String qq;
     private Integer status;
     private Integer origin;
     private String remark;
+
+    @TableField(exist = false)
+    private String img;
 
 }
