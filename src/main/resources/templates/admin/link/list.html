@@ -233,26 +233,13 @@
             });
             // 文件上传成功，给item添加成功class, 用样式标记上传成功。
             uploader.on( 'uploadSuccess', function( file,data ) {
+                $("#imageId").val(data.imageId);
                 $("#img").attr("src",data.base64);
             });
             // 文件上传失败，显示上传出错。
             uploader.on( 'uploadError', function( file ) {
                 console.log('上传失败');
             });
-         /*   // 鼠标经过显示删除按钮
-            $('.content-img-list').on('mouseover', '.content-img-list-item', function() {
-                $(this).children('div').removeClass('hide');
-            });
-            // 鼠标离开隐藏删除按钮
-            $('.content-img-list').on('mouseleave', '.content-img-list-item', function() {
-                 $(this).children('div').addClass('hide');
-            });
-            // 单个图片删除
-            $(".content-img-list").on("click", '.content-img-list-item button .fa-trash-alt', function() {
-                $(this).parent().parent().parent().remove();
-                $('#img').val("");
-                $('.content-img .file').toggle();
-            });*/
         })
 
         // 编辑

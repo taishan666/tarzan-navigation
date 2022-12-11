@@ -32,8 +32,8 @@
         <div class="upload-content">
             <div class="content-img">
                 <div class="file"  id="filePicker" >
-             <!--       <i  class="fa fa-plus"></i>-->
-                    <img th:src="${link?.img==null?'/assets/img/img_add.png':link?.img}" height="150px;" id="img">
+                    <i  class="fa fa-plus"></i>
+                    <img th:src="${link?.img}" height="150px;" id="img" style="position: absolute;inset: 0px auto auto 0px;"/>
                 </div>
             </div>
         </div>
