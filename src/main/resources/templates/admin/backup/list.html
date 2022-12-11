@@ -28,6 +28,25 @@
         <table class="table-sm" id="table"></table>
     </div>
 </section>
+<!-- 表单模态框 -->
+<section id="formModalWrapper">
+    <div class="modal fade" id="formModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="formTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="formContent">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 <!-- Script Start -->
 <script>
     $(function () {
@@ -119,6 +138,40 @@
                 })
         })
 
+        // 导入
+        $('#btn_import').on('click', function () {
+            Core.load("#formContent", "/backup/import", function () {
+                $('#formTitle').text('新增主题')
+                $("#formModal").modal('show');
+            });
+        })
+
+        //只是在点击后初始化的时候生成
+        $("#formModal").on("shown.bs.modal", function () {
+            var uploader = WebUploader.create({
+                auto: true,
+                pick: {
+                    id: '#filePicker',
+                    label: '点击选择主题包'
+                },
+                swf: '/admin/img/Uploader.swf',
+                server: '[[@{/backup/upload}]]',
+                accept: {
+                    title: 'sql',
+                    extensions: 'sql',
+                    mimeTypes: ' application/sql'
+                },
+                disableGlobalDnd: true
+            });
+            uploader.on('uploadSuccess', function (file, data) {
+                layer.msg('上传成功');
+                location.reload();
+            });
+            uploader.on('uploadError', function (file) {
+                layer.msg('上传失败');
+            });
+        })
+
         // 删除
         function deleteRow(fileName) {
             Core.confirm("确定删除"+fileName+"？", function () {
@@ -133,12 +186,10 @@
         // 下载
         function download(fileName){
             Core.confirm("确定下载"+fileName+"？", function () {
-                Core.postAjax("/backup/delete", {"fileName": fileName}, function (data) {
-                    if (data.status === 200) {
-                        refreshTable();
-                    }
-                    layer.msg(data.msg);
+                Core.postAjax("/backup/download", {"fileName": fileName}, function (data) {
+                    Core.download(data,fileName);
                 })
+
             })
         }
 
@@ -146,9 +197,6 @@
         function rollback(fileName) {
             Core.confirm("确定恢复"+fileName+"？", function () {
                 Core.postAjax("/backup/rollback", {"fileName": fileName}, function (data) {
-                    if (data.status === 200) {
-                        refreshTable();
-                    }
                     layer.msg(data.msg);
                 })
             })

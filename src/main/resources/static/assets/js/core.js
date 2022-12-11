@@ -83,6 +83,11 @@ var Core = (function () {
             }
         });
     };
+
+    core.download = function (data, strFileName, strMimeType) {
+         return download(data, strFileName, strMimeType);
+    }
+
     /**
      * jQuery.load()加载页面
      * @param id

@@ -1,20 +1,24 @@
 package com.tarzan.navigation.modules.admin.controller.common;
 
+import com.tarzan.navigation.common.constant.CoreConst;
 import com.tarzan.navigation.common.props.CmsProperties;
 import com.tarzan.navigation.modules.admin.vo.DbBackupVO;
 import com.tarzan.navigation.modules.admin.vo.base.PageResultVo;
 import com.tarzan.navigation.modules.admin.vo.base.ResponseVo;
 import com.tarzan.navigation.utils.DbBackupTools;
+import com.tarzan.navigation.utils.FileUtil;
 import com.tarzan.navigation.utils.ResultUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.*;
 
 
@@ -33,6 +37,14 @@ public class BackupController {
 
     private final DbBackupTools dbTools;
     private final CmsProperties cmsProperties;
+
+    /**
+     * 备份数据库
+     */
+    @GetMapping("/import")
+    public String importSQL(){
+        return CoreConst.ADMIN_PREFIX + "backup/form";
+    }
 
     /**
      * 备份数据库
@@ -97,6 +109,18 @@ public class BackupController {
         } else {
             return ResultUtil.error("数据恢复失败");
         }
+    }
+
+    /**
+     * 下载
+     */
+    @PostMapping("/download")
+    public void download(String fileName, HttpServletResponse response) throws IOException {
+        String backupDir= StringUtils.appendIfMissing(cmsProperties.getBackupDir(), File.separator);
+        FileInputStream fis=new FileInputStream(backupDir+fileName);
+     //   String fileName= URLEncoder.encode("回采进度生产分析报告.docx", "UTF-8");
+        response.addHeader("Content-Disposition", "attachment;filename="+fileName+";"+"filename*=utf-8''"+fileName);
+        FileUtil.copy(fis, response.getOutputStream());
     }
 
 }

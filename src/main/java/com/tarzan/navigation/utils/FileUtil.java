@@ -5,11 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
+import org.springframework.util.StreamUtils;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Arrays;
@@ -313,5 +311,56 @@ public class FileUtil {
             return pathStream.count() == 0;
         }
     }
+    /**
+     * Copy the contents of the given InputStream to the given OutputStream.
+     * Closes both streams when done.
+     * @param in the stream to copy from
+     * @param out the stream to copy to
+     * @return the number of bytes copied
+     * @throws IOException in case of I/O errors
+     */
+    public static int copy(InputStream in, OutputStream out) throws IOException {
+        Assert.notNull(in, "No InputStream specified");
+        Assert.notNull(out, "No OutputStream specified");
+
+        try {
+            return StreamUtils.copy(in, out);
+        }
+        finally {
+            try {
+                in.close();
+            }
+            catch (IOException ex) {
+            }
+            try {
+                out.close();
+            }
+            catch (IOException ex) {
+            }
+        }
+    }
+    /**
+     * Copy the contents of the given byte array to the given OutputStream.
+     * Closes the stream when done.
+     * @param in the byte array to copy from
+     * @param out the OutputStream to copy to
+     * @throws IOException in case of I/O errors
+     */
+    public static void copy(byte[] in, OutputStream out) throws IOException {
+        Assert.notNull(in, "No input byte array specified");
+        Assert.notNull(out, "No OutputStream specified");
+
+        try {
+            out.write(in);
+        }
+        finally {
+            try {
+                out.close();
+            }
+            catch (IOException ex) {
+            }
+        }
+    }
+
 
 }
