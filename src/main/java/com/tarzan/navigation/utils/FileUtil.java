@@ -312,6 +312,31 @@ public class FileUtil {
         }
     }
     /**
+     * Copy the contents of the given input File to the given output File.
+     * @param in the file to copy from
+     * @param out the file to copy to
+     * @return the number of bytes copied
+     * @throws IOException in case of I/O errors
+     */
+    public static int copy(File in, File out) throws IOException {
+        Assert.notNull(in, "No input File specified");
+        Assert.notNull(out, "No output File specified");
+        return copy(Files.newInputStream(in.toPath()), Files.newOutputStream(out.toPath()));
+    }
+
+    /**
+     * Copy the contents of the given byte array to the given output File.
+     * @param in the byte array to copy from
+     * @param out the file to copy to
+     * @throws IOException in case of I/O errors
+     */
+    public static void copy(byte[] in, File out) throws IOException {
+        Assert.notNull(in, "No input byte array specified");
+        Assert.notNull(out, "No output File specified");
+        copy(new ByteArrayInputStream(in), Files.newOutputStream(out.toPath()));
+    }
+
+    /**
      * Copy the contents of the given InputStream to the given OutputStream.
      * Closes both streams when done.
      * @param in the stream to copy from

@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
@@ -41,9 +42,22 @@ public class BackupController {
     /**
      * 备份数据库
      */
-    @GetMapping("/import")
+    @GetMapping("/upload")
     public String importSQL(){
         return CoreConst.ADMIN_PREFIX + "backup/form";
+    }
+
+    @ResponseBody
+    @PostMapping("/upload")
+    public ResponseVo upload(@RequestParam(value = "file", required = false) MultipartFile multipartFile) {
+        String backupDir= StringUtils.appendIfMissing(cmsProperties.getBackupDir(), File.separator);
+        File file=new File(backupDir+multipartFile.getOriginalFilename());
+        try {
+            FileUtil.copy(multipartFile.getBytes(), file);
+        } catch (IOException e) {
+            return  ResultUtil.error();
+        }
+        return ResultUtil.success();
     }
 
     /**
