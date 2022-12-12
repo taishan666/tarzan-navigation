@@ -141,15 +141,6 @@ public class AdminRouterController {
     }
 
     /**
-     * 分类
-     */
-    @GetMapping("/categories/{id}")
-    public String categories(@PathVariable("id")Integer id,Model model) {
-        model.addAttribute("categoryId", id);
-        return CoreConst.ADMIN_PREFIX + "categoryLinK/list";
-    }
-
-    /**
      * 标签
      */
     @GetMapping("/tags")

@@ -2,14 +2,13 @@
     <div class="colxl-12 col-lg-12 col-md-12 col-sm-12 col-12">
         <div class="page-title-wrapper">
             <div class="page-title-box">
-                <h4 class="page-title bold">分类管理</h4>
-                <h5 class="page-title bold">友链管理</h5>
+                <h4 class="page-title bold" th:text="${categoryName}"></h4>
             </div>
             <div class="breadcrumb-list">
                 <ul>
                     <li class="breadcrumb-link"><a th:href="@{admin}"><i class="fas fa-home mr-2"></i>首页</a></li>
                     <li class="breadcrumb-link active">网站管理</li>
-                    <li class="breadcrumb-link active">友链管理</li>
+                    <li class="breadcrumb-link active">分类网站管理</li>
                 </ul>
             </div>
         </div>
@@ -43,44 +42,20 @@
     </div>
     <div class="card table-card card-body">
         <div id="toolbar" class="btn-group">
-                <button id="btn_add" type="button" class="btn btn-primary">
-                    <span class="fa fa-plus" aria-hidden="true"></span>新增
+                <button id="btn_batch_add" type="button" class="btn btn-primary">
+                    <span class="fa fa-plus" aria-hidden="true"></span>批量加入
                 </button>
-                <button id="btn_batch_delete" type="button" class="btn btn-danger">
-                    <span class="fa fa-trash" aria-hidden="true"></span>批量删除
-                </button>
+            <button id="btn_back" type="button" class="btn btn-warning">
+                <span class="fa fa-plus" aria-hidden="true"></span>返回
+            </button>
         </div>
         <table class="table-sm" id="table"></table>
     </div>
 </section>
 
-<!-- 表单模态框 -->
-<div class="modal fade" id="formModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="formTitle"></h5>
-                <button type="button" class="close" data-dismiss="modal">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div id="formContent"></div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary" id="saveOrUpdateBtn">保存
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script>
     var categoryId=[[${categoryId}]]
     $(function () {
-        var editFlag = "[[${@perms.hasPerm('link:edit')}]]";
-        var deleteFlag = "[[${@perms.hasPerm('link:delete')}]]";
         window.operateEvents = {
             // 点击编辑
             'click .btn_edit': function (e, value, row, index) {
@@ -148,18 +123,10 @@
                 }
             });
         };
-        //表格中开关控件
-        function typeSwitch(value, row, index){
-            if (value) {
-                return "<input value=" + row.id + " name='switch' type='checkbox' checked />";
-            } else {
-                return "<input value=" + row.id + " name='switch' type='checkbox' />";
-            }
-        }
 
         var options = {
             id: "#table",
-            url: '/categoryLink/list/'+categoryId,
+            url: '/categoryLink/addList/'+categoryId,
             columns: columns,
             toolbar: '#toolbar',
             showRefresh: true,
@@ -180,6 +147,11 @@
             };
         }
 
+        // 返回
+        $('#btn_back').on('click', function () {
+            window.location.href = (ctx + "admin#categories/"+categoryId).replace('//', '/');
+        })
+
         // 查询
         $('#searchForm').submit(function (event) {
             event.preventDefault();
@@ -187,94 +159,17 @@
             refreshTable();
         })
 
-        // 新增
-        $('#btn_add').on('click', function () {
-            Core.load("#formContent", "/categoryLink/add", function () {
-                $('#formTitle').text('新增')
-                $("#formModal").modal('show');
-            });
-        })
-        //只是在点击后初始化的时候生成
-        $("#formModal").on("shown.bs.modal", function () {
-            // 初始化Web Uploader
-            var uploader = WebUploader.create({
-                // 选完文件后，是否自动上传。
-                auto: true,
-                // swf文件路径
-                swf: '/admin1/img/Uploader.swf',
-                // 文件接收服务端。
-                server: '[[@{/attachment/upload}]]',
-                // 选择文件的按钮。可选。
-                // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-                pick: '#filePicker',
-                // 只允许选择图片文件。
-                accept: {
-                    title: 'Images',
-                    extensions: 'gif,jpg,jpeg,bmp,png',
-                    mimeTypes: 'image/*'
-                }
-            });
-            // 文件上传成功，给item添加成功class, 用样式标记上传成功。
-            var  $list=$('#fileList');
-            uploader.on( 'uploadSuccess', function( file,data ) {
-                var $li = $(
-                    '<li class="content-img-list-item"><img src="' + data.url + '" >' +
-                    '<div ><button class="btn-outline secondary-outline mt-2 mr-2 icon-sm"><i class="fas fa-trash-alt"></i></button></div></i>'
-                );
-                $list.append( $li );
-                $("#img").val(data.url);
-                $('.content-img .file').hide();
-            });
-            // 文件上传失败，显示上传出错。
-            uploader.on( 'uploadError', function( file ) {
-                console.log('上传失败');
-            });
-            // 鼠标经过显示删除按钮
-            $('.content-img-list').on('mouseover', '.content-img-list-item', function() {
-                $(this).children('div').removeClass('hide');
-            });
-            // 鼠标离开隐藏删除按钮
-            $('.content-img-list').on('mouseleave', '.content-img-list-item', function() {
-                 $(this).children('div').addClass('hide');
-            });
-            // 单个图片删除
-            $(".content-img-list").on("click", '.content-img-list-item button .fa-trash-alt', function() {
-                $(this).parent().parent().parent().remove();
-                $('.content-img .file').show();
-            });
-        })
-
-        // 编辑
-        function editRow(id) {
-            Core.load("#formContent", "/link/edit?id=" + id, function () {
-                $('#formTitle').text('编辑')
-                $("#formModal").modal('show');
-            });
-        }
-
-        // 删除
-        function deleteRow(id) {
-            Core.confirm("确定删除？", function () {
-                Core.postAjax("/link/delete", {"id": id}, function (data) {
-                    if (data.status === 200) {
-                        refreshTable();
-                    }
-                    layer.msg(data.msg);
-                })
-            })
-        }
-
-        // 批量删除
-        $("#btn_batch_delete").on('click', function () {
+        // 批量添加
+        $("#btn_batch_add").on('click', function () {
             var checkedRows = Core.selectMutiData("#table");
             if (checkedRows) {
-                Core.confirm("确定删除选中的" + checkedRows.length + "条记录？", function () {
+                Core.confirm("确定加入选中的" + checkedRows.length + "条记录？", function () {
                     var ids = [];
                     $.each(checkedRows, function (i, item) {
                         ids.push(item.id);
                     })
                     var jsonStr = JSON.stringify(ids);
-                    Core.postAjax("/link/batch/delete", jsonStr, function (data) {
+                    Core.postAjax("/categoryLink/add/"+categoryId, jsonStr, function (data) {
                         if (data.status === 200) {
                             refreshTable();
                         }
@@ -284,27 +179,6 @@
                     }, "POST", "application/json; charset=UTF-8")
                 })
             }
-        })
-
-        // 保存或更新
-        $('#saveOrUpdateBtn').on('click', function () {
-            var $f = $('#linkForm');
-            var valid = $f[0].checkValidity();
-            var url = $f.find("input[name='id']").val() ? "/link/edit" : "/link/add"
-            if (valid) {
-                Core.mask("#saveOrUpdateBtn");
-                Core.postAjax(url, $f.serialize(), function (data) {
-                    Core.unmask("#saveOrUpdateBtn");
-                    if (data.status === 200) {
-                        $("#formModal").modal("hide");
-                        refreshTable();
-                    }
-                    layer.msg(data.msg);
-                }, function () {
-                    Core.unmask("#saveOrUpdateBtn");
-                })
-            }
-            $f.addClass("was-validated")
         })
 
     });
