@@ -140,7 +140,7 @@
 
         // 导入
         $('#btn_import').on('click', function () {
-            Core.load("#formContent", "/backup/import", function () {
+            Core.load("#formContent", "/backup/upload", function () {
                 $('#formTitle').text('新增主题')
                 $("#formModal").modal('show');
             });
@@ -159,13 +159,13 @@
                 accept: {
                     title: 'sql',
                     extensions: 'sql',
-                    mimeTypes: ' application/sql'
+                    mimeTypes: ' multipart/form-data'
                 },
                 disableGlobalDnd: true
             });
             uploader.on('uploadSuccess', function (file, data) {
                 layer.msg('上传成功');
-                location.reload();
+                refreshTable();
             });
             uploader.on('uploadError', function (file) {
                 layer.msg('上传失败');
