@@ -6,5 +6,5 @@ import com.tarzan.navigation.modules.admin.model.biz.BizImage;
 /**
  * @author tarzan
  */
-public interface BizImageMapper extends BaseMapper<BizImage> {
+public interface ImageMapper extends BaseMapper<BizImage> {
 }

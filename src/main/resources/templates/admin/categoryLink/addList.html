@@ -7,8 +7,8 @@
             <div class="breadcrumb-list">
                 <ul>
                     <li class="breadcrumb-link"><a th:href="@{admin}"><i class="fas fa-home mr-2"></i>首页</a></li>
+                    <li class="breadcrumb-link active">分类管理</li>
                     <li class="breadcrumb-link active">网站管理</li>
-                    <li class="breadcrumb-link active">分类网站管理</li>
                 </ul>
             </div>
         </div>
@@ -27,14 +27,6 @@
                 <input type="text" class="form-control m-2" id="url" required="">
             </div>
             <div class="form-group">
-                <label for="status">状态:</label>
-                <select id="status" class="form-control m-2" required="">
-                    <option selected disabled>选择状态</option>
-                    <option value="1">启用</option>
-                    <option value="0">禁用</option>
-                </select>
-            </div>
-            <div class="form-group">
                 <button class="btn btn-primary ml-3" type="submit">查询</button>
                 <button class="btn btn-light ml-2" type="reset">重置</button>
             </div>
@@ -46,7 +38,7 @@
                     <span class="fa fa-plus" aria-hidden="true"></span>批量加入
                 </button>
             <button id="btn_back" type="button" class="btn btn-warning">
-                <span class="fa fa-plus" aria-hidden="true"></span>返回
+                <span class="fa fa-backward" aria-hidden="true"></span>返回
             </button>
         </div>
         <table class="table-sm" id="table"></table>
@@ -85,7 +77,7 @@
                 title: '站点描述',
                 align: "center",
             }, {
-                field: 'img',
+                field: 'img.base64',
                 title: '站长图片',
                 align: "center",
                 class: "link-pre",
@@ -126,7 +118,7 @@
 
         var options = {
             id: "#table",
-            url: '/categoryLink/addList/'+categoryId,
+            url: '/categoryLink/addPage/'+categoryId,
             columns: columns,
             toolbar: '#toolbar',
             showRefresh: true,
@@ -149,7 +141,7 @@
 
         // 返回
         $('#btn_back').on('click', function () {
-            window.location.href = (ctx + "admin#categories/"+categoryId).replace('//', '/');
+            window.location.href = (ctx + "#categoryLink/"+categoryId).replace('//', '/');
         })
 
         // 查询

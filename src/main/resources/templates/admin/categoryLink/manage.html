@@ -7,8 +7,8 @@
             <div class="breadcrumb-list">
                 <ul>
                     <li class="breadcrumb-link"><a th:href="@{admin}"><i class="fas fa-home mr-2"></i>首页</a></li>
+                    <li class="breadcrumb-link active">分类管理</li>
                     <li class="breadcrumb-link active">网站管理</li>
-                    <li class="breadcrumb-link active">分类网站管理</li>
                 </ul>
             </div>
         </div>
@@ -25,14 +25,6 @@
             <div class="form-group">
                 <label for="url">站点链接:</label>
                 <input type="text" class="form-control m-2" id="url" required="">
-            </div>
-            <div class="form-group">
-                <label for="status">状态:</label>
-                <select id="status" class="form-control m-2" required="">
-                    <option selected disabled>选择状态</option>
-                    <option value="1">启用</option>
-                    <option value="0">禁用</option>
-                </select>
             </div>
             <div class="form-group">
                 <button class="btn btn-primary ml-3" type="submit">查询</button>
@@ -73,19 +65,19 @@
         var columns = [
             {checkbox: true},
             {
-                field: 'name',
+                field: 'link.name',
                 title: '站点名称',
                 align: "center"
             }, {
-                field: 'url',
+                field: 'link.url',
                 title: '站点链接',
                 align: "center",
             }, {
-                field: 'description',
+                field: 'link.description',
                 title: '站点描述',
                 align: "center",
             }, {
-                field: 'img',
+                field: 'link.img',
                 title: '站长图片',
                 align: "center",
                 class: "link-pre",
@@ -94,11 +86,11 @@
                     return '<img src="' + value + '" style="width: 100px" class="btn_view" referrerPolicy="no-referrer" />'
                 }
             },{
-                field: 'email',
+                field: 'link.email',
                 title: '站长邮箱',
                 align : "center",
             },{
-                field: 'qq',
+                field: 'link.qq',
                 title: '站长QQ',
                 align : "center",
             }];
@@ -164,7 +156,7 @@
 
         // 新增
         $('#btn_add').on('click', function () {
-            window.location.href = (ctx + "admin#categoryLink/add/"+categoryId).replace('//', '/');
+            window.location.href = (ctx + "#categoryLink/addPage/"+categoryId).replace('//', '/');
         })
         //只是在点击后初始化的时候生成
         $("#formModal").on("shown.bs.modal", function () {
@@ -227,7 +219,7 @@
         // 删除
         function deleteRow(id) {
             Core.confirm("确定删除？", function () {
-                Core.postAjax("/link/delete", {"id": id}, function (data) {
+                Core.postAjax("/categoryLink/delete", {"id": id}, function (data) {
                     if (data.status === 200) {
                         refreshTable();
                     }
@@ -246,7 +238,7 @@
                         ids.push(item.id);
                     })
                     var jsonStr = JSON.stringify(ids);
-                    Core.postAjax("/categoryLink/batch/delete/"+categoryId, jsonStr, function (data) {
+                    Core.postAjax("/categoryLink/batch/delete", jsonStr, function (data) {
                         if (data.status === 200) {
                             refreshTable();
                         }

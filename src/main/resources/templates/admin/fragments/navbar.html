@@ -19,13 +19,13 @@
                         </div>
                         <ul>
                             <li th:each="comment,temp: ${comments}" th:if="${temp.index} lt 3">
-                                <a th:href="@{admin#comments}">
+                                <a th:href="@{#comments}">
                                 <h5><i class="far fa-envelope mr-2"></i>待审核评论</h5>
                                     <span th:utext="${comment?.content}"></span>
                                 </a>
                             </li>
                         </ul>
-                        <div class="drop-down-footer"><a th:href="@{admin#comments}" class="btn sm-btn">查看全部</a></div>
+                        <div class="drop-down-footer"><a th:href="@{#comments}" class="btn sm-btn">查看全部</a></div>
                     </div>
                 </div>
                 <div class="user-info-wrapper header-links"><a href="javascript:void(0);" class="user-info"><img th:src="${loginUser.img?:'assets/img/user.png'}" alt="" class="user-img">
@@ -37,8 +37,8 @@
                          <!--   <p th:text="${loginUser?.roleName}"></p>-->
                         </div>
                         <ul>
-                            <li><a th:href="@{'admin#system/userInfo'}"><i class="far fa-edit"></i>个人资料</a></li>
-                            <li><a th:href="@{'admin#system/password'}"><i class="fas fa-cog"></i>修改密码</a></li>
+                            <li><a th:href="@{'#system/userInfo'}"><i class="far fa-edit"></i>个人资料</a></li>
+                            <li><a th:href="@{'#system/password'}"><i class="fas fa-cog"></i>修改密码</a></li>
                             <li><a th:href="@{'/system/logout'}"><i class="fas fa-sign-out-alt"></i>退出登录 </a></li>
                         </ul>
                     </div>

@@ -2,8 +2,6 @@ package com.tarzan.navigation.modules.admin.controller.biz;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tarzan.navigation.common.constant.CoreConst;
-import com.tarzan.navigation.modules.admin.model.biz.BizImage;
-import com.tarzan.navigation.modules.admin.service.biz.ImageService;
 import com.tarzan.navigation.utils.DateUtil;
 import com.tarzan.navigation.utils.ResultUtil;
 import com.tarzan.navigation.modules.admin.model.biz.Link;
@@ -19,7 +17,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * 后台友情链接管理
@@ -34,7 +31,6 @@ import java.util.stream.Collectors;
 public class LinkController {
 
     private final LinkService linkService;
-    private final ImageService imageService;
 
     @PostMapping("list")
     @ResponseBody
@@ -43,13 +39,7 @@ public class LinkController {
         if(CollectionUtils.isEmpty(linkPage.getRecords())){
             return  ResultUtil.table(Collections.emptyList(), 0L);
         }
-        Set<Integer> imageIds=linkPage.getRecords().stream().map(Link::getImageId).collect(Collectors.toSet());
-        if(CollectionUtils.isEmpty(imageIds)){
-            return  ResultUtil.table(Collections.emptyList(), 0L);
-        }
-        List<BizImage> images= imageService.listByIds(imageIds);
-        Map<Integer,String> map=images.stream().collect(Collectors.toMap(BizImage::getId,BizImage::getBase64));
-        linkPage.getRecords().forEach(e->e.setImg(map.get(e.getImageId())));
+        linkService.wrapper(linkPage.getRecords());
         return ResultUtil.table(linkPage.getRecords(), linkPage.getTotal());
     }
 
@@ -79,10 +69,7 @@ public class LinkController {
     public String edit(Model model, Integer id) {
         Link link = linkService.getById(id);
         if(Objects.nonNull(link.getImageId())){
-            BizImage image=imageService.getById(link.getImageId());
-            if(image!=null){
-                link.setImg(image.getBase64());
-            }
+            linkService.wrapper(link);
         }
         model.addAttribute("link", link);
         return CoreConst.ADMIN_PREFIX + "link/form";

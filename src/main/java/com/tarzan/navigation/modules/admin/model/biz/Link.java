@@ -29,6 +29,6 @@ public class Link extends BaseVo {
     private String remark;
 
     @TableField(exist = false)
-    private String img;
+    private BizImage img;
 
 }
