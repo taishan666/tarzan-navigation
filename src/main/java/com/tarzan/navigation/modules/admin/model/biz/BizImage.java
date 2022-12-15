@@ -1,5 +1,7 @@
 package com.tarzan.navigation.modules.admin.model.biz;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.experimental.Accessors;
@@ -16,5 +18,6 @@ public class BizImage {
 
     private Integer id;
     private String base64;
-    private Date CreateTime;
+    @TableField(fill = FieldFill.INSERT)
+    private Date createTime;
 }

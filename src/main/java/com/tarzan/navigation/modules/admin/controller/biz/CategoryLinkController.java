@@ -11,7 +11,6 @@ import com.tarzan.navigation.modules.admin.service.biz.CategoryLinkService;
 import com.tarzan.navigation.modules.admin.service.biz.LinkService;
 import com.tarzan.navigation.modules.admin.vo.base.PageResultVo;
 import com.tarzan.navigation.modules.admin.vo.base.ResponseVo;
-import com.tarzan.navigation.utils.DateUtil;
 import com.tarzan.navigation.utils.ResultUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -81,13 +80,11 @@ public class CategoryLinkController {
     @ResponseBody
     public ResponseVo add(@PathVariable("categoryId") Integer categoryId, @RequestBody List<Integer> linkIds) {
         List<CategoryLink> list=new ArrayList<>(10);
-        Date date= DateUtil.now();
         if(CollectionUtils.isNotEmpty(linkIds)){
             linkIds.forEach(linkId->{
                 CategoryLink entity=new CategoryLink();
                 entity.setCategoryId(categoryId);
                 entity.setLinkId(linkId);
-                entity.setCreateTime(date);
                 list.add(entity);
             });
             categoryLinkService.saveBatch(list);

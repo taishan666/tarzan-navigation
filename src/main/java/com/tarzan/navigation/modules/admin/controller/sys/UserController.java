@@ -67,10 +67,6 @@ public class UserController {
             }
         }
         userForm.setStatus(CoreConst.STATUS_VALID);
-        Date date = new Date();
-        userForm.setCreateTime(date);
-        userForm.setUpdateTime(date);
-        userForm.setLastLoginTime(date);
         PasswordHelper.encryptPassword(userForm);
         boolean flag = userService.save(userForm);
         if (flag) {

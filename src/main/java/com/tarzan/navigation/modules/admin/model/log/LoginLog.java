@@ -1,5 +1,7 @@
 package com.tarzan.navigation.modules.admin.model.log;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.tarzan.navigation.utils.DateUtil;
 import lombok.Data;
@@ -67,6 +69,7 @@ public class LoginLog implements Serializable {
      * 创建时间
      */
     @DateTimeFormat(pattern = DateUtil.datetimeFormat)
+    @TableField(fill = FieldFill.INSERT)
     private Date createTime;
 
 }

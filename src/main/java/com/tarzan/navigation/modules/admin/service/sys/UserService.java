@@ -67,7 +67,6 @@ public class UserService extends ServiceImpl<UserMapper, User> {
 
     public boolean updateByUserId(User user) {
         Assert.notNull(user, "param: user is null");
-        user.setUpdateTime(new Date());
         //获取当前登录用户信息
         Subject subject = SecurityUtils.getSubject();
         PrincipalCollection principalCollection = subject.getPrincipals();
@@ -80,8 +79,7 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     }
 
     public boolean updateStatusBatch(List<Integer> userIds, Integer status) {
-        return update(Wrappers.<User>lambdaUpdate().in(User::getId, userIds)
-                .set(User::getStatus, status).set(User::getUpdateTime, new Date()));
+        return this.lambdaUpdate().in(User::getId, userIds).set(User::getStatus, status).update();
     }
 
 

@@ -39,7 +39,6 @@ public class ImageController {
             os.close();
             BizImage image=new BizImage();
             image.setBase64(base64);
-            image.setCreateTime(DateUtil.now());
             boolean flag=imageService.save(image);
             if(flag){
                 return ImageResponse.success(image.getId(), suffix, base64, file.getSize());

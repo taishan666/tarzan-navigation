@@ -74,10 +74,7 @@ public class MenuService extends ServiceImpl<MenuMapper, Menu> {
 
 
     public boolean insert(Menu menu) {
-        Date date = new Date();
         menu.setStatus(CoreConst.STATUS_VALID);
-        menu.setCreateTime(date);
-        menu.setUpdateTime(date);
         return save(menu);
     }
 

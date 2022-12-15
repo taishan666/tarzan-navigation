@@ -90,10 +90,6 @@ public class SystemController {
         }
         registerUser.setNickname(CoreConst.ADMIN_NAME);
         registerUser.setStatus(CoreConst.STATUS_VALID);
-        Date date = new Date();
-        registerUser.setCreateTime(date);
-        registerUser.setUpdateTime(date);
-        registerUser.setLastLoginTime(date);
         PasswordHelper.encryptPassword(registerUser);
         CoreConst.IS_REGISTERED.set(true);
         //注册
@@ -188,7 +184,6 @@ public class SystemController {
     public void saveLoginLog(String userType,User userInfo) {
         Date now = new Date();
         LoginLog loginLog = new LoginLog();
-        loginLog.setCreateTime(now);
         loginLog.setStartTime(now);
         loginLog.setSourceIp(IpUtil.getIpAddr(WebUtil.getRequest()));
         if (userType.equals(UserEnum.WEB.getName())) {

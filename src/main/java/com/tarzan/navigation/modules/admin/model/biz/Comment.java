@@ -41,8 +41,7 @@ public class Comment extends BaseVo {
     private String browserShortName;
     private String content;
     private String remark;
-    //private Integer support;
-  //  private String oppose;
+
     @TableField(exist = false)
     private Long loveCount;
     @TableField(exist = false)
