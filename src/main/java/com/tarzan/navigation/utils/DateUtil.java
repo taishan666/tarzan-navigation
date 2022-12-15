@@ -55,7 +55,7 @@ public class DateUtil {
     }
 
     public static String format(String dateStr, String oldFormat, String newFormat) throws ParseException {
-        String result = null;
+        String result;
         DateFormat oldDateFormat = new SimpleDateFormat(oldFormat);
         DateFormat newDateFormat = new SimpleDateFormat(newFormat);
         Date date = oldDateFormat.parse(dateStr);
@@ -819,7 +819,7 @@ public class DateUtil {
         return a.get(Calendar.DATE);
     }
 
-    public static final String parseDateToStr(final String format, final Date date)
+    public static String parseDateToStr(final String format, final Date date)
     {
         return new SimpleDateFormat(format).format(date);
     }

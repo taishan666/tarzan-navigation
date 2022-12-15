@@ -61,7 +61,7 @@ public class JsonUtil {
 
             while(var4.hasNext()) {
                 Entry<String, Map<String, Object>> entry = (Entry)var4.next();
-                result.put(entry.getKey(), toPojo((Map)entry.getValue(), valueTypeRef));
+                result.put(entry.getKey(), toPojo(entry.getValue(), valueTypeRef));
             }
 
             return result;

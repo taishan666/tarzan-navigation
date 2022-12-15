@@ -19,7 +19,7 @@ import java.net.UnknownHostException;
 public class IpUtil {
 
     public static String getIpAddr(HttpServletRequest request) {
-        String ip = null;
+        String ip = request.getRemoteAddr();
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("X-Real-IP");
         }
@@ -37,10 +37,6 @@ public class IpUtil {
         }
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("HTTP_X_FORWARDED_FOR");
-        }
-
-        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
-            ip = request.getRemoteAddr();
         }
         // 对于通过多个代理的情况，第一个IP为客户端真实IP,多个IP按照','分割
         if (ip != null && ip.length() > 15) {

@@ -18,9 +18,6 @@ public class CmsWebController {
 
     /**
      * 首页
-     *
-     * @param model
-     * @return
      */
     @GetMapping({"/"})
     public String home() {

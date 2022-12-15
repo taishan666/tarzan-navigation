@@ -132,7 +132,6 @@ public class BackupController {
     public void download(String fileName, HttpServletResponse response) throws IOException {
         String backupDir= StringUtils.appendIfMissing(cmsProperties.getBackupDir(), File.separator);
         FileInputStream fis=new FileInputStream(backupDir+fileName);
-     //   String fileName= URLEncoder.encode("回采进度生产分析报告.docx", "UTF-8");
         response.addHeader("Content-Disposition", "attachment;filename="+fileName+";"+"filename*=utf-8''"+fileName);
         FileUtil.copy(fis, response.getOutputStream());
     }

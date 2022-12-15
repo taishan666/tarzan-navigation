@@ -40,7 +40,7 @@ public class MD5Util {
     public static String hex(byte[] array) {
         StringBuilder sb = new StringBuilder();
         for (byte b : array) {
-            sb.append(Integer.toHexString(b & 0xFF | 0x100).substring(1, 3));
+            sb.append(Integer.toHexString(b & 0xFF | 0x100), 1, 3);
         }
         return sb.toString();
     }

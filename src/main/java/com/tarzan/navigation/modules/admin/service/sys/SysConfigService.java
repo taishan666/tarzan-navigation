@@ -22,12 +22,6 @@ import java.util.Map;
 @AllArgsConstructor
 public class SysConfigService extends ServiceImpl<SysConfigMapper, SysConfig> {
 
-
- /*   @PostConstruct
-    public void init() {
-        CoreConst.SITE_STATIC.set("on".equalsIgnoreCase(selectAll().getOrDefault(SITE_STATIC_KEY, "false")));
-    }*/
-
     @Cacheable(value = "site", key = "'config'")
     public Map<String, String> selectAll() {
         List<SysConfig> sysConfigs =list();

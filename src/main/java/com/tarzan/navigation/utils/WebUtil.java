@@ -1,6 +1,5 @@
 package com.tarzan.navigation.utils;
 
-import org.apache.commons.codec.Charsets;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,7 +53,7 @@ public class WebUtil extends WebUtils {
     }
 
     public static void removeCookie(HttpServletResponse response, String key) {
-        setCookie(response, key, (String)null, 0);
+        setCookie(response, key, null, 0);
     }
 
     public static void setCookie(HttpServletResponse response, String name, @Nullable String value, int maxAgeInSeconds) {
@@ -142,17 +141,17 @@ public class WebUtil extends WebUtils {
 
     public static String getHeader(String name) {
         HttpServletRequest request = getRequest();
-        return ((HttpServletRequest)Objects.requireNonNull(request)).getHeader(name);
+        return Objects.requireNonNull(request).getHeader(name);
     }
 
     public static Enumeration<String> getHeaders(String name) {
         HttpServletRequest request = getRequest();
-        return ((HttpServletRequest)Objects.requireNonNull(request)).getHeaders(name);
+        return Objects.requireNonNull(request).getHeaders(name);
     }
 
     public static Enumeration<String> getHeaderNames() {
         HttpServletRequest request = getRequest();
-        return ((HttpServletRequest)Objects.requireNonNull(request)).getHeaderNames();
+        return Objects.requireNonNull(request).getHeaderNames();
     }
 
     public static String getParameter(String name) {
@@ -199,7 +198,7 @@ public class WebUtil extends WebUtils {
         try {
             String queryString = request.getQueryString();
             if (StringUtils.isNotBlank(queryString)) {
-                return (new String(queryString.getBytes(Charsets.ISO_8859_1), Charsets.UTF_8)).replaceAll("&amp;", "&").replaceAll("%22", "\"");
+                return (new String(queryString.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8)).replaceAll("&amp;", "&").replaceAll("%22", "\"");
             } else {
                 String charEncoding = request.getCharacterEncoding();
                 if (charEncoding == null) {
@@ -215,7 +214,7 @@ public class WebUtil extends WebUtils {
                     while(parameterNames.hasMoreElements()) {
                         String key = (String)parameterNames.nextElement();
                         String value = request.getParameter(key);
-                        StringUtil.appendBuilder(sb, new CharSequence[]{key, "=", value, "&"});
+                        StringUtil.appendBuilder(sb, key, "=", value, "&");
                     }
 
                     str = StringUtil.removeSuffix(sb.toString(), "&");

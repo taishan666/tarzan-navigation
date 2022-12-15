@@ -44,20 +44,23 @@ public class PushArticleUtil {
         } catch (IOException e) {
             log.error("【推送百度】建立URL之间的连接失败:{}", e.getMessage(), e);
         }
-        try (PrintWriter out = new PrintWriter(conn.getOutputStream())) {
-            //发送请求参数
-            StringBuilder param = new StringBuilder();
-            for (String s : parameters) {
-                param.append(s).append('\n');
-            }
-            out.print(param.toString().trim());
-            //进行输出流的缓冲
-            out.flush();
-            //通过BufferedReader输入流来读取Url的响应
-            BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String line;
-            while ((line = in.readLine()) != null) {
-                result.append(line);
+        try {
+            assert conn != null;
+            try (PrintWriter out = new PrintWriter(conn.getOutputStream())) {
+                //发送请求参数
+                StringBuilder param = new StringBuilder();
+                for (String s : parameters) {
+                    param.append(s).append('\n');
+                }
+                out.print(param.toString().trim());
+                //进行输出流的缓冲
+                out.flush();
+                //通过BufferedReader输入流来读取Url的响应
+                BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                String line;
+                while ((line = in.readLine()) != null) {
+                    result.append(line);
+                }
             }
         } catch (IOException e) {
             log.error("推送百度出现异常:{}", e.getMessage(), e);

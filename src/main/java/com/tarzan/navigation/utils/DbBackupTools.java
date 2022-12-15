@@ -33,7 +33,7 @@ public class DbBackupTools {
     @Resource
     private CmsProperties cmsProperties;
     //备份文件前缀
-    private  final static String filePrefix="backupSql_";
+    private  final static String FILE_PREFIX="backupSql_";
     //当前系统最佳线程数
     private final static int curSystemThreads= Runtime.getRuntime().availableProcessors();
     //时间格式
@@ -58,9 +58,11 @@ public class DbBackupTools {
         return tableNames;
     }
 
-    //数据还原
+    /**
+     * 数据还原:
+     */
     public synchronized  boolean rollback(String fileName) {
-        Long stat=System.currentTimeMillis();
+        long stat=System.currentTimeMillis();
         List<String> list=new ArrayList<>();
         //清空所有表数据
         tableNames().forEach(t->{
@@ -111,7 +113,9 @@ public class DbBackupTools {
         return true;
     }
 
-    //异步多线程处理
+    /**
+     * 异步多线程处理:
+     */
     private void executeAsync(List<String> sqlList) {
         int pages=0;
         int pageNum=1000;
@@ -132,13 +136,15 @@ public class DbBackupTools {
         }
     }
 
-    //数据备份
+    /**
+     * 数据备份
+     */
     public synchronized boolean backSql() {
-        Long stat=System.currentTimeMillis();
+        long stat=System.currentTimeMillis();
         try {
             File dir = new File(cmsProperties.getBackupDir());
             dir.mkdirs();
-            String path = dir.getPath() + "/"+ filePrefix+System.currentTimeMillis()+".sql" ;
+            String path = dir.getPath() + "/"+ FILE_PREFIX+System.currentTimeMillis()+".sql" ;
             File file = new File(path);
             if (!file.exists()){
                 file.createNewFile();
@@ -147,7 +153,7 @@ public class DbBackupTools {
                StringBuilder sb=new StringBuilder();
                 List<Map<String, Object>> list=jdbcTemplate.queryForList("select * from "+t);
                 list.forEach(e->{
-                    sb.append("INSERT INTO "+t+ " VALUES (");
+                    sb.append("INSERT INTO ").append(t).append(" VALUES (");
                     e.forEach((k,v)->{
                         if(v instanceof String){
                             if (((String) v).contains("\n")) {
@@ -156,11 +162,11 @@ public class DbBackupTools {
                             if (((String) v).contains("\r")) {
                                 v = ((String) v).replaceAll("\r", "\\\\r");
                             }
-                            sb.append("'" + v + "'" + ",");
+                            sb.append("'").append(v).append("'").append(",");
                         }else if(v instanceof Date){
-                            sb.append("'"+format.format(v)+"'"+",");
+                            sb.append("'").append(format.format(v)).append("'").append(",");
                         }else{
-                            sb.append(v+",");
+                            sb.append(v).append(",");
                         }
                     });
                     sb.append("); \n");
@@ -168,7 +174,7 @@ public class DbBackupTools {
                 String sql= sb.toString().replace(",);",");");
                 try{
                 FileOutputStream out = new FileOutputStream(file, true); //如果追加方式用true
-                out.write(sql.getBytes("utf-8"));//注意需要转换对应的字符集
+                out.write(sql.getBytes(StandardCharsets.UTF_8));//注意需要转换对应的字符集
                 out.close();
                 } catch (Exception e) {
                     e.printStackTrace();

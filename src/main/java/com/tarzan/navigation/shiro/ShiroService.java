@@ -77,6 +77,7 @@ public class ShiroService {
             } catch (Exception e) {
                 throw new RuntimeException("get ShiroFilter from shiroFilterFactoryBean error!");
             }
+            assert shiroFilter != null;
             PathMatchingFilterChainResolver filterChainResolver = (PathMatchingFilterChainResolver) shiroFilter
                     .getFilterChainResolver();
             DefaultFilterChainManager manager = (DefaultFilterChainManager) filterChainResolver

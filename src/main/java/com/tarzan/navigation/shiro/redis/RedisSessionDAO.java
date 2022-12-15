@@ -39,7 +39,7 @@ public class RedisSessionDAO extends AbstractSessionDAO {
     /**
      * Please make sure expire is longer than sesion.getTimeout()
      */
-    private int expire = DEFAULT_EXPIRE;
+    private long expire = DEFAULT_EXPIRE;
 
     private static final int MILLISECONDS_IN_A_SECOND = 1000;
 
@@ -99,7 +99,7 @@ public class RedisSessionDAO extends AbstractSessionDAO {
         Set<String> keys = redisManager.keys(this.keyPrefix + "*");
         if (keys != null && keys.size() > 0) {
             for (String key:keys) {
-                Session s = (Session) redisManager.get(key);
+                Session s = redisManager.get(key);
                 sessions.add(s);
             }
         }
@@ -132,8 +132,7 @@ public class RedisSessionDAO extends AbstractSessionDAO {
             }
         }
 
-        Session session = null;
-        session = (Session) redisManager.get(getRedisSessionKey(sessionId));
+        Session session = redisManager.get(getRedisSessionKey(sessionId));
         if (this.sessionInMemoryEnabled) {
             setSessionToThreadLocal(sessionId, session);
         }
@@ -187,8 +186,6 @@ public class RedisSessionDAO extends AbstractSessionDAO {
             sessionMap.remove(sessionId);
             return null;
         }
-
-        //logger.debug("read session from memory");
         return sessionInMemory.getSession();
     }
 
@@ -218,7 +215,7 @@ public class RedisSessionDAO extends AbstractSessionDAO {
         this.sessionInMemoryTimeout = sessionInMemoryTimeout;
     }
 
-    public int getExpire() {
+    public long getExpire() {
         return expire;
     }
 

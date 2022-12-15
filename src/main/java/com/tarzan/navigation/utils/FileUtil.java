@@ -12,6 +12,7 @@ import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.zip.ZipEntry;
@@ -69,7 +70,7 @@ public class FileUtil {
 
     private static void delete(File file) {
         if(file.isDirectory()){
-            Arrays.asList(file.listFiles()).forEach(e->{
+            Arrays.asList(Objects.requireNonNull(file.listFiles())).forEach(e->{
                 delete(e);
             });
         }
@@ -308,7 +309,7 @@ public class FileUtil {
         }
 
         try (Stream<Path> pathStream = Files.list(path)) {
-            return pathStream.count() == 0;
+            return !pathStream.findAny().isPresent();
         }
     }
     /**

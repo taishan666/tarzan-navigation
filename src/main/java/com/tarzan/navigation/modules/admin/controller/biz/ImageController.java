@@ -3,14 +3,14 @@ package com.tarzan.navigation.modules.admin.controller.biz;
 import com.tarzan.navigation.modules.admin.model.biz.BizImage;
 import com.tarzan.navigation.modules.admin.service.biz.ImageService;
 import com.tarzan.navigation.modules.admin.vo.ImageResponse;
-import com.tarzan.navigation.utils.DateUtil;
 import lombok.AllArgsConstructor;
 import net.coobird.thumbnailator.Thumbnails;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,8 +29,9 @@ public class ImageController {
     @PostMapping("/upload")
     public ImageResponse upload(@RequestParam(value = "file", required = false) MultipartFile file)  {
         String originalFilename = file.getOriginalFilename();
+        assert originalFilename != null;
         String suffix = originalFilename.substring(originalFilename.lastIndexOf('.')+1).toLowerCase();
-        String base64= null;
+        String base64;
         try {
             InputStream is=file.getInputStream();
             ByteArrayOutputStream os=new  ByteArrayOutputStream();

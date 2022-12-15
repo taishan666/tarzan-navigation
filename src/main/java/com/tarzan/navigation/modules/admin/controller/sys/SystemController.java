@@ -231,6 +231,7 @@ public class SystemController {
                 SpringUtil.publishEvent(new LoginLogEvent(loginLog));
             }
         }
+        assert subject != null;
         subject.logout();
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName(CoreConst.ADMIN_PREFIX+"/system/login");
