@@ -7,7 +7,6 @@ import org.springframework.lang.Nullable;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -40,7 +39,7 @@ public class JsonUtil {
 
 
     public static boolean canSerialize(@Nullable Object value) {
-        return value == null ? true : getInstance().canSerialize(value.getClass());
+        return value == null || getInstance().canSerialize(value.getClass());
     }
 
     public static Map<String, Object> toMap(String content) {
@@ -54,13 +53,11 @@ public class JsonUtil {
 
     public static <T> Map<String, T> toMap(String content, Class<T> valueTypeRef) {
         try {
-            Map<String, Map<String, Object>> map = (Map)getInstance().readValue(content, new TypeReference<Map<String, T>>() {
-            });
+            Map<String, Map<String, Object>> map = (Map)getInstance().readValue(content, new TypeReference<Map<String, T>>() {});
             Map<String, T> result = new HashMap(16);
-            Iterator var4 = map.entrySet().iterator();
 
-            while(var4.hasNext()) {
-                Entry<String, Map<String, Object>> entry = (Entry)var4.next();
+            for (Entry<String, Map<String, Object>> stringMapEntry : map.entrySet()) {
+                Entry<String, Map<String, Object>> entry = (Entry) stringMapEntry;
                 result.put(entry.getKey(), toPojo(entry.getValue(), valueTypeRef));
             }
 

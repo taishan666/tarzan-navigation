@@ -32,6 +32,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * 后台首页、登录等接口
@@ -185,7 +186,7 @@ public class SystemController {
         Date now = new Date();
         LoginLog loginLog = new LoginLog();
         loginLog.setStartTime(now);
-        loginLog.setSourceIp(IpUtil.getIpAddr(WebUtil.getRequest()));
+        loginLog.setSourceIp(IpUtil.getIpAddr(Objects.requireNonNull(WebUtil.getRequest())));
         if (userType.equals(UserEnum.WEB.getName())) {
             loginLog.setSource("PC登录");
         } else if (userType.equals(UserEnum.APP.getName())) {

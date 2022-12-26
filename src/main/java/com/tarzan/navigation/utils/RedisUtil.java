@@ -34,7 +34,7 @@ public class RedisUtil {
         return Objects.isNull(o) ? null : (T) o;
     }
 
-    public boolean expire(String key, long expire) {
+    public Boolean expire(String key, long expire) {
         return redisTemplate.expire(key, expire, TimeUnit.SECONDS);
     }
 
@@ -71,11 +71,11 @@ public class RedisUtil {
         return null;
     }
 
-    public boolean hasKey(String key) {
+    public Boolean hasKey(String key) {
         return redisTemplate.hasKey(key);
     }
 
-    public long getExpire(String key) {
+    public Long getExpire(String key) {
         return redisTemplate.getExpire(key);
     }
 

@@ -83,23 +83,23 @@ public class BeanUtil {
         Map<String, T> map = new HashMap<>();
         // 获取f对象对应类中的所有属性域
         Field[] fields = requestParameters.getClass().getDeclaredFields();
-        for (int i = 0, len = fields.length; i < len; i++) {
-            String varName = fields[i].getName();
+        for (Field field : fields) {
+            String varName = field.getName();
             // 获取原来的访问控制权限
-            boolean accessFlag = fields[i].isAccessible();
+            boolean accessFlag = field.isAccessible();
             // 修改访问控制权限
-            fields[i].setAccessible(true);
+            field.setAccessible(true);
             // 获取在对象f中属性fields[i]对应的对象中的变量
             Object o = null;
             try {
-                o = fields[i].get(requestParameters);
+                o = field.get(requestParameters);
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
             }
             if (o != null && StringUtils.isNotBlank(o.toString().trim())) {
                 map.put(varName, (T) o);
                 // 恢复访问控制权限
-                fields[i].setAccessible(accessFlag);
+                field.setAccessible(accessFlag);
             }
         }
         return map;

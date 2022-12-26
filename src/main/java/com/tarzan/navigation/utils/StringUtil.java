@@ -2,14 +2,16 @@ package com.tarzan.navigation.utils;
 
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * @author tarzan
+ */
 public class StringUtil extends StringUtils {
 
     public static StringBuilder appendBuilder(StringBuilder sb, CharSequence... strs) {
-        CharSequence[] var2 = strs;
         int var3 = strs.length;
 
         for(int var4 = 0; var4 < var3; ++var4) {
-            CharSequence str = var2[var4];
+            CharSequence str = strs[var4];
             sb.append(str);
         }
 

@@ -30,6 +30,7 @@ public class PreviewAspect {
     public Object aroundApi(ProceedingJoinPoint point) throws Throwable {
         //　获取request
         HttpServletRequest request = WebUtil.getRequest();
+        assert request != null;
         String path=request.getServletPath();
         if (StringUtils.equalsIgnoreCase(request.getMethod(), HttpMethod.POST.name())&&(path.contains("/delete")|| path.contains("/edit"))&& cmsProperties.getPreviewEnabled()) {
             return ResultUtil.error("演示环境不能操作！");

@@ -48,6 +48,7 @@ public class CategoryLinkController {
         if(CollectionUtils.isNotEmpty(categoryLinkPage.getRecords())){
             Set<Integer> linkIds=categoryLinkPage.getRecords().stream().map(CategoryLink::getLinkId).collect(Collectors.toSet());
             List<Link> links=linkService.lambdaQuery().in(Link::getId,linkIds).list();
+            linkService.wrapper(links);
             Map<Integer,Link> map=links.stream().collect(Collectors.toMap(Link::getId,e->e));
             categoryLinkPage.getRecords().forEach(e->e.setLink(map.get(e.getLinkId())));
             return ResultUtil.table(categoryLinkPage.getRecords(), categoryLinkPage.getTotal());

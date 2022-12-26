@@ -84,7 +84,6 @@ public class WebUtil extends WebUtils {
             try {
                 out.append(JsonUtil.toJson(result));
             } catch (Throwable var14) {
-                var4 = var14;
                 throw var14;
             } finally {
                 if (out != null) {
@@ -117,10 +116,8 @@ public class WebUtil extends WebUtils {
         } else {
             String ip = null;
             String[] var2 = IP_HEADER_NAMES;
-            int var3 = var2.length;
 
-            for(int var4 = 0; var4 < var3; ++var4) {
-                String ipHeader = var2[var4];
+            for (String ipHeader : var2) {
                 ip = request.getHeader(ipHeader);
                 if (!IP_PREDICATE.test(ip)) {
                     break;
@@ -209,7 +206,7 @@ public class WebUtil extends WebUtils {
                 String str = (new String(buffer, charEncoding)).trim();
                 if (org.apache.commons.lang3.StringUtils.isBlank(str)) {
                     StringBuilder sb = new StringBuilder();
-                    Enumeration parameterNames = request.getParameterNames();
+                    Enumeration<?> parameterNames = request.getParameterNames();
 
                     while(parameterNames.hasMoreElements()) {
                         String key = (String)parameterNames.nextElement();

@@ -1,7 +1,10 @@
 package com.tarzan.navigation.modules.front;
 
+import com.tarzan.navigation.common.constant.CoreConst;
+import com.tarzan.navigation.modules.admin.service.biz.CategoryService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 /**
@@ -15,13 +18,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 @AllArgsConstructor
 public class CmsWebController {
 
-
+    private final CategoryService categoryService;
     /**
      * 首页
      */
-    @GetMapping({"/"})
-    public String home() {
-        return "forward:/index.html";
+    @GetMapping({"/","index","home"})
+    public String home(Model model) {
+        model.addAttribute("categories",categoryService.treeList());
+        return  CoreConst.WEB_PREFIX+"/index";
+    }
+
+    @GetMapping({"/about"})
+    public String about() {
+        return  CoreConst.WEB_PREFIX+"/about";
     }
 
 

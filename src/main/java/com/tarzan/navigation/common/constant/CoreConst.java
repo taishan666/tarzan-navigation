@@ -35,6 +35,8 @@ public class CoreConst {
 
     public static final String ADMIN_PREFIX = "admin/";
 
+    public static final String WEB_PREFIX = "web/";
+
     public static final String ERROR_PREFIX = "error/";
 
     public static final String THEME_PREFIX = "theme/";

@@ -57,7 +57,7 @@ public class FileUtil {
      *
      * @param deletingPath deleting path must not be null
      */
-    public static void deleteFolder(@NonNull Path deletingPath) throws IOException {
+    public static void deleteFolder(@NonNull Path deletingPath) {
         Assert.notNull(deletingPath, "Deleting path must not be null");
 
         if (Files.notExists(deletingPath)) {
@@ -70,9 +70,7 @@ public class FileUtil {
 
     private static void delete(File file) {
         if(file.isDirectory()){
-            Arrays.asList(Objects.requireNonNull(file.listFiles())).forEach(e->{
-                delete(e);
-            });
+            Arrays.asList(Objects.requireNonNull(file.listFiles())).forEach(FileUtil::delete);
         }
         file.delete();
     }

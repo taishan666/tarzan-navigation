@@ -151,8 +151,7 @@ public class ShiroConfig {
      * @return
      */
     public RedisManager redisManager() {
-        RedisManager redisManager = new RedisManager(sessionRedisTemplate);
-        return redisManager;
+        return new RedisManager(sessionRedisTemplate);
     }
 
     /**

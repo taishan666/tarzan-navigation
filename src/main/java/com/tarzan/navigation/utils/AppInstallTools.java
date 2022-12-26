@@ -105,9 +105,8 @@ public class AppInstallTools {
      * 获取用户数
      */
     private  int userNum() {
-        int users =  this.jdbcTemplate.queryForObject("SELECT count(*) AS num FROM sys_user",
+        return this.jdbcTemplate.queryForObject("SELECT count(*) AS num FROM sys_user",
                     (rs, rowNum) -> rs.getInt("num"));
-          return users;
     }
 
 

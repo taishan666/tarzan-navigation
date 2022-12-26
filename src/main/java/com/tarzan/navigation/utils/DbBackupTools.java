@@ -42,7 +42,7 @@ public class DbBackupTools {
 
     //获取所有表名称
     private  List<String> tableNames() {
-        List<String> tableNames= new ArrayList<String>();
+        List<String> tableNames= new ArrayList<>();
       /*  try {
             Connection getConnection=jdbcTemplate.getDataSource().getConnection();
             DatabaseMetaData metaData = getConnection.getMetaData();
@@ -65,9 +65,7 @@ public class DbBackupTools {
         long stat=System.currentTimeMillis();
         List<String> list=new ArrayList<>();
         //清空所有表数据
-        tableNames().forEach(t->{
-            list.add("TRUNCATE "+t+";");
-        });
+        tableNames().forEach(t-> list.add("TRUNCATE "+t+";"));
         jdbcTemplate.batchUpdate(list.toArray(new String[list.size()]));
         list.clear();
         FileInputStream out=null;

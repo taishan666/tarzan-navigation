@@ -25,10 +25,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 自定义shiro realm，进行鉴权和认证
@@ -83,7 +80,7 @@ public class MyShiroRealm extends AuthorizingRealm {
             // 帐号锁定
             throw new LockedAccountException();
         }
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
         // 把ip放入user存入redis缓存里
         user.setLoginIpAddress(IpUtil.getIpAddr(request));
         return new SimpleAuthenticationInfo(
