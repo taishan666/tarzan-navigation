@@ -188,5 +188,13 @@
     <orderEntry type="library" name="Maven: net.java.dev.jna:jna:5.12.1" level="project" />
     <orderEntry type="library" name="Maven: net.java.dev.jna:jna-platform:5.12.1" level="project" />
     <orderEntry type="library" name="Maven: net.coobird:thumbnailator:0.4.14" level="project" />
+    <orderEntry type="library" name="Maven: de.codecentric:spring-boot-admin-starter-client:2.3.1" level="project" />
+    <orderEntry type="library" name="Maven: de.codecentric:spring-boot-admin-client:2.3.1" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-starter-actuator:2.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-actuator-autoconfigure:2.4.0" level="project" />
+    <orderEntry type="library" name="Maven: org.springframework.boot:spring-boot-actuator:2.4.0" level="project" />
+    <orderEntry type="library" name="Maven: io.micrometer:micrometer-core:1.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.hdrhistogram:HdrHistogram:2.1.12" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Maven: org.latencyutils:LatencyUtils:2.0.3" level="project" />
   </component>
 </module>

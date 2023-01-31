@@ -20,6 +20,14 @@ server:
     encoding:
       charset: UTF-8
 spring:
+  application:
+    name: tarzan-navigation
+  boot:
+    admin:
+      client:
+        url: http://127.0.0.1:8013
+        instance:
+          prefer-ip: true # 使用ip注册进来
   profiles:
     active: dev
   datasource:
@@ -71,3 +79,12 @@ mybatis-plus:
   mapper-locations: classpath:mapper/**/*.xml,mapper/*.xml
   type-aliases-package: com.tarzan.**.model
 
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+    enabled-by-default: true

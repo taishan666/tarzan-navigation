@@ -88,13 +88,15 @@ public class UserService extends ServiceImpl<UserMapper, User> {
         //读取缓存,找到并从队列中移除
         Cache<String, Deque<Serializable>> cache = redisCacheManager.getCache(CoreConst.SHIRO_REDIS_CACHE_NAME);
         Deque<Serializable> deques = cache.get(username);
-        for (Serializable deque : deques) {
-            if (sessionId.equals(deque)) {
-                deques.remove(deque);
-                break;
+        if(deques!=null){
+            for (Serializable deque : deques) {
+                if (sessionId.equals(deque)) {
+                    deques.remove(deque);
+                    break;
+                }
             }
+            cache.put(username, deques);
         }
-        cache.put(username, deques);
     }
 
     private Session getSessionBySessionId(Serializable sessionId) {
