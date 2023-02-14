@@ -1,6 +1,5 @@
 package com.tarzan.navigation.common.listener;
 
-import com.tarzan.navigation.common.props.CmsProperties;
 import com.tarzan.navigation.shiro.ShiroService;
 import com.tarzan.navigation.utils.AppInstallTools;
 import lombok.AllArgsConstructor;
@@ -13,14 +12,9 @@ import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
-import org.springframework.util.Assert;
 
-import java.io.IOException;
 import java.net.InetAddress;
-import java.net.URI;
 import java.net.UnknownHostException;
-import java.nio.file.*;
-import java.util.Collections;
 
 /**
  *
@@ -34,7 +28,6 @@ import java.util.Collections;
 public class StartedListener implements ApplicationListener<ApplicationStartedEvent> {
 
     private final AppInstallTools appInstallTools;
-    private final CmsProperties cmsProperties;
     private final ShiroService shiroService;
 
     @Override
@@ -67,20 +60,6 @@ public class StartedListener implements ApplicationListener<ApplicationStartedEv
                 "External: \thttp://" + ip + ':' + port + contextPath + '\n' +
                 "----------------------------------------------------------");
     }
-
-
-    @NonNull
-    private FileSystem getFileSystem(@NonNull URI uri) throws IOException {
-        Assert.notNull(uri, "Uri must not be null");
-        FileSystem fileSystem;
-        try {
-            fileSystem = FileSystems.getFileSystem(uri);
-        } catch (FileSystemNotFoundException e) {
-            fileSystem = FileSystems.newFileSystem(uri, Collections.emptyMap());
-        }
-        return fileSystem;
-    }
-
 
 
 }
