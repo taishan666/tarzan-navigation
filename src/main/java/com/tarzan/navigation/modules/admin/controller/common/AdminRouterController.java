@@ -1,10 +1,7 @@
 package com.tarzan.navigation.modules.admin.controller.common;
 
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.tarzan.navigation.common.constant.CoreConst;
-import com.tarzan.navigation.modules.admin.model.biz.Category;
 import com.tarzan.navigation.modules.admin.model.sys.User;
-import com.tarzan.navigation.modules.admin.service.biz.CategoryService;
 import com.tarzan.navigation.modules.admin.service.biz.CommentService;
 import com.tarzan.navigation.modules.admin.service.sys.MenuService;
 import com.tarzan.navigation.modules.admin.service.sys.SysConfigService;
@@ -13,10 +10,8 @@ import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -31,8 +26,6 @@ import java.util.Map;
 @AllArgsConstructor
 public class AdminRouterController {
 
-
-    private final CategoryService categoryService;
     private final SysConfigService sysConfigService;
     private final MenuService MenuService;
     private final CommentService commentService;
@@ -146,18 +139,6 @@ public class AdminRouterController {
     @GetMapping("/tags")
     public String tags() {
         return CoreConst.ADMIN_PREFIX + "tag/list";
-    }
-
-    /**
-     * 文章
-     *
-     * @param model
-     */
-    @GetMapping("/articles")
-    public String articles(Model model) {
-        List<Category> categories = categoryService.list(Wrappers.<Category>lambdaQuery().eq(Category::getStatus, CoreConst.STATUS_VALID));
-        model.addAttribute("categories", categories);
-        return CoreConst.ADMIN_PREFIX + "article/list";
     }
 
     /**

@@ -49,7 +49,7 @@ public class LinkService extends ServiceImpl<LinkMapper, Link> {
                 .orderByDesc(Link::getCreateTime));
     }
 
-    @CacheEvict(value = "link", allEntries = true)
+    @CacheEvict(value = {"link", "categoryLink"}, allEntries = true)
     public boolean deleteBatch(List<Integer> ids) {
         return removeByIds(ids);
     }

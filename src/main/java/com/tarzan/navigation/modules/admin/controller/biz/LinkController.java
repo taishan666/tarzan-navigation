@@ -77,7 +77,7 @@ public class LinkController {
 
     @PostMapping("/edit")
     @ResponseBody
-    @CacheEvict(value = "link", allEntries = true)
+    @CacheEvict(value = {"link", "categoryLink"}, allEntries = true)
     @Transactional(rollbackFor = Exception.class)
     public ResponseVo edit(Link link) {
         link.setUpdateTime(DateUtil.now());

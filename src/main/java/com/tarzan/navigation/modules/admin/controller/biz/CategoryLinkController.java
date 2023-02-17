@@ -13,6 +13,7 @@ import com.tarzan.navigation.modules.admin.vo.base.PageResultVo;
 import com.tarzan.navigation.modules.admin.vo.base.ResponseVo;
 import com.tarzan.navigation.utils.ResultUtil;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -79,6 +80,7 @@ public class CategoryLinkController {
 
     @PostMapping("/add/{categoryId}")
     @ResponseBody
+    @CacheEvict(value ="categoryLink", allEntries = true)
     public ResponseVo add(@PathVariable("categoryId") Integer categoryId, @RequestBody List<Integer> linkIds) {
         List<CategoryLink> list=new ArrayList<>(10);
         if(CollectionUtils.isNotEmpty(linkIds)){
@@ -95,6 +97,7 @@ public class CategoryLinkController {
 
     @PostMapping("/batch/delete")
     @ResponseBody
+    @CacheEvict(value ="categoryLink", allEntries = true)
     public ResponseVo deleteBatch(@RequestBody List<Integer> ids) {
         boolean flag = categoryLinkService.removeBatchByIds(ids);
         if (flag) {
