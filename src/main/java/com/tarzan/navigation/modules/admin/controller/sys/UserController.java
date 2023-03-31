@@ -6,7 +6,7 @@ import com.tarzan.navigation.modules.admin.model.sys.User;
 import com.tarzan.navigation.modules.admin.service.sys.UserService;
 import com.tarzan.navigation.modules.admin.vo.base.PageResultVo;
 import com.tarzan.navigation.modules.admin.vo.base.ResponseVo;
-import com.tarzan.navigation.shiro.MyShiroRealm;
+import com.tarzan.navigation.shiro.realm.UserRealm;
 import com.tarzan.navigation.utils.AuthUtil;
 import com.tarzan.navigation.utils.PasswordHelper;
 import com.tarzan.navigation.utils.ResultUtil;
@@ -30,7 +30,7 @@ import java.util.*;
 @AllArgsConstructor
 public class UserController {
 
-    private final MyShiroRealm myShiroRealm;
+    private final UserRealm myShiroRealm;
     private final UserService userService;
 
 

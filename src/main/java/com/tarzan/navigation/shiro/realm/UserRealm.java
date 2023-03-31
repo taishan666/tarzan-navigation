@@ -1,11 +1,11 @@
-package com.tarzan.navigation.shiro;
+package com.tarzan.navigation.shiro.realm;
 
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.tarzan.navigation.common.constant.CoreConst;
 import com.tarzan.navigation.modules.admin.model.sys.User;
 import com.tarzan.navigation.modules.admin.service.sys.MenuService;
 import com.tarzan.navigation.modules.admin.service.sys.UserService;
-import com.tarzan.navigation.shiro.redis.RedisSessionDAO;
+import com.tarzan.navigation.shiro.cache.OnlineSessionDAO;
 import com.tarzan.navigation.utils.IpUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
@@ -34,14 +34,14 @@ import java.util.*;
  * @since JDK1.8
  * @date 2021年5月11日
  */
-public class MyShiroRealm extends AuthorizingRealm {
+public class UserRealm extends AuthorizingRealm {
 
     @Lazy @Resource
     private UserService userService;
     @Lazy @Resource
     private MenuService menuService;
     @Lazy @Resource
-    private RedisSessionDAO redisSessionDAO;
+    private OnlineSessionDAO onlineSessionDAO;
 
     /**
      * 鉴权
@@ -100,7 +100,7 @@ public class MyShiroRealm extends AuthorizingRealm {
         if (CollectionUtils.isNotEmpty(userIds)) {
             Set<SimplePrincipalCollection> set = getSpcListByUserIds(userIds);
             RealmSecurityManager securityManager = (RealmSecurityManager) SecurityUtils.getSecurityManager();
-            MyShiroRealm realm = (MyShiroRealm) securityManager.getRealms().iterator().next();
+            UserRealm realm = (UserRealm) securityManager.getRealms().iterator().next();
             for (SimplePrincipalCollection simplePrincipalCollection : set) {
                 realm.clearCachedAuthenticationInfo(simplePrincipalCollection);
             }
@@ -116,7 +116,7 @@ public class MyShiroRealm extends AuthorizingRealm {
         if (CollectionUtils.isNotEmpty(userIds)) {
             Set<SimplePrincipalCollection> set = getSpcListByUserIds(userIds);
             RealmSecurityManager securityManager = (RealmSecurityManager) SecurityUtils.getSecurityManager();
-            MyShiroRealm realm = (MyShiroRealm) securityManager.getRealms().iterator().next();
+            UserRealm realm = (UserRealm) securityManager.getRealms().iterator().next();
             for (SimplePrincipalCollection simplePrincipalCollection : set) {
                 realm.clearCachedAuthorizationInfo(simplePrincipalCollection);
             }
@@ -132,7 +132,7 @@ public class MyShiroRealm extends AuthorizingRealm {
      */
     private Set<SimplePrincipalCollection> getSpcListByUserIds(List<Integer> userIds) {
         //获取所有session
-        Collection<Session> sessions = redisSessionDAO.getActiveSessions();
+        Collection<Session> sessions = onlineSessionDAO.getActiveSessions();
         //定义返回
         Set<SimplePrincipalCollection> set = new HashSet<>();
         for (Session session : sessions) {

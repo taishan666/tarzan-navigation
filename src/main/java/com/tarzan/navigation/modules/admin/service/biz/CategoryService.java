@@ -23,7 +23,6 @@ public class CategoryService extends ServiceImpl<CategoryMapper, Category> {
 
     @Cacheable(value = "category", key = "'list'")
     public List<Category> selectCategories(int status) {
-        System.out.println(1);
         return super.lambdaQuery().eq(Category::getStatus,status).orderByAsc(Category::getSort).list();
     }
 
@@ -41,7 +40,6 @@ public class CategoryService extends ServiceImpl<CategoryMapper, Category> {
 
     @Cacheable(value = "category", key = "'tree'")
     public List<Category> treeList() {
-        System.out.println(2);
         List<Category> sourceList=this.selectCategories(CoreConst.STATUS_VALID);
         List<Category> topList=sourceList.stream().filter(e->e.getPid()==CoreConst.TOP_CATEGORY_ID).collect(Collectors.toList());
         topList.forEach(e->assemblyTree(sourceList,e));

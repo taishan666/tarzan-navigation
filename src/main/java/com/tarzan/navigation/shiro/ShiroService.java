@@ -31,37 +31,7 @@ public class ShiroService {
     private Map<String, String> loadFilterChainDefinitions() {
         // 权限控制map.从数据库获取
         Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
-/*        filterChainDefinitionMap.put("/index.html", "anon");
-        filterChainDefinitionMap.put("/", "anon");
-        filterChainDefinitionMap.put("/index", "anon");
-        filterChainDefinitionMap.put("/blog/**", "anon");
-        filterChainDefinitionMap.put("/search/**", "anon");
-        filterChainDefinitionMap.put("/link", "anon");
-        filterChainDefinitionMap.put("/feedback", "anon");
-        filterChainDefinitionMap.put("/diary", "anon");
-        filterChainDefinitionMap.put("/system/register", "anon");
-        filterChainDefinitionMap.put("/login", "anon");
-        filterChainDefinitionMap.put("/kickOut", "anon");
-        filterChainDefinitionMap.put("/error/**", "anon");
-        filterChainDefinitionMap.put("/assets/**", "anon");
-        filterChainDefinitionMap.put("/favicon.ico", "anon");
-        filterChainDefinitionMap.put("/**", "anon");
-        filterChainDefinitionMap.put("/module/**", "anon");
-        filterChainDefinitionMap.put("/verificationCode", "anon");
-        filterChainDefinitionMap.put("/oauth/**", "anon");*/
-
-       // filterChainDefinitionMap.put("/**", "anon");
         filterChainDefinitionMap.put("/admin/**","user");
-/*        filterChainDefinitionMap.put(fileUploadProperties.getAccessPathPattern(), "anon");
-        filterChainDefinitionMap.put(staticHtmlProperties.getAccessPathPattern(), "anon");
-        List<Menu> menuList = menuService.selectAll(CoreConst.STATUS_VALID);
-        for (Menu menu : menuList) {
-            if (StringUtils.isNotBlank(menu.getUrl()) && StringUtils.isNotBlank(menu.getPerms())) {
-                String perm = "perms[" + menu.getPerms() + ']';
-                filterChainDefinitionMap.put(menu.getUrl(), perm + ",kickOut");
-            }
-        }
-        filterChainDefinitionMap.put("/**", "user,kickOut");*/
         return filterChainDefinitionMap;
     }
 

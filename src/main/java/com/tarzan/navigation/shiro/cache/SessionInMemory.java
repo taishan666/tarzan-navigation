@@ -1,4 +1,4 @@
-package com.tarzan.navigation.shiro.redis;
+package com.tarzan.navigation.shiro.cache;
 
 import org.apache.shiro.session.Session;
 

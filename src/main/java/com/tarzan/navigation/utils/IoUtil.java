@@ -7,12 +7,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.Charsets;
 import org.springframework.lang.Nullable;
 import org.springframework.util.StreamUtils;
 
+/**
+ * @author tarzan
+ */
 @Slf4j
 public class IoUtil extends StreamUtils {
     public IoUtil() {
@@ -23,20 +26,21 @@ public class IoUtil extends StreamUtils {
             if (closeable instanceof Flushable) {
                 try {
                     ((Flushable)closeable).flush();
-                } catch (IOException var3) {
+                } catch (IOException ignored) {
+                    log.error(ignored.getMessage());
                 }
             }
-
             try {
                 closeable.close();
             } catch (IOException var2) {
+                log.error(var2.getMessage());
             }
 
         }
     }
 
     public static String readToString(InputStream input) {
-        return readToString(input, Charsets.UTF_8);
+        return readToString(input, StandardCharsets.UTF_8);
     }
 
     public static String readToString(@Nullable InputStream input, Charset charset) {
@@ -64,7 +68,7 @@ public class IoUtil extends StreamUtils {
     }
 
     public static void write(@Nullable final String data, final OutputStream output) throws IOException {
-        write(data,output,Charsets.UTF_8);
+        write(data,output,StandardCharsets.UTF_8);
     }
     public static void write(@Nullable final String data, final OutputStream output, final Charset encoding) throws IOException {
         if (data != null) {

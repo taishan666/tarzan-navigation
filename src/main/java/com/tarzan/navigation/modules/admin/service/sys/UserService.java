@@ -8,10 +8,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tarzan.navigation.common.constant.CoreConst;
 import com.tarzan.navigation.modules.admin.mapper.sys.UserMapper;
 import com.tarzan.navigation.modules.admin.model.sys.User;
-import com.tarzan.navigation.shiro.redis.RedisCacheManager;
 import lombok.AllArgsConstructor;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.cache.Cache;
+import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.mgt.DefaultSessionKey;
 import org.apache.shiro.session.mgt.SessionManager;
@@ -34,7 +34,7 @@ import java.util.*;
 public class UserService extends ServiceImpl<UserMapper, User> {
 
     private final SessionManager sessionManager;
-    private final RedisCacheManager redisCacheManager;
+    private final CacheManager cacheManager;
 
     public User getByUsername(String username) {
         return super.lambdaQuery().eq(User::getUsername, username).one();
@@ -86,7 +86,7 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     public void kickOut(Serializable sessionId, String username) {
         getSessionBySessionId(sessionId).setAttribute("kickOut", true);
         //读取缓存,找到并从队列中移除
-        Cache<String, Deque<Serializable>> cache = redisCacheManager.getCache(CoreConst.SHIRO_REDIS_CACHE_NAME);
+        Cache<String, Deque<Serializable>> cache = cacheManager.getCache(CoreConst.SHIRO_REDIS_CACHE_NAME);
         Deque<Serializable> deques = cache.get(username);
         if(deques!=null){
             for (Serializable deque : deques) {

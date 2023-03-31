@@ -10,7 +10,7 @@ import com.tarzan.navigation.modules.admin.service.log.LoginLogService;
 import com.tarzan.navigation.modules.admin.service.sys.UserService;
 import com.tarzan.navigation.modules.admin.vo.ChangePasswordVo;
 import com.tarzan.navigation.modules.admin.vo.base.ResponseVo;
-import com.tarzan.navigation.shiro.MyShiroRealm;
+import com.tarzan.navigation.shiro.realm.UserRealm;
 import com.tarzan.navigation.utils.*;
 import com.wf.captcha.utils.CaptchaUtil;
 import lombok.AllArgsConstructor;
@@ -49,7 +49,7 @@ public class SystemController {
 
     private final UserService userService;
     private final LoginLogService loginLogService;
-    private final MyShiroRealm shiroRealm;
+    private final UserRealm shiroRealm;
 
     /**
      * 注册
