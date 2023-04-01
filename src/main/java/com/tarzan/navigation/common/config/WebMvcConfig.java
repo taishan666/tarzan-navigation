@@ -47,7 +47,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/static/assets/");
         //网站图标
         registry.addResourceHandler("/favicon.ico")
-                .addResourceLocations("classpath:/static/assets/favicon.ico");
+                .addResourceLocations("classpath:/static/favicon.ico");
     }
 
     @Override

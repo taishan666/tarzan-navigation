@@ -16,18 +16,6 @@ spring:
    #hibernate:
      #ddl-auto: update
    #generate-ddl: false
-  redis:
-    host: localhost
-    port: 6379
-    password: 666666
-    timeout: 5000
-    database: 0
-    jedis:
-      pool:
-        max-idle: 8
-        min-idle: 0
-        max-active: 8
-        max-wait: -1
 server:
   servlet:
     context-path: /

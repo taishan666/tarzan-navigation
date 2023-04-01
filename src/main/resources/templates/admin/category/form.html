@@ -1,19 +1,6 @@
 <form id="categoryForm">
     <input name="id" type="hidden" th:value="${category?.id}">
     <input name="pid" type="hidden" th:value="${category?.pid}">
-    <!--<div class="form-group row">
-        <label for="pid" class="col-sm-3 col-form-label">上级分类:</label>
-        <div class="col-sm-9">
-            <select id="category-select" class="form-control" name="pid" required>
-                <block th:each="item: ${categories}">
-                    <option th:if="${#lists.isEmpty(item.children)}" th:value="${item.id}" th:label="${item.name}" th:selected="${category?.pid == item.id}"></option>
-                    <optgroup th:unless="${#lists.isEmpty(item.children)}" th:label="${item.name}">
-                        <option th:each="child: ${item.children}" th:value="${child.id}" th:label="${child.name}" th:selected="${category?.pid == child.id}"></option>
-                    </optgroup>
-                </block>
-            </select>
-        </div>
-    </div>-->
     <div class="form-group row">
         <label for="name" class="col-sm-3 col-form-label">分类名称:</label>
         <div class="col-sm-9">
@@ -28,6 +15,14 @@
             <input type="text" th:value="${category?.name}" name="name" class="form-control" id="name"
                    placeholder="填写分类名称" required>
             <div class="invalid-feedback">请填写分类名称</div>
+        </div>
+    </div>
+    <div th:style="${category?.pid == 0 ? '' : 'display:none'}" class="form-group row  catalogFlag">
+        <label for="icon" class="col-sm-3 col-form-label">图标:</label>
+        <div class="col-sm-9">
+            <input type="text" th:value="${category?.icon}" name="icon" class="form-control" id="icon"
+                   placeholder="请填写图标" th:attr="required=${category?.pid == 0 ? 'required' : null}">
+            <div class="invalid-feedback">请填写图标</div>
         </div>
     </div>
 <!--    <div class="form-group row">
@@ -48,3 +43,9 @@
         </div>
     </div>
 </form>
+<script type="text/javascript">
+    // 图标选择器
+    $(function () {
+        $('#icon').iconpicker({animation: false});
+    })
+</script>

@@ -8,8 +8,8 @@
     <version>1.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>tarzan-cms</name>
-    <description>泰山内容管理系统</description>
+    <name>tarzan-navigation</name>
+    <description>泰山网站导航系统</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

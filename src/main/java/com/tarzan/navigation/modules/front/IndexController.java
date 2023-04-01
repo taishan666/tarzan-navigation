@@ -28,12 +28,12 @@ public class IndexController {
     public String home(Model model) {
         model.addAttribute("categories",categoryService.treeList());
         model.addAttribute("categoryLinks",categoryLinkService.listAll());
-        return  CoreConst.WEB_PREFIX+"/index";
+        return  CoreConst.WEB_PREFIX+"index";
     }
 
     @GetMapping({"/about"})
     public String about() {
-        return  CoreConst.WEB_PREFIX+"/about";
+        return  CoreConst.WEB_PREFIX+"about";
     }
 
 
