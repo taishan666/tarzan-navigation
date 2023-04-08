@@ -484,6 +484,7 @@
             },
             setValue: function(e) {
                 var a = this.getValid(e);
+                this.hide();
                 return !1 !== a ? (this.iconpickerValue = a, this._trigger("iconpickerSetValue", {
                     iconpickerValue: a
                 }), this.iconpickerValue) : (this._trigger("iconpickerInvalid", {

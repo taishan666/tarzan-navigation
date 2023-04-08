@@ -63,7 +63,7 @@
                         </th:block>
                         <th:block th:unless="${#lists.isEmpty(menu.children)}" >
                         <a>
-                            <i class="linecons-star"></i>
+                            <i th:class="${menu?.icon}"></i>
                             <span class="title" th:text="${menu.name}"></span>
                         </a>
                         </th:block>
