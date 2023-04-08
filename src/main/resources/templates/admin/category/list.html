@@ -90,10 +90,13 @@
                 title: '操作',
                 align: "center",
                 formatter: function (row, index) {
-                    var add = '<button type="button" class="effect-btn btn btn-warning mt-2 mr-2 icon-lg" onclick="addRow(' + row.id + ')"><i class="fas fa-plus"></i></button>';
-                    var edit = '<button type="button" class="effect-btn btn btn-info mt-2 mr-2 icon-lg" onclick="editRow(' + row.id + ')"><i class="fas fa-edit"></i></button>';
-                    var del = '<button type="button"  class="effect-btn btn btn-danger mt-2 mr-2 icon-lg" onclick="deleteRow(' + row.id + ')"><i class="fas fa-trash-alt"></i></button>';
-                    return add+edit + del;
+                    let add='';
+                    if(row.pid===0){
+                      add = '<button type="button" class="effect-btn btn btn-warning mt-2 mr-2 icon-lg" onclick="addRow(' + row.id + ')"><i class="fas fa-plus"></i></button>';
+                    }
+                    const edit = '<button type="button" class="effect-btn btn btn-info mt-2 mr-2 icon-lg" onclick="editRow(' + row.id + ')"><i class="fas fa-edit"></i></button>';
+                    const del = '<button type="button"  class="effect-btn btn btn-danger mt-2 mr-2 icon-lg" onclick="deleteRow(' + row.id + ')"><i class="fas fa-trash-alt"></i></button>';
+                    return add+edit+del;
                 }
             }]
     };
