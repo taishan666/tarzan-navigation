@@ -2162,14 +2162,14 @@ body {
     }
 }
 
-@media screen and (max-width:768px) and screen and (max-width:768px) {
+@media screen and (max-width:768px)  and (max-width:768px) {
     .navbar.horizontal-menu .navbar-inner .navbar-nav {
         margin-top: 10px;
         margin-bottom: 10px
     }
 }
 
-@media screen and (max-width:768px) and screen and (min-width:768px) {
+@media screen and (max-width:768px)  and (min-width:768px) {
     .navbar.horizontal-menu .navbar-inner .navbar-nav ul li.is-hidden {
         left: -20px;
         zoom: 1;
@@ -2682,7 +2682,7 @@ body.chat-open .user-info-navbar a[data-toggle=chat] {
     left: 0;
     right: 0;
     top: -1px;
-    background-color: none;
+    background-color: unset;
     height: 1px;
     background-color: #ededed
 }
@@ -5613,11 +5613,11 @@ label.cbr-inline+.cbr-inline {
 
 .btn.btn-purple.btn-icon-standalone i {
     background-color: #7233ac;
-    border-right-color: #NaNNaNNaN
+    border-right-color: unset
 }
 
 .btn.btn-purple.btn-icon-standalone.btn-icon-standalone-right i {
-    border-left-color: #NaNNaNNaN
+    border-left-color: unset
 }
 
 .btn.btn-purple.btn-icon-standalone.btn-icon-standalone-right:hover i {
@@ -8424,9 +8424,9 @@ lesshat-selector {
     overflow: hidden;
     background: #2c2e2f;
     z-index: 10000;
-    -webkit-perspective: 10000;
+    -webkit-perspective: 10000px;
     -moz-perspective: 10000;
-    perspective: 10000;
+    perspective: 10000px;
     -webkit-perspective: 10000px;
     -moz-perspective: 10000px;
     perspective: 10000px;
