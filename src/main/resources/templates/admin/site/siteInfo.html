@@ -134,20 +134,13 @@
            if (valid) {
                 $f.addClass("was-validated")
                 Core.mask("#btn_save");
-               let data = {};
-               var value = $f.serializeArray();
-               $.each(value, function (index, item) {
-                   data[item.name] = item.value;
-               });
-               let json = JSON.stringify(data);
-               console.log(json)
-                Core.postAjax('/siteInfo/edit', json, function (data) {
+                Core.postAjax('/siteInfo/edit', $f.serialize(), function (data) {
                     Core.unmask("#btn_save");
                     layer.msg(data.msg);
                     $f.removeClass("was-validated")
                 }, function () {
                     Core.unmask("#btn_save");
-                }, "POST", "application/json; charset=UTF-8")
+                })
             }
         })
     })

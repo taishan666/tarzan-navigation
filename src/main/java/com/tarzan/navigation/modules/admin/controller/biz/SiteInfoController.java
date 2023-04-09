@@ -26,17 +26,12 @@ public class SiteInfoController {
 
     @PostMapping("/edit")
     @ResponseBody
-    public ResponseVo save(@RequestBody Map<String, String> map) {
+    public ResponseVo save(@RequestParam Map<String, String> map) {
         try {
             if (map.containsKey(CoreConst.SITE_STATIC_KEY)) {
                 boolean siteStaticOn = "on".equalsIgnoreCase(map.get(CoreConst.SITE_STATIC_KEY));
                 CoreConst.SITE_STATIC.set(siteStaticOn);
             }
-            String jsCode=map.get("STATISTICS_CODE");
-            if(jsCode!=null){
-                jsCode.replaceAll("\"","'");
-            }
-            System.out.println(jsCode);
             configService.updateAll(map);
             return ResultUtil.success("保存网站信息成功");
         } catch (Exception e) {
