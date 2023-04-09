@@ -6,13 +6,8 @@ import com.tarzan.navigation.modules.admin.service.sys.SysConfigService;
 import com.tarzan.navigation.modules.admin.vo.base.ResponseVo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 /**
@@ -31,12 +26,17 @@ public class SiteInfoController {
 
     @PostMapping("/edit")
     @ResponseBody
-    public ResponseVo save(@RequestParam Map<String, String> map, HttpServletRequest request, HttpServletResponse response) {
+    public ResponseVo save(@RequestBody Map<String, String> map) {
         try {
             if (map.containsKey(CoreConst.SITE_STATIC_KEY)) {
                 boolean siteStaticOn = "on".equalsIgnoreCase(map.get(CoreConst.SITE_STATIC_KEY));
                 CoreConst.SITE_STATIC.set(siteStaticOn);
             }
+            String jsCode=map.get("STATISTICS_CODE");
+            if(jsCode!=null){
+                jsCode.replaceAll("\"","'");
+            }
+            System.out.println(jsCode);
             configService.updateAll(map);
             return ResultUtil.success("保存网站信息成功");
         } catch (Exception e) {
