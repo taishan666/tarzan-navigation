@@ -92,59 +92,36 @@
                     </li>
                 </ul>
             </nav>
-            <th:block th:each="category: ${categories}">
-                <h4 class="text-gray"><i class="linecons-tag" style="margin-right: 7px;" th:id="${category.name}"></i>[[${category.name}]]</h4>
+            <th:block th:each="categoryLink : ${categoryLinks}">
+                <h4 class="text-gray"><i class="linecons-tag" style="margin-right: 7px;" th:id="${categoryLink.categoryName}"></i>[[${categoryLink.categoryName}]]</h4>
                 <div class="row">
-                    <th:block th:if="${#lists.isEmpty(category.children)}" >
-                        <th:block th:if="${not #lists.isEmpty(category.links)}" >
-                            <div class="col-sm-3" th:each="link:${category?.links}">
-                                <div class="xe-widget xe-conversations box2 label-info" th:onclick="window.open([[${link.url}]], '_blank')" data-toggle="tooltip" data-placement="bottom" title="" th:data-original-title="${link.url}">
-                                    <div class="xe-comment-entry">
-                                        <a class="xe-user-img">
-                                            <img th:src="${link.img.base64}" class="img-circle" width="40">
-                                        </a>
-                                        <div class="xe-comment">
-                                            <a href="#" class="xe-user-name overflowClip_1">
-                                                <strong th:text="${link.name}"></strong>
-                                            </a>
-                                            <p class="overflowClip_2"  th:text="${link.description}"></p>
-                                        </div>
-                                    </div>
+<!--                    <ul class="nav nav-tabs" id="myTab2" role="tablist">
+                        <li class="nav-item"><a class="nav-link active" id="home-tab2" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" id="profile-tab19" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Profile</a></li>
+                    </ul>
+                    <div class="tab-content ad-content2" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel">
+                            <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+                        </div>
+                        <div class="tab-pane fade" id="profile" role="tabpanel">
+                            <p>It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+                        </div>
+                    </div>-->
+                    <div class="col-sm-3" th:each="link : ${categoryLink.links}">
+                        <div class="xe-widget xe-conversations box2 label-info" th:onclick="window.open([[${link.url}]], '_blank')" data-toggle="tooltip" data-placement="bottom" title="" th:data-original-title="${link.url}">
+                            <div class="xe-comment-entry">
+                                <a class="xe-user-img">
+                                    <img th:src="${link.img.base64}" class="img-circle" width="40">
+                                </a>
+                                <div class="xe-comment">
+                                    <a href="#" class="xe-user-name overflowClip_1">
+                                        <strong th:text="${link.name}"></strong>
+                                    </a>
+                                    <p class="overflowClip_2"  th:text="${link.description}"></p>
                                 </div>
                             </div>
-                        </th:block>
-                    </th:block>
-
-                    <th:block th:if="${not #lists.isEmpty(category.children)}" >
-                        <ul class="nav nav-tabs" id="myTab2" role="tablist">
-                            <li th:class="${stat.index==0? 'nav-item active' : 'nav-item'}" th:each="cate,stat: ${category.children}">
-                                <a class="nav-link" id="home-tab2" data-toggle="tab" th:href="${'#'+cate.name}" >[[${cate.name}]]</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content">
-                            <th:block th:each="cate,stat: ${category.children}">
-                                <div th:class="${stat.index==0 ? 'tab-pane fade active in' : 'tab-pane fade'}" th:id="${cate.name}" role="tabpanel">
-                                <th:block th:if="${not #lists.isEmpty(cate.links)}" >
-                                    <div class="col-sm-3" th:each="link:${cate?.links}">
-                                        <div class="xe-widget xe-conversations box2 label-info" th:onclick="window.open([[${link.url}]], '_blank')" data-toggle="tooltip" data-placement="bottom" title="" th:data-original-title="${link.url}">
-                                            <div class="xe-comment-entry">
-                                                <a class="xe-user-img">
-                                                    <img th:src="${link.img.base64}" class="img-circle" width="40">
-                                                </a>
-                                                <div class="xe-comment">
-                                                    <a href="#" class="xe-user-name overflowClip_1">
-                                                        <strong th:text="${link.name}"></strong>
-                                                    </a>
-                                                    <p class="overflowClip_2"  th:text="${link.description}"></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </th:block>
-                                </div>
-                            </th:block>
                         </div>
-                    </th:block>
+                    </div>
                 </div>
                 <br />
             </th:block>

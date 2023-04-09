@@ -33,5 +33,7 @@ public class Category extends BaseVo {
     private Category parent;
     @TableField(exist = false)
     private List<Category> children;
+    @TableField(exist = false)
+    private List<Link> links;
 
 }

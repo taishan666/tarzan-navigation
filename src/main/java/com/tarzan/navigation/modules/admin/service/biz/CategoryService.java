@@ -5,11 +5,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tarzan.navigation.common.constant.CoreConst;
 import com.tarzan.navigation.modules.admin.mapper.biz.CategoryMapper;
 import com.tarzan.navigation.modules.admin.model.biz.Category;
+import com.tarzan.navigation.modules.admin.model.biz.Link;
+import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -18,8 +21,10 @@ import java.util.stream.Collectors;
  * @date 2021年5月11日
  */
 @Service
+@AllArgsConstructor
 public class CategoryService extends ServiceImpl<CategoryMapper, Category> {
 
+    private final CategoryLinkService categoryLinkService;
 
     @Cacheable(value = "category", key = "'list'")
     public List<Category> selectCategories(int status) {
@@ -42,7 +47,8 @@ public class CategoryService extends ServiceImpl<CategoryMapper, Category> {
     public List<Category> treeList() {
         List<Category> sourceList=this.selectCategories(CoreConst.STATUS_VALID);
         List<Category> topList=sourceList.stream().filter(e->e.getPid()==CoreConst.TOP_CATEGORY_ID).collect(Collectors.toList());
-        topList.forEach(e->assemblyTree(sourceList,e));
+        Map<Integer,List<Link>> map=categoryLinkService.getCategoryLinkMap();
+        topList.forEach(e->assemblyTree(sourceList,e,map));
         return topList;
     }
 
@@ -53,13 +59,14 @@ public class CategoryService extends ServiceImpl<CategoryMapper, Category> {
      * @Author: tarzan Liu
      * @Date: 2022/12/6 11:14
      */
-    public void assemblyTree(List<Category> sourceList, Category parent) {
+    public void assemblyTree(List<Category> sourceList, Category parent,Map<Integer,List<Link>> map) {
         if (CollectionUtils.isNotEmpty(sourceList)) {
             List<Category> resultList = sourceList.stream().filter(e -> e.getPid().equals(parent.getId())).collect(Collectors.toList());
             resultList.sort(Comparator.comparing(Category::getSort));
             parent.setChildren(resultList);
+            parent.setLinks(map.get(parent.getId()));
             resultList.forEach(e -> {
-                assemblyTree(sourceList, e);
+                assemblyTree(sourceList, e,map);
             });
         }
     }

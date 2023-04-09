@@ -28,7 +28,7 @@ public class IndexController {
     @GetMapping({"/","index","home"})
     public String home(Model model) {
         model.addAttribute("categories",categoryService.treeList());
-        model.addAttribute("categoryLinks",categoryLinkService.listAll());
+       // model.addAttribute("categoryLinks",categoryLinkService.listAll());
         return  CoreConst.WEB_PREFIX+"index";
     }
 
