@@ -67,11 +67,9 @@
                                 <input id="SITE_STATIC" name="SITE_STATIC" type="checkbox" th:checked="${#bools.isTrue(siteInfo?.get('SITE_STATIC'))}">
                             </div>
                         </div>
-                        <shiro:hasPermission name="siteInfo:edit">
                             <div class="col-sm-12">
                                 <button type="submit" id="btn_save" class="btn btn-info">保存配置</button>
                             </div>
-                        </shiro:hasPermission>
                     </form>
                 </div>
                 <div class="tab-pane fade" id="profile" role="tabpanel">
@@ -101,11 +99,9 @@
                             <div class="invalid-feedback">请填写百度推送地址</div>
                         </div>
                     </div>
-                    <shiro:hasPermission name="siteInfo:edit">
                         <div class="col-sm-12">
                             <button type="submit" id="btn_save" class="btn btn-info">保存配置</button>
                         </div>
-                    </shiro:hasPermission>
                     </form>
                 </div>
                 <div class="tab-pane fade" id="contact" role="tabpanel">
@@ -118,11 +114,9 @@
                             <div class="invalid-feedback">请填写网站关键字</div>
                         </div>
                     </div>
-                    <shiro:hasPermission name="siteInfo:edit">
                         <div class="col-sm-12">
                             <button type="submit" id="btn_save" class="btn btn-info">保存配置</button>
                         </div>
-                    </shiro:hasPermission>
                     </form>
                 </div>
             </div>
