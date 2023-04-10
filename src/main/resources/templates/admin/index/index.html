@@ -113,7 +113,7 @@
     let hash = location.hash;
     hash = hash ? hash : defaultPageHash
     const $href = $('.active-li > a[href="' + hash + '"]');
-    if(hash==defaultPageHash){
+    if(hash===defaultPageHash){
       $href.parent().parent().find("li.active").removeClass(activeName);
       $href.parent().addClass(activeName)
     }

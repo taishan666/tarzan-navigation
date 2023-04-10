@@ -2,7 +2,7 @@
 -- ----------------------------
 -- Records of biz_category
 -- ----------------------------
-INSERT INTO biz_category VALUES (8,0,'常用推荐',null,1,null,1,'2022-12-09 21:37:32','2022-12-09 21:37:32');
+INSERT INTO biz_category VALUES (1,0,'常用推荐',null,1,null,1,'2022-12-09 21:37:32','2022-12-09 21:37:32');
 INSERT INTO biz_category VALUES (9,0,'社区资讯',null,2,null,1,'2022-12-09 21:37:50','2022-12-09 21:37:50');
 INSERT INTO biz_category VALUES (10,0,'灵感采集',null,3,null,1,'2022-12-09 21:38:15','2022-12-09 21:38:15');
 INSERT INTO biz_category VALUES (11,0,'素材资源',null,4,null,1,'2022-12-09 21:39:08','2022-12-09 21:39:08');
@@ -36,7 +36,7 @@ INSERT INTO biz_category VALUES (37,13,'交互设计',null,5,null,1,'2022-12-09 
 -- ----------------------------
 -- Records of biz_link
 -- ----------------------------
-INSERT INTO biz_link VALUES (1, 'CSDN', 'https://tarzan.blog.csdn.net', '洛阳泰山博客', 1, '1334512682@qq.com', '1334512682', 1, 1, '', '2021-09-13 23:24:25', '2021-06-28 10:51:18');
+INSERT INTO biz_link VALUES (1, 'CSDN', 'https://tarzan.blog.csdn.net', '洛阳泰山博客', 1, '1334512682@qq.com', '1334512682', 1, 1, '', 1,'2021-09-13 23:24:25', '2021-06-28 10:51:18');
 
 -- ----------------------------
 -- Records of sys_config

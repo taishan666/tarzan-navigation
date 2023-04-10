@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class CategoryService extends ServiceImpl<CategoryMapper, Category> {
 
-    private final CategoryLinkService categoryLinkService;
+    private final LinkService linkService;
 
     @Cacheable(value = "category", key = "'list'")
     public List<Category> selectCategories(int status) {
@@ -47,7 +47,7 @@ public class CategoryService extends ServiceImpl<CategoryMapper, Category> {
     public List<Category> treeList() {
         List<Category> sourceList=this.selectCategories(CoreConst.STATUS_VALID);
         List<Category> topList=sourceList.stream().filter(e->e.getPid()==CoreConst.TOP_CATEGORY_ID).collect(Collectors.toList());
-        Map<Integer,List<Link>> map=categoryLinkService.getCategoryLinkMap();
+        Map<Integer,List<Link>> map=linkService.getCategoryLinkMap();
         topList.forEach(e->assemblyTree(sourceList,e,map));
         return topList;
     }
@@ -73,5 +73,10 @@ public class CategoryService extends ServiceImpl<CategoryMapper, Category> {
 
     public List<Category> selectByPid(Integer pid) {
         return super.lambdaQuery().eq(Category::getPid, pid).list();
+    }
+
+
+    public boolean existLinks(Integer id){
+        return linkService.lambdaQuery().eq(Link::getCategoryId,id).count()!=0L;
     }
 }

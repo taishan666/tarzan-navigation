@@ -2,7 +2,7 @@
     <div class="colxl-12 col-lg-12 col-md-12 col-sm-12 col-12">
         <div class="page-title-wrapper">
             <div class="page-title-box">
-                <h4 class="page-title bold">分类网站管理</h4>
+                <h4 class="page-title bold">导航管理</h4>
             </div>
             <div class="breadcrumb-list">
                 <ul>
@@ -15,7 +15,14 @@
     </div>
 </div>
 <!-- Main content -->
-<section class="content">
+<div class="row">
+    <div class="col-lg-2 col-md-3">
+        <div class="card card-body">
+            <div class="compose-btn"><h3>导航分类</h3></div>
+            <ul id="permissionTree" class="ztree"></ul>
+        </div>
+    </div>
+    <div class="col-lg-10 col-md-9">
     <div class="card card-info card-header">
         <form id="searchForm" class="needs-validation form-inline" novalidate="">
             <div class="form-group">
@@ -34,16 +41,18 @@
     </div>
     <div class="card table-card card-body">
         <div id="toolbar" class="btn-group">
-                <button id="btn_add" type="button" class="btn btn-primary">
-                    <span class="fa fa-plus" aria-hidden="true"></span>新增网站
-                </button>
-                <button id="btn_batch_delete" type="button" class="btn btn-danger">
-                    <span class="fa fa-trash" aria-hidden="true"></span>批量移除
-                </button>
+            <button id="btn_add" type="button" class="btn btn-primary">
+                <span class="fa fa-plus" aria-hidden="true"></span>新增网站
+            </button>
+            <button id="btn_batch_delete" type="button" class="btn btn-danger">
+                <span class="fa fa-trash" aria-hidden="true"></span>批量移除
+            </button>
         </div>
         <table class="table-sm" id="table"></table>
     </div>
-</section>
+    </div>
+    </div>
+</div>
 
 <!-- 表单模态框 -->
 <div class="modal fade" id="formModal" tabindex="-1" role="dialog">
@@ -68,8 +77,37 @@
 </div>
 
 <script>
-    var categoryId=[[${categoryId}]]
+    let categoryId = 0;
     $(function () {
+        //树-初始化设置
+        var treeSetting = {
+            view: {
+                showIcon: false,
+                selectedMulti: false        //禁止多点选中
+            },
+            data: {
+                simpleData: {
+                    enable: true,
+                    idKey: "id",
+                    pIdKey: "pid"
+                }
+            },
+            callback: {
+                onClick: onClick//左点击触发的函数
+            }
+        };
+        Core.postAjax("/category/list", {}, function (data) {
+            var zNodes = data;
+            $.fn.zTree.init($("#permissionTree"), treeSetting, zNodes);
+        })
+        //鼠标点击节点的函数
+        function onClick(event, treeId, treeNode) {
+            //当node里具有url的时候，阻止跳转
+            event.preventDefault();//阻止页面跳转
+            categoryId=treeNode.id;
+            refreshTable();
+        }
+
         window.operateEvents = {
             // 点击编辑
             'click .btn_edit': function (e, value, row, index) {
@@ -137,14 +175,6 @@
                 }
             });
         };
-        //表格中开关控件
-        function typeSwitch(value, row, index){
-            if (value) {
-                return "<input value=" + row.id + " name='switch' type='checkbox' checked />";
-            } else {
-                return "<input value=" + row.id + " name='switch' type='checkbox' />";
-            }
-        }
 
         var options = {
             id: "#table",
@@ -178,61 +208,13 @@
 
         // 新增
         $('#btn_add').on('click', function () {
-            Core.load("#formContent", "#categoryLink/addPage/"+categoryId, function () {
+            Core.load("#formContent", "/categoryLink/addPage/"+categoryId, function () {
                 $('#formTitle').text('新增')
                 $("#formModal").modal('show');
             });
-          //  window.location.href = (ctx + "#categoryLink/addPage/"+categoryId).replace('//', '/');
+            //  window.location.href = (ctx + "#categoryLink/addPage/"+categoryId).replace('//', '/');
         })
-        //只是在点击后初始化的时候生成
-        $("#formModal").on("shown.bs.modal", function () {
-            // 初始化Web Uploader
-            var uploader = WebUploader.create({
-                // 选完文件后，是否自动上传。
-                auto: true,
-                // swf文件路径
-                swf: '/admin/img/Uploader.swf',
-                // 文件接收服务端。
-                server: '[[@{/attachment/upload}]]',
-                // 选择文件的按钮。可选。
-                // 内部根据当前运行是创建，可能是input元素，也可能是flash.
-                pick: '#filePicker',
-                // 只允许选择图片文件。
-                accept: {
-                    title: 'Images',
-                    extensions: 'gif,jpg,jpeg,bmp,png',
-                    mimeTypes: 'image/*'
-                }
-            });
-            // 文件上传成功，给item添加成功class, 用样式标记上传成功。
-            var  $list=$('#fileList');
-            uploader.on( 'uploadSuccess', function( file,data ) {
-                var $li = $(
-                    '<li class="content-img-list-item"><img src="' + data.url + '" >' +
-                    '<div ><button class="btn-outline secondary-outline mt-2 mr-2 icon-sm"><i class="fas fa-trash-alt"></i></button></div></i>'
-                );
-                $list.append( $li );
-                $("#img").val(data.url);
-                $('.content-img .file').hide();
-            });
-            // 文件上传失败，显示上传出错。
-            uploader.on( 'uploadError', function( file ) {
-                console.log('上传失败');
-            });
-            // 鼠标经过显示删除按钮
-            $('.content-img-list').on('mouseover', '.content-img-list-item', function() {
-                $(this).children('div').removeClass('hide');
-            });
-            // 鼠标离开隐藏删除按钮
-            $('.content-img-list').on('mouseleave', '.content-img-list-item', function() {
-                 $(this).children('div').addClass('hide');
-            });
-            // 单个图片删除
-            $(".content-img-list").on("click", '.content-img-list-item button .fa-trash-alt', function() {
-                $(this).parent().parent().parent().remove();
-                $('.content-img .file').show();
-            });
-        })
+
 
         // 编辑
         function editRow(id) {

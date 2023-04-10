@@ -12,13 +12,9 @@ import com.tarzan.navigation.modules.admin.model.biz.BizImage;
 import com.tarzan.navigation.modules.admin.model.biz.Link;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -32,24 +28,17 @@ public class LinkService extends ServiceImpl<LinkMapper, Link> {
 
     private final ImageMapper imageMapper;
 
-    @Cacheable(value = "link", key = "'list'")
-    public List<Link> selectLinks(Link link) {
-        return list(Wrappers.<Link>lambdaQuery()
-                .like(StringUtils.isNotBlank(link.getName()), Link::getName, link.getName())
-                .like(StringUtils.isNotBlank(link.getUrl()), Link::getUrl, link.getUrl())
-                .eq(Objects.nonNull(link.getStatus()), Link::getStatus, link.getStatus()));
-    }
-
     public IPage<Link> pageLinks(Link link, Integer pageNumber, Integer pageSize) {
         IPage<Link> page = new Page<>(pageNumber, pageSize);
         return page(page,Wrappers.<Link>lambdaQuery()
                 .like(StringUtils.isNotBlank(link.getName()), Link::getName, link.getName())
                 .like(StringUtils.isNotBlank(link.getUrl()), Link::getUrl, link.getUrl())
                 .eq(Objects.nonNull(link.getStatus()), Link::getStatus, link.getStatus())
+                .eq(Objects.nonNull(link.getCategoryId()), Link::getCategoryId, link.getCategoryId())
                 .orderByDesc(Link::getCreateTime));
     }
 
-    @CacheEvict(value = {"link", "categoryLink"}, allEntries = true)
+    @CacheEvict(value = {"link","category"}, allEntries = true)
     public boolean deleteBatch(List<Integer> ids) {
         return removeByIds(ids);
     }
@@ -70,4 +59,13 @@ public class LinkService extends ServiceImpl<LinkMapper, Link> {
         }
     }
 
+
+    public Map<Integer,List<Link>> getCategoryLinkMap(){
+        List<Link> links=super.list();
+        this.wrapper(links);
+        if(CollectionUtils.isNotEmpty(links)){
+            return links.stream().collect(Collectors.groupingBy(Link::getCategoryId));
+        }
+        return new HashMap<>(0);
+    }
 }

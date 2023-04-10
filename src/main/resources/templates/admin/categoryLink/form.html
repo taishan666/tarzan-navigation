@@ -1,22 +1,8 @@
-<div class="row">
-    <div class="colxl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-        <div class="page-title-wrapper">
-            <div class="page-title-box">
-                <h4 class="page-title bold" th:text="${categoryName}"></h4>
-            </div>
-            <div class="breadcrumb-list">
-                <ul>
-                    <li class="breadcrumb-link"><a th:href="@{admin}"><i class="fas fa-home mr-2"></i>首页</a></li>
-                    <li class="breadcrumb-link active">分类管理</li>
-                    <li class="breadcrumb-link active">网站管理</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
+
+<form id="linkForm">
 <!-- Main content -->
-<section class="content">
-    <div class="card card-info card-header">
+<div class="row">
+<!--    <div class="card card-info card-header">
         <form id="searchForm" class="needs-validation form-inline" novalidate="">
             <div class="form-group">
                 <label for="name">站点名称:</label>
@@ -33,18 +19,29 @@
         </form>
     </div>
     <div class="card table-card card-body">
-        <div id="toolbar" class="btn-group">
+&lt;!&ndash;        <div id="toolbar" class="btn-group">
                 <button id="btn_batch_add" type="button" class="btn btn-primary">
                     <span class="fa fa-plus" aria-hidden="true"></span>批量加入
                 </button>
             <button id="btn_back" type="button" class="btn btn-warning">
                 <span class="fa fa-backward" aria-hidden="true"></span>返回
             </button>
-        </div>
+        </div>&ndash;&gt;
+        <table class="table-sm" id="table"></table>
+    </div>-->
+    <div class="card table-card card-body">
+          <div id="toolbar" class="btn-group">
+        <button id="btn_batch_add" type="button" class="btn btn-primary">
+            <span class="fa fa-plus" aria-hidden="true"></span>批量加入
+        </button>
+        <button id="btn_back" type="button" class="btn btn-warning">
+            <span class="fa fa-backward" aria-hidden="true"></span>返回
+        </button>
+    </div>
         <table class="table-sm" id="table"></table>
     </div>
-</section>
-
+</div>
+</form>
 <script>
     var categoryId=[[${categoryId}]]
     $(function () {
@@ -139,10 +136,10 @@
             };
         }
 
-        // 返回
+     /*   // 返回
         $('#btn_back').on('click', function () {
             window.location.href = (ctx + "#categories/"+categoryId).replace('//', '/');
-        })
+        })*/
 
         // 查询
         $('#searchForm').submit(function (event) {

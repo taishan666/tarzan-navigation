@@ -1,7 +1,6 @@
 package com.tarzan.navigation.modules.front;
 
 import com.tarzan.navigation.common.constant.CoreConst;
-import com.tarzan.navigation.modules.admin.service.biz.CategoryLinkService;
 import com.tarzan.navigation.modules.admin.service.biz.CategoryService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;

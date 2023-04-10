@@ -2,6 +2,7 @@ package com.tarzan.navigation.modules.admin.controller.common;
 
 import com.tarzan.navigation.common.constant.CoreConst;
 import com.tarzan.navigation.modules.admin.model.sys.User;
+import com.tarzan.navigation.modules.admin.service.biz.CategoryService;
 import com.tarzan.navigation.modules.admin.service.biz.CommentService;
 import com.tarzan.navigation.modules.admin.service.sys.MenuService;
 import com.tarzan.navigation.modules.admin.service.sys.SysConfigService;
@@ -10,6 +11,7 @@ import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Map;
@@ -29,6 +31,7 @@ public class AdminRouterController {
     private final SysConfigService sysConfigService;
     private final MenuService MenuService;
     private final CommentService commentService;
+    private final CategoryService categoryService;
 
     /**
      * 后台首页
@@ -130,6 +133,16 @@ public class AdminRouterController {
     @GetMapping("/categories")
     public String categories() {
         return CoreConst.ADMIN_PREFIX + "category/list";
+    }
+
+
+    /**
+     * 分类管理
+     */
+    @GetMapping("/category/links")
+    public String categoryLinks(Model model) {
+        model.addAttribute("categories",categoryService.treeList());
+        return CoreConst.ADMIN_PREFIX + "categoryLink/inbox";
     }
 
     /**

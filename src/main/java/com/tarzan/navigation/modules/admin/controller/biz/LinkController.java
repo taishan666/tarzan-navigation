@@ -11,7 +11,6 @@ import com.tarzan.navigation.modules.admin.vo.base.ResponseVo;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
@@ -51,17 +50,20 @@ public class LinkController {
 
     @PostMapping("/add")
     @ResponseBody
-    @Transactional(rollbackFor = Exception.class)
-    @CacheEvict(value = "link", allEntries = true)
+    @CacheEvict(value = {"link", "category"}, allEntries = true)
     public ResponseVo add(Link link) {
-        Date date = new Date();
-        link.setCreateTime(date);
-        link.setUpdateTime(date);
-        boolean flag = linkService.save(link);
-        if (flag) {
-            return ResultUtil.success("新增网址成功");
-        } else {
-            return ResultUtil.error("新增网址失败");
+        if(Objects.nonNull(link.getCategoryId())&&link.getCategoryId()>0){
+            Date date = new Date();
+            link.setCreateTime(date);
+            link.setUpdateTime(date);
+            boolean flag = linkService.save(link);
+            if (flag) {
+                return ResultUtil.success("新增网址成功");
+            } else {
+                return ResultUtil.error("新增网址失败");
+            }
+        }else{
+            return ResultUtil.error("分类id不能为空！");
         }
     }
 
@@ -77,8 +79,7 @@ public class LinkController {
 
     @PostMapping("/edit")
     @ResponseBody
-    @CacheEvict(value = {"link", "categoryLink"}, allEntries = true)
-    @Transactional(rollbackFor = Exception.class)
+    @CacheEvict(value = {"link", "category"}, allEntries = true)
     public ResponseVo edit(Link link) {
         link.setUpdateTime(DateUtil.now());
         boolean flag = linkService.updateById(link);

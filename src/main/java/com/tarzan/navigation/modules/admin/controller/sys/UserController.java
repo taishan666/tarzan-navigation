@@ -131,24 +131,5 @@ public class UserController {
     }
 
 
-    /**
-     * 保存分配角色
-     */
-    @PostMapping("/assign/role")
-    @ResponseBody
-    @CacheEvict(value = "menu", allEntries = true)
-    public ResponseVo assignRole(Integer id, String roleIdStr) {
-        String[] roleIds = roleIdStr.split(",");
-        List<String> roleIdsList = Arrays.asList(roleIds);
-        try {
-            // 重置用户权限
-            myShiroRealm.clearAuthorizationByUserId(Collections.singletonList(id));
-            return ResultUtil.success("分配角色成功");
-        } catch (Exception e) {
-            return ResultUtil.error("分配角色失败");
-        }
-    }
-
-
 
 }

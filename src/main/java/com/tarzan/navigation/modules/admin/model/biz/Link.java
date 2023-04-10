@@ -26,6 +26,7 @@ public class Link extends BaseVo {
     private String qq;
     private Integer status;
     private Integer origin;
+    private Integer categoryId;
     private String remark;
 
     @TableField(exist = false)

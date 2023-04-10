@@ -2,8 +2,6 @@ package com.tarzan.navigation.modules.admin.controller.biz;
 
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.tarzan.navigation.common.constant.CoreConst;
-import com.tarzan.navigation.modules.admin.model.biz.CategoryLink;
-import com.tarzan.navigation.modules.admin.service.biz.CategoryLinkService;
 import com.tarzan.navigation.utils.ResultUtil;
 import com.tarzan.navigation.modules.admin.model.biz.Category;
 import com.tarzan.navigation.modules.admin.service.biz.CategoryService;
@@ -30,7 +28,6 @@ import java.util.List;
 public class CategoryController {
 
     private final CategoryService categoryService;
-    private final CategoryLinkService categoryLinkService;
 
     @PostMapping("list")
     @ResponseBody
@@ -65,7 +62,7 @@ public class CategoryController {
     @ResponseBody
     @CacheEvict(value = "category", allEntries = true)
     public ResponseVo add(Category bizCategory) {
-        if (existArticles(bizCategory.getPid())) {
+        if (categoryService.existLinks(bizCategory.getPid())) {
                 return ResultUtil.error("添加失败，父级分类不能存在网站");
         }
         Date date = new Date();
@@ -98,7 +95,7 @@ public class CategoryController {
     @ResponseBody
     @CacheEvict(value = "category", allEntries = true)
     public ResponseVo edit(Category bizCategory) {
-        if (existArticles(bizCategory.getPid())) {
+        if (categoryService.existLinks(bizCategory.getPid())) {
             return ResultUtil.error("编辑失败，父级分类不能存在网站");
         }
         bizCategory.setUpdateTime(new Date());
@@ -125,9 +122,6 @@ public class CategoryController {
         }
     }
 
-    private boolean existArticles(Integer id){
-            return categoryLinkService.lambdaQuery().eq(CategoryLink::getCategoryId,id).count()!=0L;
-    }
 
     private String getCategoryName(Integer id){
         Category category=categoryService.getById(id);

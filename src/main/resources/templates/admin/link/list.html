@@ -15,7 +15,14 @@
     </div>
 </div>
 <!-- Main content -->
-<section class="content">
+<div class="row">
+    <div class="col-lg-2 col-md-3">
+        <div class="card card-body">
+            <div class="compose-btn"><h3>导航分类</h3></div>
+            <ul id="permissionTree" class="ztree"></ul>
+        </div>
+    </div>
+    <div class="col-lg-10 col-md-9">
     <div class="card card-info card-header">
         <form id="searchForm" class="needs-validation form-inline" novalidate="">
             <div class="form-group">
@@ -51,7 +58,8 @@
         </div>
         <table class="table-sm" id="table"></table>
     </div>
-</section>
+    </div>
+</div>
 
 <!-- 表单模态框 -->
 <div class="modal fade" id="formModal" tabindex="-1" role="dialog">
@@ -75,7 +83,31 @@
     </div>
 </div>
 <script>
+    let categoryId = 0;
     $(function () {
+            //树-初始化设置
+            var treeSetting = {
+                view: {
+                    showIcon: false,
+                    selectedMulti: false        //禁止多点选中
+                },
+                data: {
+                    simpleData: {
+                        enable: true,
+                        idKey: "id",
+                        pIdKey: "pid"
+                    }
+                },
+                callback: {
+                    onClick: onClick//左点击触发的函数
+                }
+            };
+            Core.postAjax("/category/list", {}, function (data) {
+                var zNodes = data;
+                $.fn.zTree.init($("#permissionTree"), treeSetting, zNodes);
+            });
+
+
         window.operateEvents = {
             // 点击编辑
             'click .btn_edit': function (e, value, row, index) {
@@ -171,6 +203,14 @@
             return edit + del;
         }
 
+        //鼠标点击节点的函数
+        function onClick(event, treeId, treeNode) {
+            //当node里具有url的时候，阻止跳转
+            event.preventDefault();//阻止页面跳转
+            categoryId=treeNode.id;
+            refreshTable();
+        }
+
         var options = {
             id: "#table",
             url: '/link/list',
@@ -193,6 +233,7 @@
                 pageSize: params.pageSize,
                 name: $("#name").val(),
                 url: $("#url").val(),
+                categoryId:categoryId,
                 status: $("#status").val(),
             };
         }
@@ -287,11 +328,13 @@
         // 保存或更新
         $('#saveOrUpdateBtn').on('click', function () {
             var $f = $('#linkForm');
+            let dataParam=$f.serialize();
+            dataParam =dataParam +"&"+"categoryId="+categoryId;
             var valid = $f[0].checkValidity();
             var url = $f.find("input[name='id']").val() ? "/link/edit" : "/link/add"
             if (valid) {
                 Core.mask("#saveOrUpdateBtn");
-                Core.postAjax(url, $f.serialize(), function (data) {
+                Core.postAjax(url, dataParam, function (data) {
                     Core.unmask("#saveOrUpdateBtn");
                     if (data.status === 200) {
                         $("#formModal").modal("hide");

@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS `biz_link` (
     `status` int UNSIGNED NULL DEFAULT NULL COMMENT '状态',
     `origin` int NULL DEFAULT NULL COMMENT '1-管理员添加 2-自助申请',
     `remark` varchar(255) NULL DEFAULT NULL COMMENT '备注',
+    `category_id` int  NULL DEFAULT NULL COMMENT '分类id',
     `create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '添加时间',
     `update_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '更新时间'
     );
