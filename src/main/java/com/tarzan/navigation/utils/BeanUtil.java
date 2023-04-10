@@ -80,7 +80,7 @@ public class BeanUtil {
     }
 
     public static <T> Map<String, T> objectToMap(Object requestParameters) {
-        Map<String, T> map = new HashMap<>();
+        Map<String, T> map = new HashMap<>(10);
         // 获取f对象对应类中的所有属性域
         Field[] fields = requestParameters.getClass().getDeclaredFields();
         for (Field field : fields) {

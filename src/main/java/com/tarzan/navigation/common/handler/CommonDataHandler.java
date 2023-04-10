@@ -50,7 +50,7 @@ public class CommonDataHandler implements HandlerInterceptor {
                 if(!CoreConst.IS_REGISTERED.get()&&CoreConst.SYSTEM_REGISTER.equals(request.getServletPath())) {
                  mv.setViewName("admin/system/register");
                }
-                mv.addObject("SITE_CONFIG",sysConfigService.selectAll());
+                mv.addObject("SITE_CONFIG",sysConfigService.getInfo());
             }
     }
 }

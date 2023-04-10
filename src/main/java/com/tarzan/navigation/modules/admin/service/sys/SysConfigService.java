@@ -1,10 +1,14 @@
 package com.tarzan.navigation.modules.admin.service.sys;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tarzan.navigation.modules.admin.mapper.sys.SysConfigMapper;
 import com.tarzan.navigation.modules.admin.model.sys.SysConfig;
+import com.tarzan.navigation.modules.admin.vo.SiteInfoVO;
+import com.tarzan.navigation.utils.BeanUtil;
 import lombok.AllArgsConstructor;
+import org.apache.commons.collections.MapUtils;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -22,14 +26,21 @@ import java.util.Map;
 @AllArgsConstructor
 public class SysConfigService extends ServiceImpl<SysConfigMapper, SysConfig> {
 
-    @Cacheable(value = "site", key = "'config'")
-    public Map<String, String> selectAll() {
+
+    private Map<String, String> selectAll() {
         List<SysConfig> sysConfigs =list();
         Map<String, String> map = new HashMap<>(sysConfigs.size());
         for (SysConfig config : sysConfigs) {
             map.put(config.getSysKey(), config.getSysValue());
         }
         return map;
+    }
+
+    @Cacheable(value = "site", key = "'config'")
+    public SiteInfoVO getInfo() {
+        Map<String, String> map = this.selectAll();
+        String jsonStr = JSON.toJSONString(map);
+        return JSON.parseObject(jsonStr, SiteInfoVO.class);
     }
 
     @CacheEvict(value = "site", key = "'config'", allEntries = true)

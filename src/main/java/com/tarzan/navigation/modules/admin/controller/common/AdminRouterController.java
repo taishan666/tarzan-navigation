@@ -112,8 +112,7 @@ public class AdminRouterController {
      */
     @GetMapping("/siteInfo")
     public String siteInfo(Model model) {
-        Map<String, String> map = sysConfigService.selectAll();
-        model.addAttribute("siteInfo", map);
+        model.addAttribute("siteInfo", sysConfigService.getInfo());
         return CoreConst.ADMIN_PREFIX + "site/siteInfo";
     }
 
