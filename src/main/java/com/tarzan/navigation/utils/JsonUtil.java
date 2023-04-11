@@ -11,6 +11,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
+/**
+ * @author tarzan
+ */
 @Slf4j
 public class JsonUtil {
 
@@ -89,6 +92,7 @@ public class JsonUtil {
         }
 
 
+        @Override
         public ObjectMapper copy() {
             return new JsonUtil.JacksonObjectMapper(this);
         }

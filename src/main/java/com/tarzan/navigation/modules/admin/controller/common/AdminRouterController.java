@@ -137,15 +137,6 @@ public class AdminRouterController {
 
 
     /**
-     * 分类管理
-     */
-    @GetMapping("/category/links")
-    public String categoryLinks(Model model) {
-        model.addAttribute("categories",categoryService.treeList());
-        return CoreConst.ADMIN_PREFIX + "categoryLink/inbox";
-    }
-
-    /**
      * 标签
      */
     @GetMapping("/tags")

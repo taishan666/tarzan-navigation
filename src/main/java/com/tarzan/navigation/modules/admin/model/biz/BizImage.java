@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.util.Date;
 
 /**
@@ -20,4 +22,5 @@ public class BizImage {
     private String base64;
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;
+
 }

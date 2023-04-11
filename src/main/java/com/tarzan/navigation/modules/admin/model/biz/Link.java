@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+
 /**
  * @author tarzan liu
  * @since JDK1.8

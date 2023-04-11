@@ -3,18 +3,22 @@ package com.tarzan.navigation.modules.admin.controller.biz;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tarzan.navigation.common.constant.CoreConst;
 import com.tarzan.navigation.utils.DateUtil;
+import com.tarzan.navigation.utils.JsoupUtil;
 import com.tarzan.navigation.utils.ResultUtil;
 import com.tarzan.navigation.modules.admin.model.biz.Link;
 import com.tarzan.navigation.modules.admin.service.biz.LinkService;
 import com.tarzan.navigation.modules.admin.vo.base.PageResultVo;
 import com.tarzan.navigation.modules.admin.vo.base.ResponseVo;
 import lombok.AllArgsConstructor;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.*;
 
 /**
@@ -51,12 +55,9 @@ public class LinkController {
     @PostMapping("/add")
     @ResponseBody
     @CacheEvict(value = {"link", "category"}, allEntries = true)
-    public ResponseVo add(Link link) {
+    public ResponseVo add(@Valid Link link) {
         if(Objects.nonNull(link.getCategoryId())&&link.getCategoryId()>0){
-            Date date = new Date();
-            link.setCreateTime(date);
-            link.setUpdateTime(date);
-            boolean flag = linkService.save(link);
+            boolean flag = linkService.saveByUrl(link.getUrl(),link.getCategoryId());
             if (flag) {
                 return ResultUtil.success("新增网址成功");
             } else {
