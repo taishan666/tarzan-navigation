@@ -67,6 +67,14 @@
                 title: '分类名称',
                 align: "left"
             },
+            {
+                field: 'icon',
+                title: '图标',
+                align: "center",
+                formatter: function (value, row, index) {
+                    return  '<i class="' + value.icon + '"></i>';
+                }
+            },
         /*    {
                 field: 'description',
                 title: '分类描述',
@@ -76,14 +84,6 @@
                 field: 'sort',
                 title: '排序',
                 align: "center",
-            },
-            {
-                field: 'manage',
-                title: '管理',
-                align: "center",
-                formatter: function (value, row, index) {
-                    return  '<a href="#categories/' + value.id + '"><button id = "btn_manage" type = "button" class="effect-btn btn btn-info" >网站管理</button></a>';
-                }
             },
             {
                 field: 'operation',

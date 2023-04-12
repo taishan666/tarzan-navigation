@@ -46,7 +46,7 @@ public class CategoryService extends ServiceImpl<CategoryMapper, Category> {
     @Cacheable(value = "category", key = "'tree'")
     public List<Category> treeList() {
         List<Category> sourceList=this.selectCategories(CoreConst.STATUS_VALID);
-        List<Category> topList=sourceList.stream().filter(e->e.getPid()==CoreConst.TOP_CATEGORY_ID).collect(Collectors.toList());
+        List<Category> topList=sourceList.stream().filter(e-> e.getPid().equals(CoreConst.TOP_CATEGORY_ID)).collect(Collectors.toList());
         Map<Integer,List<Link>> map=linkService.getCategoryLinkMap();
         topList.forEach(e->assemblyTree(sourceList,e,map));
         return topList;
