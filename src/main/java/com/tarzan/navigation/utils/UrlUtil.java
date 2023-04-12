@@ -6,6 +6,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 
+/**
+ * @author tarzan
+ */
 public class UrlUtil extends UriUtils {
 
     public UrlUtil() {

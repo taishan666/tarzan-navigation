@@ -1,8 +1,8 @@
 package com.tarzan.navigation.modules.admin.service.biz;
 
+import cn.hutool.http.HttpUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
-import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -10,16 +10,23 @@ import com.tarzan.navigation.modules.admin.mapper.biz.ImageMapper;
 import com.tarzan.navigation.modules.admin.mapper.biz.LinkMapper;
 import com.tarzan.navigation.modules.admin.model.biz.BizImage;
 import com.tarzan.navigation.modules.admin.model.biz.Link;
-import com.tarzan.navigation.utils.IoUtil;
 import com.tarzan.navigation.utils.JsoupUtil;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -30,6 +37,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @AllArgsConstructor
+@Slf4j
 public class LinkService extends ServiceImpl<LinkMapper, Link> {
 
     private final ImageMapper imageMapper;
@@ -42,10 +50,10 @@ public class LinkService extends ServiceImpl<LinkMapper, Link> {
         assert doc != null;
         String title=doc.title();
         Element head=doc.head();
-        Element element=head.selectFirst("[name=description]");
+        Element descriptionEle=head.selectFirst("[name=description]");
         String desc="";
-        if(Objects.nonNull(element)){
-             desc= element.attr("content");
+        if(Objects.nonNull(descriptionEle)){
+             desc= descriptionEle.attr("content");
         }
         link.setName(title);
         link.setDescription(desc);
@@ -53,22 +61,36 @@ public class LinkService extends ServiceImpl<LinkMapper, Link> {
         link.setCreateTime(date);
         link.setUpdateTime(date);
         BizImage image=new BizImage();
-        image.setBase64(getBase64(url+"/favicon.ico"));
+        url =StringUtils.appendIfMissing(url,"/");
+        String iconUrl=url+"favicon.ico";
+        if(!checkFileExist(iconUrl)){
+            Element iconEle=head.selectFirst("[rel=icon]");
+            if(Objects.nonNull(iconEle)){
+                iconUrl= iconEle.attr("href");
+                if(iconUrl.startsWith("//")){
+                    iconUrl=url.split(":")[0]+":"+iconUrl;
+                }
+                if(iconUrl.startsWith("/")){
+                    iconUrl=url+iconUrl;
+                }
+            }
+        }
+        image.setBase64(getBase64(iconUrl));
         imageMapper.insert(image);
         link.setImageId(image.getId());
        return super.save(link);
     }
 
+    public static boolean checkFileExist(String src){
+        try {
+            return ImageIO.read(new URL(src))!=null;
+        } catch (IOException e) {
+            return false;
+        }
+    }
 
     public static String getBase64(String src) {
-        byte[] bytes= new byte[0];
-        try {
-            URL url = new URL(src);
-            bytes = IoUtil.readToByteArray(url.openStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "data:image/ico;base64,"+ Base64.getEncoder().encodeToString(bytes);
+        return "data:image/ico;base64,"+ Base64.getEncoder().encodeToString(HttpUtil.downloadBytes(src));
     }
 
     public IPage<Link> pageLinks(Link link, Integer pageNumber, Integer pageSize) {
