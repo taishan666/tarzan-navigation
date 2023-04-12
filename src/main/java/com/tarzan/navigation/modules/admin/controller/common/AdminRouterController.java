@@ -1,6 +1,7 @@
 package com.tarzan.navigation.modules.admin.controller.common;
 
 import com.tarzan.navigation.common.constant.CoreConst;
+import com.tarzan.navigation.modules.admin.model.biz.Category;
 import com.tarzan.navigation.modules.admin.model.sys.User;
 import com.tarzan.navigation.modules.admin.service.biz.CategoryService;
 import com.tarzan.navigation.modules.admin.service.biz.CommentService;
@@ -11,10 +12,7 @@ import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import java.util.Map;
 
 /**
  * 后台管理页面跳转控制器
@@ -123,7 +121,13 @@ public class AdminRouterController {
      * 友情链接
      */
     @GetMapping("/links")
-    public String links() {
+    public String links(Model model) {
+        Category category=categoryService.lambdaQuery().last("limit 1").one();
+        Integer categoryId=0;
+        if(category!=null){
+            categoryId=category.getId();
+        }
+        model.addAttribute("categoryId", categoryId);
         return CoreConst.ADMIN_PREFIX + "link/list";
     }
 

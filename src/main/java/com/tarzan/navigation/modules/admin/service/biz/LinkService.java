@@ -11,22 +11,18 @@ import com.tarzan.navigation.modules.admin.mapper.biz.LinkMapper;
 import com.tarzan.navigation.modules.admin.model.biz.BizImage;
 import com.tarzan.navigation.modules.admin.model.biz.Link;
 import com.tarzan.navigation.utils.JsoupUtil;
+import com.tarzan.navigation.utils.StringUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -48,12 +44,21 @@ public class LinkService extends ServiceImpl<LinkMapper, Link> {
         link.setCategoryId(categoryId);
         Document doc= JsoupUtil.getDocument(url);
         assert doc != null;
-        String title=doc.title();
         Element head=doc.head();
+        String title=doc.title();
+        if(StringUtil.isEmpty(title)){
+            Element titleEle=head.selectFirst("[property=og:title]");
+            title=titleEle.attr("content");
+        }
         Element descriptionEle=head.selectFirst("[name=description]");
         String desc="";
         if(Objects.nonNull(descriptionEle)){
              desc= descriptionEle.attr("content");
+        }else{
+            descriptionEle=head.selectFirst("[property=og:description]");
+            if(Objects.nonNull(descriptionEle)){
+                desc= descriptionEle.attr("content");
+            }
         }
         link.setName(title);
         link.setDescription(desc);
@@ -67,11 +72,14 @@ public class LinkService extends ServiceImpl<LinkMapper, Link> {
             Element iconEle=head.selectFirst("[rel=icon]");
             if(Objects.nonNull(iconEle)){
                 iconUrl= iconEle.attr("href");
-                if(iconUrl.startsWith("//")){
-                    iconUrl=url.split(":")[0]+":"+iconUrl;
-                }
-                if(iconUrl.startsWith("/")){
-                    iconUrl=url+iconUrl;
+                if(iconUrl.startsWith("http")||iconUrl.startsWith("https")){
+                    iconUrl=url;
+                }else {
+                    if(iconUrl.startsWith("//")){
+                        iconUrl=url.split(":")[0]+":"+iconUrl;
+                    }else {
+                        iconUrl=url+iconUrl;
+                    }
                 }
             }
         }

@@ -84,7 +84,7 @@
 </div>
 <script>
     $(function () {
-        let categoryId = 0;
+        let categoryId = [[${categoryId}]];
             //树-初始化设置
             var treeSetting = {
                 view: {
@@ -104,7 +104,9 @@
             };
             Core.postAjax("/category/list", {}, function (data) {
                 var zNodes = data;
-                $.fn.zTree.init($("#permissionTree"), treeSetting, zNodes);
+                var zTree =$.fn.zTree.init($("#permissionTree"), treeSetting, zNodes);
+                const node = zTree.getNodeByParam("id", categoryId);
+                zTree.selectNode(node);
             });
 
 
@@ -145,21 +147,22 @@
                 formatter: function (value, row, index) {
                     return '<img src="' + value + '" style="height: 40px;" class="btn_view" referrerPolicy="no-referrer" />'
                 }
-            },{
-                field: 'email',
-                title: '站长邮箱',
-                align : "center",
-            },{
-                field: 'qq',
-                title: '站长QQ',
-                align : "center",
             },
-        /*    {
-                field: 'status',
-                title: '状态',
-                align : "center",
-                formatter: typeSwitch
-            }, */
+      /*      {
+               field: 'email',
+               title: '站长邮箱',
+               align : "center",
+           },{
+               field: 'qq',
+               title: '站长QQ',
+               align : "center",
+           },
+        {
+               field: 'status',
+               title: '状态',
+               align : "center",
+               formatter: typeSwitch
+           }, */
             {
                 field: 'operation',
                 title: '操作',
