@@ -21,8 +21,13 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -77,12 +82,17 @@ public class LinkService extends ServiceImpl<LinkMapper, Link> {
        return super.save(link);
     }
 
-    public static boolean checkFileExist(String src){
+    public static boolean checkImageExist(String src){
         try {
-            return ImageIO.read(new URL(src))!=null;
+            URL url=new URL(src);
+            HttpURLConnection connection= (HttpURLConnection) url.openConnection();
+            if(connection.getResponseCode()==200){
+                return true;
+            }
         } catch (IOException e) {
-            return false;
+           // e.printStackTrace();
         }
+        return false;
     }
 
     public static String getIconHref(String url,Element iconEle){
@@ -94,66 +104,36 @@ public class LinkService extends ServiceImpl<LinkMapper, Link> {
                 if(iconHref.startsWith("//")){
                     return url.split(":")[0]+":"+iconHref;
                 }else {
-                    int fromIndex=url.indexOf(".");
-                    int endIndex=url.indexOf("/",fromIndex);
-                    url=url.substring(0,endIndex+1);
-                    return url+iconHref;
+                    return getDomain(url)+iconHref;
                 }
             }
         }else {
             return null;
         }
     }
+    public static String getDomain(String url){
+        int fromIndex=url.indexOf(".");
+        int endIndex=url.indexOf("/",fromIndex);
+        return url.substring(0,endIndex+1);
+    }
+
     public static String getWebIcon(String url, Document doc){
         url =StringUtils.appendIfMissing(url,"/");
-        String iconUrl=url+"favicon.ico";
+        String iconUrl=getDomain(url)+"favicon.ico";
         Element iconEle=doc.selectFirst("[rel=icon]");
         Element shortIconEle=doc.selectFirst("[rel=shortcut icon]");
         String iconHref=getIconHref(url,iconEle);
         String shortIconHref=getIconHref(url,shortIconEle);
-        if(checkFileExist(iconHref)){
+        if(checkImageExist(iconHref)){
            return iconHref;
         }
-        if(checkFileExist(shortIconHref)){
+        if(checkImageExist(shortIconHref)){
             return shortIconHref;
         }
-        if(checkFileExist(iconUrl)){
+        if(checkImageExist(iconUrl)){
             return iconUrl;
         }
         return null;
-    }
-    public static String getWebIcon1(String url, Document doc){
-        url =StringUtils.appendIfMissing(url,"/");
-        String iconUrl=url+"favicon.ico";
-        Element iconElement=null;
-        Element iconEle=doc.selectFirst("[rel=icon]");
-        Element shortIconEle=doc.selectFirst("[rel=shortcut icon]");
-        if(Objects.nonNull(shortIconEle)){
-            iconElement=shortIconEle;
-        }
-        if(Objects.nonNull(iconEle)){
-            iconElement=iconEle;
-        }
-        if(Objects.nonNull(iconElement)){
-            String iconHref= iconElement.attr("href");
-            if(iconHref.startsWith("http")||iconHref.startsWith("https")){
-                iconUrl=iconHref;
-            }else {
-                if(iconHref.startsWith("//")){
-                    iconUrl=url.split(":")[0]+":"+iconHref;
-                }else {
-                    int fromIndex=url.indexOf(".");
-                    int endIndex=url.indexOf("/",fromIndex);
-                    url=url.substring(0,endIndex+1);
-                    iconUrl=url+iconHref;
-                }
-            }
-        }else {
-            if(!checkFileExist(iconUrl)){
-                return null;
-            }
-        }
-        return iconUrl;
     }
 
     public static String getBase64(String src) {
