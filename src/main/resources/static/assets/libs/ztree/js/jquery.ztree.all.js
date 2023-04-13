@@ -1249,9 +1249,14 @@
             makeDOMNodeIcon: function (html, setting, node) {
                 var nameStr = data.getNodeName(setting, node),
                     name = setting.view.nameIsHTML ? nameStr : nameStr.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-                html.push("<span id='", node.tId, consts.id.ICON,
+      /*          html.push("<span id='", node.tId, consts.id.ICON,
                     "' title='' treeNode", consts.id.ICON, " class='", view.makeNodeIcoClass(setting, node),
                     "' style='", view.makeNodeIcoStyle(setting, node), "'></span><span id='", node.tId, consts.id.SPAN,
+                    "' class='", consts.className.NAME,
+                    "'>", name, "</span>");*/
+                var icon = (node.isParent && node.iconOpen && node.iconClose) ? (node.open ? node.iconOpen : node.iconClose) : node[setting.data.key.icon];
+                html.push("<span id='", node.tId, consts.id.ICON,
+                    "' title='' treeNode", consts.id.ICON, " class='", icon, "'></span><span id='", node.tId, consts.id.SPAN,
                     "' class='", consts.className.NAME,
                     "'>", name, "</span>");
             },

@@ -19,7 +19,7 @@
     <div class="col-lg-2 col-md-3">
         <div class="card card-body">
             <div class="compose-btn"><h3>导航分类</h3></div>
-            <ul id="permissionTree" class="ztree"></ul>
+            <ul id="categoryTree" class="ztree"></ul>
         </div>
     </div>
     <div class="col-lg-10 col-md-9">
@@ -50,7 +50,10 @@
     <div class="card table-card card-body">
         <div id="toolbar" class="btn-group">
                 <button id="btn_add" type="button" class="btn btn-primary">
-                    <span class="fa fa-plus" aria-hidden="true"></span>新增
+                    <span class="fa fa-plus" aria-hidden="true"></span>新增网站
+                </button>
+                <button id="btn_edit_category" type="button" class="btn btn-warning">
+                    <span class="fa fa-bahai" aria-hidden="true"></span>修改分类
                 </button>
                 <button id="btn_batch_delete" type="button" class="btn btn-danger">
                     <span class="fa fa-trash" aria-hidden="true"></span>批量删除
@@ -82,33 +85,77 @@
         </div>
     </div>
 </div>
+
+<!-- 权限分配模态框 -->
+    <div class="modal fade" id="assignPermissionModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="assignPermissionTitle">修改分类</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul id="permissionTree" class="ztree"></ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="assignPermissionSaveOrUpdateBtn">保存
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 <script>
     $(function () {
         let categoryId = [[${categoryId}]];
-            //树-初始化设置
-            var treeSetting = {
-                view: {
-                    showIcon: false,
-                    selectedMulti: false        //禁止多点选中
-                },
-                data: {
-                    simpleData: {
-                        enable: true,
-                        idKey: "id",
-                        pIdKey: "pid"
-                    }
-                },
-                callback: {
-                    onClick: onClick//左点击触发的函数
+        //树-初始化设置
+        var treeSetting = {
+            view: {
+              //  showIcon: false,
+                selectedMulti: false        //禁止多点选中
+            },
+            //增删改，移动复制
+            edit: {
+              //  enable: true, //如果enable为flase，那么树就不能移动了
+              //  showRemoveBtn: true, //是否显示树的删除按钮
+             //   showRenameBtn: true, //是否显示数的重命名按钮
+              //  isSimpleData: true, //数据是否采用简单 Array 格式，默认false
+                // treeNodeKey: "id",  //在isSimpleData格式下，当前节点id属性,根据需要自己更改
+                //  treeNodeParentKey: "pid",//在isSimpleData格式下，当前节点的父节点id属性，根据需要自己更改
+                //showLine: true, //是否显示节点间的连线
+           //     removeTitle: "删除节点",//删除Logo的提示
+            //    renameTitle: "编辑节点",//修改Logo的提示
+            },
+            data: {
+                simpleData: {
+                    enable: true,
+                    idKey: "id",
+                    pIdKey: "pid"
                 }
-            };
-            Core.postAjax("/category/list", {}, function (data) {
-                var zNodes = data;
-                var zTree =$.fn.zTree.init($("#permissionTree"), treeSetting, zNodes);
-                const node = zTree.getNodeByParam("id", categoryId);
-                zTree.selectNode(node);
-            });
+            },
+            callback: {
+                onClick: onClick,//左点击触发的函数
+                onRightClick: onRightClick //右击触发的函数
+            }
+        };
+        Core.postAjax("/category/list", {}, function (data) {
+            const zTree = $.fn.zTree.init($("#categoryTree"), treeSetting, data);
+            const node = zTree.getNodeByParam("id", categoryId);
+            zTree.selectNode(node);
+        });
+        //鼠标点击节点的函数
+        function onClick(event, treeId, treeNode) {
+            //当node里具有url的时候，阻止跳转
+            event.preventDefault();//阻止页面跳转
+            categoryId=treeNode.id;
+            refreshTable();
+        }
+        //鼠标点击节点的函数
+        function onRightClick(event, treeId, treeNode) {
 
+        }
 
         window.operateEvents = {
             // 点击编辑
@@ -171,17 +218,17 @@
                 events: operateEvents,
                 formatter: operationFormatter
             }];
-        var onLoadSuccess=function () {	//在成功加载远程数据时触发
+        const onLoadSuccess = function () {	//在成功加载远程数据时触发
             $("[name='switch']").bootstrapSwitch({
-                onText : "启用",      // 设置ON文本
-                offText : "禁用",    // 设置OFF文本
-                onColor : "success",// 设置ON文本颜色(info/success/warning/danger/primary)
-                offColor : "warning",  // 设置OFF文本颜色 (info/success/warning/danger/primary)
-                size : "small",    // 设置控件大小,从小到大  (mini/small/normal/large)
+                onText: "启用",      // 设置ON文本
+                offText: "禁用",    // 设置OFF文本
+                onColor: "success",// 设置ON文本颜色(info/success/warning/danger/primary)
+                offColor: "warning",  // 设置OFF文本颜色 (info/success/warning/danger/primary)
+                size: "small",    // 设置控件大小,从小到大  (mini/small/normal/large)
                 // 当开关状态改变时触发
-                onSwitchChange : function(event, state) {
-                    var status=state?1:0;
-                    var params={id:this.value,status:status};
+                onSwitchChange: function (event, state) {
+                    var status = state ? 1 : 0;
+                    var params = {id: this.value, status: status};
                     var str = jQuery.param(params);
                     Core.postAjax('/link/edit', str, function (data) {
                         if (data.status === 200) {
@@ -192,6 +239,7 @@
                 }
             });
         };
+
         //表格中开关控件
         function typeSwitch(value, row, index){
             if (value) {
@@ -204,14 +252,6 @@
             var edit =  '<button class="effect-btn btn btn-info mt-2 mr-2 icon-lg btn_edit"><i class="fas fa-edit"></i></button>';
             var del =  '<button class="effect-btn btn btn-danger mt-2 mr-2 icon-lg btn_del"><i class="fas fa-trash-alt"></i></button>';
             return edit + del;
-        }
-
-        //鼠标点击节点的函数
-        function onClick(event, treeId, treeNode) {
-            //当node里具有url的时候，阻止跳转
-            event.preventDefault();//阻止页面跳转
-            categoryId=treeNode.id;
-            refreshTable();
         }
 
         var options = {
@@ -306,6 +346,78 @@
             })
         }
 
+        //树-初始化设置
+        const setting = {
+            view: {
+                showIcon: false,
+                selectedMulti: false        //禁止多点选中
+            },
+            check: {
+                enable: true,
+                chkStyle: "radio",
+                chkboxType: {"Y": "ps", "N": "s"}
+            },
+            data: {
+                simpleData: {
+                    enable: true,
+                    idKey: "id",
+                    pIdKey: "pid"
+                }
+            },
+            callback: {
+                onClick: onClickNode//左点击触发的函数
+            }
+        };
+        let zzTree;
+        //修改分类
+        $("#btn_edit_category").on('click', function () {
+            const checkedRows = Core.selectMutiData("#table");
+            if (checkedRows) {
+                Core.postAjax("/category/list", {}, function (data) {
+                     zzTree=$.fn.zTree.init($("#permissionTree"), setting, data);
+                     const node = zzTree.getNodeByParam("id", categoryId);
+                     zzTree.checkNode(node);
+                    $("#assignPermissionModal").modal("show");
+                })
+            }else {
+                layer.msg("请选中需要修改的网址！");
+            }
+        });
+
+        //鼠标点击节点的函数
+        function onClickNode(event, treeId, treeNode) {
+            //当node里具有url的时候，阻止跳转
+            event.preventDefault();//阻止页面跳转
+            zzTree.checkNode(treeNode);
+        }
+
+        $('#assignPermissionSaveOrUpdateBtn').on('click', function () {
+            Core.mask("#assignPermissionSaveOrUpdateBtn");
+            const checkedRows = Core.selectMutiData("#table");
+            if (checkedRows) {
+                const treeObj = $.fn.zTree.getZTreeObj("permissionTree");
+                const nodes = treeObj.getCheckedNodes(true);
+                if(nodes.length>0){
+                    const ids = [];
+                    $.each(checkedRows, function (i, item) {
+                        ids.push(item.id);
+                    })
+                    const jsonStr = JSON.stringify(ids);
+                    Core.postAjax("/link/update/category/"+nodes[0].id, jsonStr, function (data) {
+                        if (data.status === 200) {
+                            refreshTable();
+                            Core.unmask("#assignPermissionSaveOrUpdateBtn");
+                            $("#assignPermissionModal").modal("hide");
+                        }
+                        layer.msg(data.msg);
+                    },function (err) {
+                        layer.msg(err)
+                    }, "POST", "application/json; charset=UTF-8")
+                }
+            }
+        })
+
+
         // 批量删除
         $("#btn_batch_delete").on('click', function () {
             var checkedRows = Core.selectMutiData("#table");
@@ -352,7 +464,6 @@
         })
 
     });
-
     function previewImg(src) {
         layer.open({
             type: 1,

@@ -2,16 +2,13 @@ package com.tarzan.navigation.modules.admin.controller.biz;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tarzan.navigation.common.constant.CoreConst;
-import com.tarzan.navigation.utils.DateUtil;
-import com.tarzan.navigation.utils.JsoupUtil;
-import com.tarzan.navigation.utils.ResultUtil;
 import com.tarzan.navigation.modules.admin.model.biz.Link;
 import com.tarzan.navigation.modules.admin.service.biz.LinkService;
 import com.tarzan.navigation.modules.admin.vo.base.PageResultVo;
 import com.tarzan.navigation.modules.admin.vo.base.ResponseVo;
+import com.tarzan.navigation.utils.DateUtil;
+import com.tarzan.navigation.utils.ResultUtil;
 import lombok.AllArgsConstructor;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,7 +16,10 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * 后台友情链接管理
@@ -105,6 +105,19 @@ public class LinkController {
             return ResultUtil.success("删除友链成功");
         } else {
             return ResultUtil.error("删除友链失败");
+        }
+    }
+
+
+    @PostMapping("/update/category/{categoryId}")
+    @ResponseBody
+    @CacheEvict(value = {"link", "category"}, allEntries = true)
+    public ResponseVo updateCategory(@PathVariable("categoryId") Integer categoryId,@RequestBody List<Integer> ids) {
+        boolean flag = linkService.lambdaUpdate().in(Link::getId,ids).set(Link::getCategoryId,categoryId).update();
+        if (flag) {
+            return ResultUtil.success("修改分类成功成功");
+        } else {
+            return ResultUtil.error("修改分类失败");
         }
     }
 
