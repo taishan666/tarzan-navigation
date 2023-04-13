@@ -7,10 +7,10 @@ FROM williamyeh/java8:latest
 MAINTAINER tarzan "1334512682@qq.com"
 
 # 删除之前的镜像文件
-RUN rm -rf /opt/running/tarzan-cms*
+RUN rm -rf /opt/running/tarzan-navigation*
 
 #拷贝jar包，到容器内的指定位置
-ADD ./target/tarzan-cms.jar  /opt/running/tarzan-cms.jar
+ADD ./target/tarzan-navigation.jar  /opt/running/tarzan-navigation.jar
 
 #容器对外映射端口
 EXPOSE 80
@@ -19,5 +19,5 @@ EXPOSE 80
 WORKDIR /opt/running/
 
 #运行启动命令
-CMD ["java", "-jar","-Dfile.encoding=UTF-8","tarzan-cms.jar","--spring.profiles.active=dev"]
+CMD ["java", "-jar","-Dfile.encoding=UTF-8","tarzan-navigation.jar","--spring.profiles.active=dev"]
 

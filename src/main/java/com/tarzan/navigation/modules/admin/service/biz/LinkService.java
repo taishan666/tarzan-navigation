@@ -85,36 +85,73 @@ public class LinkService extends ServiceImpl<LinkMapper, Link> {
         }
     }
 
+    public static String getIconHref(String url,Element iconEle){
+        if(Objects.nonNull(iconEle)){
+            String iconHref= iconEle.attr("href");
+            if(iconHref.startsWith("http")||iconHref.startsWith("https")){
+                return iconHref;
+            }else {
+                if(iconHref.startsWith("//")){
+                    return url.split(":")[0]+":"+iconHref;
+                }else {
+                    int fromIndex=url.indexOf(".");
+                    int endIndex=url.indexOf("/",fromIndex);
+                    url=url.substring(0,endIndex+1);
+                    return url+iconHref;
+                }
+            }
+        }else {
+            return null;
+        }
+    }
     public static String getWebIcon(String url, Document doc){
         url =StringUtils.appendIfMissing(url,"/");
         String iconUrl=url+"favicon.ico";
-        if(!checkFileExist(iconUrl)){
-            Element iconElement=null;
-            Element iconEle=doc.selectFirst("[rel=icon]");
-            Element shortIconEle=doc.selectFirst("[rel=shortcut icon]");
-            if(Objects.nonNull(shortIconEle)){
-                iconElement=shortIconEle;
-            }
-            if(Objects.nonNull(iconEle)){
-                iconElement=iconEle;
-            }
-            if(Objects.nonNull(iconElement)){
-                iconUrl= iconElement.attr("href");
-                if(iconUrl.startsWith("http")||iconUrl.startsWith("https")){
-                    iconUrl=url;
+        Element iconEle=doc.selectFirst("[rel=icon]");
+        Element shortIconEle=doc.selectFirst("[rel=shortcut icon]");
+        String iconHref=getIconHref(url,iconEle);
+        String shortIconHref=getIconHref(url,shortIconEle);
+        if(checkFileExist(iconHref)){
+           return iconHref;
+        }
+        if(checkFileExist(shortIconHref)){
+            return shortIconHref;
+        }
+        if(checkFileExist(iconUrl)){
+            return iconUrl;
+        }
+        return null;
+    }
+    public static String getWebIcon1(String url, Document doc){
+        url =StringUtils.appendIfMissing(url,"/");
+        String iconUrl=url+"favicon.ico";
+        Element iconElement=null;
+        Element iconEle=doc.selectFirst("[rel=icon]");
+        Element shortIconEle=doc.selectFirst("[rel=shortcut icon]");
+        if(Objects.nonNull(shortIconEle)){
+            iconElement=shortIconEle;
+        }
+        if(Objects.nonNull(iconEle)){
+            iconElement=iconEle;
+        }
+        if(Objects.nonNull(iconElement)){
+            String iconHref= iconElement.attr("href");
+            if(iconHref.startsWith("http")||iconHref.startsWith("https")){
+                iconUrl=iconHref;
+            }else {
+                if(iconHref.startsWith("//")){
+                    iconUrl=url.split(":")[0]+":"+iconHref;
                 }else {
-                    if(iconUrl.startsWith("//")){
-                        iconUrl=url.split(":")[0]+":"+iconUrl;
-                    }else {
-                        int fromIndex=url.indexOf(".");
-                        int endIndex=url.indexOf("/",fromIndex);
-                        url=url.substring(0,endIndex+1);
-                        iconUrl=url+iconUrl;
-                    }
+                    int fromIndex=url.indexOf(".");
+                    int endIndex=url.indexOf("/",fromIndex);
+                    url=url.substring(0,endIndex+1);
+                    iconUrl=url+iconHref;
                 }
             }
-        }else{
-            return null;
+        }else {
+            if(!checkFileExist(iconUrl)){
+                return null;
+            }
         }
         return iconUrl;
     }
