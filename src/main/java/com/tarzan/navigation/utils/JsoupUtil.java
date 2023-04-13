@@ -22,7 +22,7 @@ public class JsoupUtil {
             //5000是设置连接超时时间，单位ms
             return Jsoup.connect(url)
                     .userAgent("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/13.0.782.112 Safari/535.1")
-                    .timeout(10*1000).get();
+                    .timeout(5*1000).get();
         } catch (IOException e) {
             e.printStackTrace();
         }

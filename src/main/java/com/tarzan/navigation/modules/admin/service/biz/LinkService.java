@@ -44,18 +44,22 @@ public class LinkService extends ServiceImpl<LinkMapper, Link> {
         link.setCategoryId(categoryId);
         Document doc= JsoupUtil.getDocument(url);
         assert doc != null;
-        Element head=doc.head();
         String title=doc.title();
         if(StringUtil.isEmpty(title)){
-            Element titleEle=head.selectFirst("[property=og:title]");
-            title=titleEle.attr("content");
+            Element titleEle=doc.selectFirst("title");
+            if(Objects.nonNull(titleEle)){
+                title= titleEle.text();
+            }else {
+                titleEle=doc.selectFirst("[property=og:title]");
+                title=titleEle.attr("content");
+            }
         }
-        Element descriptionEle=head.selectFirst("[name=description]");
+        Element descriptionEle=doc.selectFirst("[name=description]");
         String desc="";
         if(Objects.nonNull(descriptionEle)){
              desc= descriptionEle.attr("content");
         }else{
-            descriptionEle=head.selectFirst("[property=og:description]");
+            descriptionEle=doc.selectFirst("[property=og:description]");
             if(Objects.nonNull(descriptionEle)){
                 desc= descriptionEle.attr("content");
             }
@@ -66,23 +70,7 @@ public class LinkService extends ServiceImpl<LinkMapper, Link> {
         link.setCreateTime(date);
         link.setUpdateTime(date);
         BizImage image=new BizImage();
-        url =StringUtils.appendIfMissing(url,"/");
-        String iconUrl=url+"favicon.ico";
-        if(!checkFileExist(iconUrl)){
-            Element iconEle=head.selectFirst("[rel=icon]");
-            if(Objects.nonNull(iconEle)){
-                iconUrl= iconEle.attr("href");
-                if(iconUrl.startsWith("http")||iconUrl.startsWith("https")){
-                    iconUrl=url;
-                }else {
-                    if(iconUrl.startsWith("//")){
-                        iconUrl=url.split(":")[0]+":"+iconUrl;
-                    }else {
-                        iconUrl=url+iconUrl;
-                    }
-                }
-            }
-        }
+        String iconUrl=getWebIcon(url,doc);
         image.setBase64(getBase64(iconUrl));
         imageMapper.insert(image);
         link.setImageId(image.getId());
@@ -97,8 +85,42 @@ public class LinkService extends ServiceImpl<LinkMapper, Link> {
         }
     }
 
+    public static String getWebIcon(String url, Document doc){
+        url =StringUtils.appendIfMissing(url,"/");
+        String iconUrl=url+"favicon.ico";
+        if(!checkFileExist(iconUrl)){
+            Element iconElement=null;
+            Element iconEle=doc.selectFirst("[rel=icon]");
+            Element shortIconEle=doc.selectFirst("[rel=shortcut icon]");
+            if(Objects.nonNull(shortIconEle)){
+                iconElement=shortIconEle;
+            }
+            if(Objects.nonNull(iconEle)){
+                iconElement=iconEle;
+            }
+            if(Objects.nonNull(iconElement)){
+                iconUrl= iconElement.attr("href");
+                if(iconUrl.startsWith("http")||iconUrl.startsWith("https")){
+                    iconUrl=url;
+                }else {
+                    if(iconUrl.startsWith("//")){
+                        iconUrl=url.split(":")[0]+":"+iconUrl;
+                    }else {
+                        int fromIndex=url.indexOf(".");
+                        int endIndex=url.indexOf("/",fromIndex);
+                        url=url.substring(0,endIndex+1);
+                        iconUrl=url+iconUrl;
+                    }
+                }
+            }
+        }else{
+            return null;
+        }
+        return iconUrl;
+    }
+
     public static String getBase64(String src) {
-        return "data:image/ico;base64,"+ Base64.getEncoder().encodeToString(HttpUtil.downloadBytes(src));
+        return StringUtil.isEmpty(src)?"":"data:image/ico;base64,"+ Base64.getEncoder().encodeToString(HttpUtil.downloadBytes(src));
     }
 
     public IPage<Link> pageLinks(Link link, Integer pageNumber, Integer pageSize) {
