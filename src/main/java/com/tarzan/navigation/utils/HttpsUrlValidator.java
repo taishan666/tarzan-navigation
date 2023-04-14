@@ -1,5 +1,7 @@
 package com.tarzan.navigation.utils;
 
+import lombok.extern.slf4j.Slf4j;
+
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
@@ -12,11 +14,11 @@ import java.net.URL;
 /**
  * @author tarzan
  */
+@Slf4j
 public class HttpsUrlValidator {
 
     static HostnameVerifier hv = (urlHostName, session) -> {
-        System.out.println("Warning: URL Host: " + urlHostName + " vs. "
-                + session.getPeerHost());
+        log.info("Warning: URL Host: " + urlHostName + " vs. " + session.getPeerHost());
         return true;
     };
 
@@ -44,10 +46,10 @@ public class HttpsUrlValidator {
             }
 
         } catch (final IOException e) {
-            System.out.println(e.getMessage());
+            log.info(e.getMessage());
             return null;
         } catch (final Exception e1){
-            System.out.println(e1.getMessage());
+            log.info(e1.getMessage());
             return null;
         }finally {
             if (connection != null) {

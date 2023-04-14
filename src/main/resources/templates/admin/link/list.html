@@ -87,7 +87,7 @@
 </div>
 
 <!-- 权限分配模态框 -->
-    <div class="modal fade" id="assignPermissionModal" tabindex="-1" role="dialog">
+    <div class="modal fade" id="categoryModal" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -100,8 +100,8 @@
                     <ul id="permissionTree" class="ztree"></ul>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
-                    <button type="button" class="btn btn-primary" id="assignPermissionSaveOrUpdateBtn">保存
+                    <button type="button" class="btn btn-secondary" id="linkCopyBtn" >复制</button>
+                    <button type="button" class="btn btn-primary" id="linkMoveBtn">移动
                     </button>
                 </div>
             </div>
@@ -377,7 +377,7 @@
                      zzTree=$.fn.zTree.init($("#permissionTree"), setting, data);
                      const node = zzTree.getNodeByParam("id", categoryId);
                      zzTree.checkNode(node);
-                    $("#assignPermissionModal").modal("show");
+                    $("#categoryModal").modal("show");
                 })
             }else {
                 layer.msg("请选中需要修改的网址！");
@@ -391,8 +391,8 @@
             zzTree.checkNode(treeNode);
         }
 
-        $('#assignPermissionSaveOrUpdateBtn').on('click', function () {
-            Core.mask("#assignPermissionSaveOrUpdateBtn");
+        $('#linkMoveBtn').on('click', function () {
+            Core.mask("#linkMoveBtn");
             const checkedRows = Core.selectMutiData("#table");
             if (checkedRows) {
                 const treeObj = $.fn.zTree.getZTreeObj("permissionTree");
@@ -403,11 +403,37 @@
                         ids.push(item.id);
                     })
                     const jsonStr = JSON.stringify(ids);
-                    Core.postAjax("/link/update/category/"+nodes[0].id, jsonStr, function (data) {
+                    Core.postAjax("/link/move/"+nodes[0].id, jsonStr, function (data) {
                         if (data.status === 200) {
                             refreshTable();
-                            Core.unmask("#assignPermissionSaveOrUpdateBtn");
-                            $("#assignPermissionModal").modal("hide");
+                            Core.unmask("#linkMoveBtn");
+                            $("#categoryModal").modal("hide");
+                        }
+                        layer.msg(data.msg);
+                    },function (err) {
+                        layer.msg(err)
+                    }, "POST", "application/json; charset=UTF-8")
+                }
+            }
+        })
+
+        $('#linkCopyBtn').on('click', function () {
+            Core.mask("#linkCopyBtn");
+            const checkedRows = Core.selectMutiData("#table");
+            if (checkedRows) {
+                const treeObj = $.fn.zTree.getZTreeObj("permissionTree");
+                const nodes = treeObj.getCheckedNodes(true);
+                if(nodes.length>0){
+                    const ids = [];
+                    $.each(checkedRows, function (i, item) {
+                        ids.push(item.id);
+                    })
+                    const jsonStr = JSON.stringify(ids);
+                    Core.postAjax("/link/copy/"+nodes[0].id, jsonStr, function (data) {
+                        if (data.status === 200) {
+                            refreshTable();
+                            Core.unmask("#linkCopyBtn");
+                            $("#categoryModal").modal("hide");
                         }
                         layer.msg(data.msg);
                     },function (err) {

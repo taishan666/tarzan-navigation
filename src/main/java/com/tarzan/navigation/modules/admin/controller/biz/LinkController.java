@@ -109,16 +109,34 @@ public class LinkController {
     }
 
 
-    @PostMapping("/update/category/{categoryId}")
+    @PostMapping("/move/{categoryId}")
     @ResponseBody
     @CacheEvict(value = {"link", "category"}, allEntries = true)
-    public ResponseVo updateCategory(@PathVariable("categoryId") Integer categoryId,@RequestBody List<Integer> ids) {
+    public ResponseVo moveLink(@PathVariable("categoryId") Integer categoryId,@RequestBody List<Integer> ids) {
         boolean flag = linkService.lambdaUpdate().in(Link::getId,ids).set(Link::getCategoryId,categoryId).update();
         if (flag) {
-            return ResultUtil.success("修改分类成功成功");
+            return ResultUtil.success("移动分类成功成功");
         } else {
-            return ResultUtil.error("修改分类失败");
+            return ResultUtil.error("移动分类失败");
         }
+    }
+
+    @PostMapping("/copy/{categoryId}")
+    @ResponseBody
+    @CacheEvict(value = {"link", "category"}, allEntries = true)
+    public ResponseVo copyLink(@PathVariable("categoryId") Integer categoryId,@RequestBody List<Integer> ids) {
+        List<Link> links=linkService.lambdaQuery().in(Link::getId,ids).list();
+        if(!CollectionUtils.isEmpty(links)){
+            links.forEach(e->{
+                e.setId(null);
+                e.setCategoryId(categoryId);
+            });
+            boolean flag = linkService.saveBatch(links);
+            if (!flag) {
+                return ResultUtil.error("复制分类失败");
+            }
+        }
+        return ResultUtil.success("复制分类成功成功");
     }
 
 }
