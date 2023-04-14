@@ -20,11 +20,7 @@ import org.jsoup.nodes.Element;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
@@ -69,30 +65,44 @@ public class LinkService extends ServiceImpl<LinkMapper, Link> {
                 desc= descriptionEle.attr("content");
             }
         }
+        if(StringUtil.isNotBlank(title)){
+            if(title.length()>50){
+                title= title.substring(0,50);
+            }
+        }
         link.setName(title);
         link.setDescription(desc);
         Date date = new Date();
         link.setCreateTime(date);
         link.setUpdateTime(date);
         BizImage image=new BizImage();
-        String iconUrl=getWebIcon(url,doc);
-        image.setBase64(getBase64(iconUrl));
+        String webIconUrl=getWebIcon(url,doc);
+        image.setBase64(getBase64(webIconUrl));
         imageMapper.insert(image);
         link.setImageId(image.getId());
        return super.save(link);
     }
 
-    public static boolean checkImageExist(String src){
+    public static String checkImageExist(String src){
         try {
             URL url=new URL(src);
-            HttpURLConnection connection= (HttpURLConnection) url.openConnection();
-            if(connection.getResponseCode()==200){
-                return true;
+            URLConnection urlConnection= url.openConnection();
+            //设置读取超时
+            urlConnection.setReadTimeout(1000 * 60);
+            urlConnection.setRequestProperty("Accept", "*/*");
+            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+            urlConnection.setRequestProperty("Accept-Language", "zh-cn");
+            urlConnection.setRequestProperty("Connection", "close"); //不进行持久化连接
+            HttpURLConnection connection= (HttpURLConnection) urlConnection;
+            int code=connection.getResponseCode();
+            String contentType=connection.getContentType();
+            if(code==200&&contentType.startsWith("image")){
+                return contentType;
             }
         } catch (IOException e) {
-           // e.printStackTrace();
+            log.error(e.getMessage());
         }
-        return false;
+        return null;
     }
 
     public static String getIconHref(String url,Element iconEle){
@@ -124,20 +134,23 @@ public class LinkService extends ServiceImpl<LinkMapper, Link> {
         Element shortIconEle=doc.selectFirst("[rel=shortcut icon]");
         String iconHref=getIconHref(url,iconEle);
         String shortIconHref=getIconHref(url,shortIconEle);
-        if(checkImageExist(iconHref)){
-           return iconHref;
+        String result1=checkImageExist(iconHref);
+        if(result1!=null){
+           return iconHref+","+result1;
         }
-        if(checkImageExist(shortIconHref)){
-            return shortIconHref;
+        String result2=checkImageExist(shortIconHref);
+        if(result2!=null){
+            return shortIconHref+","+result2;
         }
-        if(checkImageExist(iconUrl)){
-            return iconUrl;
+        String result3=checkImageExist(iconUrl);
+        if(result3!=null){
+            return iconUrl+","+result3;
         }
         return null;
     }
 
     public static String getBase64(String src) {
-        return StringUtil.isEmpty(src)?"":"data:image/ico;base64,"+ Base64.getEncoder().encodeToString(HttpUtil.downloadBytes(src));
+        return StringUtil.isEmpty(src)?"":"data:"+src.split(",")[1]+";base64,"+ Base64.getEncoder().encodeToString(HttpUtil.downloadBytes(src.split(",")[0]));
     }
 
     public IPage<Link> pageLinks(Link link, Integer pageNumber, Integer pageSize) {
