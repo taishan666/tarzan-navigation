@@ -52,7 +52,7 @@ public class DbBackupTools {
             while (rs.next()) {
                 String tableName=rs.getString("TABLE_NAME");
                 if(tableName.startsWith("SYS_")||tableName.startsWith("BIZ_")){
-                    if(!tableName.equals("SYS_LOG_ERROR")){
+                    if(!tableName.equals("SYS_LOG_ERROR")&&!tableName.equals("SYS_LOGIN_LOG")){
                         tableNames.add(tableName);
                     }
                 }
@@ -84,7 +84,7 @@ public class DbBackupTools {
             in = new BufferedReader(reader);
             String line;
             while ((line = in.readLine()) != null) {
-                if(!line.contains("SYS_LOG_ERROR")){
+                if(!line.contains("SYS_LOG_ERROR")&&!line.contains("SYS_LOGIN_LOG")){
                     list.add(line);
                 }
             }
