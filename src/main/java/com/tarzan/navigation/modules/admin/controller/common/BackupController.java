@@ -104,7 +104,7 @@ public class BackupController {
      */
     @PostMapping("/delete")
     @ResponseBody
-    public ResponseVo deleteRole(String fileName) {
+    public ResponseVo delete(String fileName) {
         String backupDir= StringUtils.appendIfMissing(tarzanProperties.getBackupDir(), File.separator);
         File file=new File(backupDir+fileName);
         if (file.exists()&&file.delete()) {

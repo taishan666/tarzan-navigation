@@ -52,7 +52,9 @@ public class DbBackupTools {
             while (rs.next()) {
                 String tableName=rs.getString("TABLE_NAME");
                 if(tableName.startsWith("SYS_")||tableName.startsWith("BIZ_")){
-                    tableNames.add(tableName);
+                    if(!tableName.equals("SYS_LOG_ERROR")){
+                        tableNames.add(tableName);
+                    }
                 }
             }
         } catch (Exception e) {
@@ -70,7 +72,7 @@ public class DbBackupTools {
         List<String> list=new ArrayList<>();
         //清空所有表数据
         tableNames().forEach(t-> list.add("TRUNCATE TABLE "+t));
-        jdbcTemplate.batchUpdate(list.toArray(new String[list.size()]));
+        jdbcTemplate.batchUpdate(list.toArray(new String[0]));
         list.clear();
         FileInputStream out=null;
         InputStreamReader reader=null;
@@ -82,7 +84,9 @@ public class DbBackupTools {
             in = new BufferedReader(reader);
             String line;
             while ((line = in.readLine()) != null) {
-                list.add(line);
+                if(!line.contains("SYS_LOG_ERROR")){
+                    list.add(line);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -119,15 +123,16 @@ public class DbBackupTools {
     /**
      * 异步多线程处理:
      */
-    private void executeAsync(List<String> sqlList) {
+    @Transactional(rollbackFor = Exception.class)
+    public void executeAsync(List<String> sqlList) {
         int pages=0;
-        int pageNum=1000;
+        int pageNum=50;
         while(true){
             pages++;
             int endIndex = Math.min(pages * pageNum, sqlList.size());
             List<String> list=sqlList.subList((pages - 1) * pageNum, endIndex);
             jdbcTemplate.batchUpdate(list.toArray(new String[0]));
-            log.info(endIndex+"  恢复数据"+list.size()+"条sql完毕。。。。。。");
+            log.info("恢复数据"+list.size()+"条sql完毕。。。。。。");
             if(endIndex>=sqlList.size()){
                 break;
             }
