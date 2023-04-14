@@ -1,21 +1,24 @@
 package com.tarzan.navigation.utils;
 
-import com.tarzan.navigation.common.props.CmsProperties;
+import com.tarzan.navigation.common.props.TarzanProperties;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.sql.Connection;
+import java.sql.DatabaseMetaData;
+import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * 数据库数据备份
@@ -31,48 +34,50 @@ public class DbBackupTools {
     @Resource
     private  JdbcTemplate jdbcTemplate;
     @Resource
-    private CmsProperties cmsProperties;
-    //备份文件前缀
+    private TarzanProperties tarzanProperties;
+    /** 备份文件前缀 */
     private  final static String FILE_PREFIX="backupSql_";
-    //当前系统最佳线程数
-    private final static int curSystemThreads= Runtime.getRuntime().availableProcessors();
-    //时间格式
-    private final static SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    /** 时间格式 */
+    private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-
-    //获取所有表名称
+    /**
+     * 获取所有表名称
+     */
     private  List<String> tableNames() {
         List<String> tableNames= new ArrayList<>();
-      /*  try {
+        try {
             Connection getConnection=jdbcTemplate.getDataSource().getConnection();
             DatabaseMetaData metaData = getConnection.getMetaData();
             ResultSet rs = metaData.getTables(getConnection.getCatalog(), null, null, new String[] { "TABLE" });
             while (rs.next()) {
                 String tableName=rs.getString("TABLE_NAME");
-                tableNames.add(tableName);
+                if(tableName.startsWith("SYS_")||tableName.startsWith("BIZ_")){
+                    tableNames.add(tableName);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }*/
-        tableNames.add("biz_category");
+        }
         return tableNames;
     }
 
     /**
      * 数据还原:
      */
+    @Transactional(rollbackFor = Exception.class)
     public synchronized  boolean rollback(String fileName) {
         long stat=System.currentTimeMillis();
         List<String> list=new ArrayList<>();
         //清空所有表数据
-        tableNames().forEach(t-> list.add("TRUNCATE "+t+";"));
+        tableNames().forEach(t-> list.add("TRUNCATE TABLE "+t));
         jdbcTemplate.batchUpdate(list.toArray(new String[list.size()]));
         list.clear();
         FileInputStream out=null;
         InputStreamReader reader=null;
         BufferedReader in=null;
         try {
-            out = new FileInputStream(cmsProperties.getBackupDir()+fileName);
+            String backupDir= StringUtils.appendIfMissing(tarzanProperties.getBackupDir(), File.separator);
+            out = new FileInputStream(backupDir+fileName);
             reader = new InputStreamReader(out, StandardCharsets.UTF_8);
             in = new BufferedReader(reader);
             String line;
@@ -117,17 +122,12 @@ public class DbBackupTools {
     private void executeAsync(List<String> sqlList) {
         int pages=0;
         int pageNum=1000;
-        ExecutorService es = Executors.newFixedThreadPool(curSystemThreads);
         while(true){
             pages++;
             int endIndex = Math.min(pages * pageNum, sqlList.size());
-            int finalPages = pages;
-            Thread thread= new Thread(() ->{
-                List<String> list=sqlList.subList((finalPages - 1) * pageNum, endIndex);
-                jdbcTemplate.batchUpdate(list.toArray(new String[list.size()]));
-                log.info("恢复数据"+list.size()+"条sql完毕。。。。。。");
-            });
-            es.execute(thread);
+            List<String> list=sqlList.subList((pages - 1) * pageNum, endIndex);
+            jdbcTemplate.batchUpdate(list.toArray(new String[0]));
+            log.info(endIndex+"  恢复数据"+list.size()+"条sql完毕。。。。。。");
             if(endIndex>=sqlList.size()){
                 break;
             }
@@ -140,7 +140,7 @@ public class DbBackupTools {
     public synchronized boolean backSql() {
         long stat=System.currentTimeMillis();
         try {
-            File dir = new File(cmsProperties.getBackupDir());
+            File dir = new File(tarzanProperties.getBackupDir());
             dir.mkdirs();
             String path = dir.getPath() + "/"+ FILE_PREFIX+System.currentTimeMillis()+".sql" ;
             File file = new File(path);
@@ -149,7 +149,7 @@ public class DbBackupTools {
             }
             tableNames().forEach(t->{
                StringBuilder sb=new StringBuilder();
-                List<Map<String, Object>> list=jdbcTemplate.queryForList("select * from "+t);
+                List<Map<String, Object>> list=jdbcTemplate.queryForList("SELECT * FROM "+t);
                 list.forEach(e->{
                     sb.append("INSERT INTO ").append(t).append(" VALUES (");
                     e.forEach((k,v)->{
@@ -162,7 +162,7 @@ public class DbBackupTools {
                             }
                             sb.append("'").append(v).append("'").append(",");
                         }else if(v instanceof Date){
-                            sb.append("'").append(format.format(v)).append("'").append(",");
+                            sb.append("'").append(DATE_FORMAT.format(v)).append("'").append(",");
                         }else{
                             sb.append(v).append(",");
                         }

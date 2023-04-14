@@ -1,7 +1,7 @@
 package com.tarzan.navigation.modules.admin.controller.common;
 
 import com.tarzan.navigation.common.constant.CoreConst;
-import com.tarzan.navigation.common.props.CmsProperties;
+import com.tarzan.navigation.common.props.TarzanProperties;
 import com.tarzan.navigation.modules.admin.vo.DbBackupVO;
 import com.tarzan.navigation.modules.admin.vo.base.PageResultVo;
 import com.tarzan.navigation.modules.admin.vo.base.ResponseVo;
@@ -36,7 +36,7 @@ import java.util.*;
 public class BackupController {
 
     private final DbBackupTools dbTools;
-    private final CmsProperties cmsProperties;
+    private final TarzanProperties tarzanProperties;
 
     /**
      * 备份数据库
@@ -49,8 +49,9 @@ public class BackupController {
     @ResponseBody
     @PostMapping("/upload")
     public ResponseVo upload(@RequestParam(value = "file", required = false) MultipartFile multipartFile) {
-        String backupDir= StringUtils.appendIfMissing(cmsProperties.getBackupDir(), File.separator);
+        String backupDir= StringUtils.appendIfMissing(tarzanProperties.getBackupDir(), File.separator);
         File file=new File(backupDir+multipartFile.getOriginalFilename());
+        log.info(file.getPath());
         try {
             FileUtil.copy(multipartFile.getBytes(), file);
         } catch (IOException e) {
@@ -78,8 +79,10 @@ public class BackupController {
     @PostMapping("/list")
     @ResponseBody
     public PageResultVo backupList(Integer pageNumber, Integer pageSize){
-        File file=new File(cmsProperties.getBackupDir());
+        File file=new File(tarzanProperties.getBackupDir());
+        log.info(file.getPath());
         File[] files= file.listFiles();
+        log.info(String.valueOf(files.length));
         if(files==null){
             return ResultUtil.table(null,null);
         }
@@ -102,7 +105,7 @@ public class BackupController {
     @PostMapping("/delete")
     @ResponseBody
     public ResponseVo deleteRole(String fileName) {
-        String backupDir= StringUtils.appendIfMissing(cmsProperties.getBackupDir(), File.separator);
+        String backupDir= StringUtils.appendIfMissing(tarzanProperties.getBackupDir(), File.separator);
         File file=new File(backupDir+fileName);
         if (file.exists()&&file.delete()) {
             return ResultUtil.success("删除备份成功");
@@ -129,7 +132,7 @@ public class BackupController {
      */
     @PostMapping("/download")
     public void download(String fileName, HttpServletResponse response) throws IOException {
-        String backupDir= StringUtils.appendIfMissing(cmsProperties.getBackupDir(), File.separator);
+        String backupDir= StringUtils.appendIfMissing(tarzanProperties.getBackupDir(), File.separator);
         FileInputStream fis=new FileInputStream(backupDir+fileName);
         response.addHeader("Content-Disposition", "attachment;filename="+fileName+";"+"filename*=utf-8''"+fileName);
         FileUtil.copy(fis, response.getOutputStream());

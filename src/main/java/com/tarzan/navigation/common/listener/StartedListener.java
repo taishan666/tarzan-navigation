@@ -1,5 +1,6 @@
 package com.tarzan.navigation.common.listener;
 
+import com.tarzan.navigation.common.props.TarzanProperties;
 import com.tarzan.navigation.shiro.ShiroService;
 import com.tarzan.navigation.utils.AppInstallTools;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -29,11 +31,16 @@ public class StartedListener implements ApplicationListener<ApplicationStartedEv
 
     private final AppInstallTools appInstallTools;
     private final ShiroService shiroService;
+    private final TarzanProperties tarzanProperties;
 
     @Override
     public void onApplicationEvent(@NonNull ApplicationStartedEvent event) {
         appInstallTools.install();
         shiroService.updatePermission();
+        File backupDir=new File(tarzanProperties.getBackupDir());
+        if(!backupDir.exists()){
+            backupDir.mkdirs();
+        }
         printStartInfo(event);
     }
 

@@ -34,14 +34,9 @@ static:
   #静态html路径
   folder: /tarzanCms/html/path
 
-cms:
+tarzan:
   shiro-key: ${user.home}/.tarzan-navigation/shiro_key.pub
-  theme-dir: ${user.home}/.tarzan-navigation/theme
-  use-theme: ${user.home}/.tarzan-navigation/source
   backup-dir: ${user.home}/.tarzan-navigation/backup
-  embedded-redis-enabled: true
-  embedded-redis-port: 6379
-  embedded-redis-password: 666666
   preview-enabled: false
 
 social:

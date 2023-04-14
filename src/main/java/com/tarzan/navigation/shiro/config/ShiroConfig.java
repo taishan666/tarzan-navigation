@@ -1,10 +1,11 @@
 package com.tarzan.navigation.shiro.config;
 
 import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
-import com.tarzan.navigation.shiro.realm.UserRealm;
+import com.tarzan.navigation.common.props.TarzanProperties;
 import com.tarzan.navigation.shiro.cache.OnlineSessionDAO;
 import com.tarzan.navigation.shiro.credentials.RetryLimitHashedCredentialsMatcher;
 import com.tarzan.navigation.shiro.filter.KickOutSessionControlFilter;
+import com.tarzan.navigation.shiro.realm.UserRealm;
 import com.tarzan.navigation.utils.ShiroAESKeyUtil;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.codec.Base64;
@@ -18,10 +19,10 @@ import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.annotation.Resource;
 import javax.servlet.Filter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -40,8 +41,8 @@ import java.util.Objects;
 @Configuration
 public class ShiroConfig {
 
-    @Value("${cms.shiro-key}")
-    private String shiroKey;
+    @Resource
+    private TarzanProperties tarzanProperties;
 
     @Bean
     public static LifecycleBeanPostProcessor getLifecycleBeanPostProcessor() {
@@ -110,7 +111,7 @@ public class ShiroConfig {
         CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
         cookieRememberMeManager.setCookie(rememberMeCookie());
         //手动设置对称加密秘钥，防止重启系统后系统生成新的随机秘钥，防止导致客户端cookie无效
-         cookieRememberMeManager.setCipherKey(Base64.decode(ShiroAESKeyUtil.getKey(shiroKey)));
+         cookieRememberMeManager.setCipherKey(Base64.decode(ShiroAESKeyUtil.getKey(tarzanProperties.getShiroKey())));
         return cookieRememberMeManager;
     }
 
@@ -172,15 +173,6 @@ public class ShiroConfig {
                     "Unable to obtain input stream for cacheManagerConfigFile [" + configFile + "]", e);
         }
     }
-
-    /*  *//**
-     * RedisSessionDAO shiro sessionDao层的实现 通过redis
-     * 使用的是shiro-redis开源插件
-     *//*
-    @Bean
-    public OnlineSessionDAO onlineSessionDAO() {
-        return new OnlineSessionDAO();
-    }*/
 
     /**
      * shiro session的管理

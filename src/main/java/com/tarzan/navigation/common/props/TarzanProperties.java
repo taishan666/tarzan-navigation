@@ -9,14 +9,9 @@ import org.springframework.stereotype.Component;
  */
 @Data
 @Component
-@ConfigurationProperties(prefix = "cms")
-public class CmsProperties {
+@ConfigurationProperties(prefix = "tarzan")
+public class TarzanProperties {
     private String shiroKey;
-    private String themeDir;
-    private String useTheme;
     private String backupDir;
-    private Boolean embeddedRedisEnabled=true;
-    private Integer embeddedRedisPort=6379;
-    private String embeddedRedisPassword="123456";
     private Boolean previewEnabled=false;
 }

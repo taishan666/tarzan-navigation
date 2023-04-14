@@ -1,6 +1,6 @@
 package com.tarzan.navigation.aspect;
 
-import com.tarzan.navigation.common.props.CmsProperties;
+import com.tarzan.navigation.common.props.TarzanProperties;
 import com.tarzan.navigation.utils.ResultUtil;
 import com.tarzan.navigation.utils.WebUtil;
 import lombok.AllArgsConstructor;
@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 @AllArgsConstructor
 public class PreviewAspect {
 
-    private  final CmsProperties cmsProperties;
+    private  final TarzanProperties cmsProperties;
 
     @Around("(@within(org.springframework.stereotype.Controller) || @within(org.springframework.web.bind.annotation.RestController))")
     public Object aroundApi(ProceedingJoinPoint point) throws Throwable {
