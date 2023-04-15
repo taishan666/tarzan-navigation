@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.tarzan</groupId>
-    <artifactId>tarzan-navigation</artifactId>
+    <artifactId>tarzan-nav</artifactId>
     <version>1.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>tarzan-navigation</name>
+    <name>tarzan-nav</name>
     <description>泰山网站导航系统</description>
 
     <parent>
@@ -198,7 +198,7 @@
 
 
     <build>
-        <finalName>tarzan-navigation</finalName>
+        <finalName>tarzan-nav</finalName>
         <resources>
             <resource>
                 <directory>src/main/java</directory>
