@@ -22,7 +22,6 @@
             <li>
                 <a href="about">
                     <i class="linecons-desktop"></i>
-                    <!--       <span class="title" >关于本站 ♥</span>-->
                     <span class="tooltip-blue">关于本站</span>
                     <span class="label label-Primary pull-right hidden-collapsed">♥︎</span>
                 </a>
@@ -30,19 +29,15 @@
         </ul>
         <th:block th:fragment="menu(menuTree)">
             <li th:each="menu : ${menuTree}">
-                <th:block th:if="${#lists.isEmpty(menu.children)}" >
-                    <a th:href="${'#'+menu.name}"  class="smooth">
+                    <a  th:if="${#lists.isEmpty(menu.children)}" th:href="${'#'+menu.name}"  class="smooth">
                         <i th:if="${menu.pid==0}" th:class="${menu?.icon}"></i>
                         <span class="title" th:text="${menu.name}"></span>
                     </a>
-                </th:block>
-                <th:block th:unless="${#lists.isEmpty(menu.children)}" >
-                    <a>
+                    <a th:unless="${#lists.isEmpty(menu.children)}" >
                         <i th:class="${menu?.icon}"></i>
                         <span class="title" th:text="${menu.name}"></span>
                     </a>
-                </th:block>
-                <ul th:unless="${#lists.isEmpty(menu.children)}" th:include="this::menu(${menu.children})">
+                 <ul th:unless="${#lists.isEmpty(menu.children)}" th:include="this::menu(${menu.children})">
                 </ul>
             </li>
         </th:block>
