@@ -1,0 +1,53 @@
+<sidebar th:fragment="sidebar(categories)" class="sidebar-menu toggle-others fixed">
+    <div class="sidebar-menu-inner">
+        <header class="logo-env">
+            <!-- logo -->
+            <div class="logo">
+                <a href="index.html" class="logo-expanded">
+                    <img src="web/images/logo.png" width="100%" alt="" />
+                </a>
+                <a href="index.html" class="logo-collapsed">
+                    <img src="web/images/logo-collapsed.png" width="40" alt="" />
+                </a>
+            </div>
+            <div class="mobile-menu-toggle visible-xs">
+                <a href="#" data-toggle="user-info-menu">
+                    <i class="linecons-cog"></i>
+                </a>
+                <a href="#" data-toggle="mobile-menu">
+                    <i class="fa-bars"></i>
+                </a>
+            </div>
+        </header>
+        <ul id="main-menu" class="main-menu" >
+            <th:block  th:include="this::menu(${categories})">
+            </th:block>
+            <li>
+                <a href="about">
+                    <i class="linecons-desktop"></i>
+                    <!--       <span class="title" >关于本站 ♥</span>-->
+                    <span class="tooltip-blue">关于本站</span>
+                    <span class="label label-Primary pull-right hidden-collapsed">♥︎</span>
+                </a>
+            </li>
+        </ul>
+        <th:block th:fragment="menu(menuTree)">
+            <li th:each="menu : ${menuTree}">
+                <th:block th:if="${#lists.isEmpty(menu.children)}" >
+                    <a th:href="${'#'+menu.name}"  class="smooth">
+                        <i th:if="${menu.pid==0}" th:class="${menu?.icon}"></i>
+                        <span class="title" th:text="${menu.name}"></span>
+                    </a>
+                </th:block>
+                <th:block th:unless="${#lists.isEmpty(menu.children)}" >
+                    <a>
+                        <i th:class="${menu?.icon}"></i>
+                        <span class="title" th:text="${menu.name}"></span>
+                    </a>
+                </th:block>
+                <ul th:unless="${#lists.isEmpty(menu.children)}" th:include="this::menu(${menu.children})">
+                </ul>
+            </li>
+        </th:block>
+    </div>
+</sidebar>

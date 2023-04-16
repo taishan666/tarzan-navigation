@@ -1,0 +1,27 @@
+<div id="bulletin_box" class="panel">
+    <div class="d-flex text-muted">
+        <div><i class="fa fa-volume-up" style="line-height:25px"></i></div>
+        <div class="bulletin mx-1 mx-md-2">
+            <ul class="bulletin-ul">
+                <li class="scrolltext-title overflowClip_1"><a href="https://webstack.iotheme.cn/bulletin/webstack-daohangzhutigengxinv1-1315" rel="bulletin">WebStack 导航主题更新v1.1315</a> (01/15)</li>
+                <li class="scrolltext-title overflowClip_1"><a href="https://webstack.iotheme.cn/bulletin/daohangzhutitianjiayoukezidingyishoucangwangzhi" rel="bulletin">WebStack 免费导航主题更新1.1522</a> (08/22)</li>
+            </ul>
+        </div>
+        <a title="关闭" href="javascript:;" rel="external nofollow"  onClick="$('#bulletin_box').slideUp('slow');" style="margin-left:auto"><i class="fa fa-remove" style="line-height:25px"></i></a>
+    </div>
+</div>
+<script>
+    $(document).ready(function(){
+        var ul = $(".bulletin-ul");
+        var li = ul.children();
+        if(li.length > 1){
+            var liHight = $(li[0]).height();
+            setInterval('AutoScroll(".bulletin",'+liHight+')',4000);
+        }
+    });
+    function AutoScroll(obj,hight){
+        $(obj).find("ul:first").animate({marginTop:"-"+hight+"px"},500,function(){
+            $(this).css({marginTop:"0px"}).find("li:first").appendTo(this);
+        });
+    }
+</script>

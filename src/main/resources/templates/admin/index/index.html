@@ -37,14 +37,14 @@
 <!-- Main Body -->
 <div class="page-wrapper">
   <!-- Header Start -->
-  <div th:replace="admin/fragments/navbar :: navbar"></div>
+  <navbar th:replace="admin/fragments/navbar :: navbar"></navbar>
   <!-- Sidebar Start -->
   <aside th:replace="admin/fragments/sidebar :: sidebar(${menuTree})"></aside>
   <!-- Container Start -->
   <div class="main-content">
     <div class="col-sm-12" id="content"></div>
     <!-- footer -->
-    <div th:replace="admin/fragments/footer :: footer"></div>
+    <footer th:replace="admin/fragments/footer :: footer"></footer>
   </div>
 
 </div>

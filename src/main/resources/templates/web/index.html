@@ -18,85 +18,16 @@
     <link rel="stylesheet" type="text/css" th:href="@{/assets/libs/linecons/css/linecons.css}">
     [(${SITE_CONFIG?.STATISTICS_CODE})]
 </head>
-
+<script th:src="@{/assets/libs/jquery/jquery.min.js}"></script>
 <body class="page-body">
     <!-- skin-white -->
     <div class="page-container">
-        <div class="sidebar-menu toggle-others fixed">
-            <div class="sidebar-menu-inner">
-                <header class="logo-env">
-                    <!-- logo -->
-                    <div class="logo">
-                        <a href="index.html" class="logo-expanded">
-                            <img src="web/images/logo.png" width="100%" alt="" />
-                        </a>
-                        <a href="index.html" class="logo-collapsed">
-                            <img src="web/images/logo-collapsed.png" width="40" alt="" />
-                        </a>
-                    </div>
-                    <div class="mobile-menu-toggle visible-xs">
-                        <a href="#" data-toggle="user-info-menu">
-                            <i class="linecons-cog"></i>
-                        </a>
-                        <a href="#" data-toggle="mobile-menu">
-                            <i class="fa-bars"></i>
-                        </a>
-                    </div>
-                </header>
-                <ul id="main-menu" class="main-menu" >
-                    <th:block  th:include="this::menu(${categories})">
-                    </th:block>
-                    <li>
-                        <a href="about">
-                            <i class="linecons-desktop"></i>
-                     <!--       <span class="title" >关于本站 ♥</span>-->
-                            <span class="tooltip-blue">关于本站</span>
-                            <span class="label label-Primary pull-right hidden-collapsed">♥︎</span>
-                        </a>
-                    </li>
-                </ul>
-                <th:block th:fragment="menu(menuTree)">
-                    <li th:each="menu : ${menuTree}">
-                        <th:block th:if="${#lists.isEmpty(menu.children)}" >
-                            <a th:href="${'#'+menu.name}"  class="smooth">
-                                <i th:if="${menu.pid==0}" th:class="${menu?.icon}"></i>
-                                <span class="title" th:text="${menu.name}"></span>
-                            </a>
-                        </th:block>
-                        <th:block th:unless="${#lists.isEmpty(menu.children)}" >
-                        <a>
-                            <i th:class="${menu?.icon}"></i>
-                            <span class="title" th:text="${menu.name}"></span>
-                        </a>
-                        </th:block>
-                        <ul th:unless="${#lists.isEmpty(menu.children)}" th:include="this::menu(${menu.children})">
-                        </ul>
-                    </li>
-                </th:block>
-            </div>
-        </div>
+        <sidebar th:replace="web/module/sidebar :: sidebar(${categories})"></sidebar>
         <div class="main-content">
-            <nav class="navbar user-info-navbar" role="navigation">
-                <!-- User Info, Notifications and Menu Bar -->
-                <!-- Left links for user info navbar -->
-                <ul class="user-info-menu left-links list-inline list-unstyled">
-                    <li class="hidden-sm hidden-xs">
-                        <a href="#" data-toggle="sidebar">
-                            <i class="fa-bars"></i>
-                        </a>
-                    </li>
-    <!--                <li class="dropdown  language-switcher">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"  style="text-decoration: none;">
-                            <img src="web/images/flags/flag-cn.png" alt="flag-cn" /> 中国
-                        </a>
-                    </li>-->
-                    <li>
-                        <a>
-                            <i class="fa-search"></i>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+            <nav th:replace="web/module/navbar :: navbar"></nav>
+            <div th:replace="web/module/bulletinbox"></div>
+            <div th:replace="web/module/searchbox"></div>
+            <div class="sites-list" style="margin-bottom: 8.5rem;">
             <th:block th:each="category: ${categories}">
                 <h4 class="text-gray"><i th:class="${category?.icon==null?'linecons-tag':category?.icon}" style="margin-right: 7px;" th:id="${category.name}"></i>[[${category.name}]]</h4>
                 <div class="row">
@@ -119,7 +50,6 @@
                             </div>
                         </th:block>
                     </th:block>
-
                     <th:block th:if="${not #lists.isEmpty(category.children)}" >
                         <ul class="nav nav-tabs" id="myTab2" role="tablist">
                             <li th:class="${stat.index==0? 'nav-item active' : 'nav-item'}" th:each="cate,stat: ${category.children}">
@@ -153,29 +83,11 @@
                 </div>
                 <br />
             </th:block>
-            <!-- Main Footer -->
-            <!-- Choose between footer styles: "footer-type-1" or "footer-type-2" -->
-            <!-- Add class "sticky" to  always stick the footer to the end of page (if page contents is small) -->
-            <!-- Or class "fixed" to  always fix the footer to the end of page -->
-            <footer class="main-footer sticky footer-type-1">
-                <div class="footer-inner">
-                    <!-- Add your copyright text here -->
-                    <div class="footer-text">
-                        &copy; 2022-2032
-                        <a href="about.html"><strong>[[${SITE_CONFIG.SITE_NAME}]]</strong></a> design by <strong>[[${SITE_CONFIG.SITE_PERSON_NAME}]]</strong></a>
-                        <!--  - Purchase for only <strong>23$</strong> -->
-                    </div>
-                    <!-- Go to Top Link, just add rel="go-top" to any link to add this functionality -->
-                    <div class="go-up">
-                        <a href="#" rel="go-top">
-                            <i class="fa-angle-up"></i>
-                        </a>
-                    </div>
-                </div>
-            </footer>
+              <div th:replace="web/module/friendlink"></div>
+            </div>
+            <footer th:replace="web/module/footer :: footer"></footer>
         </div>
     </div>
-    <script th:src="@{/assets/libs/jquery/jquery.min.js}"></script>
     <!-- 锚点平滑移动 -->
     <script type="text/javascript">
     $(document).ready(function() {
