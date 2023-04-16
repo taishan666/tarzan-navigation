@@ -1,4 +1,4 @@
-<footer th:fragment="footer" class="main-footer sticky footer-type-1" style="">
+<footer th:fragment="footer(SITE_CONFIG)" class="main-footer sticky footer-type-1" style="">
     <div class="go-up">
         <a href="#" rel="go-top">
             <i class="fa fa-angle-up"></i>
@@ -7,7 +7,8 @@
     <div class="footer-inner">
         <!---请保留版权说明，谢谢---->
         <div class="footer-text">
-            Copyright © 2023 webstack演示站                         &nbsp;&nbsp;Design by <a href="http://webstack.cc" target="_blank"><strong>Webstack</strong></a>&nbsp;&nbsp;Modify by <a href="https://www.iotheme.cn" target="_blank"><strong>一为</strong></a>
+            Copyright © 2023
+            <a href="about.html"><strong>[[${SITE_CONFIG.SITE_NAME}]]</strong></a> design by <strong>[[${SITE_CONFIG.SITE_PERSON_NAME}]]</strong></a>
         </div>
         <!---请保留版权说明，谢谢---->
     </div>
