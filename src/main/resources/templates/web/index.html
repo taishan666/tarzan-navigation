@@ -11,9 +11,6 @@
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Arimo:400,700,400italic">
     <link rel="stylesheet" href="web/css/fonts/fontawesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="web/css/bootstrap.css">
-    <link rel="stylesheet" href="web/css/xenon-core.css">
-    <link rel="stylesheet" href="web/css/xenon-components.css">
-    <link rel="stylesheet" href="web/css/xenon-skins.css">
     <link rel="stylesheet" href="web/css/nav.css">
     <link rel="stylesheet" type="text/css" th:href="@{/assets/libs/linecons/css/linecons.css}">
     [(${SITE_CONFIG?.STATISTICS_CODE})]
@@ -33,20 +30,20 @@
                 <div class="row">
                     <th:block th:if="${#lists.isEmpty(category.children)}" >
                         <th:block th:if="${not #lists.isEmpty(category.links)}" >
-                            <div class="col-sm-3" th:each="link:${category?.links}">
-                                <div class="xe-widget xe-conversations box2 label-info" th:onclick="window.open([[${link.url}]], '_blank')" data-toggle="tooltip" data-placement="bottom" title="" th:data-original-title="${link.url}">
+                            <div class="xe-card col-sm-4 col-md-3 col-lg-3" th:each="link:${category?.links}">
+                                <a th:href="${link?.url}" target="_blank" class="xe-widget xe-conversations box2 label-info" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="全球UI设计师作品分享平台。">
                                     <div class="xe-comment-entry">
-                                        <a class="xe-user-img">
-                                            <img th:src="${link.img.base64}" class="img-circle" width="40">
-                                        </a>
+                                        <div class="xe-user-img">
+                                            <img class="img-circle lazy" th:src="${link.img.base64}" th:data-src="${link.img.base64}" onerror="javascript:this.src='https://webstack.iotheme.cn/wp-content/themes/WebStack/images/favicon.png'" width="40">
+                                        </div>
                                         <div class="xe-comment">
-                                            <a href="#" class="xe-user-name overflowClip_1">
+                                            <div class="xe-user-name overflowClip_1">
                                                 <strong th:text="${link.name}"></strong>
-                                            </a>
-                                            <p class="overflowClip_2"  th:text="${link.description}"></p>
+                                            </div>
+                                            <p class="overflowClip_2" th:text="${link.description}"</p>
                                         </div>
                                     </div>
-                                </div>
+                                </a>
                             </div>
                         </th:block>
                     </th:block>
@@ -163,12 +160,7 @@
     <!-- Bottom Scripts -->
     <script src="web/js/bootstrap.min.js"></script>
     <script src="web/js/TweenMax.min.js"></script>
-    <script src="web/js/resizeable.js"></script>
-    <script src="web/js/joinable.js"></script>
-    <script src="web/js/xenon-api.js"></script>
-    <script src="web/js/xenon-toggles.js"></script>
-    <!-- JavaScripts initializations and stuff -->
-    <script src="web/js/xenon-custom.js"></script>
+<!--    <script src="web/js/resizeable.js"></script>-->
 </body>
 
 </html>
