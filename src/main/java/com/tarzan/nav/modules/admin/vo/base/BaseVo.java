@@ -1,5 +1,7 @@
 package com.tarzan.nav.modules.admin.vo.base;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -14,8 +16,9 @@ import java.util.Date;
 public abstract class BaseVo implements Serializable {
 
     private Integer id;
-
+    @TableField(fill = FieldFill.INSERT)
     private Date createTime;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
 
 }

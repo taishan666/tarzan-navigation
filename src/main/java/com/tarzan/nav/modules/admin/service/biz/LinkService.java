@@ -54,9 +54,6 @@ public class LinkService extends ServiceImpl<LinkMapper, Link> {
         }
         link.setName(title);
         link.setDescription(desc);
-        Date date = new Date();
-        link.setCreateTime(date);
-        link.setUpdateTime(date);
         BizImage image=new BizImage();
         String webIconUrl=JsoupUtil.getWebIcon(doc);
         image.setBase64(getBase64(webIconUrl));

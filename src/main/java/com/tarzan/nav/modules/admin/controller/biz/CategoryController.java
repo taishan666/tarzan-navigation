@@ -65,9 +65,6 @@ public class CategoryController {
         if (categoryService.existLinks(bizCategory.getPid())) {
                 return ResultUtil.error("添加失败，父级分类不能存在网站");
         }
-        Date date = new Date();
-        bizCategory.setCreateTime(date);
-        bizCategory.setUpdateTime(date);
         bizCategory.setStatus(CoreConst.STATUS_VALID);
         boolean flag = categoryService.save(bizCategory);
         if (flag) {

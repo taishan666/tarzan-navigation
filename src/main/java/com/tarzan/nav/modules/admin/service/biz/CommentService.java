@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -33,8 +32,6 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class CommentService extends ServiceImpl<CommentMapper, Comment> {
-
-  //  private final ArticleService articleService;
 
     @CacheEvict(value = "comment", allEntries = true)
     public boolean deleteBatch(List<Integer> ids) {
@@ -100,10 +97,7 @@ public class CommentService extends ServiceImpl<CommentMapper, Comment> {
 
     @CacheEvict(value = "comment", allEntries = true)
     public boolean insertComment(Comment comment) {
-        Date date = new Date();
-        comment.setCreateTime(date);
-        comment.setUpdateTime(date);
-        return save(comment);
+        return super.save(comment);
     }
 
     @Cacheable(value = "comment", key = "'toAudit'")
