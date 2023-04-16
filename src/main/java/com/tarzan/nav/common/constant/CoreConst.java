@@ -26,8 +26,6 @@ public class CoreConst {
     public static final Integer TOP_MENU_ID = 0;
     public static final Integer TOP_CATEGORY_ID = 0;
     public static final String TOP_CATEGORY_NAME = "顶级分类";
-    public static final String TARZAN_REDIS_CMS_PREFIX = "tarzan:cms:";
-    public static final String SHIRO_REDIS_SESSION_PREFIX = "tarzan:cms:session:";
     public static final String SHIRO_REDIS_CACHE_NAME = "shiro_tarzan_cms";
     public final static String USER_TYPE_HEADER_KEY = "User-Type";
 
@@ -39,22 +37,11 @@ public class CoreConst {
 
     public static final String ERROR_PREFIX = "error/";
 
-    public static final String THEME_PREFIX = "theme/";
-
-    public static final String USE_THEME = "source";
 
     /**
      * h2默认table数
      */
     public static final int TABLE_NUM = 15;
-    /**
-     * 文件存储服务类型
-     * 1：七牛  2：阿里云  3：腾讯云  4：本地
-     */
-    public static final int UPLOAD_TYPE_QINIUYUN = 1;
-    public static final int UPLOAD_TYPE_ALIYUN = 2;
-    public static final int UPLOAD_TYPE_TXYUN = 3;
-    public static final int UPLOAD_TYPE_LOCAL = 4;
 
     /**
      * 是否安装

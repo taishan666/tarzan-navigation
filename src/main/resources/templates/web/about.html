@@ -10,12 +10,11 @@
     <meta name="keywords" th:content="${SITE_CONFIG.SITE_KWD}">
     <meta name="description" th:content="${SITE_CONFIG.SITE_DESC}">
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Arimo:400,700,400italic">
-    <link rel="stylesheet" href="web/css/fonts/fontawesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="web/fonts/fontawesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="web/css/bootstrap.css">
     <link rel="stylesheet" href="web/css/xenon-core.css">
     <link rel="stylesheet" type="text/css" th:href="@{/assets/libs/linecons/css/linecons.css}">
-    <script src="web/js/jquery-1.11.1.min.js"></script>
-    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <script th:src="@{/assets/libs/jquery/jquery.min.js}"></script>
     [(${SITE_CONFIG.STATISTICS_CODE})]
 </head>
 
