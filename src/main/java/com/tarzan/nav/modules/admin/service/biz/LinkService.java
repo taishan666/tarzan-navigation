@@ -45,26 +45,8 @@ public class LinkService extends ServiceImpl<LinkMapper, Link> {
         link.setCategoryId(categoryId);
         Document doc= JsoupUtil.getDocument(url);
         assert doc != null;
-        String title=doc.title();
-        if(StringUtil.isEmpty(title)){
-            Element titleEle=doc.selectFirst("title");
-            if(Objects.nonNull(titleEle)){
-                title= titleEle.text();
-            }else {
-                titleEle=doc.selectFirst("[property=og:title]");
-                title=titleEle.attr("content");
-            }
-        }
-        Element descriptionEle=doc.selectFirst("[name=description]");
-        String desc="";
-        if(Objects.nonNull(descriptionEle)){
-             desc= descriptionEle.attr("content");
-        }else{
-            descriptionEle=doc.selectFirst("[property=og:description]");
-            if(Objects.nonNull(descriptionEle)){
-                desc= descriptionEle.attr("content");
-            }
-        }
+        String title=JsoupUtil.getTitle(doc);
+        String desc=JsoupUtil.getDescription(doc);
         if(StringUtil.isNotBlank(title)){
             if(title.length()>50){
                 title= title.substring(0,50);
@@ -76,81 +58,19 @@ public class LinkService extends ServiceImpl<LinkMapper, Link> {
         link.setCreateTime(date);
         link.setUpdateTime(date);
         BizImage image=new BizImage();
-        String webIconUrl=getWebIcon(url,doc);
+        String webIconUrl=JsoupUtil.getWebIcon(doc);
         image.setBase64(getBase64(webIconUrl));
         imageMapper.insert(image);
         link.setImageId(image.getId());
        return super.save(link);
     }
 
-    public static String checkImageExist(String src){
-        try {
-            URL url=new URL(src);
-            URLConnection urlConnection= url.openConnection();
-            //设置读取超时
-            urlConnection.setReadTimeout(1000 * 60);
-            urlConnection.setRequestProperty("Accept", "*/*");
-            urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
-            urlConnection.setRequestProperty("Accept-Language", "zh-cn");
-            urlConnection.setRequestProperty("Connection", "close"); //不进行持久化连接
-            HttpURLConnection connection= (HttpURLConnection) urlConnection;
-            int code=connection.getResponseCode();
-            String contentType=connection.getContentType();
-            if(code==200&&contentType.startsWith("image")){
-                return contentType;
-            }
-        } catch (IOException e) {
-            log.error(e.getMessage());
-        }
-        return null;
-    }
-
-    public static String getIconHref(String url,Element iconEle){
-        if(Objects.nonNull(iconEle)){
-            String iconHref= iconEle.attr("href");
-            if(iconHref.startsWith("http")||iconHref.startsWith("https")){
-                return iconHref;
-            }else {
-                if(iconHref.startsWith("//")){
-                    return url.split(":")[0]+":"+iconHref;
-                }else {
-                    return getDomain(url)+iconHref;
-                }
-            }
-        }else {
-            return null;
-        }
-    }
-    public static String getDomain(String url){
-        int fromIndex=url.indexOf(".");
-        int endIndex=url.indexOf("/",fromIndex);
-        return url.substring(0,endIndex+1);
-    }
-
-    public static String getWebIcon(String url, Document doc){
-        url =StringUtils.appendIfMissing(url,"/");
-        String iconUrl=getDomain(url)+"favicon.ico";
-        Element iconEle=doc.selectFirst("[rel=icon]");
-        Element shortIconEle=doc.selectFirst("[rel=shortcut icon]");
-        String iconHref=getIconHref(url,iconEle);
-        String shortIconHref=getIconHref(url,shortIconEle);
-        String result1=checkImageExist(iconHref);
-        if(result1!=null){
-           return iconHref+","+result1;
-        }
-        String result2=checkImageExist(shortIconHref);
-        if(result2!=null){
-            return shortIconHref+","+result2;
-        }
-        String result3=checkImageExist(iconUrl);
-        if(result3!=null){
-            return iconUrl+","+result3;
-        }
-        return null;
-    }
-
     public static String getBase64(String src) {
         return StringUtil.isEmpty(src)?"":"data:"+src.split(",")[1]+";base64,"+ Base64.getEncoder().encodeToString(HttpUtil.downloadBytes(src.split(",")[0]));
+    }
+
+    public List<Link> list(Link link) {
+        return super.lambdaQuery().like(Link::getName,link.getName()).orderByDesc(Link::getCreateTime).list();
     }
 
     public IPage<Link> pageLinks(Link link, Integer pageNumber, Integer pageSize) {

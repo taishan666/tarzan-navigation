@@ -6,23 +6,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="author" th:content="${SITE_CONFIG.SITE_PERSON_NAME}" />
-    <title th:text="${SITE_CONFIG.SITE_NAME}"></title>
+    <title th:text="${SITE_CONFIG.SITE_NAME}-'关于我'"></title>
     <meta name="keywords" th:content="${SITE_CONFIG.SITE_KWD}">
     <meta name="description" th:content="${SITE_CONFIG.SITE_DESC}">
     <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Arimo:400,700,400italic">
     <link rel="stylesheet" href="web/css/fonts/fontawesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="web/css/bootstrap.css">
     <link rel="stylesheet" href="web/css/xenon-core.css">
-    <link rel="stylesheet" href="web/css/xenon-components.css">
-    <link rel="stylesheet" href="web/css/xenon-skins.css">
-    <link rel="stylesheet" href="web/css/nav.css">
     <link rel="stylesheet" type="text/css" th:href="@{/assets/libs/linecons/css/linecons.css}">
     <script src="web/js/jquery-1.11.1.min.js"></script>
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
     [(${SITE_CONFIG.STATISTICS_CODE})]
 </head>
 
@@ -96,7 +89,10 @@
             <footer class="main-footer sticky footer-type-1 fixed">
                 <div class="footer-inner">
                     <div class="footer-text">
-                        &copy; 2017 - 2019  design by Tarzan
+                        <div class="footer-text">
+                            Copyright © 2023
+                            <a href="#"><strong>[[${SITE_CONFIG.SITE_NAME}]]</strong></a> design by <strong>[[${SITE_CONFIG.SITE_PERSON_NAME}]]</strong></a>
+                        </div>
                     </div>
                     <div class="go-up">
                         <a href="#" rel="go-top">
@@ -110,12 +106,6 @@
     <!-- Bottom Scripts -->
     <script src="web/js/bootstrap.min.js"></script>
     <script src="web/js/TweenMax.min.js"></script>
-    <script src="web/js/resizeable.js"></script>
-    <script src="web/js/joinable.js"></script>
-    <script src="web/js/xenon-api.js"></script>
-    <script src="web/js/xenon-toggles.js"></script>
-    <!-- JavaScripts initializations and stuff -->
-    <script src="web/js/xenon-custom.js"></script>
     <textarea tabindex="-1" style="position: absolute; top: -999px; left: 0px; right: auto; bottom: auto; border: 0px; padding: 0px; box-sizing: content-box; word-wrap: break-word; overflow: hidden; transition: none; height: 0px !important; min-height: 0px !important; font-family: Arimo, &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 400; font-style: normal; letter-spacing: 0px; text-transform: none; word-spacing: 0px; text-indent: 0px; line-height: 18.5714px; width: 53px;" class="autosizejs" id="autosizejs"></textarea>
 </body>
 
