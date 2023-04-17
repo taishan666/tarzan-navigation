@@ -16,7 +16,7 @@
 </div>
 <!-- Main content -->
 <div class="row">
-    <div class="col-lg-3 col-md-3">
+    <div class="col-lg-2 col-md-3">
         <div class="card card-body">
             <div class="compose-btn"><h3>导航分类</h3></div>
             <ul id="categoryTree" class="ztree"></ul>
@@ -33,14 +33,6 @@
                 <label for="url">站点链接:</label>
                 <input type="text" class="form-control m-2" id="url" required="">
             </div>
-        <!--    <div class="form-group">
-                <label for="status">状态:</label>
-                <select id="status" class="form-control m-2" required="">
-                    <option selected disabled>选择状态</option>
-                    <option value="1">启用</option>
-                    <option value="0">禁用</option>
-                </select>
-            </div>-->
             <div class="form-group">
                 <button class="btn btn-primary ml-3" type="submit">查询</button>
                 <button class="btn btn-light ml-2" type="reset">重置</button>
@@ -100,8 +92,8 @@
                     <ul id="permissionTree" class="ztree"></ul>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" id="linkCopyBtn" >复制</button>
-                    <button type="button" class="btn btn-primary" id="linkMoveBtn">移动
+                    <button type="button" class="btn btn-secondary" id="websiteCopyBtn" >复制</button>
+                    <button type="button" class="btn btn-primary" id="websiteMoveBtn">移动
                     </button>
                 </div>
             </div>
@@ -230,7 +222,7 @@
                     var status = state ? 1 : 0;
                     var params = {id: this.value, status: status};
                     var str = jQuery.param(params);
-                    Core.postAjax('/link/edit', str, function (data) {
+                    Core.postAjax('/website/edit', str, function (data) {
                         if (data.status === 200) {
                             refreshTable();
                         }
@@ -256,7 +248,7 @@
 
         var options = {
             id: "#table",
-            url: '/link/list',
+            url: '/website/list',
             columns: columns,
             toolbar: '#toolbar',
             showRefresh: true,
@@ -290,7 +282,7 @@
 
         // 新增
         $('#btn_add').on('click', function () {
-            Core.load("#formContent", "/link/add", function () {
+            Core.load("#formContent", "/website/add", function () {
                 $('#formTitle').text('新增')
                 $("#formModal").modal('show');
             });
@@ -328,7 +320,7 @@
 
         // 编辑
         function editRow(id) {
-            Core.load("#formContent", "/link/edit?id=" + id, function () {
+            Core.load("#formContent", "/website/edit?id=" + id, function () {
                 $('#formTitle').text('编辑')
                 $("#formModal").modal('show');
             });
@@ -337,7 +329,7 @@
         // 删除
         function deleteRow(id) {
             Core.confirm("确定删除？", function () {
-                Core.postAjax("/link/delete", {"id": id}, function (data) {
+                Core.postAjax("/website/delete", {"id": id}, function (data) {
                     if (data.status === 200) {
                         refreshTable();
                     }
@@ -391,8 +383,8 @@
             zzTree.checkNode(treeNode);
         }
 
-        $('#linkMoveBtn').on('click', function () {
-            Core.mask("#linkMoveBtn");
+        $('#websiteMoveBtn').on('click', function () {
+            Core.mask("#websiteMoveBtn");
             const checkedRows = Core.selectMutiData("#table");
             if (checkedRows) {
                 const treeObj = $.fn.zTree.getZTreeObj("permissionTree");
@@ -403,10 +395,10 @@
                         ids.push(item.id);
                     })
                     const jsonStr = JSON.stringify(ids);
-                    Core.postAjax("/link/move/"+nodes[0].id, jsonStr, function (data) {
+                    Core.postAjax("/website/move/"+nodes[0].id, jsonStr, function (data) {
                         if (data.status === 200) {
                             refreshTable();
-                            Core.unmask("#linkMoveBtn");
+                            Core.unmask("#websiteMoveBtn");
                             $("#categoryModal").modal("hide");
                         }
                         layer.msg(data.msg);
@@ -417,8 +409,8 @@
             }
         })
 
-        $('#linkCopyBtn').on('click', function () {
-            Core.mask("#linkCopyBtn");
+        $('#websiteCopyBtn').on('click', function () {
+            Core.mask("#websiteCopyBtn");
             const checkedRows = Core.selectMutiData("#table");
             if (checkedRows) {
                 const treeObj = $.fn.zTree.getZTreeObj("permissionTree");
@@ -429,10 +421,10 @@
                         ids.push(item.id);
                     })
                     const jsonStr = JSON.stringify(ids);
-                    Core.postAjax("/link/copy/"+nodes[0].id, jsonStr, function (data) {
+                    Core.postAjax("/website/copy/"+nodes[0].id, jsonStr, function (data) {
                         if (data.status === 200) {
                             refreshTable();
-                            Core.unmask("#linkCopyBtn");
+                            Core.unmask("#websiteCopyBtn");
                             $("#categoryModal").modal("hide");
                         }
                         layer.msg(data.msg);
@@ -454,7 +446,7 @@
                         ids.push(item.id);
                     })
                     var jsonStr = JSON.stringify(ids);
-                    Core.postAjax("/link/batch/delete", jsonStr, function (data) {
+                    Core.postAjax("/website/batch/delete", jsonStr, function (data) {
                         if (data.status === 200) {
                             refreshTable();
                         }
@@ -472,7 +464,7 @@
             let dataParam=$f.serialize();
             dataParam =dataParam +"&"+"categoryId="+categoryId;
             var valid = $f[0].checkValidity();
-            var url = $f.find("input[name='id']").val() ? "/link/edit" : "/link/add"
+            var url = $f.find("input[name='id']").val() ? "/website/edit" : "/website/add"
             if (valid) {
                 Core.mask("#saveOrUpdateBtn");
                 Core.postAjax(url, dataParam, function (data) {

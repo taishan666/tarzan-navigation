@@ -34,6 +34,6 @@ public class Category extends BaseVo {
     @TableField(exist = false)
     private List<Category> children;
     @TableField(exist = false)
-    private List<Link> links;
+    private List<Website> websites;
 
 }

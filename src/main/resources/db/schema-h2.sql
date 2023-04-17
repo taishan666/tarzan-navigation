@@ -11,36 +11,44 @@ CREATE TABLE IF NOT EXISTS `biz_category` (
                                                 `update_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '更新时间'
     );
 
-DROP TABLE IF EXISTS `biz_link`;
-CREATE TABLE IF NOT EXISTS `biz_link` (
-                                          `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
-                                          `name` varchar(50) NOT NULL COMMENT '链接名',
-    `url` varchar(200) NOT NULL COMMENT '链接地址',
-    `description` varchar(255) NULL DEFAULT NULL COMMENT '链接介绍',
-    `image_id` int NULL  DEFAULT NULL COMMENT 'logo图片id',
-    `email` varchar(100) NULL DEFAULT NULL COMMENT '友链站长邮箱',
-    `qq` varchar(50) NULL DEFAULT NULL COMMENT '友链站长qq',
-    `status` int UNSIGNED NULL DEFAULT NULL COMMENT '状态',
-    `origin` int NULL DEFAULT NULL COMMENT '1-管理员添加 2-自助申请',
-    `remark` varchar(255) NULL DEFAULT NULL COMMENT '备注',
-    `category_id` int  NULL DEFAULT NULL COMMENT '分类id',
-    `create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '添加时间',
-    `update_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '更新时间'
+DROP TABLE IF EXISTS `biz_website`;
+CREATE TABLE IF NOT EXISTS `biz_website` (
+                                            `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+                                            `name` varchar(50) NOT NULL COMMENT '链接名',
+                                            `url` varchar(200) NOT NULL COMMENT '链接地址',
+                                            `description` varchar(255) NULL DEFAULT NULL COMMENT '链接介绍',
+                                            `image_id` int NULL  DEFAULT NULL COMMENT 'logo图片id',
+                                            `email` varchar(100) NULL DEFAULT NULL COMMENT '站长邮箱',
+                                            `qq` varchar(50) NULL DEFAULT NULL COMMENT '站长qq',
+                                            `status` int UNSIGNED NULL DEFAULT NULL COMMENT '状态',
+                                            `origin` int NULL DEFAULT NULL COMMENT '1-管理员添加 2-自助申请',
+                                            `remark` varchar(255) NULL DEFAULT NULL COMMENT '备注',
+                                            `category_id` int  NULL DEFAULT NULL COMMENT '分类id',
+                                            `create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '添加时间',
+                                            `update_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '更新时间'
     );
 
-DROP TABLE IF EXISTS `biz_category_link`;
-CREATE TABLE IF NOT EXISTS `biz_category_link` (
+DROP TABLE IF EXISTS `biz_link`;
+CREATE TABLE IF NOT EXISTS `biz_link` (
                                             `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
-                                            `category_id` int  NULL DEFAULT NULL COMMENT '分类id',
-                                            `link_id` int NULL DEFAULT NULL COMMENT '网址id',
-                                            `create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '添加时间'
+                                            `name` varchar(50) NOT NULL COMMENT '链接名',
+                                            `url` varchar(200) NOT NULL COMMENT '链接地址',
+                                            `description` varchar(255) NULL DEFAULT NULL COMMENT '链接介绍',
+                                            `image_id` int NULL  DEFAULT NULL COMMENT 'logo图片id',
+                                            `email` varchar(100) NULL DEFAULT NULL COMMENT '友链站长邮箱',
+                                            `qq` varchar(50) NULL DEFAULT NULL COMMENT '友链站长qq',
+                                            `status` int UNSIGNED NULL DEFAULT NULL COMMENT '状态',
+                                            `origin` int NULL DEFAULT NULL COMMENT '1-管理员添加 2-自助申请',
+                                            `remark` varchar(255) NULL DEFAULT NULL COMMENT '备注',
+                                            `create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '添加时间',
+                                            `update_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '更新时间'
     );
 
 DROP TABLE IF EXISTS `biz_image`;
 CREATE TABLE IF NOT EXISTS `biz_image` (
-                                                   `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
-                                                   `base64` text NULL DEFAULT NULL COMMENT '图片base64码',
-    `create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '添加时间'
+                                           `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+                                           `base64` text NULL DEFAULT NULL COMMENT '图片base64码',
+                                           `create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '添加时间'
     );
 
 DROP TABLE IF EXISTS `biz_comment`;

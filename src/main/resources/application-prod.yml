@@ -35,8 +35,8 @@ static:
   folder: /tarzanCms/html/path
 
 tarzan:
-  shiro-key: ${user.home}/.tarzan-cms/shiro_key.pub
-  backup-dir: ${user.home}/.tarzan-cms/backup
+  shiro-key: ${user.home}/.tarzan-nav/shiro_key.pub
+  backup-dir: ${user.home}/.tarzan-nav/backup
   preview-enabled: false
 
 social:

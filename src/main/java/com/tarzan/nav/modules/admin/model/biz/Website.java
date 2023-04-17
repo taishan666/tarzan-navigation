@@ -16,8 +16,8 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Accessors(chain = true)
-@TableName("biz_link")
-public class Link extends BaseVo {
+@TableName("biz_website")
+public class Website extends BaseVo {
 
     private String url;
     private String name;

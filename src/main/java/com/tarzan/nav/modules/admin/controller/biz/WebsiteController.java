@@ -2,8 +2,8 @@ package com.tarzan.nav.modules.admin.controller.biz;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tarzan.nav.common.constant.CoreConst;
-import com.tarzan.nav.modules.admin.model.biz.Link;
-import com.tarzan.nav.modules.admin.service.biz.LinkService;
+import com.tarzan.nav.modules.admin.model.biz.Website;
+import com.tarzan.nav.modules.admin.service.biz.WebsiteService;
 import com.tarzan.nav.modules.admin.vo.base.PageResultVo;
 import com.tarzan.nav.modules.admin.vo.base.ResponseVo;
 import com.tarzan.nav.utils.DateUtil;
@@ -29,35 +29,35 @@ import java.util.Objects;
  * @date 2021年5月11日
  */
 @Controller
-@RequestMapping("link")
+@RequestMapping("/website")
 @AllArgsConstructor
-public class LinkController {
+public class WebsiteController {
 
-    private final LinkService linkService;
+    private final WebsiteService websiteService;
 
     @PostMapping("list")
     @ResponseBody
-    public PageResultVo loadLinks(Link link, Integer pageNumber, Integer pageSize) {
-        IPage<Link> linkPage = linkService.pageLinks(link, pageNumber, pageSize);
-        if(CollectionUtils.isEmpty(linkPage.getRecords())){
+    public PageResultVo loadWebsites(Website website, Integer pageNumber, Integer pageSize) {
+        IPage<Website> websitePage = websiteService.pageList(website, pageNumber, pageSize);
+        if(CollectionUtils.isEmpty(websitePage.getRecords())){
             return  ResultUtil.table(Collections.emptyList(), 0L);
         }
-        linkService.wrapper(linkPage.getRecords());
-        return ResultUtil.table(linkPage.getRecords(), linkPage.getTotal());
+        websiteService.wrapper(websitePage.getRecords());
+        return ResultUtil.table(websitePage.getRecords(), websitePage.getTotal());
     }
 
     @GetMapping("/add")
     public String add(Model model) {
-        model.addAttribute("link", new Link().setStatus(1));
-        return CoreConst.ADMIN_PREFIX + "link/form";
+        model.addAttribute("website", new Website().setStatus(1));
+        return CoreConst.ADMIN_PREFIX + "website/form";
     }
 
     @PostMapping("/add")
     @ResponseBody
-    @CacheEvict(value = {"link", "category"}, allEntries = true)
-    public ResponseVo add(@Valid Link link) {
-        if(Objects.nonNull(link.getCategoryId())&&link.getCategoryId()>0){
-            boolean flag = linkService.saveByUrl(link.getUrl(),link.getCategoryId());
+    @CacheEvict(value = {"website", "category"}, allEntries = true)
+    public ResponseVo add(@Valid Website website) {
+        if(Objects.nonNull(website.getCategoryId())&&website.getCategoryId()>0){
+            boolean flag = websiteService.saveByUrl(website.getUrl(),website.getCategoryId());
             if (flag) {
                 return ResultUtil.success("新增网址成功");
             } else {
@@ -70,20 +70,20 @@ public class LinkController {
 
     @GetMapping("/edit")
     public String edit(Model model, Integer id) {
-        Link link = linkService.getById(id);
-        if(Objects.nonNull(link.getImageId())){
-            linkService.wrapper(link);
+        Website website = websiteService.getById(id);
+        if(Objects.nonNull(website.getImageId())){
+            websiteService.wrapper(website);
         }
-        model.addAttribute("link", link);
-        return CoreConst.ADMIN_PREFIX + "link/form";
+        model.addAttribute("website", website);
+        return CoreConst.ADMIN_PREFIX + "website/form";
     }
 
     @PostMapping("/edit")
     @ResponseBody
-    @CacheEvict(value = {"link", "category"}, allEntries = true)
-    public ResponseVo edit(Link link) {
-        link.setUpdateTime(DateUtil.now());
-        boolean flag = linkService.updateById(link);
+    @CacheEvict(value = {"website", "category"}, allEntries = true)
+    public ResponseVo edit(Website website) {
+        website.setUpdateTime(DateUtil.now());
+        boolean flag = websiteService.updateById(website);
         if (flag) {
             return ResultUtil.success("编辑友链成功");
         } else {
@@ -100,7 +100,7 @@ public class LinkController {
     @PostMapping("/batch/delete")
     @ResponseBody
     public ResponseVo deleteBatch(@RequestBody List<Integer> ids) {
-        boolean flag = linkService.deleteBatch(ids);
+        boolean flag = websiteService.deleteBatch(ids);
         if (flag) {
             return ResultUtil.success("删除友链成功");
         } else {
@@ -111,9 +111,9 @@ public class LinkController {
 
     @PostMapping("/move/{categoryId}")
     @ResponseBody
-    @CacheEvict(value = {"link", "category"}, allEntries = true)
-    public ResponseVo moveLink(@PathVariable("categoryId") Integer categoryId,@RequestBody List<Integer> ids) {
-        boolean flag = linkService.lambdaUpdate().in(Link::getId,ids).set(Link::getCategoryId,categoryId).update();
+    @CacheEvict(value = {"website", "category"}, allEntries = true)
+    public ResponseVo moveWebsite(@PathVariable("categoryId") Integer categoryId,@RequestBody List<Integer> ids) {
+        boolean flag = websiteService.lambdaUpdate().in(Website::getId,ids).set(Website::getCategoryId,categoryId).update();
         if (flag) {
             return ResultUtil.success("移动分类成功成功");
         } else {
@@ -123,15 +123,15 @@ public class LinkController {
 
     @PostMapping("/copy/{categoryId}")
     @ResponseBody
-    @CacheEvict(value = {"link", "category"}, allEntries = true)
-    public ResponseVo copyLink(@PathVariable("categoryId") Integer categoryId,@RequestBody List<Integer> ids) {
-        List<Link> links=linkService.lambdaQuery().in(Link::getId,ids).list();
-        if(!CollectionUtils.isEmpty(links)){
-            links.forEach(e->{
+    @CacheEvict(value = {"website", "category"}, allEntries = true)
+    public ResponseVo copyWebsite(@PathVariable("categoryId") Integer categoryId,@RequestBody List<Integer> ids) {
+        List<Website> websites=websiteService.lambdaQuery().in(Website::getId,ids).list();
+        if(!CollectionUtils.isEmpty(websites)){
+            websites.forEach(e->{
                 e.setId(null);
                 e.setCategoryId(categoryId);
             });
-            boolean flag = linkService.saveBatch(links);
+            boolean flag = websiteService.saveBatch(websites);
             if (!flag) {
                 return ResultUtil.error("复制分类失败");
             }

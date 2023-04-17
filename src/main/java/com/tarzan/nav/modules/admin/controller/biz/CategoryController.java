@@ -62,7 +62,7 @@ public class CategoryController {
     @ResponseBody
     @CacheEvict(value = "category", allEntries = true)
     public ResponseVo add(Category bizCategory) {
-        if (categoryService.existLinks(bizCategory.getPid())) {
+        if (categoryService.existWebsites(bizCategory.getPid())) {
                 return ResultUtil.error("添加失败，父级分类不能存在网站");
         }
         bizCategory.setStatus(CoreConst.STATUS_VALID);
@@ -92,7 +92,7 @@ public class CategoryController {
     @ResponseBody
     @CacheEvict(value = "category", allEntries = true)
     public ResponseVo edit(Category bizCategory) {
-        if (categoryService.existLinks(bizCategory.getPid())) {
+        if (categoryService.existWebsites(bizCategory.getPid())) {
             return ResultUtil.error("编辑失败，父级分类不能存在网站");
         }
         bizCategory.setUpdateTime(new Date());

@@ -36,7 +36,7 @@ INSERT INTO biz_category VALUES (37,13,'交互设计',null,5,null,1,'2022-12-09 
 -- ----------------------------
 -- Records of biz_link
 -- ----------------------------
-INSERT INTO biz_link VALUES (1, 'CSDN', 'https://tarzan.blog.csdn.net', '洛阳泰山博客', 1, '1334512682@qq.com', '1334512682', 1, 1, '', 1,'2021-09-13 23:24:25', '2021-06-28 10:51:18');
+INSERT INTO biz_website VALUES (1, 'CSDN', 'https://tarzan.blog.csdn.net', '洛阳泰山博客', 1, '1334512682@qq.com', '1334512682', 1, 1, '', 1,'2021-09-13 23:24:25', '2021-06-28 10:51:18');
 
 -- ----------------------------
 -- Records of sys_config
@@ -57,7 +57,8 @@ INSERT INTO `sys_menu` VALUES (2, '用户管理', '用户管理', '/users', 'use
 INSERT INTO `sys_menu` VALUES (3, '网站管理', '网站管理', NULL, 'website', 0, 0, 3, 'fas fa-columns', 1, '2021-07-24 15:44:23', '2021-04-19 19:08:46');
 INSERT INTO `sys_menu` VALUES (4, '运维管理', '运维管理', NULL, 'operation', 0, 0, 7, 'fas fa-people-carry', 1, '2021-07-06 15:19:26', '2021-04-19 19:09:59');
 INSERT INTO `sys_menu` VALUES (5, '基础信息', '基础设置', '/siteInfo', 'siteInfo', 3, 1, 1, 'fas fa-chess-queen', 1, '2021-07-24 15:48:13', '2021-07-24 17:43:39');
-INSERT INTO `sys_menu` VALUES (6, '网址管理', '网址管理', '/links', 'links', 3, 1, 3, 'fas fa-chess-queen', 1, '2021-07-25 11:05:49', '2021-07-25 11:07:03');
+INSERT INTO `sys_menu` VALUES (6, '导航管理', '导航管理', '/websites', 'websites', 3, 1, 3, 'fas fa-chess-queen', 1, '2021-07-25 11:05:49', '2021-07-25 11:07:03');
+INSERT INTO `sys_menu` VALUES (6, '友链管理', '友链管理', '/links', 'links', 3, 1, 4, 'fas fa-chess-queen', 1, '2021-07-25 11:05:49', '2021-07-25 11:07:03');
 INSERT INTO `sys_menu` VALUES (7, '导航分类', '导航分类', '/categories', 'categories', 3, 1, 3, 'fas fa-chess-queen', 1, '2021-07-25 17:43:50', '2021-04-19 20:33:27');
 INSERT INTO `sys_menu` VALUES (8, '留言管理', '留言管理', '/comments', 'comments', 3, 1, 4, 'fas fa-chess-queen', 1, '2021-08-10 09:44:41', '2021-09-19 15:44:13');
 INSERT INTO `sys_menu` VALUES (9, '数据监控', '数据监控', '/database/monitoring', 'database', 4, 1, 1, 'fas fa-chess-queen', 1, '2021-07-06 15:19:55', '2021-07-06 15:19:55');

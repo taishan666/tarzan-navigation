@@ -25,21 +25,21 @@
             <div th:replace="web/module/searchbox"></div>
             <div class="sites-list" style="margin-bottom: 8.5rem;">
             <th:block th:each="category: ${categories}">
-                <h4 class="text-gray"><i th:class="${category?.icon==null?'linecons-tag':category?.icon}" style="margin-right: 7px;" th:id="${category.name}"></i>[[${category.name}]]</h4>
+                <h4 class="text-gray"><i th:class="${category?.icon==null?'linecons-tag':category?.icon}" style="margin-right: 7px;" th:id="${category?.name}"></i>[[${category?.name}]]</h4>
                 <div class="row">
                     <th:block th:if="${#lists.isEmpty(category.children)}" >
-                        <th:block th:if="${not #lists.isEmpty(category.links)}" >
-                            <div class="xe-card col-sm-4 col-md-3 col-lg-3" th:each="link:${category?.links}">
-                                <a th:href="${link?.url}" target="_blank" class="xe-widget xe-conversations box2 label-info" data-toggle="tooltip" data-placement="bottom" title="" th:data-original-title="${link?.url}">
+                        <th:block th:if="${not #lists.isEmpty(category.websites)}" >
+                            <div class="xe-card col-sm-4 col-md-3 col-lg-3" th:each="website:${category?.websites}">
+                                <a th:href="${website?.url}" target="_blank" class="xe-widget xe-conversations box2 label-info" data-toggle="tooltip" data-placement="bottom" title="" th:data-original-title="${website?.url}">
                                     <div class="xe-comment-entry">
                                         <div class="xe-user-img">
-                                            <img class="img-circle lazy" th:src="${link?.img?.base64}" th:data-src="${link.img.base64}"  width="40">
+                                            <img class="img-circle lazy" th:src="${website?.img?.base64}" th:data-src="${website?.img?.base64}"  width="40">
                                         </div>
                                         <div class="xe-comment">
                                             <div class="xe-user-name overflowClip_1">
-                                                <strong th:text="${link?.name}"></strong>
+                                                <strong th:text="${website?.name}"></strong>
                                             </div>
-                                            <p class="overflowClip_2" th:text="${link?.description}"</p>
+                                            <p class="overflowClip_2" th:text="${website?.description}"</p>
                                         </div>
                                     </div>
                                 </a>
@@ -48,25 +48,25 @@
                     </th:block>
                     <th:block th:if="${not #lists.isEmpty(category.children)}" >
                         <ul class="nav nav-tabs" id="myTab2" role="tablist">
-                            <li th:class="${stat.index==0? 'nav-item active' : 'nav-item'}" th:each="cate,stat: ${category.children}">
+                            <li th:class="${stat.index==0? 'nav-item active' : 'nav-item'}" th:each="cate,stat: ${category?.children}">
                                 <a class="nav-link" id="home-tab2" data-toggle="tab" th:href="${'#'+cate.name}" >[[${cate.name}]]</a>
                             </li>
                         </ul>
                         <div class="tab-content">
-                            <th:block th:each="cate,stat: ${category.children}">
+                            <th:block th:each="cate,stat: ${category?.children}">
                                 <div th:class="${stat.index==0 ? 'tab-pane fade active in' : 'tab-pane fade'}" th:id="${cate.name}" role="tabpanel">
-                                <th:block th:if="${not #lists.isEmpty(cate.links)}" >
-                                    <div class="col-sm-3" th:each="link:${cate?.links}">
-                                        <div class="xe-widget xe-conversations box2 label-info" th:onclick="window.open([[${link.url}]], '_blank')" data-toggle="tooltip" data-placement="bottom" title="" th:data-original-title="${link.url}">
+                                <th:block th:if="${not #lists.isEmpty(cate.websites)}" >
+                                    <div class="col-sm-3" th:each="websites:${cate?.websites}">
+                                        <div class="xe-widget xe-conversations box2 label-info" th:onclick="window.open([[${website?.url}]], '_blank')" data-toggle="tooltip" data-placement="bottom" title="" th:data-original-title="${website?.url}">
                                             <div class="xe-comment-entry">
                                                 <a class="xe-user-img">
-                                                    <img th:src="${link.img.base64}" class="img-circle" width="40">
+                                                    <img th:src="${website?.img?.base64}" class="img-circle" width="40">
                                                 </a>
                                                 <div class="xe-comment">
                                                     <a href="#" class="xe-user-name overflowClip_1">
-                                                        <strong th:text="${link.name}"></strong>
+                                                        <strong th:text="${website?.name}"></strong>
                                                     </a>
-                                                    <p class="overflowClip_2"  th:text="${link.description}"></p>
+                                                    <p class="overflowClip_2"  th:text="${website?.description}"></p>
                                                 </div>
                                             </div>
                                         </div>

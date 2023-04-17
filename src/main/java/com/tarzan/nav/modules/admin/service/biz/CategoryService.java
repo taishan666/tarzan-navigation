@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tarzan.nav.common.constant.CoreConst;
 import com.tarzan.nav.modules.admin.mapper.biz.CategoryMapper;
 import com.tarzan.nav.modules.admin.model.biz.Category;
-import com.tarzan.nav.modules.admin.model.biz.Link;
+import com.tarzan.nav.modules.admin.model.biz.Website;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class CategoryService extends ServiceImpl<CategoryMapper, Category> {
 
-    private final LinkService linkService;
+    private final WebsiteService websiteService;
 
     @Cacheable(value = "category", key = "'list'")
     public List<Category> selectCategories(int status) {
@@ -47,27 +47,22 @@ public class CategoryService extends ServiceImpl<CategoryMapper, Category> {
     public List<Category> treeList() {
         List<Category> sourceList=this.selectCategories(CoreConst.STATUS_VALID);
         List<Category> topList=sourceList.stream().filter(e-> e.getPid().equals(CoreConst.TOP_CATEGORY_ID)).collect(Collectors.toList());
-        Map<Integer,List<Link>> map=linkService.getCategoryLinkMap();
+        Map<Integer,List<Website>> map=websiteService.getCategoryWebsiteMap();
         topList.forEach(e->assemblyTree(sourceList,e,map));
         return topList;
     }
 
     /**
      * 目录-组装树
-     *
      * @param sourceList&parent
-     * @Author: tarzan Liu
-     * @Date: 2022/12/6 11:14
      */
-    public void assemblyTree(List<Category> sourceList, Category parent,Map<Integer,List<Link>> map) {
+    public void assemblyTree(List<Category> sourceList, Category parent,Map<Integer,List<Website>> map) {
         if (CollectionUtils.isNotEmpty(sourceList)) {
             List<Category> resultList = sourceList.stream().filter(e -> e.getPid().equals(parent.getId())).collect(Collectors.toList());
             resultList.sort(Comparator.comparing(Category::getSort));
             parent.setChildren(resultList);
-            parent.setLinks(map.get(parent.getId()));
-            resultList.forEach(e -> {
-                assemblyTree(sourceList, e,map);
-            });
+            parent.setWebsites(map.get(parent.getId()));
+            resultList.forEach(e -> assemblyTree(sourceList, e,map));
         }
     }
 
@@ -76,7 +71,7 @@ public class CategoryService extends ServiceImpl<CategoryMapper, Category> {
     }
 
 
-    public boolean existLinks(Integer id){
-        return linkService.lambdaQuery().eq(Link::getCategoryId,id).count()!=0L;
+    public boolean existWebsites(Integer id){
+        return websiteService.lambdaQuery().eq(Website::getCategoryId,id).count()!=0L;
     }
 }

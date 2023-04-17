@@ -118,16 +118,24 @@ public class AdminRouterController {
     }
 
     /**
-     * 友情链接
+     * 网站
      */
-    @GetMapping("/links")
-    public String links(Model model) {
+    @GetMapping("/websites")
+    public String websites(Model model) {
         Category category=categoryService.lambdaQuery().last("limit 1").one();
         Integer categoryId=0;
         if(category!=null){
             categoryId=category.getId();
         }
         model.addAttribute("categoryId", categoryId);
+        return CoreConst.ADMIN_PREFIX + "website/list";
+    }
+
+    /**
+     * 友情链接
+     */
+    @GetMapping("/links")
+    public String links(Model model) {
         return CoreConst.ADMIN_PREFIX + "link/list";
     }
 

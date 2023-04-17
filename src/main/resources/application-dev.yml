@@ -2,7 +2,7 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: org.h2.Driver
-    url:  jdbc:h2:file:${user.home}/.tarzan-navigation/db/navigation;MODE=MYSQL
+    url:  jdbc:h2:file:${user.home}/.tarzan-nav/db/tarzan-nav;MODE=MYSQL
     username: root
     password: 123456
   h2:
@@ -35,8 +35,8 @@ static:
   folder: /tarzanCms/html/path
 
 tarzan:
-  shiro-key: ${user.home}/.tarzan-navigation/shiro_key.pub
-  backup-dir: ${user.home}/.tarzan-navigation/backup
+  shiro-key: ${user.home}/.tarzan-nav/shiro_key.pub
+  backup-dir: ${user.home}/.tarzan-nav/backup
   preview-enabled: false
 
 social:

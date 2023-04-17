@@ -53,17 +53,17 @@
                 <h4 class="text-gray"><i class="fa fa-search" style="margin-right: 27px;"></i>“[[${search}]]” 的搜索结果</h4>
                 <div class="row">
                     <th:block th:if="${not #lists.isEmpty(links)}" >
-                        <div class="xe-card col-sm-4 col-md-3 col-lg-3" th:each="link:${links}">
-                            <a th:href="${link?.url}" target="_blank" class="xe-widget xe-conversations box2 label-info" data-toggle="tooltip" data-placement="bottom" title="" th:data-original-title="${link?.url}">
+                        <div class="xe-card col-sm-4 col-md-3 col-lg-3" th:each="websites:${websites}">
+                            <a th:href="${website?.url}" target="_blank" class="xe-widget xe-conversations box2 label-info" data-toggle="tooltip" data-placement="bottom" title="" th:data-original-title="${website?.url}">
                                 <div class="xe-comment-entry">
                                     <div class="xe-user-img">
-                                        <img class="img-circle lazy" th:src="${link.img.base64}" th:data-src="${link.img.base64}"  width="40">
+                                        <img class="img-circle lazy" th:src="${website?.img?.base64}" th:data-src="${website?.img?.base64}"  width="40">
                                     </div>
                                     <div class="xe-comment">
                                         <div class="xe-user-name overflowClip_1">
-                                            <strong th:text="${link.name}"></strong>
+                                            <strong th:text="${website?.name}"></strong>
                                         </div>
-                                        <p class="overflowClip_2" th:text="${link.description}"</p>
+                                        <p class="overflowClip_2" th:text="${website?.description}"</p>
                                     </div>
                                 </div>
                             </a>
