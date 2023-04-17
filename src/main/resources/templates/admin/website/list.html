@@ -89,7 +89,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <ul id="permissionTree" class="ztree"></ul>
+                    <ul id="modalTree" class="ztree"></ul>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" id="websiteCopyBtn" >复制</button>
@@ -366,7 +366,7 @@
             const checkedRows = Core.selectMutiData("#table");
             if (checkedRows) {
                 Core.postAjax("/category/list", {}, function (data) {
-                     zzTree=$.fn.zTree.init($("#permissionTree"), setting, data);
+                     zzTree=$.fn.zTree.init($("#modalTree"), setting, data);
                      const node = zzTree.getNodeByParam("id", categoryId);
                      zzTree.checkNode(node);
                     $("#categoryModal").modal("show");
@@ -387,7 +387,7 @@
             Core.mask("#websiteMoveBtn");
             const checkedRows = Core.selectMutiData("#table");
             if (checkedRows) {
-                const treeObj = $.fn.zTree.getZTreeObj("permissionTree");
+                const treeObj = $.fn.zTree.getZTreeObj("modalTree");
                 const nodes = treeObj.getCheckedNodes(true);
                 if(nodes.length>0){
                     const ids = [];
@@ -413,7 +413,7 @@
             Core.mask("#websiteCopyBtn");
             const checkedRows = Core.selectMutiData("#table");
             if (checkedRows) {
-                const treeObj = $.fn.zTree.getZTreeObj("permissionTree");
+                const treeObj = $.fn.zTree.getZTreeObj("modalTree");
                 const nodes = treeObj.getCheckedNodes(true);
                 if(nodes.length>0){
                     const ids = [];
@@ -460,7 +460,7 @@
 
         // 保存或更新
         $('#saveOrUpdateBtn').on('click', function () {
-            var $f = $('#linkForm');
+            var $f = $('#websiteForm');
             let dataParam=$f.serialize();
             dataParam =dataParam +"&"+"categoryId="+categoryId;
             var valid = $f[0].checkValidity();
