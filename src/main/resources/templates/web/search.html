@@ -52,8 +52,8 @@
             <div class="col-12 col-lg-8 mx-auto">
                 <h4 class="text-gray"><i class="fa fa-search" style="margin-right: 27px;"></i>“[[${search}]]” 的搜索结果</h4>
                 <div class="row">
-                    <th:block th:if="${not #lists.isEmpty(links)}" >
-                        <div class="xe-card col-sm-4 col-md-3 col-lg-3" th:each="websites:${websites}">
+                    <th:block th:if="${not #lists.isEmpty(websites)}" >
+                        <div class="xe-card col-sm-4 col-md-3 col-lg-3" th:each="website:${websites}">
                             <a th:href="${website?.url}" target="_blank" class="xe-widget xe-conversations box2 label-info" data-toggle="tooltip" data-placement="bottom" title="" th:data-original-title="${website?.url}">
                                 <div class="xe-comment-entry">
                                     <div class="xe-user-img">

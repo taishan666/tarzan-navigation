@@ -56,7 +56,7 @@
                             <th:block th:each="cate,stat: ${category?.children}">
                                 <div th:class="${stat.index==0 ? 'tab-pane fade active in' : 'tab-pane fade'}" th:id="${cate.name}" role="tabpanel">
                                 <th:block th:if="${not #lists.isEmpty(cate.websites)}" >
-                                    <div class="col-sm-3" th:each="websites:${cate?.websites}">
+                                    <div class="col-sm-3" th:each="website:${cate?.websites}">
                                         <div class="xe-widget xe-conversations box2 label-info" th:onclick="window.open([[${website?.url}]], '_blank')" data-toggle="tooltip" data-placement="bottom" title="" th:data-original-title="${website?.url}">
                                             <div class="xe-comment-entry">
                                                 <a class="xe-user-img">
