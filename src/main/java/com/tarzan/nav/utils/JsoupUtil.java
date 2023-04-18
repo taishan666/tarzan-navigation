@@ -6,6 +6,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -66,7 +67,7 @@ public class JsoupUtil {
     }
 
     public static String getWebIcon(Document doc){
-        String url = StringUtils.appendIfMissing(doc.baseUri(),"/");
+        String url = StringUtils.appendIfMissing(doc.baseUri(), File.separator);
         String iconUrl=getDomain(url)+"favicon.ico";
         Element iconEle=doc.selectFirst("[rel=icon]");
         Element shortIconEle=doc.selectFirst("[rel=shortcut icon]");

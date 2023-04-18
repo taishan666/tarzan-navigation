@@ -22,7 +22,7 @@ public class Website extends BaseVo {
     private String url;
     private String name;
     private String description;
-    private Integer imageId;
+    private String imageId;
     private String email;
     private String qq;
     private Integer status;

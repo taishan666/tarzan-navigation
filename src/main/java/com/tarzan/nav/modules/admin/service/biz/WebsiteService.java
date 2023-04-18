@@ -1,12 +1,10 @@
 package com.tarzan.nav.modules.admin.service.biz;
 
-import cn.hutool.http.HttpUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.tarzan.nav.modules.admin.mapper.biz.ImageMapper;
 import com.tarzan.nav.modules.admin.mapper.biz.WebsiteMapper;
 import com.tarzan.nav.modules.admin.model.biz.BizImage;
 import com.tarzan.nav.modules.admin.model.biz.Website;
@@ -32,7 +30,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
 
-    private final ImageMapper imageMapper;
+    private final ImageService imageService;
 
     public boolean saveByUrl(String url,Integer categoryId){
         Website website=new Website();
@@ -49,16 +47,10 @@ public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
         }
         website.setName(title);
         website.setDescription(desc);
-        BizImage image=new BizImage();
         String webIconUrl=JsoupUtil.getWebIcon(doc);
-        image.setBase64(getBase64(webIconUrl));
-        imageMapper.insert(image);
+        BizImage image=imageService.upload(webIconUrl);
         website.setImageId(image.getId());
        return super.save(website);
-    }
-
-    public static String getBase64(String src) {
-        return StringUtil.isEmpty(src)?"":"data:"+src.split(",")[1]+";base64,"+ Base64.getEncoder().encodeToString(HttpUtil.downloadBytes(src.split(",")[0]));
     }
 
     public List<Website> list(Website website) {
@@ -81,17 +73,17 @@ public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
     }
 
     public void wrapper(Website website){
-        BizImage img=imageMapper.selectById(website.getImageId());
+        BizImage img=imageService.getById(website.getImageId());
         if(img!=null){
             website.setImg(img);
         }
     }
 
     public void wrapper(List<Website> websites){
-        Set<Integer> imageIds=websites.stream().map(Website::getImageId).collect(Collectors.toSet());
+        Set<String> imageIds=websites.stream().map(Website::getImageId).collect(Collectors.toSet());
         if(CollectionUtils.isNotEmpty(imageIds)){
-            List<BizImage> images= imageMapper.selectBatchIds(imageIds);
-            Map<Integer,BizImage> map=images.stream().collect(Collectors.toMap(BizImage::getId, e->e));
+            List<BizImage> images= imageService.listByIds(imageIds);
+            Map<String,BizImage> map=images.stream().collect(Collectors.toMap(BizImage::getId, e->e));
             websites.forEach(e->e.setImg(map.get(e.getImageId())));
         }
     }

@@ -10,14 +10,14 @@ import lombok.Data;
  */
 @Data
 public class ImageResponse {
-    private Integer imageId;
+    private String imageId;
     private String base64;
     private Long size;
     private String type;
     private Integer status;
     private String msg;
 
-    private ImageResponse(Integer imageId, String type, String base64,Long size,Integer status,String msg) {
+    private ImageResponse(String imageId, String type, String base64,Long size,Integer status,String msg) {
         this.imageId = imageId;
         this.type = type;
         this.size=size;
@@ -31,7 +31,7 @@ public class ImageResponse {
         this.msg = msg;
     }
 
-    public static ImageResponse success(Integer imageId, String type, String base64, Long size) {
+    public static ImageResponse success(String imageId, String type, String base64, Long size) {
         return new ImageResponse( imageId, type, base64, size, CoreConst.SUCCESS_CODE,"成功");
     }
 

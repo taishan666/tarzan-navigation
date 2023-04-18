@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS `biz_website` (
                                             `name` varchar(50) NOT NULL COMMENT '链接名',
                                             `url` varchar(200) NOT NULL COMMENT '链接地址',
                                             `description` varchar(255) NULL DEFAULT NULL COMMENT '链接介绍',
-                                            `image_id` int NULL  DEFAULT NULL COMMENT 'logo图片id',
+                                            `image_id` varchar(50) NULL  DEFAULT NULL COMMENT 'logo图片id',
                                             `email` varchar(100) NULL DEFAULT NULL COMMENT '站长邮箱',
                                             `qq` varchar(50) NULL DEFAULT NULL COMMENT '站长qq',
                                             `status` int UNSIGNED NULL DEFAULT NULL COMMENT '状态',
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `biz_link` (
                                             `name` varchar(50) NOT NULL COMMENT '链接名',
                                             `url` varchar(200) NOT NULL COMMENT '链接地址',
                                             `description` varchar(255) NULL DEFAULT NULL COMMENT '链接介绍',
-                                            `image_id` int NULL  DEFAULT NULL COMMENT 'logo图片id',
+                                            `image_id` varchar(50) NULL  DEFAULT NULL COMMENT 'logo图片id',
                                             `email` varchar(100) NULL DEFAULT NULL COMMENT '友链站长邮箱',
                                             `qq` varchar(50) NULL DEFAULT NULL COMMENT '友链站长qq',
                                             `status` int UNSIGNED NULL DEFAULT NULL COMMENT '状态',
@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `biz_link` (
 
 DROP TABLE IF EXISTS `biz_image`;
 CREATE TABLE IF NOT EXISTS `biz_image` (
-                                           `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
+                                           `id` varchar(50)  NOT NULL DEFAULT '' COMMENT 'MD5主键',
                                            `base64` text NULL DEFAULT NULL COMMENT '图片base64码',
                                            `create_time` datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '添加时间'
     );
@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS `sys_user` (
                                             `phone` varchar(50) NULL DEFAULT NULL COMMENT '联系方式',
                                             `sex` int NULL DEFAULT NULL COMMENT '年龄：1男2女',
                                             `age` int NULL DEFAULT NULL COMMENT '年龄',
-                                            `image_id` int NULL DEFAULT NULL COMMENT '头像地址(图片id)',
+                                            `image_id` varchar(50) NULL DEFAULT NULL COMMENT '头像地址(图片id)',
                                             `status` int NOT NULL COMMENT '用户状态：1有效; 2删除',
                                             `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
                                             `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',

@@ -52,7 +52,7 @@ public class DbBackupTools {
             while (rs.next()) {
                 String tableName=rs.getString("TABLE_NAME");
                 if(tableName.startsWith("SYS_")||tableName.startsWith("BIZ_")){
-                    if(!tableName.equals("SYS_LOG_ERROR")&&!tableName.equals("SYS_LOGIN_LOG")){
+                    if(!"SYS_LOG_ERROR".equals(tableName)&&!"SYS_LOGIN_LOG".equals(tableName)){
                         tableNames.add(tableName);
                     }
                 }
@@ -126,7 +126,7 @@ public class DbBackupTools {
     @Transactional(rollbackFor = Exception.class)
     public void executeAsync(List<String> sqlList) {
         int pages=0;
-        int pageNum=50;
+        int pageNum=100;
         while(true){
             pages++;
             int endIndex = Math.min(pages * pageNum, sqlList.size());
@@ -147,7 +147,7 @@ public class DbBackupTools {
         try {
             File dir = new File(tarzanProperties.getBackupDir());
             dir.mkdirs();
-            String path = dir.getPath() + "/"+ FILE_PREFIX+System.currentTimeMillis()+".sql" ;
+            String path = dir.getPath() + File.separator+ FILE_PREFIX+System.currentTimeMillis()+".sql" ;
             File file = new File(path);
             if (!file.exists()){
                 file.createNewFile();
@@ -159,13 +159,17 @@ public class DbBackupTools {
                     sb.append("INSERT INTO ").append(t).append(" VALUES (");
                     e.forEach((k,v)->{
                         if(v instanceof String){
-                            if (((String) v).contains("\n")) {
-                                v = ((String) v).replaceAll("\n", "\\\\n");
+                            String str=(String) v;
+                            if (str.contains("\n")) {
+                                str = str.replaceAll("\n", "\\\\n");
                             }
-                            if (((String) v).contains("\r")) {
-                                v = ((String) v).replaceAll("\r", "\\\\r");
+                            if (str.contains("\r")) {
+                                str = str.replaceAll("\r", "\\\\r");
                             }
-                            sb.append("'").append(v).append("'").append(",");
+                            if (str.contains("'")) {
+                                str = str.replaceAll("'", "''");
+                            }
+                            sb.append("'").append(str).append("'").append(",");
                         }else if(v instanceof Date){
                             sb.append("'").append(DATE_FORMAT.format(v)).append("'").append(",");
                         }else{

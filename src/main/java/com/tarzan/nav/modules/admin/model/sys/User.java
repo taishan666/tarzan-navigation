@@ -64,7 +64,7 @@ public class User implements Serializable {
     /**
      * 头像
      */
-    private Integer imageId;
+    private String imageId;
 
     /**
      * 用户状态：1有效; 0无效
