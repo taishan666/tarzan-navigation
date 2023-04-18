@@ -63,8 +63,9 @@ public class DbBackupTools {
         return tableNames;
     }
 
+
     /**
-     * 数据还原:
+     * 数据还原
      */
     @Transactional(rollbackFor = Exception.class)
     public synchronized  boolean rollback(String fileName) {
@@ -115,29 +116,11 @@ public class DbBackupTools {
             }
 
         }
-        executeAsync(list);
+        list.forEach(e-> jdbcTemplate.batchUpdate(e));
         log.info("恢复数据耗时 "+(System.currentTimeMillis()-stat)+" ms");
         return true;
     }
 
-    /**
-     * 异步多线程处理:
-     */
-    @Transactional(rollbackFor = Exception.class)
-    public void executeAsync(List<String> sqlList) {
-        int pages=0;
-        int pageNum=100;
-        while(true){
-            pages++;
-            int endIndex = Math.min(pages * pageNum, sqlList.size());
-            List<String> list=sqlList.subList((pages - 1) * pageNum, endIndex);
-            jdbcTemplate.batchUpdate(list.toArray(new String[0]));
-            log.info("恢复数据"+list.size()+"条sql完毕。。。。。。");
-            if(endIndex>=sqlList.size()){
-                break;
-            }
-        }
-    }
 
     /**
      * 数据备份
