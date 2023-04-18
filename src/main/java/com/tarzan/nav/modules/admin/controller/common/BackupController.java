@@ -51,7 +51,6 @@ public class BackupController {
     public ResponseVo upload(@RequestParam(value = "file", required = false) MultipartFile multipartFile) {
         String backupDir= StringUtils.appendIfMissing(tarzanProperties.getBackupDir(), File.separator);
         File file=new File(backupDir+multipartFile.getOriginalFilename());
-        log.info(file.getPath());
         try {
             FileUtil.copy(multipartFile.getBytes(), file);
         } catch (IOException e) {
@@ -80,9 +79,7 @@ public class BackupController {
     @ResponseBody
     public PageResultVo backupList(Integer pageNumber, Integer pageSize){
         File file=new File(tarzanProperties.getBackupDir());
-        log.info(file.getPath());
         File[] files= file.listFiles();
-        log.info(String.valueOf(files.length));
         if(files==null){
             return ResultUtil.table(null,null);
         }

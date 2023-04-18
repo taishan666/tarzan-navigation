@@ -244,7 +244,7 @@ public class SystemController {
      */
     @GetMapping("/userInfo")
     public String userDetail(Model model) {
-        User user = userService.getById(AuthUtil.getUserId());
+        User user = userService.getByIdWithImage(AuthUtil.getUserId());
         model.addAttribute("user", user);
         return CoreConst.ADMIN_PREFIX + "user/info";
     }
@@ -269,7 +269,7 @@ public class SystemController {
         if (!changePasswordVo.getNewPassword().equals(changePasswordVo.getConfirmNewPassword())) {
             return ResultUtil.error("两次密码输入不一致");
         }
-        User loginUser = userService.selectByUserId(((User) SecurityUtils.getSubject().getPrincipal()).getId());
+        User loginUser = userService.getById(((User) SecurityUtils.getSubject().getPrincipal()).getId());
         User newUser = BeanUtil.copy(loginUser, User.class);
         String sysOldPassword = loginUser.getPassword();
         newUser.setPassword(changePasswordVo.getOldPassword());

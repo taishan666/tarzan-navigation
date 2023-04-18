@@ -6,7 +6,6 @@ import com.tarzan.nav.modules.admin.model.sys.User;
 import com.tarzan.nav.modules.admin.service.sys.UserService;
 import com.tarzan.nav.modules.admin.vo.base.PageResultVo;
 import com.tarzan.nav.modules.admin.vo.base.ResponseVo;
-import com.tarzan.nav.shiro.realm.UserRealm;
 import com.tarzan.nav.utils.AuthUtil;
 import com.tarzan.nav.utils.PasswordHelper;
 import com.tarzan.nav.utils.ResultUtil;
@@ -15,7 +14,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * 后台用户配置
@@ -29,7 +29,6 @@ import java.util.*;
 @AllArgsConstructor
 public class UserController {
 
-    private final UserRealm myShiroRealm;
     private final UserService userService;
 
 
@@ -80,7 +79,7 @@ public class UserController {
      */
     @GetMapping("/edit")
     public String userDetail(Model model, Integer id) {
-        User user = userService.getById(id);
+        User user = userService.getByIdWithImage(id);
         model.addAttribute("user", user);
         return CoreConst.ADMIN_PREFIX + "user/form";
     }

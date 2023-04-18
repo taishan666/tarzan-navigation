@@ -50,7 +50,7 @@ public class CommentService extends ServiceImpl<CommentMapper, Comment> {
         page=page(page,Wrappers.lambdaQuery(comment).orderByDesc(Comment::getCreateTime));
         List<Comment> comments=page.getRecords();
         if(CollectionUtils.isNotEmpty(comments)){
-            List<Integer> ids=comments.stream().map(Comment::getId).collect(Collectors.toList());
+          //  List<Integer> ids=comments.stream().map(Comment::getId).collect(Collectors.toList());
             List<Integer> replyIds=comments.stream().map(Comment::getReplyId).collect(Collectors.toList());
             List<Comment> replyComments=listByIds(replyIds);
             Map<Integer,Comment> map=replyComments.stream().collect(Collectors.toMap(Comment::getId,e->e));
@@ -77,7 +77,7 @@ public class CommentService extends ServiceImpl<CommentMapper, Comment> {
             List<Comment> bizComments=new ArrayList<>();
             bizComments.addAll(comments);
             bizComments.addAll(children);
-            List<Integer> bizIds=bizComments.stream().map(Comment::getId).collect(Collectors.toList());
+          //  List<Integer> bizIds=bizComments.stream().map(Comment::getId).collect(Collectors.toList());
             Map<Integer,Comment> bizMap=bizComments.stream().collect(Collectors.toMap(Comment::getId,e->e));
             comments.forEach(e->{
                 List<Comment> childList=childMap.get(e.getId());
@@ -118,7 +118,7 @@ public class CommentService extends ServiceImpl<CommentMapper, Comment> {
             replyComment.setUserId(user.getId());
             replyComment.setNickname(user.getNickname());
             replyComment.setEmail(user.getEmail());
-            replyComment.setAvatar(user.getImg());
+            replyComment.setAvatar(user.getImg().getBase64());
             replyComment.setIp(user.getLoginIpAddress());
             replyComment.setStatus(CoreConst.STATUS_VALID);
             this.insertComment(replyComment);

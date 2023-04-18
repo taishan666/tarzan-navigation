@@ -116,7 +116,7 @@ CREATE TABLE IF NOT EXISTS `sys_user` (
                                             `phone` varchar(50) NULL DEFAULT NULL COMMENT '联系方式',
                                             `sex` int NULL DEFAULT NULL COMMENT '年龄：1男2女',
                                             `age` int NULL DEFAULT NULL COMMENT '年龄',
-                                            `img` varchar(255) NULL DEFAULT NULL COMMENT '头像地址',
+                                            `image_id` int NULL DEFAULT NULL COMMENT '头像地址(图片id)',
                                             `status` int NOT NULL COMMENT '用户状态：1有效; 2删除',
                                             `create_time` datetime(0) NULL DEFAULT NULL COMMENT '创建时间',
                                             `update_time` datetime(0) NULL DEFAULT NULL COMMENT '更新时间',

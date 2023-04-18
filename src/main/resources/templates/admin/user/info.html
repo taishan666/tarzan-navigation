@@ -29,19 +29,10 @@
                             <label class="col-md-3 col-form-label">更换头像:</label>
                             <div class="col-md-9 upload-content">
                                 <div class="content-img">
-                                    <ul id="fileList" class="content-img-list">
-                                        <block th:if="${user?.img!=null && user?.img!=''}">
-                                            <li class="content-img-list-item"><img th:src="${user?.img}">
-                                                <div class="hide">
-                                                    <a class="delete-btn"><i class="gcl gcllajitong"></i></a>
-                                                    <a class="big-btn" ><i class="gcl gclfangda"></i></a>
-                                                </div>
-                                            </li>
-                                        </block>
-                                    </ul>
-                                    <div class="file"  id="filePicker">
-                                        <i class="fa fa-plus"></i>
-                                        <input id="uploadImage" type="text" name="img"  th:value="${user?.img}">
+                                    <div class="file"  id="filePicker" >
+                                        <i  class="fa fa-plus"></i>
+                                        <img th:src="${user?.img?.base64}" height="150px;" id="img" style="position: absolute;inset: 0px auto auto 0px;"/>
+                                         <input id="imageId" name="imageId" type="hidden" th:value="${user?.imageId}">
                                     </div>
                                 </div>
                             </div>
@@ -116,7 +107,7 @@
         // swf文件路径
         swf: '/admin/img/Uploader.swf',
         // 文件接收服务端。
-        server: '[[@{/attachment/upload}]]',
+        server: '[[@{/image/upload}]]',
         // 选择文件的按钮。可选。
         // 内部根据当前运行是创建，可能是input元素，也可能是flash.
         pick: '#filePicker',
@@ -128,16 +119,9 @@
         }
     });
     // 文件上传成功，给item添加成功class, 用样式标记上传成功。
-    var  $list=$('#fileList');
     uploader.on( 'uploadSuccess', function( file,data ) {
-        var $li = $(
-            '<li class="content-img-list-item"><img src="' + data.url + '" >' +
-            '<div class="hide"><a class="delete-btn"><i class="gcl gcllajitong"></i></a>' +
-            '<a class="big-btn"><i class="gcl gclfangda"></i></a></div></li>'
-        );
-        $list.append( $li );
-        $("#uploadImage").val(data.url);
-        $('.content-img .file').hide();
+        $("#imageId").val(data.imageId);
+        $("#img").attr("src",data.base64);
     });
     // 文件上传失败，显示上传出错。
     uploader.on( 'uploadError', function( file ) {

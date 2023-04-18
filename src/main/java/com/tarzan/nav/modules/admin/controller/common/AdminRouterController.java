@@ -7,6 +7,7 @@ import com.tarzan.nav.modules.admin.service.biz.CategoryService;
 import com.tarzan.nav.modules.admin.service.biz.CommentService;
 import com.tarzan.nav.modules.admin.service.sys.MenuService;
 import com.tarzan.nav.modules.admin.service.sys.SysConfigService;
+import com.tarzan.nav.modules.admin.service.sys.UserService;
 import lombok.AllArgsConstructor;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,7 @@ public class AdminRouterController {
     private final MenuService MenuService;
     private final CommentService commentService;
     private final CategoryService categoryService;
+    private final UserService userService;
 
     /**
      * 后台首页
@@ -38,7 +40,7 @@ public class AdminRouterController {
     public String index(Model model) {
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         model.addAttribute("menuTree", MenuService.selectMenuTreeByUserId(user.getId()));
-        model.addAttribute("loginUser",user);
+        model.addAttribute("loginUser",userService.getByIdWithImage(user.getId()));
         model.addAttribute("comments",commentService.toAudit());
         return CoreConst.ADMIN_PREFIX + "index/index";
     }

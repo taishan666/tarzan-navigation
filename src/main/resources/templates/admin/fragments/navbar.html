@@ -35,7 +35,7 @@
                     </div>
             </div>
             <div class="user-info-wrapper header-links">
-                <a href="javascript:void(0);" class="user-info"><img th:src="${loginUser.img?:'assets/img/user.png'}" alt="" class="user-img">
+                <a href="javascript:void(0);" class="user-info"><img th:src="${loginUser.img.base64?:'assets/img/user.png'}" alt="" class="user-img">
                 <div class="blink-animation"><span class="blink-circle"></span><span class="main-circle"></span></div>
                  </a>
                 <div class="user-info-box">

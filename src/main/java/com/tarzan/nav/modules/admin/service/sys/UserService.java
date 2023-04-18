@@ -6,7 +6,9 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tarzan.nav.common.constant.CoreConst;
+import com.tarzan.nav.modules.admin.mapper.biz.ImageMapper;
 import com.tarzan.nav.modules.admin.mapper.sys.UserMapper;
+import com.tarzan.nav.modules.admin.model.biz.BizImage;
 import com.tarzan.nav.modules.admin.model.sys.User;
 import lombok.AllArgsConstructor;
 import org.apache.shiro.SecurityUtils;
@@ -22,7 +24,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
+import java.util.Deque;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * @author tarzan liu
@@ -35,6 +40,9 @@ public class UserService extends ServiceImpl<UserMapper, User> {
 
     private final SessionManager sessionManager;
     private final CacheManager cacheManager;
+    private final ImageMapper imageMapper;
+
+
 
     public User getByUsername(String username) {
         return super.lambdaQuery().eq(User::getUsername, username).one();
@@ -61,8 +69,12 @@ public class UserService extends ServiceImpl<UserMapper, User> {
         return page;
     }
 
-    public User selectByUserId(Integer userId) {
-        return getById(userId);
+    public User getByIdWithImage(Integer userId) {
+        User user=getById(userId);
+        if(Objects.nonNull(user)&& Objects.nonNull(user.getImageId())){
+          this.wrapper(user);
+        }
+        return user;
     }
 
     public boolean updateByUserId(User user) {
@@ -104,4 +116,10 @@ public class UserService extends ServiceImpl<UserMapper, User> {
     }
 
 
+    private void wrapper(User user) {
+        BizImage img=imageMapper.selectById(user.getImageId());
+        if(img!=null){
+            user.setImg(img);
+        }
+    }
 }

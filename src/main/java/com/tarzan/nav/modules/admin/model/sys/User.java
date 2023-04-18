@@ -1,6 +1,7 @@
 package com.tarzan.nav.modules.admin.model.sys;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.tarzan.nav.modules.admin.model.biz.BizImage;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -63,7 +64,7 @@ public class User implements Serializable {
     /**
      * 头像
      */
-    private String img;
+    private Integer imageId;
 
     /**
      * 用户状态：1有效; 0无效
@@ -108,6 +109,10 @@ public class User implements Serializable {
     public String getCredentialsSalt() {
         return username + "tarzan.com" + salt;
     }
+
+
+    @TableField(exist = false)
+    private BizImage img;
 
 
 }
