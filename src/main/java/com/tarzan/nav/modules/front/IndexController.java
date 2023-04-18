@@ -3,6 +3,7 @@ package com.tarzan.nav.modules.front;
 import com.tarzan.nav.common.constant.CoreConst;
 import com.tarzan.nav.modules.admin.model.biz.Website;
 import com.tarzan.nav.modules.admin.service.biz.CategoryService;
+import com.tarzan.nav.modules.admin.service.biz.LinkService;
 import com.tarzan.nav.modules.admin.service.biz.WebsiteService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -25,12 +26,15 @@ public class IndexController {
 
     private final CategoryService categoryService;
     private final WebsiteService websiteService;
+    private final LinkService linkService;
+
     /**
      * 首页
      */
     @GetMapping({"/","index","home"})
     public String home(Model model) {
         model.addAttribute("categories",categoryService.treeList());
+        model.addAttribute("links",linkService.simpleList());
         return  CoreConst.WEB_PREFIX+"index";
     }
 
@@ -48,6 +52,7 @@ public class IndexController {
     public String about() {
         return  CoreConst.WEB_PREFIX+"about";
     }
+
 
 
 }

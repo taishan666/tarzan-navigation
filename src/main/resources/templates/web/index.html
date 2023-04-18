@@ -79,7 +79,7 @@
                 </div>
                 <br />
             </th:block>
-              <div th:replace="web/module/friendlink"></div>
+            <blogroll th:unless="${#lists.isEmpty(links)}" th:replace="web/module/blogroll::blogroll(${links})"></blogroll>
             </div>
             <footer th:replace="web/module/footer :: footer(${SITE_CONFIG})"></footer>
         </div>
