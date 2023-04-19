@@ -141,7 +141,7 @@
         // 删除
         function deleteRow(id) {
             Core.confirm("确定删除？", function () {
-                Core.postAjax("/user/delete", {"id": id}, function (data) {
+                Core.postAjax("/notice/remove", [id], function (data) {
                     if (data.status === 200) {
                         refreshTable();
                     }
@@ -160,7 +160,7 @@
                         ids.push(item.id);
                     })
                     var jsonStr = JSON.stringify(ids);
-                    Core.postAjax("/user/batch/delete", jsonStr, function (data) {
+                    Core.postAjax("/notice/remove", jsonStr, function (data) {
                         if (data.status === 200) {
                             refreshTable();
                         }
@@ -168,105 +168,6 @@
                     }, function (err) {
                         layer.msg(err)
                     }, "POST", "application/json; charset=UTF-8")
-                })
-            }
-        })
-
-        // 保存或更新
-        $('#saveOrUpdateBtn').on('click', function () {
-            var $f = $('#userForm');
-            var valid = $f[0].checkValidity();
-            var url = $f.find("input[name='id']").val() ? "/user/edit" : "/user/add"
-            if (valid) {
-                Core.mask("#saveOrUpdateBtn");
-                Core.postAjax(url, $f.serialize(), function (data) {
-                    Core.unmask("#saveOrUpdateBtn");
-                    if (data.status === 200) {
-                        $("#formModal").modal("hide");
-                        refreshTable();
-                    }
-                    layer.msg(data.msg);
-                }, function () {
-                    Core.unmask("#saveOrUpdateBtn");
-                })
-            }
-            $f.addClass("was-validated")
-        })
-
-        var selectRoleIds;
-        var userIdChecked;
-        var loadRoleCount = 0;
-
-        // 分配角色
-        function assignRole(id) {
-            userIdChecked = id;
-            if (loadRoleCount === 0) {
-                var roleColumns = [
-                    {checkbox: true},
-                    {
-                        field: 'name',
-                        title: '角色名称',
-                        align: "center"
-                    }, {
-                        field: 'description',
-                        title: '角色描述',
-                        align: "center"
-                    },
-                    {
-                        field: 'status',
-                        title: '角色状态',
-                        align: "center",
-                        formatter: function (value, row, index) {
-                            return row.status ? "有效" : "删除";
-                        }
-                    }];
-                var roleOptions = {
-                    id: "#assignRoleTable",
-                    url: "/user/assign/role/list",
-                    columns: roleColumns,
-                    pagination: false,
-                    queryParams: {
-                        id: id
-                    },
-                    onLoadSuccess: function () {
-                        loadRoleCount = 1;
-                        Core.checkTableBy("#assignRoleTable", {field: "id", values: selectRoleIds+''});
-                    },
-                    responseHandler: handleRoleData,
-                }
-                Core.initTable(roleOptions);
-            }
-            if (loadRoleCount === 1) {
-                Core.refreshTable("#assignRoleTable");
-            }
-            $("#assignRoleModal").modal("show");
-        }
-
-        function handleRoleData(res) {
-            selectRoleIds = res.hasRoles;
-            return res.rows;
-        }
-
-        $('#assignRoleSaveOrUpdateBtn').on('click', function () {
-            var checkedRows = Core.selectMutiData("#assignRoleTable");
-            if (checkedRows) {
-                Core.mask("#assignRoleSaveOrUpdateBtn");
-                roleIdStr = "";
-                $.each(checkedRows, function (i, item) {
-                    roleIdStr += (item.id + ",");
-                })
-                roleIdStr = roleIdStr.substring(0, roleIdStr.length - 1);
-                Core.postAjax('/user/assign/role', {id: userIdChecked, roleIdStr: roleIdStr}, function (data) {
-                    Core.unmask("#assignRoleSaveOrUpdateBtn");
-                    if (data.status === 200) {
-                        $("#assignRoleModal").modal("hide");
-                        Core.refreshTable("#table");
-                    }
-                    layer.msg(data.msg);
-                }, function (xhr) {
-                    Core.unmask("#assignPermissionSaveOrUpdateBtn");
-                    console.log(xhr)
-                    layer.msg('保存失败')
                 })
             }
         })
