@@ -55,6 +55,14 @@ public class AdminRouterController {
     }
 
     /**
+     * 公告列表入口
+     */
+    @GetMapping("/notices")
+    public String notices() {
+        return CoreConst.ADMIN_PREFIX + "notice/list";
+    }
+
+    /**
      * 用户列表入口
      */
     @GetMapping("/users")

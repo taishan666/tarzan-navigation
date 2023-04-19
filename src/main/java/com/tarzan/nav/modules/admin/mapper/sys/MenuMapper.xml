@@ -10,9 +10,9 @@
 
 
   <select id="selectMenuByUserId" parameterType="integer" resultType="com.tarzan.nav.modules.admin.model.sys.Menu">
-    SELECT  m.id, m.name, m.url, m.parent_id, m.icon, m.order_num FROM sys_menu m
+    SELECT  m.id, m.name, m.url, m.pid, m.icon, m.sort FROM sys_menu m
     WHERE  m.type in(0,1) and m.status=1
-    ORDER BY m.order_num
+    ORDER BY m.sort
   </select>
 
 </mapper>

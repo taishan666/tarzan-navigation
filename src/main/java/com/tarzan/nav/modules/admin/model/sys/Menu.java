@@ -23,6 +23,12 @@ public class Menu implements Serializable {
 
     private Integer id;
 
+
+    /**
+     * 父级权限id
+     */
+    private Integer pid;
+
     /**
      * 权限名称
      */
@@ -44,11 +50,6 @@ public class Menu implements Serializable {
     private String perms;
 
     /**
-     * 父级权限id
-     */
-    private Integer parentId;
-
-    /**
      * 类型   0：目录   1：菜单   2：按钮
      */
     private Integer type;
@@ -56,7 +57,7 @@ public class Menu implements Serializable {
     /**
      * 排序
      */
-    private Integer orderNum;
+    private Integer sort;
 
     /**
      * 图标

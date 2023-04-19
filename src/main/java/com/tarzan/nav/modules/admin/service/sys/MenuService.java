@@ -32,7 +32,7 @@ public class MenuService extends ServiceImpl<MenuMapper, Menu> {
             if (StringUtils.startsWith(p.getUrl(), StringPool.SLASH)) {
                 p.setUrl(SLASH_PATTERN.matcher(p.getUrl()).replaceFirst(StringPool.HASH));
             }
-        }).collect(Collectors.groupingBy(Menu::getParentId));
+        }).collect(Collectors.groupingBy(Menu::getPid));
         List<Menu> rootLevelPermissionList = parentIdToPermissionListMap.getOrDefault(CoreConst.TOP_MENU_ID, Collections.emptyList());
         fetchChildren(rootLevelPermissionList, parentIdToPermissionListMap);
         return rootLevelPermissionList;
@@ -53,14 +53,16 @@ public class MenuService extends ServiceImpl<MenuMapper, Menu> {
         return baseMapper.findPermsByUserId(userId);
     }
 
+/*
     @Cacheable(value = "menu", key = "'all'")
     public List<Menu> selectAll(Integer status) {
-        return  super.lambdaQuery().eq(Menu::getStatus,status).orderByAsc(Menu::getOrderNum).list();
+        return  super.lambdaQuery().eq(Menu::getStatus,status).orderByAsc(Menu::getSort).list();
     }
+*/
 
     @Cacheable(value = "menu", key = "'menus'")
     public List<Menu> selectAllMenuName(Integer status) {
-        return  super.lambdaQuery().ne(Menu::getType,2).eq(Menu::getStatus,status).orderByAsc(Menu::getOrderNum).list();
+        return  super.lambdaQuery().ne(Menu::getType,2).eq(Menu::getStatus,status).orderByAsc(Menu::getSort).list();
     }
 
     public List<Menu> selectMenuByUserId(Integer userId) {
@@ -83,6 +85,6 @@ public class MenuService extends ServiceImpl<MenuMapper, Menu> {
     }
 
     public long selectSubPermsByPermissionId(Integer id) {
-        return baseMapper.selectCount(Wrappers.lambdaQuery(new Menu().setParentId(id).setStatus(1)));
+        return baseMapper.selectCount(Wrappers.lambdaQuery(new Menu().setPid(id).setStatus(1)));
     }
 }
