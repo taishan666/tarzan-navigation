@@ -30,12 +30,15 @@ public class NoticeController {
 
     private final NoticeService noticeService;
 
-    /**
-     * 文章
-     */
     @GetMapping("/add")
     public String add(Model model) {
-        model.addAttribute("article", null);
+        return CoreConst.ADMIN_PREFIX + "notice/publish";
+    }
+
+
+    @GetMapping("/edit")
+    public String edit(Model model,Integer id) {
+        model.addAttribute("notice", noticeService.getById(id));
         return CoreConst.ADMIN_PREFIX + "notice/publish";
     }
 

@@ -135,10 +135,7 @@
 
         // 编辑
         function editRow(id) {
-            Core.load("#formContent", "/user/edit?id=" + id, function () {
-                $('#formTitle').text('编辑')
-                $("#formModal").modal('show');
-            }, 2);
+            window.location.href = "#notice/edit?id=" + id
         }
 
         // 删除
