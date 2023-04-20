@@ -49,7 +49,8 @@ public class IndexController {
     }
 
     @GetMapping({"/about"})
-    public String about() {
+    public String about(Model model) {
+        model.addAttribute("categories",categoryService.treeList());
         return  CoreConst.WEB_PREFIX+"about";
     }
 
