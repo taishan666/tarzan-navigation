@@ -21,7 +21,7 @@ public class WebSiteTask {
 
     private final WebsiteService websiteService;
 
-    @Scheduled(cron = "0/5 * * * * ?")
+    @Scheduled(cron = "0/59 * * * * ?")
     public  void brokenLinkCheck() {
         List<Website> websites=websiteService.simpleList();
         websites.forEach(e->{
