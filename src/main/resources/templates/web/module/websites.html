@@ -1,6 +1,6 @@
 <websites th:fragment="websites(categories)">
 <th:block th:each="category: ${categories}">
-    <h4 class="text-gray"><i th:class="${category?.icon==null?'linecons-tag':category?.icon}" style="margin-right: 7px;" th:id="${category?.name}"></i>[[${category?.name}]]</h4>
+    <h4 class="text-gray"><i th:class="${category?.icon==null?'linecons-tag':category?.icon}" style="margin-right: 7px;" th:id="${'anchor-'+category?.id}"></i>[[${category?.name}]]</h4>
     <div class="row">
         <th:block th:if="${#lists.isEmpty(category.children)}" >
             <th:block th:if="${not #lists.isEmpty(category.websites)}" >
