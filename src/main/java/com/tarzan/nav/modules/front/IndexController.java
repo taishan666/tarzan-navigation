@@ -45,8 +45,7 @@ public class IndexController {
     @GetMapping({"/search"})
     public String search(String q,Model model) {
         model.addAttribute("search",q);
-        List<Website> websites=websiteService.list(new Website().setName(q));
-        websiteService.wrapper(websites);
+        List<Website> websites=websiteService.listWithImage(new Website().setName(q));
         model.addAttribute("websites",websites);
         return  CoreConst.WEB_PREFIX+"search";
     }

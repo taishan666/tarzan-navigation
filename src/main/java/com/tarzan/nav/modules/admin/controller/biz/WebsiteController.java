@@ -42,7 +42,6 @@ public class WebsiteController {
         if(CollectionUtils.isEmpty(websitePage.getRecords())){
             return  ResultUtil.table(Collections.emptyList(), 0L);
         }
-        websiteService.wrapper(websitePage.getRecords());
         return ResultUtil.table(websitePage.getRecords(), websitePage.getTotal());
     }
 
@@ -54,7 +53,6 @@ public class WebsiteController {
 
     @PostMapping("/add")
     @ResponseBody
-    @CacheEvict(value = {"website", "category"}, allEntries = true)
     public ResponseVo add(@Valid Website website) {
         if(Objects.nonNull(website.getCategoryId())&&website.getCategoryId()>0){
             boolean flag = websiteService.saveByUrl(website.getUrl(),website.getCategoryId());
@@ -70,10 +68,7 @@ public class WebsiteController {
 
     @GetMapping("/edit")
     public String edit(Model model, Integer id) {
-        Website website = websiteService.getById(id);
-        if(Objects.nonNull(website.getImageId())){
-            websiteService.wrapper(website);
-        }
+        Website website = websiteService.getByIdWithImage(id);
         model.addAttribute("website", website);
         return CoreConst.ADMIN_PREFIX + "website/form";
     }

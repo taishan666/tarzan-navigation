@@ -5,7 +5,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.springframework.http.HttpStatus;
 
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
 import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -14,7 +17,7 @@ import java.net.URLConnection;
 import java.util.Objects;
 
 /**
- * @author Lenovo
+ * @author tarzan
  */
 @Slf4j
 public class JsoupUtil {
@@ -111,20 +114,30 @@ public class JsoupUtil {
         }
     }
 
-    public static String checkImageExist(String src){
+    private static HttpURLConnection getConnection(String httpUrl){
         try {
-            URL url=new URL(src);
-            URLConnection urlConnection= url.openConnection();
+            URL url=new URL(httpUrl);
+            URLConnection urlConnection = url.openConnection();
             //设置读取超时
             urlConnection.setReadTimeout(1000 * 60);
             urlConnection.setRequestProperty("Accept", "*/*");
             urlConnection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
             urlConnection.setRequestProperty("Accept-Language", "zh-cn");
-            urlConnection.setRequestProperty("Connection", "close"); //不进行持久化连接
-            HttpURLConnection connection= (HttpURLConnection) urlConnection;
+            //不进行持久化连接
+            urlConnection.setRequestProperty("Connection", "close");
+            return (HttpURLConnection) urlConnection;
+        } catch (IOException e) {
+           return null;
+        }
+
+    }
+
+    public static String checkImageExist(String src){
+        try {
+            HttpURLConnection connection= getConnection(src);
             int code=connection.getResponseCode();
             String contentType=connection.getContentType();
-            if(code==200&&contentType.startsWith("image")){
+            if(code== HttpStatus.OK.value() &&contentType.startsWith("image")){
                 return contentType;
             }
         } catch (IOException e) {
@@ -132,5 +145,41 @@ public class JsoupUtil {
         }
         return null;
     }
+
+    static HostnameVerifier hv = (urlHostName, session) -> {
+        log.info("Warning: URL Host: " + urlHostName + " vs. " + session.getPeerHost());
+        return true;
+    };
+
+    public static boolean checkUrl(String website){
+        HttpURLConnection connection = null;
+        try {
+            URL url = new URL(website);
+            HttpsUrlValidator.trustAllHttpsCertificates();
+            HttpsURLConnection.setDefaultHostnameVerifier(hv);
+            connection = (HttpURLConnection) url.openConnection();
+            //设置读取超时
+            connection.setReadTimeout(1000 * 15);
+            connection.setRequestProperty("Accept", "*/*");
+            connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
+            connection.setRequestProperty("Accept-Language", "zh-cn");
+            //不进行持久化连接
+            connection.setRequestProperty("Connection", "close");
+            int code=connection.getResponseCode();
+            if(code==HttpStatus.OK.value()){
+                return true;
+            }
+        } catch (final IOException e) {
+            log.info(e.getMessage());
+        } catch (final Exception e1){
+            log.info(e1.getMessage());
+        }finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
+        }
+        return false;
+    }
+
 
 }
