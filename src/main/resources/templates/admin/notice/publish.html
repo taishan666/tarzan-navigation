@@ -25,7 +25,7 @@
                 <div class="card-body">
                     <div class="form-group">
                         <input type="text" class="form-control" id="title" name="title" th:value="${notice?.title}"
-                               placeholder="请输入文章标题">
+                               placeholder="请输入公告标题">
                     </div>
                     <div class="form-group">
                         <textarea  id="textEditor" th:text="${notice?.content}"></textarea>
@@ -69,7 +69,7 @@
     var content;
     //自定义编辑器菜单
     ice.editor("textEditor",function(e){
-        this.uploadUrl = '[[@{/attachment/editor/upload}]]';
+        this.uploadUrl = '[[@{/image/editor/upload}]]';
         this.pasteText = true;
         this.screenshot = true;
         this.screenshotUpload = true;
@@ -181,18 +181,18 @@
     }
 
     function validForm() {
-    /*    if ($("#title").val()) {
-            return true;
+        if ($("#title").val()) {
+            if (content) {
+                return true;
+            } else {
+                layer.msg("请输入公告内容！")
+                return false;
+            }
         } else {
             layer.msg("请输入标题！")
             return false;
-        }*/
-        if (content) {
-            return true;
-        } else {
-            layer.msg("请输入公告内容！")
-            return false;
         }
+
     }
 </script>
 

@@ -1,20 +1,21 @@
 package com.tarzan.nav.modules.admin.controller.biz;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.tarzan.nav.common.constant.CoreConst;
 import com.tarzan.nav.modules.admin.model.biz.BizImage;
 import com.tarzan.nav.modules.admin.service.biz.ImageService;
 import com.tarzan.nav.modules.admin.vo.ImageResponse;
 import lombok.AllArgsConstructor;
 import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Objects;
 
@@ -41,7 +42,7 @@ public class ImageController {
             if(Objects.isNull(image)){
                 InputStream is=file.getInputStream();
                 ByteArrayOutputStream os=new  ByteArrayOutputStream();
-                Thumbnails.of(is).size(40, 40).toOutputStream(os);
+                Thumbnails.of(is).scale(1).toOutputStream(os);
                 base64 = "data:image/"+suffix+";base64,"+ Base64.getEncoder().encodeToString(os.toByteArray());
                 os.close();
                 boolean flag=imageService.save(BizImage.builder().id(md5).base64(base64).build());
@@ -56,6 +57,28 @@ public class ImageController {
             e.printStackTrace();
         }
         return ImageResponse.failed("图片上传失败！");
+    }
+
+
+    @ResponseBody
+    @PostMapping("/editor/upload")
+    public JSONArray editorUpload(@RequestParam(value = "file[]", required = false) MultipartFile[] files) {
+        JSONArray  array=new JSONArray();
+        Arrays.asList(files).forEach(file->{
+            ImageResponse responseVo = upload(file);
+            JSONObject object=new JSONObject();
+            if (CoreConst.SUCCESS_CODE.equals(responseVo.getStatus())) {
+                object.put("error", 0);
+                object.put("url", responseVo.getBase64());
+                object.put("name",file.getOriginalFilename());
+            }else{
+                object.put("error", "上传失败！");
+                object.put("url", responseVo.getBase64());
+                object.put("name",file.getOriginalFilename());
+            }
+            array.add(object);
+        });
+        return array;
     }
 
 }
