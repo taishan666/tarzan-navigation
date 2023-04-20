@@ -12,20 +12,21 @@
     <link rel="stylesheet" href="web/css/nav.css">
     <link rel="stylesheet" href="assets/libs/linecons/css/linecons.css">
     <link rel="stylesheet" href="web/fonts/fontawesome/css/font-awesome.min.css">
+    <script th:src="@{/assets/libs/jquery/jquery.min.js}"></script>
     [(${SITE_CONFIG?.STATISTICS_CODE})]
 </head>
-<script th:src="@{/assets/libs/jquery/jquery.min.js}"></script>
+
 <body class="page-body">
     <!-- skin-white -->
     <div class="page-container">
         <sidebar th:replace="web/module/sidebar :: sidebar(${categories})"></sidebar>
         <div class="main-content">
             <nav th:replace="web/module/navbar :: navbar"></nav>
-            <div th:replace="web/module/bulletinbox"></div>
+            <th:block th:unless="${#lists.isEmpty(notices)}" th:include="web/module/bulletinbox::bulletinbox(${notices})"></th:block>
             <div th:replace="web/module/searchbox"></div>
             <div class="sites-list" style="margin-bottom: 8.5rem;">
             <websites th:replace="web/module/websites :: websites(${categories})"></websites>
-            <blogroll th:unless="${#lists.isEmpty(links)}" th:replace="web/module/blogroll::blogroll(${links})"></blogroll>
+            <blogroll th:unless="${#lists.isEmpty(links)}" th:include="web/module/blogroll::blogroll(${links})"></blogroll>
             </div>
             <footer th:replace="web/module/footer :: footer(${SITE_CONFIG})"></footer>
         </div>

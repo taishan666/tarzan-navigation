@@ -6,6 +6,7 @@ import com.tarzan.nav.modules.admin.vo.base.BaseVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -20,7 +21,9 @@ public class Notice extends BaseVo {
 
     private String title;
     private String content;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
+    private Integer status;
     @TableField(exist = false)
     private Integer days;
 }

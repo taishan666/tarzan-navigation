@@ -1,10 +1,12 @@
-<div id="bulletin_box" class="panel">
+<div th:fragment="bulletinbox(notices)">
+<div id="bulletin_box"  class="panel">
     <div class="d-flex text-muted">
         <div><i class="fa fa-volume-up" style="line-height:25px"></i></div>
         <div class="bulletin mx-1 mx-md-2">
             <ul class="bulletin-ul">
-                <li class="scrolltext-title overflowClip_1"><a href="https://tarzan.blog.csdn.net/" rel="bulletin">泰山导航系统更新v1.0</a> (04/15)</li>
-                <li class="scrolltext-title overflowClip_1"><a href="https://tarzan.blog.csdn.net/" rel="bulletin">泰山导航系统更新v1.1</a> (04/16)</li>
+                <li th:each="notice:${notices}" class="scrolltext-title overflowClip_1">
+                    <a th:href="${'/notice/'+notice?.id}" rel="bulletin" >[[${notice?.title}]]</a> ([[${#dates.format(notice?.createTime, 'yyyy-MM-dd')}]])
+                </li>
             </ul>
         </div>
         <a title="关闭" href="javascript:;" rel="external nofollow"  onClick="$('#bulletin_box').slideUp('slow');" style="margin-left:auto"><i class="fa fa-remove" style="line-height:25px"></i></a>
@@ -25,3 +27,4 @@
         });
     }
 </script>
+</div>

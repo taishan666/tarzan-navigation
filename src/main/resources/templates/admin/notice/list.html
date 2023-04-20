@@ -22,6 +22,14 @@
                     <input type="text" class="form-control m-2" id="title">
                 </div>
                 <div class="form-group">
+                    <label for="status">状态:</label>
+                    <select id="status" class="form-control m-2" required="">
+                        <option selected disabled>选择状态</option>
+                        <option value="1">正式</option>
+                        <option value="0">草稿</option>
+                    </select>
+                </div>
+                <div class="form-group">
                     <button class="btn btn-primary ml-3" type="submit">查询</button>
                     <button class="btn btn-light ml-2" type="reset">重置</button>
                 </div>
@@ -80,7 +88,7 @@
                 title: '状态',
                 align: "center",
                 formatter: function (value, row, index) {
-                    return row.status ? "启用" : "禁用";
+                    return row.status ? "正式" : "草稿";
                 }
             },
             {
@@ -117,7 +125,8 @@
             return {
                 pageNumber: params.pageNumber,
                 pageSize: params.pageSize,
-                title: $("#title").val()
+                title: $("#title").val(),
+                status:$("#status").val()
             };
         }
 

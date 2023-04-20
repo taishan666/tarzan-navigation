@@ -29,7 +29,7 @@
         </ul>
         <th:block th:fragment="menu(menuTree)">
             <li th:each="menu : ${menuTree}">
-                    <a  th:if="${#lists.isEmpty(menu.children)}" th:href="${'#'+menu.name}"  class="smooth">
+                    <a  th:if="${#lists.isEmpty(menu.children)}" th:href="${'/#'+menu.name}"  class="smooth">
                         <i th:if="${menu.pid==0}" th:class="${menu?.icon}"></i>
                         <span class="title" th:text="${menu.name}"></span>
                     </a>

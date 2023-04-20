@@ -1,5 +1,6 @@
 package com.tarzan.nav.utils;
 
+import com.sun.org.apache.xml.internal.serialize.LineSeparator;
 import com.tarzan.nav.common.props.TarzanProperties;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -15,10 +16,7 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 数据库数据备份
@@ -40,19 +38,27 @@ public class DbBackupTools {
     /** 时间格式 */
     private final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+    final static List<String> EXCLUDE_TABLES= new ArrayList<>();
+
+    static {
+        EXCLUDE_TABLES.add("SYS_LOG_ERROR");
+        EXCLUDE_TABLES.add("SYS_LOGIN_LOG");
+        EXCLUDE_TABLES.add("SYS_USER");
+    }
+
     /**
      * 获取所有表名称
      */
     private  List<String> tableNames() {
         List<String> tableNames= new ArrayList<>();
         try {
-            Connection getConnection=jdbcTemplate.getDataSource().getConnection();
+            Connection getConnection= Objects.requireNonNull(jdbcTemplate.getDataSource()).getConnection();
             DatabaseMetaData metaData = getConnection.getMetaData();
             ResultSet rs = metaData.getTables(getConnection.getCatalog(), null, null, new String[] { "TABLE" });
             while (rs.next()) {
                 String tableName=rs.getString("TABLE_NAME");
                 if(tableName.startsWith("SYS_")||tableName.startsWith("BIZ_")){
-                    if(!"SYS_LOG_ERROR".equals(tableName)&&!"SYS_LOGIN_LOG".equals(tableName)){
+                    if(!EXCLUDE_TABLES.contains(tableName)){
                         tableNames.add(tableName);
                     }
                 }
@@ -85,9 +91,7 @@ public class DbBackupTools {
             in = new BufferedReader(reader);
             String line;
             while ((line = in.readLine()) != null) {
-                if(!line.contains("SYS_LOG_ERROR")&&!line.contains("SYS_LOGIN_LOG")){
-                    list.add(line);
-                }
+                 list.add(line);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -143,11 +147,11 @@ public class DbBackupTools {
                     e.forEach((k,v)->{
                         if(v instanceof String){
                             String str=(String) v;
-                            if (str.contains("\n")) {
-                                str = str.replaceAll("\n", "\\\\n");
+                            if (str.contains(LineSeparator.Unix)) {
+                                str = str.replaceAll(LineSeparator.Unix, "\\\\n");
                             }
-                            if (str.contains("\r")) {
-                                str = str.replaceAll("\r", "\\\\r");
+                            if (str.contains(LineSeparator.Macintosh)) {
+                                str = str.replaceAll(LineSeparator.Macintosh, "\\\\r");
                             }
                             if (str.contains("'")) {
                                 str = str.replaceAll("'", "''");

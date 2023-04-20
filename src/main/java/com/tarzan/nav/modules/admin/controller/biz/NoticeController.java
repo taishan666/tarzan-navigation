@@ -66,10 +66,12 @@ public class NoticeController {
 
     @PostMapping("/page")
     @ResponseBody
-    public PageResultVo page(String title, Integer pageNumber, Integer pageSize) {
+    public PageResultVo page(Notice notice, Integer pageNumber, Integer pageSize) {
         IPage<Notice> page = new Page<>(pageNumber, pageSize);
-        IPage<Notice> noticePage = noticeService.lambdaQuery().select(Notice::getId,Notice::getTitle,Notice::getCreateTime,Notice::getEndTime)
-                .like(StringUtil.isNotBlank(title),Notice::getTitle,title).page(page);
+        IPage<Notice> noticePage = noticeService.lambdaQuery().select(Notice::getId,Notice::getTitle,Notice::getCreateTime,Notice::getEndTime  ,Notice::getStatus)
+                .like(StringUtil.isNotBlank(notice.getTitle()),Notice::getTitle,notice.getTitle())
+                .eq(Objects.nonNull(notice.getStatus()),Notice::getStatus,notice.getStatus())
+                .orderByDesc(Notice::getCreateTime).page(page);
         return ResultUtil.table(noticePage.getRecords(), noticePage.getTotal());
     }
 

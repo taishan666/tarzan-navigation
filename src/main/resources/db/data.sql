@@ -23,7 +23,7 @@ INSERT INTO `sys_config` VALUES (8, 'STATISTICS_CODE', '', 1, '统计代码');
 -- ----------------------------
 -- Records of sys_menu
 -- ----------------------------
-INSERT INTO `sys_menu` VALUES (1, 0,'公告管理', '公告管理', '/notices', 'notices',1, 1, 'fas fa-stack', 1, '2021-07-13 15:05:47', '2021-02-27 10:53:14');
+INSERT INTO `sys_menu` VALUES (1, 0,'公告管理', '公告管理', '/notices', 'notices',1, 1, 'fas fa-volume-up', 1, '2021-07-13 15:05:47', '2021-02-27 10:53:14');
 INSERT INTO `sys_menu` VALUES (2, 0,'用户管理', '用户管理', '/users', 'users',1, 1, 'fas fa-chess-queen', 1, '2021-07-13 15:05:47', '2021-02-27 10:53:14');
 INSERT INTO `sys_menu` VALUES (3, 0,'网站管理', '网站管理', NULL, 'website', 0, 3, 'fas fa-columns', 1, '2021-07-24 15:44:23', '2021-04-19 19:08:46');
 INSERT INTO `sys_menu` VALUES (4, 0,'运维管理', '运维管理', NULL, 'operation',0, 7, 'fas fa-people-carry', 1, '2021-07-06 15:19:26', '2021-04-19 19:09:59');
