@@ -21,7 +21,7 @@
     <div class="page-container">
         <sidebar th:replace="web/module/sidebar :: sidebar(${categories})"></sidebar>
         <div class="main-content">
-            <nav th:replace="web/module/navbar :: navbar"></nav>
+            <nav th:replace="web/module/navbar :: normal"></nav>
             <th:block th:unless="${#lists.isEmpty(notices)}" th:include="web/module/bulletinbox::bulletinbox(${notices})"></th:block>
             <div th:replace="web/module/searchbox"></div>
             <div class="sites-list" style="margin-bottom: 8.5rem;">
