@@ -19,7 +19,7 @@
 <body class="page-body">
     <!-- skin-white -->
     <div class="page-container">
-        <sidebar th:replace="web/module/sidebar :: sidebar(${categories})"></sidebar>
+        <sidebar th:replace="web/module/sidebar :: index(${categories})"></sidebar>
         <div class="main-content">
             <nav th:replace="web/module/navbar :: normal"></nav>
             <th:block th:unless="${#lists.isEmpty(notices)}" th:include="web/module/bulletinbox::bulletinbox(${notices})"></th:block>
