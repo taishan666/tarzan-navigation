@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -54,6 +55,13 @@ public class IndexController {
     public String about(Model model) {
         model.addAttribute("categories",categoryService.treeList());
         return  CoreConst.WEB_PREFIX+"about";
+    }
+
+    @GetMapping({"/notice/{noticeId}"})
+    public String about(Model model, @PathVariable("noticeId") Integer noticeId) {
+        model.addAttribute("categories",categoryService.treeList());
+        model.addAttribute("notice",noticeService.getById(noticeId));
+        return  CoreConst.WEB_PREFIX+"notice";
     }
 
 

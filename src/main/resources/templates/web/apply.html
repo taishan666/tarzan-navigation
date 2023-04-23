@@ -12,13 +12,14 @@
     <link rel="stylesheet" href="web/css/nav.css">
     <link rel="stylesheet" href="assets/libs/linecons/css/linecons.css">
     <link rel="stylesheet" href="web/fonts/fontawesome/css/font-awesome.min.css">
+    <script th:src="@{/assets/libs/jquery/jquery.min.js}"></script>
     [(${SITE_CONFIG?.STATISTICS_CODE})]
 </head>
-<script th:src="@{/assets/libs/jquery/jquery.min.js}"></script>
+
 <body class="page-body">
 <!-- skin-white -->
 <div class="page-container">
-    <sidebar th:replace="web/module/sidebar :: sidebar(${categories})"></sidebar>
+    <sidebar th:replace="web/module/sidebar :: other(${categories})"></sidebar>
     <div class="main-content page" style="">
         <div class="container">
             <div class="row">
@@ -29,10 +30,7 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <h5><span style="color: #ff0000;">此页只做测试、演示，不通过任何提交，除非提交的内容确实不错，谢谢！</span></h5>
-
-
                                     <p></p>
-
                                 </div>
                             </div>
                         </div>

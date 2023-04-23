@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" th:content="${SITE_CONFIG.SITE_PERSON_NAME}" />
+    <title th:text="${SITE_CONFIG.SITE_NAME}"></title>
+    <meta name="keywords" th:content="${SITE_CONFIG.SITE_KWD}">
+    <meta name="description" th:content="${SITE_CONFIG.SITE_DESC}">
+    <link rel="stylesheet" href="/web/css/bootstrap.css">
+    <link rel="stylesheet" href="/web/css/nav.css">
+    <link rel="stylesheet" href="/assets/libs/linecons/css/linecons.css">
+    <link rel="stylesheet" href="/web/fonts/fontawesome/css/font-awesome.min.css">
+    [(${SITE_CONFIG?.STATISTICS_CODE})]
+</head>
+
+<body class="page-body">
+<!-- skin-white -->
+<div class="page-container">
+    <sidebar th:replace="/web/module/sidebar :: other(${categories})"></sidebar>
+    <div class="main-content page" style="">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <h1 class="h2">[[${notice?.title}]]</h1>
+                    <div class="panel-body mt-2">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                [[${notice?.content}]]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer th:replace="/web/module/footer :: footer(${SITE_CONFIG})"></footer>
+    </div>
+</div>
+<!--<script src="web/js/jquery.min.js"></script>
+&lt;!&ndash; Bottom Scripts &ndash;&gt;
+<script src="web/js/bootstrap.min.js"></script>
+<script src="web/js/TweenMax.min.js"></script>
+<script src="web/js/app.js"></script>-->
+</body>
+
+</html>

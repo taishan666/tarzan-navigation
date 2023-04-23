@@ -8,10 +8,10 @@
     <title th:text="${SITE_CONFIG.SITE_NAME}"></title>
     <meta name="keywords" th:content="${SITE_CONFIG.SITE_KWD}">
     <meta name="description" th:content="${SITE_CONFIG.SITE_DESC}">
-    <link rel="stylesheet" href="web/css/bootstrap.css">
-    <link rel="stylesheet" href="web/css/nav.css">
-    <link rel="stylesheet" href="assets/libs/linecons/css/linecons.css">
-    <link rel="stylesheet" href="web/fonts/fontawesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/web/css/bootstrap.css">
+    <link rel="stylesheet" href="/web/css/nav.css">
+    <link rel="stylesheet" href="/assets/libs/linecons/css/linecons.css">
+    <link rel="stylesheet" href="/web/fonts/fontawesome/css/font-awesome.min.css">
     [(${SITE_CONFIG?.STATISTICS_CODE})]
 </head>
 
@@ -43,7 +43,7 @@
                                     <div class="xe-widget xen-conversations box2 label-info" onclick="window.open('https://tarzan.blog.csdn.net', '_blank')" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="https://tarzan.blog.csdn.net">
                                         <div class="xe-comment-entry">
                                             <a class="xe-user-img">
-                                                <img src="web/images/tarzan.jpg" class="img-circle" width="40">
+                                                <img src="/web/images/tarzan.jpg" class="img-circle" width="40">
                                             </a>
                                             <div class="xe-comment">
                                                 <a href="#" class="xe-user-name overflowClip_1">
@@ -75,11 +75,11 @@
         <footer th:replace="web/module/footer :: footer(${SITE_CONFIG})"></footer>
     </div>
 </div>
-<!--<script src="web/js/jquery.min.js"></script>
+<!--<script src="/web/js/jquery.min.js"></script>
 &lt;!&ndash; Bottom Scripts &ndash;&gt;
-<script src="web/js/bootstrap.min.js"></script>
-<script src="web/js/TweenMax.min.js"></script>
-<script src="web/js/app.js"></script>-->
+<script src="/web/js/bootstrap.min.js"></script>
+<script src="/web/js/TweenMax.min.js"></script>
+<script src="/web/js/app.js"></script>-->
 </body>
 
 </html>
