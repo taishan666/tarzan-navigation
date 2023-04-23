@@ -129,6 +129,7 @@ public class JsoupUtil {
             urlConnection.setRequestProperty("Connection", "close");
             return (HttpURLConnection) urlConnection;
         } catch (IOException e) {
+            log.error(e.getMessage());
            return null;
         }
 
@@ -137,10 +138,12 @@ public class JsoupUtil {
     public static String checkImageExist(String src){
         try {
             HttpURLConnection connection= getConnection(src);
-            int code=connection.getResponseCode();
-            String contentType=connection.getContentType();
-            if(code== HttpStatus.OK.value() &&contentType.startsWith("image")){
-                return contentType;
+            if(Objects.nonNull(connection)){
+                int code=connection.getResponseCode();
+                String contentType=connection.getContentType();
+                if(code== HttpStatus.OK.value() &&contentType.startsWith("image")){
+                    return contentType;
+                }
             }
         } catch (IOException e) {
             log.error(e.getMessage());
