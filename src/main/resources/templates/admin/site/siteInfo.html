@@ -35,12 +35,17 @@
                         </div>
                     </div>
                     <div class="form-group row">
-                        <label for="SITE_PERSON_PIC" class="col-sm-2 col-form-label">站长头像:</label>
+                        <label for="img" class="col-sm-2 col-form-label">站长头像:</label>
+                        <input id="SITE_PERSON_PIC" name="SITE_PERSON_PIC" type="hidden" th:value="${siteInfo?.SITE_PERSON_PIC}">
                         <div class="col-sm-10">
-                            <input type="text" th:value="${siteInfo?.SITE_PERSON_PIC}" name="SITE_PERSON_PIC"
-                                   class="form-control" id="SITE_PERSON_PIC"
-                                   placeholder="填写站长头像地址" required>
-                            <div class="invalid-feedback">请填写站长头像地址</div>
+                            <div class="upload-content">
+                                <div class="content-img"  style="text-align:left">
+                                    <div class="file"  id="filePicker">
+                                        <i  class="fa fa-plus"></i>
+                                        <img th:src="${siteInfo?.SITE_PERSON_PIC_BASE64}" height="150px;" id="img" style="position: absolute;inset: 0px auto auto 0px;"/>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -60,12 +65,12 @@
                             <div class="invalid-feedback">请填写站长描述</div>
                         </div>
                     </div>
-         <!--           <div class="form-group row">
-                        <label for="SITE_STATIC" class="col-sm-2 col-form-label">网站静态化:</label>
-                        <div class="col-sm-10" align="left">
-                            <input id="SITE_STATIC" name="SITE_STATIC" type="checkbox" th:checked="${#bools.isTrue(siteInfo?.SITE_STATIC)}">
-                        </div>
-                    </div>-->
+                    <!--           <div class="form-group row">
+                                  <label for="SITE_STATIC" class="col-sm-2 col-form-label">网站静态化:</label>
+                                  <div class="col-sm-10" align="left">
+                                      <input id="SITE_STATIC" name="SITE_STATIC" type="checkbox" th:checked="${#bools.isTrue(siteInfo?.SITE_STATIC)}">
+                                  </div>
+                              </div>-->
                 </div>
                 <div class="tab-pane fade" id="profile" role="tabpanel">
                     <div class="form-group row">
@@ -127,6 +132,34 @@
                 }
             }
         });*/
+        // 初始化Web Uploader
+        var uploader = WebUploader.create({
+            // 选完文件后，是否自动上传。
+            auto: true,
+            // swf文件路径
+            swf: '/admin/img/Uploader.swf',
+            // 文件接收服务端。
+            server: '[[@{/image/upload}]]',
+            // 选择文件的按钮。可选。
+            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+            pick: '#filePicker',
+            // 只允许选择图片文件。
+            accept: {
+                title: 'Images',
+                extensions: 'gif,jpg,jpeg,bmp,png',
+                mimeTypes: 'image/*'
+            }
+        });
+
+        // 文件上传成功，给item添加成功class, 用样式标记上传成功。
+        uploader.on( 'uploadSuccess', function( file,data ) {
+            $("#SITE_PERSON_PIC").val(data.imageId);
+            $("#img").attr("src",data.base64);
+        });
+        // 文件上传失败，显示上传出错。
+        uploader.on( 'uploadError', function( file ) {
+            console.log('上传失败');
+        });
 
         $('#btn_save').on('click', function () {
             var $f = $('#siteInfoForm');
@@ -143,5 +176,7 @@
                 })
             }
         })
+
+
     })
 </script>

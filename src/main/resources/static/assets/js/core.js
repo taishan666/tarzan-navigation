@@ -53,13 +53,13 @@ var Core = (function () {
      * @param contentType
      * @param async
      */
-    core.postAjax = function (url, dataToPost, d, e, type, contentType, async) {
+    core.sendAjax = function (url, data, d, e, type, contentType, async) {
         url = (ctx + url).replace('//', '/');
         $.ajax({
             url: url,
             cache: false,
             async: async === undefined ? true : async,
-            data: dataToPost,
+            data: data,
             type: type === undefined ? "POST" : type,
             contentType: contentType === undefined ? 'application/x-www-form-urlencoded; charset=UTF-8' : contentType,
             success: function (data) {
@@ -83,6 +83,15 @@ var Core = (function () {
             }
         });
     };
+
+    core.postAjax = function (url, data, d, e, contentType, async) {
+        core.sendAjax(url,data,d,e,"POST",contentType,async);
+    }
+
+
+    core.getAjax = function (url, data, d, e, contentType, async) {
+        core.sendAjax(url,data,d,e,"GET",contentType,async);
+    }
 
     core.download = function (data, strFileName, strMimeType) {
          return download(data, strFileName, strMimeType);

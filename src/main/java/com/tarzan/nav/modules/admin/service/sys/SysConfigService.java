@@ -4,8 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tarzan.nav.modules.admin.mapper.sys.SysConfigMapper;
+import com.tarzan.nav.modules.admin.model.biz.BizImage;
 import com.tarzan.nav.modules.admin.model.sys.SysConfig;
+import com.tarzan.nav.modules.admin.service.biz.ImageService;
 import com.tarzan.nav.modules.admin.vo.SiteInfoVO;
+import com.tarzan.nav.utils.StringUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author tarzan liu
@@ -23,6 +27,8 @@ import java.util.Map;
 @Service
 @AllArgsConstructor
 public class SysConfigService extends ServiceImpl<SysConfigMapper, SysConfig> {
+
+    private final ImageService imageService;
 
 
     private Map<String, String> selectAll() {
@@ -38,7 +44,14 @@ public class SysConfigService extends ServiceImpl<SysConfigMapper, SysConfig> {
     public SiteInfoVO getInfo() {
         Map<String, String> map = this.selectAll();
         String jsonStr = JSON.toJSONString(map);
-        return JSON.parseObject(jsonStr, SiteInfoVO.class);
+        SiteInfoVO vo= JSON.parseObject(jsonStr, SiteInfoVO.class);
+        if(StringUtil.isNotBlank(vo.getSITE_PERSON_PIC())){
+          BizImage image=imageService.getById(vo.getSITE_PERSON_PIC());
+          if(Objects.nonNull(image)){
+              vo.setSITE_PERSON_PIC_BASE64(image.getBase64());
+          }
+        }
+        return vo;
     }
 
     @CacheEvict(value = "site", key = "'config'", allEntries = true)

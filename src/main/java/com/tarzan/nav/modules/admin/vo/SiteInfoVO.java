@@ -15,4 +15,5 @@ public class SiteInfoVO {
     private String SITE_PERSON_DESC;
     private String BAIDU_PUSH_URL;
     private String STATISTICS_CODE;
+    private String SITE_PERSON_PIC_BASE64;
 }

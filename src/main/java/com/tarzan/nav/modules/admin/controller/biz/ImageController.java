@@ -81,4 +81,13 @@ public class ImageController {
         return array;
     }
 
+    @GetMapping("/{imageId}")
+    public String getImage(@PathVariable("imageId") String imageId){
+        BizImage image=imageService.getById(imageId);
+        if(Objects.nonNull(image)){
+            return image.getBase64();
+        }
+        return "";
+    }
+
 }
