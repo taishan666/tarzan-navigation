@@ -21,7 +21,7 @@
                 </div>
             </th:block>
         </th:block>
-        <th:block th:if="${not #lists.isEmpty(category.children)}" >
+        <th:block th:unless="${#lists.isEmpty(category?.children)}" >
             <ul class="nav nav-tabs" id="myTab2" role="tablist">
                 <li th:class="${stat.index==0? 'nav-item active' : 'nav-item'}" th:each="cate,stat: ${category?.children}">
                     <a class="nav-link" id="home-tab2" data-toggle="tab" th:href="${'#'+cate.name}" >[[${cate.name}]]</a>

@@ -21,6 +21,7 @@
                 <a  th:if="${#lists.isEmpty(category.children)}" th:href="${'#anchor-'+category.id}"  class="smooth">
                     <i th:if="${category.pid==0}" th:class="${category?.icon}"></i>
                     <span class="title" th:text="${category.name}"></span>
+                    <span class="label label-pink pull-right hidden-collapsed">Hot</span>
                 </a>
                 <a th:unless="${#lists.isEmpty(category.children)}" >
                     <i th:class="${category?.icon}"></i>
@@ -31,6 +32,7 @@
                         <a  th:href="${'/#anchor-'+category.id}"  class="smooth">
                             <i th:if="${cate.pid==0}" th:class="${cate?.icon}"></i>
                             <span class="title" th:text="${cate.name}"></span>
+                            <span class="label label-pink pull-right hidden-collapsed">Hot</span>
                         </a>
                     </li>
                 </ul>
