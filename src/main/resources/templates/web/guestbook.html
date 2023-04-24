@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="/web/css/bootstrap.css" rel="stylesheet">
+    <link href="/web/css/comment.css" rel="stylesheet">
+    <script src="/web/js/jquery.min.js"></script>
+    <script src="/web/js/bootstrap.min.js"></script>
+    <style>
+
+    </style>
+
+</head>
+<body background="static/img/bg.png">
+<!--导航栏-->
+<div class="container-lg-fluid shadow bg-dark mb-4">
+
+    <div class="container ">
+        <nav class="navbar navbar-expand-lg   ">
+            <a class="navbar-brand font-weight-normal font-italic" href="index.html" style="font-size: 1.5em">留言板</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarBlog"
+                    aria-controls="navbarOJ" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarBlog">
+                <ul class="navbar-nav mr-auto ">
+                    <li class="nav-item text-dark">
+                        <a class="nav-link   font-weight-normal " href="index.html"><i
+                                class="fa fa-home mini  mr-1"></i>首页 <span
+                                class="sr-only">(current)</span></a>
+                    </li>
+
+                    <li class="nav-item text-dark">
+                        <a class="nav-link  font-weight-normal" href="note.html"><i
+                                class="fa fa-envelope mini  mr-1"></i>留言</a>
+                    </li>
+
+
+                </ul>
+
+                <a type="button nav-item " class="nav-item btn float-right  font-weight-normal hover text-primary ml-3">登录</a>
+
+            </div>
+
+        </nav>
+    </div>
+
+</div>
+
+<div class="container-lg mt-5">
+    <div class="card border p-2">
+        <div class="card-header text-info  border-bottom border-info" style="background-color: white;">
+            留言
+        </div>
+        <div class="card-body">
+            <!--            输入框-->
+            <div id="noteEdit">
+                <textarea name="note"></textarea>
+            </div>
+            <!--提交列表-->
+            <div class="input list-inline mt-3 container-fluid ">
+                <div class="row ">
+                    <div class="border rounded list-inline-item  col-lg-auto pr-0">
+                        <i class="fa fa-user  mr-1" style="color: #ccc"></i>
+                        <input type="text" placeholder="姓名" class="pl-2 m-0 h-100 border-0 pr-0">
+                    </div>
+                    <div class="border rounded list-inline-item  col-lg-auto pr-0">
+                        <i class="fa fa-envelope  mr-1" style="color: #ccc"></i>
+                        <input type="text" placeholder="邮箱" class="pl-2 h-100 border-0">
+                    </div>
+                    <div class="  list-inline-item align-self-center  col-lg-auto p-0 ">
+                        <div class="container-fluid mt-2 ">
+                            <label class="switch">
+                                <input type="checkbox">
+                                <div class="slider round"></div>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="  list-inline-item col-lg-auto  p-0">
+                        <button type="button" class="btn  btn-info " style="width: 100%;height: 100%">发送</button>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <!--留言列表-->
+            <div class=" container-fluid mt-5 border p-2" style="border-top: #17a2b8 solid 2px !important;">
+                <div class="p-1 comments">
+                    <div class="container comment  m-1 p-0">
+                        <a class="me-a avatar p-0 m-0">
+                            <img class="w-100 h-100 rounded-circle" src="https://s1.ax1x.com/2020/04/10/GTQcH1.png"
+                                 alt="">
+                        </a>
+                        <div class=" ml-3 border-left ">
+                            <div class="container ml-2">
+                                <a class="author">
+                                    <span>王也</span>
+                                    <span class="border-primary border rounded text-primary small  p-1">亿贫如洗</span>
+                                    <span class="summary-text small">2020-04-10 16:01:27</span>
+                                </a>
+                            </div>
+                            <div class="messageText ml-2 container m-2">诸葛青，你败过吗？</div>
+                            <!--  评论回复-->
+                            <div class="p-1 comments m-3">
+                                <div class="container comment  m-1 p-0">
+                                    <a class="me-a avatar p-0 m-0 ">
+                                        <img class="w-100 h-100 rounded-circle"
+                                             src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1586518306370&di=600bf4377f924f0839d54e1c415228da&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201712%2F17%2F20171217170206_MAmwi.png"
+                                             alt="">
+                                    </a>
+                                    <div class=" ml-3  ">
+                                        <div class="container ml-2">
+                                            <a class="author ">
+                                                <span>冯宝宝</span>
+                                                <span class="border-primary border rounded text-primary small  p-1">机智一批</span>
+                                                <span class="text-info">@王也 </span>
+                                                <span class="summary-text small">2020-04-10 16:01:27</span>
+                                            </a>
+                                        </div>
+                                        <div class="messageText ml-2 container m-2">王也，你被埋过吗？</div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="container comment  m-1 p-0">
+                        <a class="me-a avatar p-0 m-0">
+                            <img class="w-100 h-100 rounded-circle" src="http://img.jk51.com/img_jk51/146022467.jpeg"
+                                 alt="">
+                        </a>
+                        <div class=" ml-3 border-left ">
+                            <div class="container ml-2">
+                                <a class="author">
+                                    <span>冯宝宝</span>
+                                    <span class="border-primary border rounded text-primary small  p-1">机智一批</span>
+                                    <span class="summary-text small">2020-04-10 16:01:27</span>
+                                </a>
+                            </div>
+                            <div class="messageText ml-2 container m-2">他们总说我瓜，其实我一点也不瓜，大多时候我都机智的一批</div>
+                            <!--  评论回复-->
+                            <div class="p-1 comments m-3">
+                                <div class="container comment  m-1 p-0">
+                                    <a class="me-a avatar p-0 m-0 ">
+                                        <img class="w-100 h-100 rounded-circle"
+                                             src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3020624611,2570469813&fm=26&gp=0.jpg"
+                                             alt="">
+                                    </a>
+                                    <div class=" ml-3  ">
+                                        <div class="container ml-2">
+                                            <a class="author ">
+                                                <span>张楚岚</span>
+                                                <span class="border-primary border rounded text-primary small  p-1">月下观鸟</span>
+                                                <span class="text-info">@冯宝宝 </span>
+                                                <span class="summary-text small">2020-04-10 16:01:27</span>
+                                            </a>
+                                        </div>
+                                        <div class="messageText ml-2 container m-2">
+                                            我机智你奶奶个腿儿啊，要不是打不过你，我非敲烂你这颗机智的头，你哪偷的铁锹，你到底多爱埋人！
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div class="container comment  m-1 p-0">
+                                    <a class="me-a avatar p-0 m-0 ">
+                                        <img class="w-100 h-100 rounded-circle"
+                                             src="https://s1.ax1x.com/2020/04/10/GTQcH1.png" alt="">
+                                    </a>
+                                    <div class=" ml-3  ">
+                                        <div class="container ml-2">
+                                            <a class="author ">
+                                                <span>王也</span>
+                                                <span class="border-primary border rounded text-primary small  p-1">亿贫如洗</span>
+                                                <span class="text-info">@冯宝宝 </span>
+                                                <span class="summary-text small">2020-04-10 16:01:27</span>
+                                            </a>
+                                        </div>
+                                        <div class="messageText ml-2 container m-2">你这也太溜了！</div>
+
+                                    </div>
+
+                                </div>
+                                <div class="container comment  m-1 p-0">
+                                    <a class="me-a avatar p-0 m-0 ">
+                                        <img class="w-100 h-100 rounded-circle"
+                                             src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3020624611,2570469813&fm=26&gp=0.jpg"
+                                             alt="">
+                                    </a>
+                                    <div class=" ml-3  ">
+                                        <div class="container ml-2">
+                                            <a class="author ">
+                                                <span>冯宝宝</span>
+                                                <span class="border-primary border rounded text-primary small  p-1">机智一批</span>
+                                                <span class="text-info">@王也 </span>
+                                                <span class="summary-text small">2020-04-10 16:01:27</span>
+                                            </a>
+                                        </div>
+                                        <div class="messageText ml-2 container m-2">没啥子，维手熟尔！</div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+
+</body>
+</html>

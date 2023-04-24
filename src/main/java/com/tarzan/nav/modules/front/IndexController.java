@@ -57,6 +57,12 @@ public class IndexController {
         return  CoreConst.WEB_PREFIX+"about";
     }
 
+    @GetMapping({"/guestbook"})
+    public String guestbook(Model model) {
+        model.addAttribute("categories",categoryService.treeList());
+        return  CoreConst.WEB_PREFIX+"guestbook";
+    }
+
     @GetMapping({"/notice/{noticeId}"})
     public String about(Model model, @PathVariable("noticeId") Integer noticeId) {
         model.addAttribute("categories",categoryService.treeList());
