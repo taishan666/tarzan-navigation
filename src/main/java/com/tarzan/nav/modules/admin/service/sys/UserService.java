@@ -20,6 +20,8 @@ import org.apache.shiro.session.mgt.SessionManager;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 import org.apache.shiro.subject.Subject;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -69,6 +71,7 @@ public class UserService extends ServiceImpl<UserMapper, User> {
         return page;
     }
 
+    @Cacheable(value = "user", key = "#userId")
     public User getByIdWithImage(Integer userId) {
         User user=getById(userId);
         if(Objects.nonNull(user)&& Objects.nonNull(user.getImageId())){
@@ -77,6 +80,7 @@ public class UserService extends ServiceImpl<UserMapper, User> {
         return user;
     }
 
+    @CacheEvict(value = "user",allEntries = true)
     public boolean updateByUserId(User user) {
         Assert.notNull(user, "param: user is null");
         //获取当前登录用户信息
@@ -90,6 +94,7 @@ public class UserService extends ServiceImpl<UserMapper, User> {
         return updateById(user);
     }
 
+    @CacheEvict(value = "user",allEntries = true)
     public boolean updateStatusBatch(List<Integer> userIds, Integer status) {
         return this.lambdaUpdate().in(User::getId, userIds).set(User::getStatus, status).update();
     }

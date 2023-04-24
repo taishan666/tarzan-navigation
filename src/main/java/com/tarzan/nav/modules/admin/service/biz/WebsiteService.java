@@ -61,7 +61,7 @@ public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
 
     @Cacheable(value = "website", key = "'simple'")
     public List<Website> simpleList() {
-        return super.lambdaQuery().select(Website::getId,Website::getUrl).list();
+        return super.lambdaQuery().select(Website::getId,Website::getUrl).eq(Website::getStatus,CoreConst.STATUS_VALID).list();
     }
 
     @Cacheable(value = "website", key = "'all'")

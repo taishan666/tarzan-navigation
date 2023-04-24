@@ -19,6 +19,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,6 +72,7 @@ public class SystemController {
     @PostMapping("/register")
     @ResponseBody
     @Transactional(rollbackFor = Throwable.class)
+    @CacheEvict(value = "user",allEntries = true)
     public ResponseVo register(HttpServletRequest request, User registerUser, String confirmPassword, String verification){
         //判断验证码
 /*        if (!CaptchaUtil.ver(verification, request)) {

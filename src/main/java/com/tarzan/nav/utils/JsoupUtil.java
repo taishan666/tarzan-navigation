@@ -1,6 +1,5 @@
 package com.tarzan.nav.utils;
 
-import cn.hutool.http.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
@@ -30,14 +29,15 @@ public class JsoupUtil {
      */
     public static Document getDocument (String url){
         try {
-            //先调用下忽略https证书的再请求才可以
-            System.out.println(HttpUtil.get(url,10000));
+            HttpsUrlValidator.trustAllHttpsCertificates();
             //5000是设置连接超时时间，单位ms
             return Jsoup.connect(url)
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36")
                     .timeout(10*1000).get();
 
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;

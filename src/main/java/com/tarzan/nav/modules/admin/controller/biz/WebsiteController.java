@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * 后台友情链接管理
+ * 后台导航网站管理
  *
  * @author tarzan liu
  * @since JDK1.8
@@ -80,9 +80,9 @@ public class WebsiteController {
         website.setUpdateTime(DateUtil.now());
         boolean flag = websiteService.updateById(website);
         if (flag) {
-            return ResultUtil.success("编辑友链成功");
+            return ResultUtil.success("编辑网址成功");
         } else {
-            return ResultUtil.error("编辑友链失败");
+            return ResultUtil.error("编辑网址失败");
         }
     }
 

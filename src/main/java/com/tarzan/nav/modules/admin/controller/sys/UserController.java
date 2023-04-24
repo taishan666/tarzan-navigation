@@ -10,6 +10,7 @@ import com.tarzan.nav.utils.AuthUtil;
 import com.tarzan.nav.utils.PasswordHelper;
 import com.tarzan.nav.utils.ResultUtil;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -52,6 +53,7 @@ public class UserController {
      */
     @PostMapping("/add")
     @ResponseBody
+    @CacheEvict(value = "user",allEntries = true)
     public ResponseVo add(User userForm, String confirmPassword) {
         String username = userForm.getUsername();
         if (userService.exists(username)) {
@@ -116,6 +118,7 @@ public class UserController {
      */
     @PostMapping("/batch/delete")
     @ResponseBody
+    @CacheEvict(value = "user",allEntries = true)
     public ResponseVo batchDeleteUser(@RequestBody List<Integer> ids) {
         if(ids.contains(AuthUtil.getUserId())){
             return ResultUtil.error("当前使用用户不能删除！");

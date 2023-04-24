@@ -142,10 +142,18 @@ public class AdminRouterController {
     }
 
     /**
+     * 网站
+     */
+    @GetMapping("/brokenSites")
+    public String brokenWebsites() {
+        return CoreConst.ADMIN_PREFIX + "brokenSite/list";
+    }
+
+    /**
      * 友情链接
      */
     @GetMapping("/links")
-    public String links(Model model) {
+    public String links() {
         return CoreConst.ADMIN_PREFIX + "link/list";
     }
 
