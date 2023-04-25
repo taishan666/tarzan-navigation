@@ -1,103 +1,61 @@
-<sidebar th:fragment="index(categories)" class="sidebar-menu toggle-others fixed">
-    <div class="sidebar-menu-inner">
-        <header class="logo-env">
+<div id="sidebar" th:fragment="index(categories)" class="sticky sidebar-nav fade">
+    <div class="modal-dialog h-100  sidebar-nav-inner">
+        <div class="sidebar-logo border-bottom border-color">
             <!-- logo -->
-            <div class="logo">
+            <div class="logo overflow-hidden">
+                <h1 class="text-hide position-absolute">泰山导航</h1>
                 <a href="/" class="logo-expanded">
-                    <img src="/web/images/logo.png" width="100%" alt="" />
+                    <img src="/web/images/logo.png" height="40" class="logo-light" alt="泰山导航">
+                    <img src="/web/images/logo.png" height="40" class="logo-dark d-none" alt="泰山导航">
                 </a>
                 <a href="/" class="logo-collapsed">
-                    <img src="/web/images/logo-collapsed.png" width="40" alt="" />
+                    <img src="/web/images/logo-collapsed.png" height="40" class="logo-light" alt="泰山导航">
+                    <img src="/web/images/logo-collapsed.png" height="40" class="logo-dark d-none" alt="泰山导航">
                 </a>
             </div>
-            <div class="mobile-menu-toggle visible-xs">
-                <a href="#" data-toggle="mobile-menu">
-                    <i class="fa fa-bars"></i>
-                </a>
+            <!-- logo end -->
+        </div>
+        <div class="sidebar-menu flex-fill">
+            <div class="sidebar-scroll">
+                <div class="sidebar-menu-inner">
+                    <ul>
+                        <li class="sidebar-item" th:each="category : ${categories}">
+                            <a th:if="${#lists.isEmpty(category.children)}" th:href="${'#term-'+category.id}"  class="smooth">
+                                <i class="io io-fuwu icon-fw icon-lg"></i>
+                                <span>[[${category.name}]]</span>
+                            </a>
+                            <th:block th:unless="${#lists.isEmpty(category.children)}">
+                                <a  th:href="${'#term-'+category.id}" class="smooth" th:data-change="${'#term-'+category.id}">
+                                    <i class="io io-zixun icon-fw icon-lg"></i>
+                                    <span>[[${category.name}]]</span>
+                                </a>
+                                <i class="iconfont icon-arrow-r-m sidebar-more text-sm"></i>
+                                <ul>
+                                    <li th:each="cate:${category.children}">
+                                        <a th:href="${'#term-'+category.id+'-'+cate?.id}" class="smooth"><span>[[${cate.name}]]</span></a>
+                                    </li>
+                                </ul>
+                            </th:block>
+                        </li>
+                    </ul>
+                </div>
             </div>
-        </header>
-        <ul id="main-menu" class="main-menu" >
-            <li th:each="category : ${categories}">
-                <a  th:if="${#lists.isEmpty(category.children)}" th:href="${'#anchor-'+category.id}"  class="smooth">
-                    <i th:if="${category.pid==0}" th:class="${category?.icon}"></i>
-                    <span class="title" th:text="${category.name}"></span>
-                    <span class="label label-pink pull-right hidden-collapsed">Hot</span>
-                </a>
-                <a th:unless="${#lists.isEmpty(category.children)}" >
-                    <i th:class="${category?.icon}"></i>
-                    <span class="title" th:text="${category.name}"></span>
-                </a>
-                <ul th:unless="${#lists.isEmpty(category.children)}">
-                    <li th:each="cate:${category.children}">
-                        <a  th:href="${'/#anchor-'+category.id}"  class="smooth">
-                            <i th:if="${cate.pid==0}" th:class="${cate?.icon}"></i>
-                            <span class="title" th:text="${cate.name}"></span>
-                            <span class="label label-pink pull-right hidden-collapsed">Hot</span>
-                        </a>
-                    </li>
+        </div>
+        <div class="border-top py-2 border-color">
+            <div class="flex-bottom">
+                <ul>
+                    <li id="menu-item-237" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-237 sidebar-item"><a href="https://nav.iowen.cn/contribute">
+                        <i class="io io-tijiao icon-fw icon-lg"></i>
+                        <span>网站提交</span></a></li>
+                    <li id="menu-item-212" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-212 sidebar-item"><a href="https://nav.iowen.cn/sample-page">
+                        <i class="io io-caozuoshili icon-fw icon-lg"></i>
+                        <span>示例页面</span></a></li>
+                    <li id="menu-item-213" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-213 sidebar-item"><a target="_blank" rel="noopener" href="https://www.iowen.cn">
+                        <i class="io io-iowen icon-fw icon-lg"></i>
+                        <span>一为忆</span></a></li>
+
                 </ul>
-            </li>
-            <li>
-                <a href="/about">
-                    <i class="linecons-desktop"></i>
-                    <span class="tooltip-blue">关于本站</span>
-                    <span class="label label-Primary pull-right hidden-collapsed">♥︎</span>
-                </a>
-            </li>
-            <li>
-                <a href="/guestbook">
-                    <i class="linecons-desktop"></i>
-                    <span class="tooltip-blue">留言板</span>
-                    <span class="label label-Primary pull-right hidden-collapsed">♥︎</span>
-                </a>
-            </li>
-        </ul>
-    </div>
-</sidebar>
-<sidebar th:fragment="other(categories)" class="sidebar-menu toggle-others fixed">
-    <div class="sidebar-menu-inner">
-        <header class="logo-env">
-            <!-- logo -->
-            <div class="logo">
-                <a href="/" class="logo-expanded">
-                    <img src="/web/images/logo.png" width="100%" alt="" />
-                </a>
-                <a href="/" class="logo-collapsed">
-                    <img src="/web/images/logo-collapsed.png" width="40" alt="" />
-                </a>
             </div>
-            <div class="mobile-menu-toggle visible-xs">
-                <a href="#" data-toggle="mobile-menu">
-                    <i class="fa fa-bars"></i>
-                </a>
-            </div>
-        </header>
-        <ul id="main-menu" class="main-menu" >
-            <li th:each="category : ${categories}">
-                <a  th:if="${#lists.isEmpty(category.children)}" th:href="${'/#anchor-'+category.id}"  class="smooth">
-                    <i th:if="${category.pid==0}" th:class="${category?.icon}"></i>
-                    <span class="title" th:text="${category.name}"></span>
-                </a>
-                <a th:unless="${#lists.isEmpty(category.children)}" >
-                    <i th:class="${category?.icon}"></i>
-                    <span class="title" th:text="${category.name}"></span>
-                </a>
-                <ul th:unless="${#lists.isEmpty(category.children)}">
-                    <li th:each="cate:${category.children}">
-                    <a  th:href="${'/#anchor-'+category.id}"  class="smooth">
-                        <i th:if="${cate.pid==0}" th:class="${cate?.icon}"></i>
-                        <span class="title" th:text="${cate.name}"></span>
-                    </a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="/about">
-                    <i class="linecons-desktop"></i>
-                    <span class="tooltip-blue">关于本站</span>
-                    <span class="label label-Primary pull-right hidden-collapsed">♥︎</span>
-                </a>
-            </li>
-        </ul>
+        </div>
     </div>
-</sidebar>
+</div>

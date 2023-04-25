@@ -1,0 +1,10 @@
+<blogroll th:fragment="blogroll(links)" >
+<h4 class="text-gray mb-4">
+    <i class="fa fa-bookmark" id="friendlink" style="margin-right:10px"></i>友情链接
+</h4>
+<div class="friendlink" style="margin-bottom:-40px">
+    <div class="panel" th:each="link:${links}">
+        <a th:href="${link?.url}" rel="noopener" th:title="${link?.name}" target="_blank">[[${link?.name}]]</a>
+    </div>
+</div>
+</blogroll>

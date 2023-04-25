@@ -1,28 +1,53 @@
-<nav th:fragment="simple" class="navbar user-info-navbar" role="navigation">
-    <div class="navbar-content">
-        <ul class="user-info-menu list-inline list-unstyled">
-            <li class="hidden-xs">
-                <a href="#" data-toggle="sidebar">
-                    <i class="fa fa-bars"></i>
-                </a>
-            </li>
-        </ul>
-    </div>
-</nav>
-
-<nav th:fragment="normal" class="navbar user-info-navbar" role="navigation">
-    <div class="navbar-content">
-            <ul class="user-info-menu list-inline list-unstyled">
-                <li class="hidden-xs">
-                    <a href="#" data-toggle="sidebar">
-                        <i class="fa fa-bars"></i>
+<div class="big-header-banner header-nav">
+    <div id="header" class="page-header sticky">
+        <div class="navbar navbar-expand-md">
+            <div class="container-fluid p-0 position-relative">
+                <div class="position-absolute w-100 text-center">
+                    <a href="https://nav.iowen.cn" class="navbar-brand d-md-none m-0" title="一为导航">
+                        <img src="https://nav.iowen.cn/wp-content/uploads/2020/01/ywdh-logo-1.png" class="logo-light" alt="一为导航" height="30">
+                        <img src="https://nav.iowen.cn/wp-content/uploads/2020/01/ywdh-logo.png" class="logo-dark d-none" alt="一为导航" height="30">
                     </a>
-                </li>
-            </ul>
-            <ul class="user-info-menu list-inline list-unstyled">
-                <li class="hidden-sm hidden-xs">
-          <!--          <a href="https://github.com/owen0o0/WebStack" target="_blank"><i class="fa fa-github"></i> GitHub</a>-->
-                </li>
-            </ul>
+                </div>
+                <div class="nav-item d-md-none mobile-menu py-2 position-relative"><a href="javascript:" id="sidebar-switch" data-toggle="modal" data-target="#sidebar"><i class="iconfont icon-classification icon-lg"></i></a></div>                    <div class="collapse navbar-collapse order-2 order-md-1">
+                <div class="header-mini-btn">
+                    <label>
+                        <input id="mini-button" type="checkbox" checked="checked">
+                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <path class="line--1" d="M0 40h62c18 0 18-20-17 5L31 55"></path>
+                            <path class="line--2" d="M0 50h80"></path>
+                            <path class="line--3" d="M0 60h62c18 0 18 20-17-5L31 45"></path>
+                        </svg>
+                    </label>
+
+                </div>
+                <ul class="navbar-nav navbar-top site-menu mr-4">
+                    <li id="menu-item-281" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-281"><a href="https://nav.iowen.cn/blog">
+                        <i class="io io-wordpress icon-fw icon-lg"></i>
+                        <span>关于</span></a></li>
+        <!--            <li id="menu-item-284" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-has-children menu-item-284"><a href="https://nav.iowen.cn/about">
+                        <i class="io io-gonggongku icon-fw icon-lg"></i>
+                        <span>关于</span></a>
+                        <ul class="sub-menu">
+                            <li id="menu-item-264" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-264"><a href="https://nav.iowen.cn/contribute">
+                                <i class="iconfont icon-category icon-fw icon-lg"></i>
+                                <span>网站提交</span></a></li>
+                            <li id="menu-item-285" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-285"><a href="#">
+                                <i class="iconfont icon-category icon-fw icon-lg"></i>
+                                <span>二级菜单样式</span></a></li>
+                        </ul>
+                    </li>-->
+                </ul>
+            </div>
+                <ul class="nav navbar-menu text-xs order-1 order-md-2 position-relative">
+                    <li class="nav-login ml-3 ml-md-4">
+                        <a href="https://nav.iowen.cn/login/?redirect_to=https://nav.iowen.cn" title="登录"><i class="iconfont icon-user icon-lg"></i></a>
+                    </li>
+                    <li class="nav-search ml-3 ml-md-4">
+                        <a href="javascript:" data-toggle="modal" data-target="#search-modal"><i class="iconfont icon-search icon-lg"></i></a>
+                    </li>
+                </ul>
+            </div>
         </div>
-</nav>
+    </div>
+    <div class="placeholder"></div>
+</div>

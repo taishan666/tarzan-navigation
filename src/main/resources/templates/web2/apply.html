@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" th:content="${SITE_CONFIG.SITE_PERSON_NAME}" />
+    <title th:text="${SITE_CONFIG.SITE_NAME}"></title>
+    <meta name="keywords" th:content="${SITE_CONFIG.SITE_KWD}">
+    <meta name="description" th:content="${SITE_CONFIG.SITE_DESC}">
+    <link rel="stylesheet" href="web/css/bootstrap.css">
+    <link rel="stylesheet" href="web/css/nav.css">
+    <link rel="stylesheet" href="assets/libs/linecons/css/linecons.css">
+    <link rel="stylesheet" href="web/fonts/fontawesome/css/font-awesome.min.css">
+    <script th:src="@{/assets/libs/jquery/jquery.min.js}"></script>
+    [(${SITE_CONFIG?.STATISTICS_CODE})]
+</head>
+
+<body class="page-body">
+<!-- skin-white -->
+<div class="page-container">
+    <sidebar th:replace="web/module/sidebar :: other(${categories})"></sidebar>
+    <div class="main-content page" style="">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 mx-auto">
+                    <div class="panel panel-default">
+                        <h1 class="h2">网站提交</h1>
+                        <div class="panel-body mt-2">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h5><span style="color: #ff0000;">此页只做测试、演示，不通过任何提交，除非提交的内容确实不错，谢谢！</span></h5>
+                                    <p></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-tougao">
+                        <h1 class="h2">添加网站</h1>
+                        <form id="tougao" class="io-tougao mb-4" method="post" action="/contribute">
+                            <div style="text-align: left; padding-top: 10px;">
+                                <label for="tougao_sites_ico">网站图标:</label>
+                                <input type="hidden" value="" id="tougao_sites_ico" name="tougao_sites_ico">
+                                <div class="upload_img">
+                                    <div class="show_ico">
+                                        <img id="show_sites_ico" src="https://webstack.iotheme.cn/wp-content/themes/WebStack/images/add.png" alt="网站图标">
+                                        <i id="remove_sites_ico" class="fa fa-times-circle remove" data-id="" data-type="sites_ico" style="display: none;"></i>
+                                    </div>
+                                    <input type="file" id="upload_sites_ico" data-type="sites_ico" accept="image/*" onchange="uploadImg(this)">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6 mt-2">
+                                    <div class="input-group">
+                                        <div class="input-group-addon"><i class="fa fa-sitemap fa-fw" aria-hidden="true"></i></div>
+                                        <input type="text" class="form-control" value="" id="tougao_title" name="tougao_title" placeholder="网站名称 *" maxlength="30">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 mt-2">
+                                    <div class="input-group">
+                                        <div class="input-group-addon"><i class="fa fa-link fa-fw" aria-hidden="true"></i></div>
+                                        <input type="text" class="form-control" value="" id="tougao_sites_link" name="tougao_sites_link" placeholder="网站链接">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 mt-2">
+                                    <div class="input-group">
+                                        <div class="input-group-addon"><i class="fa fa-braille fa-fw" aria-hidden="true"></i></div>
+                                        <input type="text" class="form-control" value="" id="tougao_sites_sescribe" name="tougao_sites_sescribe" placeholder="网站描叙 *" maxlength="50">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 mt-2">
+                                    <div class="input-group">
+                                        <div class="input-group-addon"><i class="fa fa-star fa-fw" aria-hidden="true"></i></div>
+                                        <select name="tougao_cat" id="tougaocategorg" class="form-control">
+                                            <option value="0" selected="selected">选择分类 *</option>
+                                            <option class="level-0" value="15">UED团队&nbsp;&nbsp;(14)</option>
+                                            <option class="level-0" value="16">常用工具&nbsp;&nbsp;(45)</option>
+                                            <option class="level-1" value="21">&nbsp;&nbsp;&nbsp;界面设计&nbsp;&nbsp;(6)</option>
+                                            <option class="level-1" value="25">&nbsp;&nbsp;&nbsp;Chrome插件&nbsp;&nbsp;(5)</option>
+                                            <option class="level-1" value="31">&nbsp;&nbsp;&nbsp;交互动效&nbsp;&nbsp;(5)</option>
+                                            <option class="level-1" value="33">&nbsp;&nbsp;&nbsp;图形创意&nbsp;&nbsp;(7)</option>
+                                            <option class="level-1" value="35">&nbsp;&nbsp;&nbsp;在线工具&nbsp;&nbsp;(7)</option>
+                                            <option class="level-1" value="36">&nbsp;&nbsp;&nbsp;在线配色&nbsp;&nbsp;(15)</option>
+                                            <option class="level-0" value="17">常用推荐&nbsp;&nbsp;(17)</option>
+                                            <option class="level-0" value="18">灵感采集&nbsp;&nbsp;(26)</option>
+                                            <option class="level-1" value="20">&nbsp;&nbsp;&nbsp;界面灵感&nbsp;&nbsp;(5)</option>
+                                            <option class="level-1" value="24">&nbsp;&nbsp;&nbsp;网页灵感&nbsp;&nbsp;(15)</option>
+                                            <option class="level-1" value="32">&nbsp;&nbsp;&nbsp;发现产品&nbsp;&nbsp;(6)</option>
+                                            <option class="level-0" value="22">社区资讯&nbsp;&nbsp;(7)</option>
+                                            <option class="level-0" value="23">素材资源&nbsp;&nbsp;(106)</option>
+                                            <option class="level-1" value="26">&nbsp;&nbsp;&nbsp;LOGO设计&nbsp;&nbsp;(4)</option>
+                                            <option class="level-1" value="27">&nbsp;&nbsp;&nbsp;Mockup&nbsp;&nbsp;(8)</option>
+                                            <option class="level-1" value="28">&nbsp;&nbsp;&nbsp;PPT资源&nbsp;&nbsp;(6)</option>
+                                            <option class="level-1" value="29">&nbsp;&nbsp;&nbsp;Sketch资源&nbsp;&nbsp;(7)</option>
+                                            <option class="level-1" value="30">&nbsp;&nbsp;&nbsp;UI资源&nbsp;&nbsp;(12)</option>
+                                            <option class="level-1" value="34">&nbsp;&nbsp;&nbsp;图标素材&nbsp;&nbsp;(12)</option>
+                                            <option class="level-1" value="37">&nbsp;&nbsp;&nbsp;字体资源&nbsp;&nbsp;(16)</option>
+                                            <option class="level-1" value="38">&nbsp;&nbsp;&nbsp;平面素材&nbsp;&nbsp;(15)</option>
+                                            <option class="level-1" value="39">&nbsp;&nbsp;&nbsp;摄影图库&nbsp;&nbsp;(26)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-md-2 mt-2">
+                                    <label for="tougao_wechat_qr">公众号二维码:</label>
+                                    <input type="hidden" value="" id="tougao_wechat_qr" name="tougao_wechat_qr">
+                                    <div class="upload_img wechat">
+                                        <div class="show_ico">
+                                            <img id="show_wechat_qr" src="https://webstack.iotheme.cn/wp-content/themes/WebStack/images/add.png" alt="公众号二维码">
+                                            <i id="remove_wechat_qr" class="fa fa-times-circle remove" data-id="" data-type="wechat_qr" style="display: none;"></i>
+                                        </div>
+                                        <input type="file" id="upload_wechat_qr" data-type="wechat_qr" accept="image/*" onchange="uploadImg(this)">
+                                    </div>
+                                </div>
+                                <div class="col-sm-9 col-md-10 mt-2">
+                                    <label style="vertical-align:top" for="tougao_content">网站介绍:</label>
+                                    <textarea rows="6" cols="55" id="tougao_content" name="tougao_content"></textarea>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="form-inline">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-addon"><i class="fa fa-key" aria-hidden="true"></i></div>
+                                        <input type="text" name="tougao_form" class="form-control" id="inputVeri" maxlength="4" placeholder="输入验证码">
+                                        <div id="verification-text" class="input-group-addon">7727</div>
+                                    </div>
+                                </div>
+                                <button id="submit" type="submit" class="btn">提交</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            var verification = Math.floor(Math.random()*(9999-1000+1)+1000);
+            $('#verification-text').text(verification);
+
+            $('#tougao').submit(function() {
+                if($('#inputVeri').val() != verification){
+                    showAlert(JSON.parse('{"status":3,"msg":"验证码错误！"}'));
+                    return false;
+                }
+                $.ajax({
+                    url: theme.ajaxurl,
+                    type:     'POST',
+                    dataType: 'json',
+                    data:     $(this).serialize() + "&action=contribute_post",
+                }).done(function (result) {
+                    if(result.status == 1){
+                        verification = Math.floor(Math.random()*(9999-1000+1)+1000);
+                        $('#verification-text').text(verification);
+                    }
+                    showAlert(result);
+                }).fail(function (result) {
+                    showAlert(JSON.parse('{"status":3,"msg":"网络连接错误！"}'));
+                });
+                return false;
+            });
+            function showAlert(data) {
+                var alert,ico;
+                switch(data.status) {
+                    case 1:
+                        alert='success';
+                        ico='fa-check-circle';
+                        break;
+                    case 2:
+                        alert='info';
+                        ico='fa-comment';
+                        break;
+                    case 3:
+                        alert='warning';
+                        ico='fa-exclamation-circle';
+                        break;
+                    case 4:
+                        alert='danger';
+                        ico='fa-meh-o';
+                        break;
+                    default:
+                }
+                var msg = data.msg;
+                $html = $('<div class="alert-body" style="display:none;"><div class="alert alert-'+alert+'"><i class="fa '+ico+' fa-2x" style="vertical-align: middle;margin-right: 10px"></i><span style="vertical-align: middle">'+msg+'</span></div></div>');
+                $('#alert_placeholder').append( $html );//prepend
+                $html.show(100).delay(3000).hide(200, function(){ $(this).remove() });
+            }
+            function uploadImg(file) {
+                var doc_id=file.getAttribute("data-type");
+                if (file.files != null && file.files[0] != null) {
+                    if (!/\.(jpg|jpeg|png|JPG|PNG)$/.test(file.files[0].name)) {
+                        showAlert(JSON.parse('{"status":3,"msg":"图片类型只能是jpeg,jpg,png！"}'));
+                        return false;
+                    }
+                    if(file.files[0].size > (1000 * 128)){
+                        showAlert(JSON.parse('{"status":3,"msg":"图片大小不能超过128kb"}'));
+                        return false;
+                    }
+                    var formData = new FormData();
+                    formData.append('files', file.files[0]);
+                    formData.append('action','img_upload');
+                    $.ajax({
+                        url: theme.ajaxurl,
+                        type: 'POST',
+                        data: formData,
+                        dataType: 'json',
+                        cache: false,
+                        processData: false,
+                        contentType: false
+                    }).done(function (result) {
+                        //console.log('--->>>'+JSON.stringify(result));
+                        showAlert(result);
+                        if(result.status == 1){
+                            $("#show_"+doc_id).attr("src", result.data.src);
+                            $("#tougao_"+doc_id).val(result.data.src);
+                            $("#remove_"+doc_id).data('id',result.data.id).show();
+                            $(file).attr("disabled","disabled").parent().addClass('disabled');
+                        }
+                    }).fail(function (result) {
+                        showAlert(JSON.parse('{"status":3,"msg":"网络连接错误！"}'));
+                    });
+                }else{
+                    showAlert(JSON.parse('{"status":2,"msg":"请选择文件！"}'));
+                    return false;
+                }
+            }
+            $('.fa.remove').click(function() {
+                if(!confirm('确定要删除图片吗?')){
+                    return false;
+                }
+                var doc_id = $(this).data('type');
+                $.ajax( {
+                    url: theme.ajaxurl,
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {
+                        action: "img_remove",
+                        id: $(this).data("id")
+                    }
+                }).done(function (result) {
+                    showAlert(result);
+                    if(result.status == 1){
+                        $("#show_"+doc_id).attr("src", theme.addico);
+                        $("#tougao_"+doc_id).val('');
+                        $("#remove_"+doc_id).data('id','').hide();
+                        $("#upload_"+doc_id).removeAttr("disabled").val("").parent().removeClass('disabled');
+                    }
+                }).fail(function (result) {
+                    showAlert(JSON.parse('{"status":3,"msg":"网络连接错误！"}'));
+                });
+            });
+        </script>
+        <footer th:replace="web/module/footer :: footer(${SITE_CONFIG})"></footer>
+    </div>
+</div>
+<!-- 锚点平滑移动 -->
+<script type="text/javascript">
+    $(document).ready(function() {
+        $(document).on('click', '.has-sub', function(){
+            var _this = $(this)
+            if(!$(this).hasClass('expanded')) {
+                setTimeout(function(){
+                    _this.find('ul').attr("style","")
+                }, 300);
+            } else {
+                $('.has-sub ul').each(function(id,ele){
+                    var _that = $(this)
+                    if(_this.find('ul')[0] != ele) {
+                        setTimeout(function(){
+                            _that.attr("style","")
+                        }, 300);
+                    }
+                })
+            }
+        })
+        $('.user-info-menu .hidden-sm').click(function(){
+            if($('.sidebar-menu').hasClass('collapsed')) {
+                $('.has-sub.expanded > ul').attr("style","")
+            } else {
+                $('.has-sub.expanded > ul').show()
+            }
+        })
+        $("#main-menu li ul li").click(function() {
+            $(this).siblings('li').removeClass('active'); // 删除其他兄弟元素的样式
+            $(this).addClass('active'); // 添加当前元素的样式
+        });
+        $("a.smooth").click(function(ev) {
+            ev.preventDefault();
+            public_vars.$mainMenu.add(public_vars.$sidebarProfile).toggleClass('mobile-is-visible');
+            ps_destroy();
+            const href=$(this).attr("href");
+            const hrefOffset = $(href).offset();
+            if (typeof(hrefOffset) === "undefined"){
+                console.log(hrefOffset);
+            }else {
+                $("html, body").animate({
+                    scrollTop: hrefOffset.top - 30
+                }, {
+                    duration: 500,
+                    easing: "swing"
+                });
+            }
+        });
+        return false;
+    });
+</script>
+<!-- Bottom Scripts -->
+<script src="web/js/bootstrap.min.js"></script>
+<script src="web/js/TweenMax.min.js"></script>
+<script src="web/js/app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>留言板</title>
+    <!-- 加载Bootstrap样式 -->
+    <link rel="stylesheet" href="web/css/bootstrap.css">
+    <style>
+        /* 修改样式 */
+        .container {
+            margin-top: 30px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .card {
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            background-color: #343a40;
+            color: #fff;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .card-body {
+            padding: 10px 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        textarea.form-control {
+            height: 120px;
+            resize: none;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0069d9;
+            border-color: #0062cc;
+        }
+
+        .reply-btn {
+            font-size: 14px;
+            color: #007bff;
+            cursor: pointer;
+        }
+
+        .reply-form {
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+
+        .reply-form textarea.form-control {
+            height: 80px;
+        }
+
+        .reply-form .btn-primary {
+            margin-top: 10px;
+        }
+
+        .reply-card {
+            margin-top: 20px;
+            margin-left: 50px;
+        }
+
+        .reply-card-header {
+            background-color: #f8f9fa;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .reply-card-body {
+            padding: 10px 20px;
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>留言板</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <!-- 留言列表 -->
+            <div id="message-list">
+                <!-- 留言卡片 -->
+                <div class="card">
+                    <div class="card-header">
+                        张三 发表于 2019-03-10 10:00:00
+                    </div>
+                    <div class="card-body">
+                        <p>这是一条留言。</p>
+                        <!-- 回复列表 -->
+                        <div id="reply-list">
+                            <!-- 回复卡片 -->
+                            <div class="card reply-card">
+                                <div class="card-header reply-card-header">
+                                    李四 回复于 2019-03-11 11:00:00
+                                </div>
+                                <div class="card-body reply-card-body">
+                                    <p>这是一条回复。</p>
+                                </div>
+                            </div>
+                            <!-- /回复卡片 -->
+                        </div>
+                        <!-- /回复列表 -->
+                        <!-- 回复表单 -->
+                        <div class="reply-form" style="display: none;">
+                            <div class="form-group">
+                                <textarea class="form-control"></textarea>
+                            </div>
+                            <button class="btn btn-primary">回复</button>
+                            <button class="btn btn-link cancel-btn">取消</button>
+                        </div>
+                        <!-- /回复表单 -->
+                        <button class="btn btn-link reply-btn">回复</button>
+                    </div>
+                </div>
+                <!-- /留言卡片 -->
+            </div>
+            <!-- /留言列表 -->
+            <!-- 留言表单 -->
+            <div id="message-form">
+                <div class="form-group">
+                    <textarea class="form-control"></textarea>
+                </div>
+                <button class="btn btn-primary">发表留言</button>
+            </div>
+            <!-- /留言表单 -->
+        </div>
+    </div>
+</div>
+
+<!-- 加载jQuery和Bootstrap的JavaScript -->
+<script src="https://cdn.bootcss.com/jquery/3.4.0/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+<script>
+    $(function() {
+        // 绑定回复按钮的点击事件
+        $('.reply-btn').click(function() {
+            // 显示当前留言卡片下的回复表单
+            $(this).parent().find('.reply-form').show();
+        });
+
+        // 绑定取消按钮的点击事件
+        $('.cancel-btn').click(function() {
+            // 隐藏当前回复表单
+            $(this).parent().hide();
+        });
+
+        // 绑定留言表单的提交事件
+        $('#message-form button').click(function() {
+            // 获取留言内容
+            var messageContent = $('#message-form textarea').val();
+            if (messageContent.trim() === '') {
+                alert('留言内容不能为空！');
+                return;
+            }
+
+            // 构造留言卡片的HTML代码
+            var messageHtml = '<div class="card">' +
+                '<div class="card-header">' +
+                '张三 发表于 ' + getDateStr() +
+                '</div>' +
+                '<div class="card-body">' +
+                '<p>' + messageContent + '</p>' +
+                '<div id="reply-list"></div>' +
+                '<div class="reply-form" style="display: none;">' +
+                '<div class="form-group">' +
+                '<textarea class="form-control"></textarea>' +
+                '</div>' +
+                '<button class="btn btn-primary">回复</button>' +
+                '<button class="btn btn-link cancel-btn">取消</button>' +
+                '</div>' +
+                '<button class="btn btn-link reply-btn">回复</button>' +
+                '</div>' +
+                '</div>';
+
+            // 清空留言表单
+            $('#message-form textarea').val('');
+
+            // 在留言列表顶部插入留言卡片
+            $('#message-list').prepend(messageHtml);
+
+            // 绑定回复按钮的点击事件
+            $('.reply-btn').click(function() {
+                // 显示当前留言卡片下的回复表单
+                $(this).parent().find('.reply-form').show();
+            });
+
+            // 绑定取消按钮的点击事件
+            $('.cancel-btn').click(function() {
+                // 隐藏当前回复表单
+                $(this).parent().hide();
+            });
+
+            // 绑定回复表单的提交事件
+            $('.reply-form button').click(function() {
+                // 获取回复内容
+                var replyContent = $(this).prev().val();
+                if (replyContent.trim() === '') {
+                    alert('回复内容不能为空！');
+                    return;
+                }
+
+                // 构造回复卡片的HTML代码
+                var replyHtml = '<div class="card reply-card">' +
+                    '<div class="card-header reply-card-header">' +
+                    '李四 回复于 ' + getDateStr() +
+                    '</div>' +
+                    '<div class="card-body reply-card-body">' +
+                    '<p>' + replyContent + '</p>' +
+                    '</div>' +
+                    '</div>';
+
+                // 清空回复表单
+                $(this).prev().val('');
+
+                // 在回复列表末尾插入回复卡片
+                $(this).parent().parent().find('#reply-list').append(replyHtml);
+            });
+        });
+    });
+
+    // 获取当前日期时间字符串，格式为yyyy-MM-dd HH:mm:ss
+    function getDateStr() {
+        var date = new Date();
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        var hour = date.getHours();
+        var minute = date.getMinutes();
+        var second = date.getSeconds();
+        return year + '-' + addZeroPrefix(month) + '-' + addZeroPrefix(day) + ' ' + addZeroPrefix(hour) + ':' + addZeroPrefix(minute) + ':' + addZeroPrefix(second);
+    }
+
+    // 给个位数的数字前加0，确保输出的数字长度为2位
+    function addZeroPrefix(num) {
+        return ('0' + num).slice(-2);
+    }
+</script>
+</body>
+</html>
