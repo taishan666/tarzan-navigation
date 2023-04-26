@@ -6,6 +6,7 @@ import com.tarzan.nav.modules.admin.service.biz.CategoryService;
 import com.tarzan.nav.modules.admin.service.biz.LinkService;
 import com.tarzan.nav.modules.admin.service.biz.NoticeService;
 import com.tarzan.nav.modules.admin.service.biz.WebsiteService;
+import com.tarzan.nav.modules.admin.service.network.HotNewsService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,6 +31,7 @@ public class IndexController {
     private final WebsiteService websiteService;
     private final LinkService linkService;
     private final NoticeService noticeService;
+    private final HotNewsService hotNewsService;
 
     /**
      * 首页
@@ -39,6 +41,11 @@ public class IndexController {
         model.addAttribute("notices",noticeService.simpleList());
         model.addAttribute("categories",categoryService.treeList());
         model.addAttribute("links",linkService.simpleList());
+        model.addAttribute("baiduHot",hotNewsService.baiduHot());
+        model.addAttribute("weiboHot",hotNewsService.weiboHot());
+        model.addAttribute("douYinHot",hotNewsService.douYinHot());
+        model.addAttribute("jueJinHot",hotNewsService.jueJinHot());
+        model.addAttribute("cSDNHot",hotNewsService.cSDNHot());
         return  CoreConst.WEB_PREFIX+"index";
     }
 
