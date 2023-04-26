@@ -12,6 +12,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -37,7 +38,7 @@ public class HotNewsService {
             HotNewsVO vo=new HotNewsVO();
             vo.setTitle(title);
             vo.setLink(link);
-            vo.setIndex(index);
+            vo.setIndex(numberFormat(Integer.parseInt(index)));
             hotNews.add(vo);
         }
         return hotNews;
@@ -53,14 +54,16 @@ public class HotNewsService {
             Iterator<JSONObject> iterator= list.stream().iterator();
             while (iterator.hasNext()){
                 JSONObject e=iterator.next();
-                String title=e.getString("note");
-                String index=e.getString("raw_hot");
-                String link="https://s.weibo.com/weibo?q=%23"+title+"%23";
-                HotNewsVO vo=new HotNewsVO();
-                vo.setTitle(title);
-                vo.setLink(link);
-                vo.setIndex(index);
-                hotNews.add(vo);
+                if(e.get("realpos")!=null){
+                    String title=e.getString("note");
+                    Integer index=e.getInteger("raw_hot");
+                    String link="https://s.weibo.com/weibo?q=%23"+title+"%23";
+                    HotNewsVO vo=new HotNewsVO();
+                    vo.setTitle(title);
+                    vo.setLink(link);
+                    vo.setIndex(numberFormat(index));
+                    hotNews.add(vo);
+                }
             }
         }
         return hotNews;
@@ -79,11 +82,11 @@ public class HotNewsService {
             JSONObject e=iterator.next();
             String title=e.getString("word");
             String link="https://www.douyin.com/hot/"+e.getString("sentence_id");
-            String index=e.getString("hot_value");
+            Integer index=e.getInteger("hot_value");
             HotNewsVO vo=new HotNewsVO();
             vo.setTitle(title);
             vo.setLink(link);
-            vo.setIndex(index);
+            vo.setIndex(numberFormat(index));
             hotNews.add(vo);
         }
         return hotNews;
@@ -99,11 +102,11 @@ public class HotNewsService {
             JSONObject e=iterator.next();
             String title=e.getJSONObject("content").getString("title");
             String link="https://www.douyin.com/hot/"+e.getJSONObject("content").getString("content_id");
-            String index=e.getJSONObject("content_counter").getString("hot_rank");
+            Integer index=e.getJSONObject("content_counter").getInteger("hot_rank");
             HotNewsVO vo=new HotNewsVO();
             vo.setTitle(title);
             vo.setLink(link);
-            vo.setIndex(index);
+            vo.setIndex(numberFormat(index));
             hotNews.add(vo);
         }
         return hotNews;
@@ -119,13 +122,18 @@ public class HotNewsService {
             JSONObject e=iterator.next();
             String title=e.getString("articleTitle");
             String link=e.getString("articleDetailUrl");
-            String index=e.getString("hotRankScore");
+            Integer index=e.getInteger("hotRankScore");
             HotNewsVO vo=new HotNewsVO();
             vo.setTitle(title);
             vo.setLink(link);
-            vo.setIndex(index);
+            vo.setIndex(numberFormat(index));
             hotNews.add(vo);
         }
         return hotNews;
+    }
+
+    private String numberFormat(int num){
+        DecimalFormat df = new DecimalFormat("#0.0万");
+        return df.format(num / 10000.0);
     }
 }
