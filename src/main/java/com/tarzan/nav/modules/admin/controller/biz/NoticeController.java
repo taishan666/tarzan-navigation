@@ -31,7 +31,7 @@ public class NoticeController {
     private final NoticeService noticeService;
 
     @GetMapping("/add")
-    public String add(Model model) {
+    public String add() {
         return CoreConst.ADMIN_PREFIX + "notice/publish";
     }
 
@@ -77,6 +77,7 @@ public class NoticeController {
 
     @PostMapping("/remove")
     @ResponseBody
+    @CacheEvict(value = "notice", allEntries = true)
     public ResponseVo remove(@RequestBody List<Integer> ids) {
         if (noticeService.removeByIds(ids)) {
             return ResultUtil.success("删除公告成功");

@@ -19,6 +19,7 @@ import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
 import org.apache.shiro.web.session.mgt.DefaultWebSessionManager;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -29,7 +30,6 @@ import java.io.InputStream;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Shiro相关配置
@@ -43,6 +43,8 @@ public class ShiroConfig {
 
     @Resource
     private TarzanProperties tarzanProperties;
+    @Resource
+    private EhCacheCacheManager cacheCacheManager;
 
     @Bean
     public static LifecycleBeanPostProcessor getLifecycleBeanPostProcessor() {
@@ -122,9 +124,9 @@ public class ShiroConfig {
         securityManager.setRealm(shiroRealm);
         /*记住我*/
         securityManager.setRememberMeManager(rememberMeManager());
-        // 自定义缓存实现 使用redis
+        // 自定义缓存实现 使用ehcache
         securityManager.setCacheManager(getEhCacheManager());
-        // 自定义session管理 使用redis
+        // 自定义session管理 使用ehcache
         securityManager.setSessionManager(sessionManager());
         return securityManager;
     }
@@ -149,15 +151,17 @@ public class ShiroConfig {
      */
     @Bean
     public EhCacheManager getEhCacheManager() {
-        net.sf.ehcache.CacheManager cacheManager = net.sf.ehcache.CacheManager.getCacheManager("tarzan");
+     //   net.sf.ehcache.CacheManager cacheManager = net.sf.ehcache.CacheManager.getCacheManager("shiro");
         EhCacheManager em = new EhCacheManager();
-        if (Objects.isNull(cacheManager)) {
-            em.setCacheManager(new net.sf.ehcache.CacheManager(getCacheManagerConfigFileInputStream()));
+        em.setCacheManager(cacheCacheManager.getCacheManager());
+        return em;
+  /*      if (Objects.isNull(cacheManager)) {
+            em.setCacheManager((net.sf.ehcache.CacheManager) cacheManager);
             return em;
         } else {
             em.setCacheManager(cacheManager);
             return em;
-        }
+        }*/
     }
 
 

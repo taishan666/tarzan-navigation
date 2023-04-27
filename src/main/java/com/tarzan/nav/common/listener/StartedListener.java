@@ -1,6 +1,7 @@
 package com.tarzan.nav.common.listener;
 
 import com.tarzan.nav.common.props.TarzanProperties;
+import com.tarzan.nav.modules.network.HotNewsService;
 import com.tarzan.nav.shiro.ShiroService;
 import com.tarzan.nav.utils.AppInstallTools;
 import lombok.AllArgsConstructor;
@@ -31,17 +32,32 @@ public class StartedListener implements ApplicationListener<ApplicationStartedEv
 
     private final AppInstallTools appInstallTools;
     private final ShiroService shiroService;
+    private final HotNewsService hotNewsService;
     private final TarzanProperties tarzanProperties;
 
     @Override
     public void onApplicationEvent(@NonNull ApplicationStartedEvent event) {
         appInstallTools.install();
         shiroService.updatePermission();
+        initHotNews();
         File backupDir=new File(tarzanProperties.getBackupDir());
         if(!backupDir.exists()){
             backupDir.mkdirs();
         }
         printStartInfo(event);
+    }
+
+
+
+    /**
+     * 初始化热点数据
+     */
+    public void initHotNews(){
+        hotNewsService.baiduHot();
+        hotNewsService.weiboHot();
+        hotNewsService.douYinHot();
+        hotNewsService.jueJinHot();
+        hotNewsService.cSdnHot();
     }
 
     /**

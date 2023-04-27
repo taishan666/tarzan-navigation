@@ -13,21 +13,22 @@
                 document.documentElement.classList.add(default_c);
             }
         } catch (_) {}
-    </script><meta charset="UTF-8">
+    </script>
+    <meta charset="UTF-8">
     <meta name="renderer" content="webkit"/>
     <meta name="force-rendering" content="webkit"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>一为导航 | 设计师网址导航</title>
+    <title>[[${SITE_CONFIG?.SITE_NAME}]]</title>
     <meta name="theme-color" content="#f9f9f9" />
-    <meta name="keywords" content="UI设计,UI设计素材,设计导航,网址导航,设计资源,创意导航,创意网站导航,设计师网址大全,设计素材大全,设计师导航,UI设计资源,优秀UI设计欣赏,设计师导航,设计师网址大全,设计师网址导航,产品经理网址导航,交互设计师网址导航" />
-    <meta name="description" content="一为忆 - 收集国内外优秀设计网站、UI设计资源网站、灵感创意网站、素材资源网站，定时更新分享优质产品设计书签。" />
+    <meta name="keywords" th:content="${SITE_CONFIG?.SITE_KWD}" />
+    <meta name="description" th:content="${SITE_CONFIG?.SITE_DESC}" />
     <meta property="og:type" content="website">
-    <meta property="og:url" content=""/>
+    <meta property="og:url" th:content="${SITE_CONFIG?.SITE_NAME}"/>
     <meta property="og:title" content="一为导航 | 设计师网址导航">
-    <meta property="og:description" content="一为忆 - 收集国内外优秀设计网站、UI设计资源网站、灵感创意网站、素材资源网站，定时更新分享优质产品设计书签。">
+    <meta property="og:description" th:content="${SITE_CONFIG?.SITE_DESC}">
     <meta property="og:image" content="/favicon.ico">
-    <meta property="og:site_name" content="一为导航">
+    <meta property="og:site_name" th:content="${SITE_CONFIG?.SITE_NAME}">
     <!--[if IE]><script src="https://nav.iowen.cn/wp-content/themes/onenav/js/html5.min.js"></script><![endif]-->
     <meta name='robots' content='max-image-preview:large' />
 <!--    <link rel='stylesheet' id='classic-theme-styles-css' href='https://nav.iowen.cn/wp-includes/css/classic-themes.min.css?ver=6.2' type='text/css' media='all' />-->

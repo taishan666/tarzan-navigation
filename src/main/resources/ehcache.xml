@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache name="tarzan" updateCheck="false">
+
+    <!-- 磁盘缓存位置 -->
+    <diskStore path="java.io.tmpdir"/>
+
+    <!-- maxEntriesLocalHeap:堆内存中最大缓存对象数，0没有限制 -->
+    <!-- maxElementsInMemory： 在内存中缓存的element的最大数目。-->
+    <!-- eternal:elements是否永久有效，如果为true，timeouts将被忽略，element将永不过期 -->
+    <!-- timeToIdleSeconds:空闲时间，即在指定时间内没有访问，则该缓存会失效，当eternal为false时，这个属性才有效，0为不限制 -->
+    <!-- timeToLiveSeconds:存活时间，即从放入缓存开始计算，在指定时间内缓存会失效，当eternal为false时，这个属性才有效，0为不限制 -->
+    <!-- overflowToDisk： 如果内存中数据超过内存限制，是否要缓存到磁盘上 -->
+    <!-- statistics：是否收集统计信息。如果需要监控缓存使用情况，应该打开这个选项。默认为关闭（统计会影响性能）。设置statistics="true"开启统计 -->
+
+    <!-- 默认缓存 -->
+    <defaultCache
+            maxEntriesLocalHeap="1000"
+            eternal="false"
+            timeToIdleSeconds="3600"
+            timeToLiveSeconds="3600"
+            overflowToDisk="false">
+    </defaultCache>
+
+    <!-- 热点缓存 -->
+    <cache name="hotNews"
+           maxEntriesLocalHeap="10"
+           overflowToDisk="false"
+           eternal="false"
+           diskPersistent="false"
+           timeToLiveSeconds="3600"
+           timeToIdleSeconds="3600"
+           statistics="false">
+    </cache>
+
+    <!-- 菜单 -->
+    <cache name="menu"
+           maxEntriesLocalHeap="1000"
+           overflowToDisk="false"
+           eternal="false"
+           diskPersistent="false"
+           timeToLiveSeconds="3600"
+           timeToIdleSeconds="3600"
+           statistics="false">
+    </cache>
+
+    <!-- 友情链接 -->
+    <cache name="link"
+           maxEntriesLocalHeap="1000"
+           overflowToDisk="false"
+           eternal="false"
+           diskPersistent="false"
+           timeToLiveSeconds="3600"
+           timeToIdleSeconds="3600"
+           statistics="false">
+    </cache>
+
+    <!-- 用户 -->
+    <cache name="user"
+           maxEntriesLocalHeap="1000"
+           overflowToDisk="false"
+           eternal="false"
+           diskPersistent="false"
+           timeToLiveSeconds="3600"
+           timeToIdleSeconds="3600"
+           statistics="false">
+    </cache>
+
+    <!-- 留言 -->
+    <cache name="comment"
+           maxEntriesLocalHeap="1000"
+           overflowToDisk="false"
+           eternal="false"
+           diskPersistent="false"
+           timeToLiveSeconds="3600"
+           timeToIdleSeconds="3600"
+           statistics="false">
+    </cache>
+
+
+    <!-- 分类 -->
+    <cache name="category"
+           maxEntriesLocalHeap="1000"
+           overflowToDisk="false"
+           eternal="false"
+           diskPersistent="false"
+           timeToLiveSeconds="3600"
+           timeToIdleSeconds="3600"
+           statistics="false">
+    </cache>
+
+    <!-- 网站 -->
+    <cache name="website"
+           maxEntriesLocalHeap="1000"
+           overflowToDisk="false"
+           eternal="false"
+           diskPersistent="false"
+           timeToLiveSeconds="3600"
+           timeToIdleSeconds="3600"
+           statistics="false">
+    </cache>
+
+    <!-- 通知 -->
+    <cache name="notice"
+           maxEntriesLocalHeap="1000"
+           overflowToDisk="false"
+           eternal="false"
+           diskPersistent="false"
+           timeToLiveSeconds="600"
+           timeToIdleSeconds="10"
+           statistics="false">
+    </cache>
+
+    <!-- 站点配置 -->
+    <cache name="site"
+           maxEntriesLocalHeap="1000"
+           overflowToDisk="false"
+           eternal="false"
+           diskPersistent="false"
+           timeToLiveSeconds="3600"
+           timeToIdleSeconds="3600"
+           statistics="false">
+    </cache>
+
+    <!-- 系统会话缓存 -->
+    <cache name="shiro-activeSessionCache"
+           maxEntriesLocalHeap="10000"
+           overflowToDisk="false"
+           eternal="false"
+           diskPersistent="false"
+           timeToLiveSeconds="0"
+           timeToIdleSeconds="0"
+           statistics="false"/>
+
+
+</ehcache>

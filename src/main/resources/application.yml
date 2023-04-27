@@ -22,6 +22,10 @@ server:
 spring:
   application:
     name: tarzan-navigation
+  cache:
+    type: ehcache
+    ehcache:
+      config: classpath:ehcache.xml
   boot:
     admin:
       client:

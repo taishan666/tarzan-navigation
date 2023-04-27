@@ -21,7 +21,7 @@
                     <ul>
                         <li class="sidebar-item" th:each="category : ${categories}">
                             <a th:if="${#lists.isEmpty(category.children)}" th:href="${'#term-'+category.id}"  class="smooth">
-                                <i class="io io-fuwu icon-fw icon-lg"></i>
+                                <i th:class="${category?.icon}+' icon-fw icon-lg'"></i>
                                 <span>[[${category.name}]]</span>
                             </a>
                             <th:block th:unless="${#lists.isEmpty(category.children)}">
