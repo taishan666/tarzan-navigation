@@ -3,11 +3,11 @@
         <div class="footer-text card-body text-muted text-center text-md-left">
             <div class="row my-4">
                 <div class="col-12 col-md-4 mb-4 mb-md-0">
-                    <a class="footer-logo" href="/" title="一为导航">
-                        <img src="https://nav.iowen.cn/wp-content/uploads/2020/01/ywdh-logo-1.png" class="logo-light mb-3" alt="一为导航" height="40">
-                        <img src="https://nav.iowen.cn/wp-content/uploads/2020/01/ywdh-logo.png" class="logo-dark d-none mb-3" alt="一为导航" height="40">
+                    <a class="footer-logo" href="/" th:title="${SITE_CONFIG?.SITE_NAME}">
+                        <img src="/web/images/logo.png" class="logo-light mb-3" th:alt="${SITE_CONFIG?.SITE_NAME}" height="40">
+                        <img src="/web/images/logo.png" class="logo-dark d-none mb-3" th:alt="${SITE_CONFIG?.SITE_NAME}" height="40">
                     </a>
-                    <div class="text-sm">OneNav 一为导航主题，集网址、资源、资讯于一体的 WordPress 导航主题，简约优雅的设计风格，全面的前端用户功能，简单的模块化配置，欢迎您的体验</div>
+                    <div class="text-sm">[[${SITE_CONFIG?.SITE_DESC}]]</div>
                 </div>
                 <div class="col-12 col-md-5 mb-4 mb-md-0">
                     <p class="footer-links text-sm mb-3"><a href="/">友链申请</a>
