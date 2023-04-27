@@ -26,11 +26,6 @@ import java.util.List;
 @Slf4j
 public class HotNewsService {
 
-
-
-
-
-
     @Cacheable(value = "hotNews", key = "'baidu'")
     public List<HotNewsVO> baiduHot(){
         log.info("百度热点");

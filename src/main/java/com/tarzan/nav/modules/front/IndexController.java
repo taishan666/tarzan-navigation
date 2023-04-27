@@ -39,7 +39,7 @@ public class IndexController {
     @GetMapping({"/","index","home"})
     public String home(Model model) {
         model.addAttribute("notices",noticeService.simpleList());
-        model.addAttribute("categories",categoryService.treeList());
+        model.addAttribute("categories",categoryService.treeLink());
         model.addAttribute("links",linkService.simpleList());
         model.addAttribute("baiduHot",hotNewsService.baiduHot());
         model.addAttribute("weiboHot",hotNewsService.weiboHot());
@@ -52,6 +52,7 @@ public class IndexController {
 
     @GetMapping({"/search"})
     public String search(String q,Model model) {
+        model.addAttribute("categories",categoryService.treeList());
         model.addAttribute("search",q);
         List<Website> websites=websiteService.listWithImage(new Website().setName(q));
         model.addAttribute("websites",websites);
@@ -64,10 +65,9 @@ public class IndexController {
         return  CoreConst.WEB_PREFIX+"about";
     }
 
-    @GetMapping({"/guestbook"})
-    public String guestbook(Model model) {
-        model.addAttribute("categories",categoryService.treeList());
-        return  CoreConst.WEB_PREFIX+"guestbook";
+    @GetMapping({"/bookmark"})
+    public String guestbook() {
+        return  CoreConst.WEB_PREFIX+"bookmark";
     }
 
     @GetMapping({"/notice/{noticeId}"})
