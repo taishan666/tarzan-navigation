@@ -377,8 +377,6 @@
         }, 300)
     }
     $(document).on('click', '.tab-auto-scrollbar a', function (e) {
-        console.log($(this))
-        console.log($(this).parent('li'))
         $(this).closest('.tab-auto-scrollbar').tabToCenter($(this).parent('li'));
     });
     function intoSlider() {
