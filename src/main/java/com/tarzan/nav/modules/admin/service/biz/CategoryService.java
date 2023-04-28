@@ -66,8 +66,7 @@ public class CategoryService extends ServiceImpl<CategoryMapper, Category> {
      */
     public void assemblyTree(List<Category> sourceList, Category parent,Map<Integer,List<Website>> map) {
         if (CollectionUtils.isNotEmpty(sourceList)) {
-            List<Category> resultList = sourceList.stream().filter(e -> e.getPid().equals(parent.getId())).collect(Collectors.toList());
-            resultList.sort(Comparator.comparing(Category::getSort));
+            List<Category> resultList = sourceList.stream().filter(e -> e.getPid().equals(parent.getId())).sorted(Comparator.comparing(Category::getSort)).collect(Collectors.toList());
             parent.setChildren(resultList);
             if(CollectionUtils.isNotEmpty(map)){
                 parent.setWebsites(map.get(parent.getId()));
@@ -82,6 +81,9 @@ public class CategoryService extends ServiceImpl<CategoryMapper, Category> {
 
 
     public boolean existWebsites(Integer id){
-        return websiteService.lambdaQuery().eq(Website::getCategoryId,id).count()!=0L;
+        if(!CoreConst.TOP_MENU_ID.equals(id)){
+            return websiteService.lambdaQuery().eq(Website::getCategoryId,id).count()!=0L;
+        }
+       return false;
     }
 }

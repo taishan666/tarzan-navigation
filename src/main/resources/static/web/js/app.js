@@ -79,43 +79,8 @@
                 });
             }
         }*/
-
-     //   showSitesSeo();
     });
 
-    function showSitesSeo() {
-        if ($('.sites-seo-load')[0]) {
-            var _this = $('.sites-seo-load');
-            $.get(theme.ajaxurl + "/?action=get_sites_seo&url=" + _this.data('url'), null, function (data, status) {
-                if (data.errcode == "0") {
-                    var _html = "";
-                    var _name = "";
-                    var _url = _this.data('go_to');
-                    data.data.result.forEach(list => {
-                        switch (list.type) {
-                            case "BaiduPCWeight":
-                                _name = "百度PC";
-                                break;
-                            case "BaiduMobileWeight":
-                                _name = "百度移动";
-                                break;
-                            case "HaoSouWeight":
-                                _name = "360";
-                                break;
-                            case "SMWeight":
-                                _name = "神马";
-                                break;
-                            case "TouTiaoWeight":
-                                _name = "头条";
-                                break;
-                        }
-                        _html += '<a class="sites-weight '+list.type+'" href="' + _url + '" title="' + _name + '" target="_blank" rel="external nofollow"><span>' + list.weight + '</span></a>';
-                    });
-                    _this.html(_html);
-                }
-            });
-        }
-    }
     function initSidebarNav(container) {
         if(!container[0]) return;
         var dropdownToggle = $('<i class="iconfont icon-arrow-r-m sidebar-more text-sm"></i>');
@@ -412,6 +377,8 @@
         }, 300)
     }
     $(document).on('click', '.tab-auto-scrollbar a', function (e) {
+        console.log($(this))
+        console.log($(this).parent('li'))
         $(this).closest('.tab-auto-scrollbar').tabToCenter($(this).parent('li'));
     });
     function intoSlider() {

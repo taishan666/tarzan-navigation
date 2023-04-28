@@ -33,8 +33,8 @@
             <div class="d-flex flex-fill flex-tab align-items-center">
                 <div class='slider_menu mini_tab ajax-list-home' sliderTab="sliderTab" th:data-id="${category?.id}">
                     <ul class="nav nav-pills tab-auto-scrollbar menu overflow-x-auto" role="tablist">
-                        <li th:each="cate,stat:${category?.children}" class="pagenumber nav-item" data-sidebar="1" data-post_id="0" data-action="load_home_tab" data-taxonomy="favorites" th:data-id="${cate?.id}">
-                            <a th:id="${'term-'+category?.id+'-'+cate?.id}" th:class="'nav-link tab-noajax '+${stat.index==0? ' active' : ''}+' load'" data-toggle="pill" th:href="${'#tab-'+category?.id+'-'+cate?.id}" th:data-link="${cate?.name}">[[${cate?.name}]]</a>
+                        <li th:each="cate:${category?.children}" class="pagenumber nav-item" data-sidebar="1" data-post_id="0" data-action="load_home_tab" data-taxonomy="favorites" th:data-id="${cate?.id}">
+                            <a th:id="${'term-'+category?.id+'-'+cate?.id}" class="nav-link tab-noajax active load" data-toggle="pill" th:href="${'#term-'+category?.id+'-'+cate?.id}" th:data-link="${cate?.name}">[[${cate?.name}]]</a>
                         </li>
                     </ul>
                 </div>
@@ -43,9 +43,9 @@
             </div>
             <!-- tab模式菜单 end -->
             <div class="tab-content mt-4">
-                <div th:each="cate,stat:${category?.children}"  th:id="${'tab-'+category?.id+'-'+cate?.id}" th:class="'tab-pane'+${stat.index==0? ' active' : ''}">
+                <div th:each="cate:${category?.children}"  th:id="${'tab-'+category?.id+'-'+cate?.id}" class="tab-pane  active">
                             <div class="row io-mx-n2 mt-4 ajax-list-body position-relative">
-                                <div th:each="website:${cate?.websites}" class="url-card io-px-2  col-2a col-sm-2a col-md-2a col-lg-2a col-xl-4a col-xxl-5a">
+                                <div th:each="website:${cate?.websites}" class="url-card io-px-2  col-2a col-sm-2a col-md-2a col-lg-2a col-xl-4a col-xxl-5a   ">
                                     <div class="url-body default ">
                                         <a th:href="${website?.url}"   th:data-id="${website?.id}" th:data-url="${website?.url}" th:class="${'card no-c  mb-4 site-'+website?.id}" data-toggle="tooltip" data-placement="bottom"  th:title="${website?.name}">
                                             <div class="card-body url-content d-flex align-items-center">
