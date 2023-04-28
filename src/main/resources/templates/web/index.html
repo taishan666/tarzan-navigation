@@ -69,57 +69,23 @@
                 </div>
              </div>
            </div>-->
-        </div>
+    </div>
     <div id="content" class="container container-fluid customize-width">
         <div class="home-widget-group" style="margin-top:-5.525rem!important"></div>
         <div th:replace="web/module/hotnews"></div>
-<!--        <div class="d-flex slider-menu-father mb-4">
-            <div class="slider_menu mini_tab" sliderTab="sliderTab" >
-                <ul class="nav nav-pills tab-auto-scrollbar menu overflow-x-auto" role="tablist">
-                    <li class="pagenumber nav-item">
-                        <a class="nav-link ajax-home-hot-list active load" data-toggle="pill" href="#ct-tab-sites-views0" data-action="load_hot_post" data-datas="{&quot;data&quot;:{&quot;title&quot;:&quot;热门网址&quot;,&quot;type&quot;:&quot;sites&quot;,&quot;order&quot;:&quot;views&quot;,&quot;num&quot;:&quot;10&quot;,&quot;mini&quot;:&quot;&quot;}}">热门网址</a>
-                    </li><li class="pagenumber nav-item">
-                    <a class="nav-link ajax-home-hot-list " data-toggle="pill" href="#ct-tab-sites-modified1" data-action="load_hot_post" data-datas="{&quot;data&quot;:{&quot;title&quot;:&quot;大家喜欢&quot;,&quot;type&quot;:&quot;sites&quot;,&quot;order&quot;:&quot;modified&quot;,&quot;num&quot;:&quot;10&quot;,&quot;mini&quot;:&quot;&quot;}}">大家喜欢</a>
-                </li><li class="pagenumber nav-item">
-                    <a class="nav-link ajax-home-hot-list " data-toggle="pill" href="#ct-tab-sites-date2" data-action="load_hot_post" data-datas="{&quot;data&quot;:{&quot;title&quot;:&quot;最新网址&quot;,&quot;type&quot;:&quot;sites&quot;,&quot;order&quot;:&quot;date&quot;,&quot;num&quot;:&quot;10&quot;,&quot;mini&quot;:&quot;&quot;}}">最新网址</a>
-                </li>
-                </ul>
-            </div>
-        </div>-->
         <div class="tab-content">
-      <!--      <div id="ct-tab-sites-views0" class="tab-pane active">
-                <div class="row  ajax-list-body position-relative">
-                    <div class="url-card   col-2a col-sm-2a col-md-2a col-lg-3a col-xl-5a col-xxl-6a  ">
-                        <div class="url-body default ">
-                            <a href="https://nav.iowen.cn/sites/725.html"   data-id="725" data-url="http://16map.com" class="card no-c  mb-4 site-725" data-toggle="tooltip" data-placement="bottom"  title="一流设计导航专注服务于设计师的导航网站。致力于分享优秀免费的设计网站网址，一流设计导航大全还包括免费无版权限制可商用的高品质素材，设计教程、尺寸规范、配色方案、设计素材和灵感等。">
-                                <div class="card-body url-content d-flex align-items-center">
-                                    <div class="url-img rounded-circle mr-2 d-flex align-items-center justify-content-center">
-                                        <img class=" lazy unfancybox" src="https://nav.iowen.cn/wp-content/themes/onenav/images/favicon.png" data-src="https://api.iowen.cn/favicon/16map.com.png"  height="auto" width="auto"  alt="设计导航">
-                                    </div>
-                                    <div class="url-info flex-fill">
-                                        <div class="text-sm overflowClip_1">
-                                            <strong>设计导航</strong>
-                                        </div>
-                                        <p class="overflowClip_1 m-0 text-muted text-xs">一流设计导航专注服务于设计师的导航网站。致力于分享优秀免费的设计网站网址，一流设计导航大全还包括免费无版权限制可商用的高品质素材，设计教程、尺寸规范、配色方案、设计素材和灵感等。</p>
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="https://nav.iowen.cn/go/?url=aHR0cDovLzE2bWFwLmNvbQ%3D%3D" target="_blank" rel="external nofollow" title="直达" class="togo text-center text-muted is-views" data-id="725" data-toggle="tooltip" data-placement="right"><i class="iconfont icon-goto"></i></a>
-                        </div>
+            <div class="content">
+                <div class="content-wrap">
+                    <div class="content-layout" style="margin-right: 0px;">
+                        <websites th:replace="web/module/websites :: websites(${categories})"></websites>
                     </div>
                 </div>
-            </div>-->
-        <div class="content">
-            <div class="content-wrap">
-                <div class="content-layout" style="margin-right: 0px;">
-                    <websites th:replace="web/module/websites :: websites(${categories})"></websites>
-                </div>
             </div>
-            <blogroll th:unless="${#lists.isEmpty(links)}" th:include="web/module/blogroll::blogroll(${links})"></blogroll>
+        <blogroll th:unless="${#lists.isEmpty(links)}" th:include="web/module/blogroll::blogroll(${links})"></blogroll>
+        </div>
     </div>
-            <!-- content end -->
-            <div th:replace="web/module/siteinfo"></div>
-  </div>
+    <div th:replace="web/module/siteinfo"></div>
+</div>
 <!-- main-content end -->
 <footer th:replace="web/module/footer"></footer>
 <div th:replace="web/module/searchmodal"></div>
@@ -127,11 +93,13 @@
     <div class="io-bomb-overlay"></div>
     <div class="io-bomb-body" style="max-width:680px">
         <div class="io-bomb-content io-popup-tips-content rounded m-3 p-4 p-md-5 bg-white">
-            <h3 class="mb-4 pb-md-2 text-center">One Nav 主题演示站</h3>                    <div>
+            <h3 class="mb-4 pb-md-2 text-center">One Nav 主题演示站</h3>
+            <div>
             OneNav 正版主题，本站为演示站，仅作展示，一次付费，永久免费更新。
             <a href="https://www.iotheme.cn/store/onenav.html" target="_blank" rel="noopener"><img class="my-3" src="https://www.iotheme.cn/wp-content/uploads/2021/02/onenavad.jpg" alt="One Nav 导航主题" /></a>
             唯一官网:<a href="https://www.iotheme.cn">https://www.iotheme.cn</a>，其他均为盗版，传播盗版可耻，支持作者，为开发者留最后一丝动力。
-            <div class="mt-4 mb-n2 mb-md-n4 text-xs text-muted text-center">ioTheme</div>                    </div>
+            <div class="mt-4 mb-n2 mb-md-n4 text-xs text-muted text-center">ioTheme</div>
+        </div>
         </div>
         <div class="btn-close-bomb mt-2 text-center">
             <i class="iconfont popup-close icon-close-circle"></i>
@@ -163,14 +131,10 @@
 <script type='text/javascript' src='/web/js/bootstrap.min.js?ver=4.0423' id='bootstrap-js'></script>
 <script type='text/javascript' src='/web/js/theia-sticky-sidebar.js?ver=4.0423' id='sidebar-js'></script>
 <script type='text/javascript' src='/web/js/lazyload.min.js?ver=4.0423' id='lazyload-js'></script>
-<script type='text/javascript' id='appjs-js-extra'>
-    /* <![CDATA[ */
-   // var theme = {"ajaxurl":"","uri":"","loginurl":"","sitesName":"\u4e00\u4e3a\u5bfc\u822a","addico":"","order":"desc","formpostion":"top","defaultclass":"io-grey-mode","isCustomize":"1","icourl":"","icopng":".png","urlformat":"1","customizemax":"10","newWindow":"0","lazyload":"1","minNav":"0","loading":"0","hotWords":"baidu","classColumns":" col-2a col-sm-2a col-md-2a col-lg-3a col-xl-5a col-xxl-6a ","apikey":"","isHome":"1","version":"4.0423"};
+<!--<script type='text/javascript' id='appjs-js-extra'>
     var theme ={"defaultclass":"io-grey-mode","minNav":"0","isCustomize":"1","isHome":"1"}
-    //   var localize = {"liked":"\u60a8\u5df2\u7ecf\u8d5e\u8fc7\u4e86!","like":"\u8c22\u8c22\u70b9\u8d5e!","networkerror":"\u7f51\u7edc\u9519\u8bef --.","selectCategory":"\u4e3a\u4ec0\u4e48\u4e0d\u9009\u5206\u7c7b\u3002","addSuccess":"\u6dfb\u52a0\u6210\u529f\u3002","timeout":"\u8bbf\u95ee\u8d85\u65f6\uff0c\u8bf7\u518d\u8bd5\u8bd5\uff0c\u6216\u8005\u624b\u52a8\u586b\u5199\u3002","lightMode":"\u65e5\u95f4\u6a21\u5f0f","nightMode":"\u591c\u95f4\u6a21\u5f0f","editBtn":"\u7f16\u8f91","okBtn":"\u786e\u5b9a","urlExist":"\u8be5\u7f51\u5740\u5df2\u7ecf\u5b58\u5728\u4e86 --.","cancelBtn":"\u53d6\u6d88","successAlert":"\u6210\u529f","infoAlert":"\u4fe1\u606f","warningAlert":"\u8b66\u544a","errorAlert":"\u9519\u8bef","extractionCode":"\u7f51\u76d8\u63d0\u53d6\u7801\u5df2\u590d\u5236\uff0c\u70b9\u201c\u786e\u5b9a\u201d\u8fdb\u5165\u4e0b\u8f7d\u9875\u9762\u3002","wait":"\u8bf7\u7a0d\u5019","loading":"\u6b63\u5728\u5904\u7406\u8bf7\u7a0d\u540e...","userAgreement":"\u8bf7\u5148\u9605\u8bfb\u5e76\u540c\u610f\u7528\u6237\u534f\u8bae","reSend":"\u79d2\u540e\u91cd\u65b0\u53d1\u9001","weChatPay":"\u5fae\u4fe1\u652f\u4ed8","alipay":"\u652f\u4ed8\u5b9d","scanQRPay":"\u8bf7\u626b\u7801\u652f\u4ed8","payGoto":"\u652f\u4ed8\u6210\u529f\uff0c\u9875\u9762\u8df3\u8f6c\u4e2d"};
     var localize ={"lightMode":"\u65e5\u95f4\u6a21\u5f0f","nightMode":"\u591c\u95f4\u6a21\u5f0f"}
-    /* ]]> */
-</script>
+</script>-->
 <script type='text/javascript' src='/web/js/app.js?ver=4.0423' id='appjs-js'></script>
 <script type='text/javascript' id='appjs-js-after'>
     /* <![CDATA[ */

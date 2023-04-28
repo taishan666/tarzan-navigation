@@ -8,6 +8,7 @@ import com.tarzan.nav.modules.admin.vo.base.PageResultVo;
 import com.tarzan.nav.modules.admin.vo.base.ResponseVo;
 import com.tarzan.nav.utils.DateUtil;
 import com.tarzan.nav.utils.ResultUtil;
+import com.tarzan.nav.utils.StringUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Controller;
@@ -16,7 +17,6 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -89,7 +89,7 @@ public class WebsiteController {
     @PostMapping("/delete")
     @ResponseBody
     public ResponseVo delete(Integer id) {
-        return deleteBatch(Arrays.asList(id));
+        return deleteBatch(Collections.singletonList(id));
     }
 
     @PostMapping("/batch/delete")
@@ -132,6 +132,18 @@ public class WebsiteController {
             }
         }
         return ResultUtil.success("复制分类成功成功");
+    }
+
+
+    @GetMapping("/getInfo")
+    @ResponseBody
+    public ResponseVo getInfo(String url) {
+        if(StringUtil.isBlank(url)){
+            return ResultUtil.error("网站地址不能为空！");
+        }else {
+            Website website =websiteService.getInfo(url);
+            return ResultUtil.vo(website);
+        }
     }
 
 }

@@ -25,13 +25,11 @@
     <meta name="description" th:content="${SITE_CONFIG?.SITE_DESC}" />
     <meta property="og:type" content="website">
     <meta property="og:url" th:content="${SITE_CONFIG?.SITE_NAME}"/>
-    <meta property="og:title" content="一为导航 | 设计师网址导航">
+    <meta property="og:title" th:content="${SITE_CONFIG?.SITE_NAME}">
     <meta property="og:description" th:content="${SITE_CONFIG?.SITE_DESC}">
     <meta property="og:image" content="/favicon.ico">
     <meta property="og:site_name" th:content="${SITE_CONFIG?.SITE_NAME}">
-    <!--[if IE]><script src="https://nav.iowen.cn/wp-content/themes/onenav/js/html5.min.js"></script><![endif]-->
     <meta name='robots' content='max-image-preview:large' />
-    <!--    <link rel='stylesheet' id='classic-theme-styles-css' href='https://nav.iowen.cn/wp-includes/css/classic-themes.min.css?ver=6.2' type='text/css' media='all' />-->
     <link rel='stylesheet' id='iconfont-css' href='/web/css/iconfont.css?ver=4.0423' type='text/css' media='all' />
     <link rel='stylesheet' id='iconfont-io-1-css' href='//at.alicdn.com/t/font_1620678_18rbnd2homc.css' type='text/css' media='all' />
     <link rel='stylesheet' id='iconfont-io-2-css' href='//at.alicdn.com/t/font_2811503_rz4zraeosal.css' type='text/css' media='all' />
@@ -50,288 +48,184 @@
     .io-black-mode .navbar-nav .menu-item-286 a i{color: #fff;}.customize-width{max-width:1850px}.sidebar-nav{width:220px}@media (min-width: 768px){.main-content{margin-left:220px;}.main-content .page-header{left:220px;}}</style><!-- 自定义代码 -->
 </head>
 <body class="home blog">
-<sidebar th:replace="web/module/sidebar :: index(${categories})"></sidebar>
+<sidebar th:replace="web/module/sidebar :: other(${categories})"></sidebar>
 <div class="main-content flex-fill">
     <nav th:replace="web/module/navbar"></nav>
-    <div id="content" class="container my-4 my-md-5" style="transform: none;">
-        <div class="content-wrap">
-            <div class="content-layout">
-                <div class="panel card">
-                    <div class="card-body">
-                        <div class="panel-header mb-4">
-                            <h1 class="h3">示例页面                                            </h1>
+    <div id="content" class="container my-4 my-md-5">
+        <h1 id="comments-list-title" class="comments-title h5 mx-1 my-4">
+            <i class="iconfont icon-tishi mr-2"></i>投稿须知
+        </h1>
+        <div class="panel card">
+            <div class="card-body">
+                <div class="panel-body single mt-2">
+                    <h5><span>如果你有不错网站，想显示在本导航网站上，请在下方填写申请，本人审核通过后，即可在本站中显示你的提交的网站！</span></h5>
+                </div>
+            </div>
+        </div>
+        <!--        <div class="text-center mb-3">
+                    <div class="tab-btn-group text-sm">
+                        <a href="https://nav.iowen.cn/contribute/?type=post" class="tab-btn ">新文章</a><a href="https://nav.iowen.cn/contribute/?type=sites" class="tab-btn active">新网址</a>
+                    </div>
+                </div>-->
+       <form id="applyForm" class="post-tg tougao-form">
+            <input type="hidden" name="imageId" id="imageId">
+            <div class="content-wrap">
+                <div class="content-layout">
+                    <div class="panel card">
+                        <div class="card-header widget-header">
+                            <h3 class="text-md mb-0"><i class="iconfont icon-publish mr-2"></i>网址选项</h3>
                         </div>
-                        <div class="panel-body mt-2">
-                            <p><!-- wp:paragraph --></p>
-                            <p>这是示范页面。页面和博客文章不同，它的位置是固定的，通常会在站点导航栏显示。很多用户都创建一个“关于”页面，向访客介绍自己。例如：</p>
-                            <p><!-- /wp:paragraph --></p>
-                            <p><!-- wp:quote --></p>
-                            <blockquote class="wp-block-quote">
-                                <p>欢迎！我白天是个邮递员，晚上就是个有抱负的演员。这是我的网站。我住在天朝的帝都，有条叫做Jack的狗。</p>
-                            </blockquote>
-                            <p><!-- /wp:quote --></p>
-                            <p><!-- wp:paragraph --></p>
-                            <p>……或这个：</p>
-                            <p><!-- /wp:paragraph --></p>
-                            <p><!-- wp:quote --></p>
-                            <blockquote class="wp-block-quote">
-                                <p>XYZ Doohickey公司成立于1971年，自从建立以来，我们一直向社会贡献着优秀doohickies。我们的公司总部位于天朝魔都，有着超过两千名员工，对魔都政府税收有着巨大贡献。</p>
-                            </blockquote>
-                            <p><!-- /wp:quote --></p>
-                            <p><!-- wp:paragraph --></p>
-                            <p>而您，作为一个WordPress用户，我们建议您访问<a href="https://nav.iowen.cn/wp-admin/">控制板</a>，删除本页面，然后添加您自己的页面。祝您使用愉快！</p>
-                            <p><!-- /wp:paragraph --></p>
+                        <div class="card-body">
+                   <!--         <div class="d-inline-block slider_menu into" slidertab="sliderTab">
+                                       <ul class="nav nav-pills tab-auto-scrollbar menu" role="tablist"><li class="anchor" style="position: absolute; width: 60px; height: 40px; left: 0px; opacity: 1;"></li>
+                                           <li class="pagenumber nav-item">
+                                               <a class="nav-link active" data-toggle="pill" data-type="sites" href="#sites" onclick="currentType(this)">网址</a>
+                                           </li><li class="pagenumber nav-item">
+                                               <a class="nav-link " data-toggle="pill" data-type="wechat" href="#wechat" onclick="currentType(this)">公众号</a>
+                                           </li>
+                                       </ul>
+                            </div>-->
+                    <!--        <div class="my-2">
+                                <label for="tougao_ico">图标:</label>
+                                <input type="hidden" value="" id="tougao_ico" class="tougao-sites" name="tougao_ico">
+                                <div class="upload_img">
+                                    <div class="show_ico">
+                                        <img id="show_ico" class="show-sites" src="https://nav.iowen.cn/wp-content/themes/onenav/images/add.png" alt="图标">
+                                        <i id="remove_ico" class="iconfont icon-close-circle remove-ico remove-sites" data-id="" data-type="ico" style="display: none;"></i>
+                                    </div>
+                                    <input type="file" id="upload_ico" class="upload-sites" name="tougao_ico" data-type="ico" accept="image/*" onchange="uploadImg(this)">
+                                </div>
+                            </div>-->
+                            <div class="row row-sm">
+                                <div class="col-12 my-2">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="iconfont icon-name icon-fw" aria-hidden="true"></i></span>
+                                        </div>
+                                        <input type="text" id="web_name" class="form-control sites-title" value="" name="name" placeholder="名称" maxlength="30">
+                                    </div>
+                                </div>
+                                <div class="col-12 my-2">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="iconfont icon-url icon-fw" aria-hidden="true"></i></span>
+                                        </div>
+                                        <input id="url" type="text" class="form-control sites-link" value="" name="url" placeholder="链接">
+                                        <div class="input-group-append tg-sites-url">
+                                            <a href="javascript:" id="get_info" class="btn btn-danger custom_btn-d">一键填写</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 my-2">
+                                    <div class="input-group count-tips" data-min="0" data-max="80">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="iconfont icon-tishi icon-fw" aria-hidden="true"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control sites-des" value="" id="web_desc"name="description" data-status="true" placeholder="简介" maxlength="80">
+                                    </div>
+                                </div>
+                                <div class="col-12 my-2">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="iconfont icon-category icon-fw" aria-hidden="true"></i></span>
+                                        </div>
+                                        <select name="categoryId"  class="form-control sites-category">
+                                            <option value="0" selected="selected">选择分类</option>
+                                            <option class="level-0" th:each="category : ${categories}" th:value="${category?.id}">[[${category?.name}]]&nbsp;&nbsp;</option>
+                                            <th:block th:unless="${#lists.isEmpty(category?.children)}">
+                                                <option class="level-1" th:each="cate:${category?.children}" th:value="${cate?.id}">&nbsp;&nbsp;&nbsp;[[${cate?.name}]]&nbsp;&nbsp;</option>
+                                            </th:block>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- comments -->
-                <div id="comments" class="comments">
-                    <h2 id="comments-list-title" class="comments-title h5 mx-1 my-4">
-                        <i class="iconfont icon-comment"></i>
-                        <span class="noticom">
-			<a href="https://nav.iowen.cn/sample-page#comments" class="comments-title">9 条评论</a>
-		</span>
-                    </h2>
-                    <div class="card">
-                        <div class="card-body">
-                            <div id="respond_box">
-                                <div id="respond" class="comment-respond">
-                                    <form id="commentform" class="text-sm mb-4">
-                                        <div class="visitor-avatar d-flex flex-fill mb-2">
-                                            <img class="v-avatar rounded-circle" src="https://nav.iowen.cn/wp-content/themes/onenav/images/gravatar.jpg">
-                                        </div>
-                                        <div class="comment-textarea mb-3">
-                                            <textarea name="comment" id="comment" class="form-control" placeholder="输入评论内容..." tabindex="4" cols="50" rows="3"></textarea>
-                                        </div>
-
-                                        <div id="comment-author-info" class="row  row-sm">
-                                            <div class="col-12 col-md-6 mb-3"><input type="text" name="author" id="author" class="form-control" value="" size="22" placeholder="昵称" tabindex="2"></div>
-                                            <div class="col-12 col-md-6 mb-3"><input type="text" name="email" id="email" class="form-control" value="" size="22" placeholder="邮箱" tabindex="3"></div>
-                                        </div>
-                                        <div class="com-footer d-flex justify-content-end flex-wrap">
-                                            <input type="hidden" id="_wpnonce" name="_wpnonce" value="a33d9a536f"><input type="hidden" name="_wp_http_referer" value="/sample-page">							<a rel="nofollow" id="cancel-comment-reply-link" style="display: none;" href="javascript:;" class="btn btn-light custom_btn-outline mx-2">再想想</a>
-                                            <input captcha-type="slider" type="hidden" name="captcha_type" value="slider" slider-id="">							<button class="btn btn-dark custom_btn-d ml-2" type="submit" id="submit">发表评论</button>
-                                            <input type="hidden" name="action" value="ajax_comment">
-                                            <input type="hidden" name="comment_post_ID" value="2" id="comment_post_ID">
-                                            <input type="hidden" name="comment_parent" id="comment_parent" value="0">
-                                        </div>
-                                    </form>
-                                    <div class="clear"></div>
-                                </div>
-                            </div>
-                            <div id="loading-comments"><span></span></div>
-                            <ul class="comment-list">
-                                <li class="comment byuser even thread-even depth-1 comment" id="li-comment-229">
-                                    <div id="comment-229" class="comment_body d-flex flex-fill">
-                                        <div class="profile mr-2 mr-md-3">
-                                            <img alt="超级牛逼" src="https://gravatar.loli.net/avatar/a4e6d5e24d35553fcfe7ede6c5e45d01?s=96&amp;d=retro&amp;r=g" srcset="https://gravatar.loli.net/avatar/a4e6d5e24d35553fcfe7ede6c5e45d01?s=192&amp;d=retro&amp;r=g 2x" class="avatar avatar-96 photo" height="96" width="96" loading="lazy" decoding="async">                </div>
-                                        <section class="comment-text d-flex flex-fill flex-column">
-                                            <div class="comment-info d-flex align-items-center mb-1">
-                                                <div class="comment-author text-sm w-100">超级牛逼                        <span class="rank" title="头衔：读者">读者</span>                        </div>
-                                            </div>
-                                            <div class="comment-content d-inline-block text-sm">
-                                                <p>能和笔点导航一样 就能大卖了</p>
-
-                                            </div>
-                                            <div class="d-flex flex-fill text-xs text-muted pt-2">
-                                                <div class="comment-meta">
-                                                    <span class="info mr-2"><i class="iconfont icon-time mr-1"></i><time itemprop="datePublished" datetime="2022-05-09T20:41:36+08:00">12个月前</time></span>
-                                                    <span class="info-location"><i class="iconfont icon-location mr-1"></i>安徽阜阳市</span>
-                                                </div>
-                                                <div class="flex-fill"></div>
-                                                <a rel="nofollow" class="comment-reply-link" href="https://nav.iowen.cn/sample-page?replytocom=229#respond" data-commentid="229" data-postid="2" data-belowelement="comment-229" data-respondelement="respond" data-replyto="回复给超级牛逼" aria-label="回复给超级牛逼">回复</a>                    </div>
-                                        </section>
-                                    </div>
-                                </li><!-- #comment-## -->
-                                <li class="comment odd alt thread-odd thread-alt depth-1 comment" id="li-comment-119">
-                                    <div id="comment-119" class="comment_body d-flex flex-fill">
-                                        <div class="profile mr-2 mr-md-3">
-                                            <img alt="sorrymybaby" src="https://gravatar.loli.net/avatar/c95ba19158657e21344760f92168af6e?s=96&amp;d=retro&amp;r=g" srcset="https://gravatar.loli.net/avatar/c95ba19158657e21344760f92168af6e?s=192&amp;d=retro&amp;r=g 2x" class="avatar avatar-96 photo" height="96" width="96" loading="lazy" decoding="async">                </div>
-                                        <section class="comment-text d-flex flex-fill flex-column">
-                                            <div class="comment-info d-flex align-items-center mb-1">
-                                                <div class="comment-author text-sm w-100"><a href="https://nav.iowen.cn/go/?url=aHR0cDovL3d3dy5ra29jLmNu" target="_blank" rel="nofollow noopener noreferrer" class="url">sorrymybaby</a>                        <span class="rank" title="头衔：游客">游客</span>                        </div>
-                                            </div>
-                                            <div class="comment-content d-inline-block text-sm">
-                                                <p>特别好的主题，谢谢</p>
-
-                                            </div>
-                                            <div class="d-flex flex-fill text-xs text-muted pt-2">
-                                                <div class="comment-meta">
-                                                    <span class="info mr-2"><i class="iconfont icon-time mr-1"></i><time itemprop="datePublished" datetime="2020-06-08T16:09:58+08:00">3年前 (2020)</time></span>
-                                                    <span class="info-location"><i class="iconfont icon-location mr-1"></i>山东滨州市</span>
-                                                </div>
-                                                <div class="flex-fill"></div>
-                                                <a rel="nofollow" class="comment-reply-link" href="https://nav.iowen.cn/sample-page?replytocom=119#respond" data-commentid="119" data-postid="2" data-belowelement="comment-119" data-respondelement="respond" data-replyto="回复给sorrymybaby" aria-label="回复给sorrymybaby">回复</a>                    </div>
-                                        </section>
-                                    </div>
-                                </li><!-- #comment-## -->
-                                <li class="comment even thread-even depth-1 comment" id="li-comment-116">
-                                    <div id="comment-116" class="comment_body d-flex flex-fill">
-                                        <div class="profile mr-2 mr-md-3">
-                                            <img alt="好久不见" src="https://gravatar.loli.net/avatar/923560161a965981702c4b65cce753ca?s=96&amp;d=retro&amp;r=g" srcset="https://gravatar.loli.net/avatar/923560161a965981702c4b65cce753ca?s=192&amp;d=retro&amp;r=g 2x" class="avatar avatar-96 photo" height="96" width="96" loading="lazy" decoding="async">                </div>
-                                        <section class="comment-text d-flex flex-fill flex-column">
-                                            <div class="comment-info d-flex align-items-center mb-1">
-                                                <div class="comment-author text-sm w-100"><a href="https://nav.iowen.cn/" target="_blank" rel="nofollow noopener noreferrer" class="url">好久不见</a>                        <span class="rank" title="头衔：游客">游客</span>                        </div>
-                                            </div>
-                                            <div class="comment-content d-inline-block text-sm">
-                                                <p>谢谢</p>
-
-                                            </div>
-                                            <div class="d-flex flex-fill text-xs text-muted pt-2">
-                                                <div class="comment-meta">
-                                                    <span class="info mr-2"><i class="iconfont icon-time mr-1"></i><time itemprop="datePublished" datetime="2020-05-25T23:45:55+08:00">3年前 (2020)</time></span>
-                                                    <span class="info-location"><i class="iconfont icon-location mr-1"></i>湖北武汉市</span>
-                                                </div>
-                                                <div class="flex-fill"></div>
-                                                <a rel="nofollow" class="comment-reply-link" href="https://nav.iowen.cn/sample-page?replytocom=116#respond" data-commentid="116" data-postid="2" data-belowelement="comment-116" data-respondelement="respond" data-replyto="回复给好久不见" aria-label="回复给好久不见">回复</a>                    </div>
-                                        </section>
-                                    </div>
-                                </li><!-- #comment-## -->
-                                <li class="comment odd alt thread-odd thread-alt depth-1 comment" id="li-comment-105">
-                                    <div id="comment-105" class="comment_body d-flex flex-fill">
-                                        <div class="profile mr-2 mr-md-3">
-                                            <img alt="inafo" src="https://gravatar.loli.net/avatar/612c972654e9f017ec69d3a78b0bebc0?s=96&amp;d=retro&amp;r=g" srcset="https://gravatar.loli.net/avatar/612c972654e9f017ec69d3a78b0bebc0?s=192&amp;d=retro&amp;r=g 2x" class="avatar avatar-96 photo" height="96" width="96" loading="lazy" decoding="async">                </div>
-                                        <section class="comment-text d-flex flex-fill flex-column">
-                                            <div class="comment-info d-flex align-items-center mb-1">
-                                                <div class="comment-author text-sm w-100">inafo                        <span class="rank" title="头衔：游客">游客</span>                        </div>
-                                            </div>
-                                            <div class="comment-content d-inline-block text-sm">
-                                                <p>我试试</p>
-
-                                            </div>
-                                            <div class="d-flex flex-fill text-xs text-muted pt-2">
-                                                <div class="comment-meta">
-                                                    <span class="info mr-2"><i class="iconfont icon-time mr-1"></i><time itemprop="datePublished" datetime="2020-04-02T21:30:25+08:00">3年前 (2020)</time></span>
-                                                    <span class="info-location"><i class="iconfont icon-location mr-1"></i>天津</span>
-                                                </div>
-                                                <div class="flex-fill"></div>
-                                                <a rel="nofollow" class="comment-reply-link" href="https://nav.iowen.cn/sample-page?replytocom=105#respond" data-commentid="105" data-postid="2" data-belowelement="comment-105" data-respondelement="respond" data-replyto="回复给inafo" aria-label="回复给inafo">回复</a>                    </div>
-                                        </section>
-                                    </div>
-                                </li><!-- #comment-## -->
-                                <li class="comment even thread-even depth-1 comment" id="li-comment-2">
-                                    <div id="comment-2" class="comment_body d-flex flex-fill">
-                                        <div class="profile mr-2 mr-md-3">
-                                            <img alt="设施" src="https://gravatar.loli.net/avatar/8105e55bdd28cec2d2b374ec147a00b6?s=96&amp;d=retro&amp;r=g" srcset="https://gravatar.loli.net/avatar/8105e55bdd28cec2d2b374ec147a00b6?s=192&amp;d=retro&amp;r=g 2x" class="avatar avatar-96 photo" height="96" width="96" loading="lazy" decoding="async">                </div>
-                                        <section class="comment-text d-flex flex-fill flex-column">
-                                            <div class="comment-info d-flex align-items-center mb-1">
-                                                <div class="comment-author text-sm w-100">设施                        <span class="rank" title="头衔：游客">游客</span>                        </div>
-                                            </div>
-                                            <div class="comment-content d-inline-block text-sm">
-                                                <p>少时诵诗书</p>
-
-                                            </div>
-                                            <div class="d-flex flex-fill text-xs text-muted pt-2">
-                                                <div class="comment-meta">
-                                                    <span class="info mr-2"><i class="iconfont icon-time mr-1"></i><time itemprop="datePublished" datetime="2019-10-18T12:58:32+08:00">4年前 (2019)</time></span>
-                                                    <span class="info-location"><i class="iconfont icon-location mr-1"></i>山东临沂市</span>
-                                                </div>
-                                                <div class="flex-fill"></div>
-                                                <a rel="nofollow" class="comment-reply-link" href="https://nav.iowen.cn/sample-page?replytocom=2#respond" data-commentid="2" data-postid="2" data-belowelement="comment-2" data-respondelement="respond" data-replyto="回复给设施" aria-label="回复给设施">回复</a>                    </div>
-                                        </section>
-                                    </div>
-                                    <ul class="children">
-                                        <li class="comment odd alt depth-2 comment" id="li-comment-89">
-                                            <div id="comment-89" class="comment_body d-flex flex-fill">
-                                                <div class="profile mr-2 mr-md-3">
-                                                    <img alt="红烧肉" src="https://gravatar.loli.net/avatar/7272a69afb192d1b0b37d7c217a97be2?s=96&amp;d=retro&amp;r=g" srcset="https://gravatar.loli.net/avatar/7272a69afb192d1b0b37d7c217a97be2?s=192&amp;d=retro&amp;r=g 2x" class="avatar avatar-96 photo" height="96" width="96" loading="lazy" decoding="async">                </div>
-                                                <section class="comment-text d-flex flex-fill flex-column">
-                                                    <div class="comment-info d-flex align-items-center mb-1">
-                                                        <div class="comment-author text-sm w-100"><a href="https://nav.iowen.cn/228.html" target="_blank" rel="nofollow noopener noreferrer" class="url">红烧肉</a>                        <span class="rank" title="头衔：游客">游客</span>                        </div>
-                                                    </div>
-                                                    <div class="comment-content d-inline-block text-sm">
-                                                        <p>多读书多看报，少吃零食多睡觉</p>
-
-                                                    </div>
-                                                    <div class="d-flex flex-fill text-xs text-muted pt-2">
-                                                        <div class="comment-meta">
-                                                            <span class="info mr-2"><i class="iconfont icon-time mr-1"></i><time itemprop="datePublished" datetime="2020-02-17T23:28:39+08:00">3年前 (2020)</time></span>
-                                                            <span class="info-location"><i class="iconfont icon-location mr-1"></i>河南开封市</span>
-                                                        </div>
-                                                        <div class="flex-fill"></div>
-                                                        <a rel="nofollow" class="comment-reply-link" href="https://nav.iowen.cn/sample-page?replytocom=89#respond" data-commentid="89" data-postid="2" data-belowelement="comment-89" data-respondelement="respond" data-replyto="回复给红烧肉" aria-label="回复给红烧肉">回复</a>                    </div>
-                                                </section>
-                                            </div>
-                                            <ul class="children">
-                                                <li class="comment even depth-3 comment" id="li-comment-93">
-                                                    <div id="comment-93" class="comment_body d-flex flex-fill">
-                                                        <div class="profile mr-2 mr-md-3">
-                                                            <img alt="马腾" src="https://gravatar.loli.net/avatar/2ff15aa7c32dd618090b2ac78e0bb0e5?s=96&amp;d=retro&amp;r=g" srcset="https://gravatar.loli.net/avatar/2ff15aa7c32dd618090b2ac78e0bb0e5?s=192&amp;d=retro&amp;r=g 2x" class="avatar avatar-96 photo" height="96" width="96" loading="lazy" decoding="async">                </div>
-                                                        <section class="comment-text d-flex flex-fill flex-column">
-                                                            <div class="comment-info d-flex align-items-center mb-1">
-                                                                <div class="comment-author text-sm w-100"><a href="https://nav.iowen.cn/sample-page" target="_blank" rel="nofollow noopener noreferrer" class="url">马腾</a>                        <span class="rank" title="头衔：游客">游客</span>                        </div>
-                                                            </div>
-                                                            <div class="comment-content d-inline-block text-sm">
-                                                                <p>做的挺不错哦</p>
-
-                                                            </div>
-                                                            <div class="d-flex flex-fill text-xs text-muted pt-2">
-                                                                <div class="comment-meta">
-                                                                    <span class="info mr-2"><i class="iconfont icon-time mr-1"></i><time itemprop="datePublished" datetime="2020-02-26T00:08:59+08:00">3年前 (2020)</time></span>
-                                                                    <span class="info-location"><i class="iconfont icon-location mr-1"></i>河南开封市</span>
-                                                                </div>
-                                                                <div class="flex-fill"></div>
-                                                                <a rel="nofollow" class="comment-reply-link" href="https://nav.iowen.cn/sample-page?replytocom=93#respond" data-commentid="93" data-postid="2" data-belowelement="comment-93" data-respondelement="respond" data-replyto="回复给马腾" aria-label="回复给马腾">回复</a>                    </div>
-                                                        </section>
-                                                    </div>
-                                                    <ul class="children">
-                                                        <li class="comment byuser bypostauthor odd alt depth-4 comment" id="li-comment-94">
-                                                            <div id="comment-94" class="comment_body d-flex flex-fill">
-                                                                <div class="profile mr-2 mr-md-3">
-                                                                    <img alt="一为" src="//thirdqq.qlogo.cn/g?b=oidb&amp;k=T5Vh5MbZrSJFouKawQ4glA&amp;s=100&amp;t=1567732622" class=" avatar avatar-96 photo" height="96" width="96">                </div>
-                                                                <section class="comment-text d-flex flex-fill flex-column">
-                                                                    <div class="comment-info d-flex align-items-center mb-1">
-                                                                        <div class="comment-author text-sm w-100">一为                        <span class="rank" title="头衔：管理员">管理员</span>                        </div>
-                                                                    </div>
-                                                                    <div class="comment-content d-inline-block text-sm">
-                                                                        <p>谢谢</p>
-
-                                                                    </div>
-                                                                    <div class="d-flex flex-fill text-xs text-muted pt-2">
-                                                                        <div class="comment-meta">
-                                                                            <span class="info mr-2"><i class="iconfont icon-time mr-1"></i><time itemprop="datePublished" datetime="2020-02-26T17:23:15+08:00">3年前 (2020)</time></span>
-                                                                            <span class="info-location"><i class="iconfont icon-location mr-1"></i>湖南长沙市</span>
-                                                                        </div>
-                                                                        <div class="flex-fill"></div>
-                                                                        <a rel="nofollow" class="comment-reply-link" href="https://nav.iowen.cn/sample-page?replytocom=94#respond" data-commentid="94" data-postid="2" data-belowelement="comment-94" data-respondelement="respond" data-replyto="回复给一为" aria-label="回复给一为">回复</a>                    </div>
-                                                                </section>
-                                                            </div>
-                                                        </li><!-- #comment-## -->
-                                                        <li class="comment even depth-4 comment" id="li-comment-233">
-                                                            <div id="comment-233" class="comment_body d-flex flex-fill">
-                                                                <div class="profile mr-2 mr-md-3">
-                                                                    <img alt="LetMeFly" src="https://gravatar.loli.net/avatar/00c54567d131c35f7284c5ece71e32d4?s=96&amp;d=retro&amp;r=g" srcset="https://gravatar.loli.net/avatar/00c54567d131c35f7284c5ece71e32d4?s=192&amp;d=retro&amp;r=g 2x" class="avatar avatar-96 photo" height="96" width="96" loading="lazy" decoding="async">                </div>
-                                                                <section class="comment-text d-flex flex-fill flex-column">
-                                                                    <div class="comment-info d-flex align-items-center mb-1">
-                                                                        <div class="comment-author text-sm w-100">LetMeFly                        <span class="rank" title="头衔：游客">游客</span>                        </div>
-                                                                    </div>
-                                                                    <div class="comment-content d-inline-block text-sm">
-                                                                        <p>确实</p>
-
-                                                                    </div>
-                                                                    <div class="d-flex flex-fill text-xs text-muted pt-2">
-                                                                        <div class="comment-meta">
-                                                                            <span class="info mr-2"><i class="iconfont icon-time mr-1"></i><time itemprop="datePublished" datetime="2022-05-27T21:56:14+08:00">11个月前</time></span>
-                                                                            <span class="info-location"><i class="iconfont icon-location mr-1"></i>北京</span>
-                                                                        </div>
-                                                                        <div class="flex-fill"></div>
-                                                                        <a rel="nofollow" class="comment-reply-link" href="https://nav.iowen.cn/sample-page?replytocom=233#respond" data-commentid="233" data-postid="2" data-belowelement="comment-233" data-respondelement="respond" data-replyto="回复给LetMeFly" aria-label="回复给LetMeFly">回复</a>                    </div>
-                                                                </section>
-                                                            </div>
-                                                        </li><!-- #comment-## -->
-                                                    </ul><!-- .children -->
-                                                </li><!-- #comment-## -->
-                                            </ul><!-- .children -->
-                                        </li><!-- #comment-## -->
-                                    </ul><!-- .children -->
-                                </li><!-- #comment-## -->
-                            </ul>
-                        </div>
-                    </div>
-                </div><!-- comments end -->
             </div>
-        </div>
+            <div class="sidebar show-sidebar">
+                <div class="card rounded-lg relative">
+                    <div class="card-body">
+                        <button type="button" id="addBtn" class="btn btn-danger custom_btn-d text-sm col-12 custom-submit"><i class="iconfont icon-upload-wd mr-2"></i>提交审核</button>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
+    <div th:replace="web/module/siteinfo"></div>
+ </div>
+<footer th:replace="web/module/footer"></footer>
+<script type='text/javascript' id='rocket-browser-checker-js-after'>
+    "use strict";var _createClass=function(){function defineProperties(target,props){for(var i=0;i<props.length;i++){var descriptor=props[i];descriptor.enumerable=descriptor.enumerable||!1,descriptor.configurable=!0,"value"in descriptor&&(descriptor.writable=!0),Object.defineProperty(target,descriptor.key,descriptor)}}return function(Constructor,protoProps,staticProps){return protoProps&&defineProperties(Constructor.prototype,protoProps),staticProps&&defineProperties(Constructor,staticProps),Constructor}}();function _classCallCheck(instance,Constructor){if(!(instance instanceof Constructor))throw new TypeError("Cannot call a class as a function")}var RocketBrowserCompatibilityChecker=function(){function RocketBrowserCompatibilityChecker(options){_classCallCheck(this,RocketBrowserCompatibilityChecker),this.passiveSupported=!1,this._checkPassiveOption(this),this.options=!!this.passiveSupported&&options}return _createClass(RocketBrowserCompatibilityChecker,[{key:"_checkPassiveOption",value:function(self){try{var options={get passive(){return!(self.passiveSupported=!0)}};window.addEventListener("test",null,options),window.removeEventListener("test",null,options)}catch(err){self.passiveSupported=!1}}},{key:"initRequestIdleCallback",value:function(){!1 in window&&(window.requestIdleCallback=function(cb){var start=Date.now();return setTimeout(function(){cb({didTimeout:!1,timeRemaining:function(){return Math.max(0,50-(Date.now()-start))}})},1)}),!1 in window&&(window.cancelIdleCallback=function(id){return clearTimeout(id)})}},{key:"isDataSaverModeOn",value:function(){return"connection"in navigator&&!0===navigator.connection.saveData}},{key:"supportsLinkPrefetch",value:function(){var elem=document.createElement("link");return elem.relList&&elem.relList.supports&&elem.relList.supports("prefetch")&&window.IntersectionObserver&&"isIntersecting"in IntersectionObserverEntry.prototype}},{key:"isSlowConnection",value:function(){return"connection"in navigator&&"effectiveType"in navigator.connection&&("2g"===navigator.connection.effectiveType||"slow-2g"===navigator.connection.effectiveType)}}]),RocketBrowserCompatibilityChecker}();
+</script>
+<script type='text/javascript' id='rocket-preload-links-js-extra'>
+    /* <![CDATA[ */
+    var RocketPreloadLinksConfig = {"excludeUris":"\/rankings|\/rankings\/|\/(.+\/)?feed\/?.+\/?|\/(?:.+\/)?embed\/|\/(index\\.php\/)?wp\\-json(\/.*|$)|\/wp-admin|\/logout|\/login\/","usesTrailingSlash":"","imageExt":"jpg|jpeg|gif|png|tiff|bmp|webp|avif","fileExt":"jpg|jpeg|gif|png|tiff|bmp|webp|avif|php|pdf|html|htm","siteUrl":"https:\/\/nav.iowen.cn","onHoverDelay":"100","rateThrottle":"3"};
+    /* ]]> */
+</script>
+<script type='text/javascript' id='rocket-preload-links-js-after'>
+    (function() {
+        "use strict";var r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},e=function(){function i(e,t){for(var n=0;n<t.length;n++){var i=t[n];i.enumerable=i.enumerable||!1,i.configurable=!0,"value"in i&&(i.writable=!0),Object.defineProperty(e,i.key,i)}}return function(e,t,n){return t&&i(e.prototype,t),n&&i(e,n),e}}();function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}var t=function(){function n(e,t){i(this,n),this.browser=e,this.config=t,this.options=this.browser.options,this.prefetched=new Set,this.eventTime=null,this.threshold=1111,this.numOnHover=0}return e(n,[{key:"init",value:function(){!this.browser.supportsLinkPrefetch()||this.browser.isDataSaverModeOn()||this.browser.isSlowConnection()||(this.regex={excludeUris:RegExp(this.config.excludeUris,"i"),images:RegExp(".("+this.config.imageExt+")$","i"),fileExt:RegExp(".("+this.config.fileExt+")$","i")},this._initListeners(this))}},{key:"_initListeners",value:function(e){-1<this.config.onHoverDelay&&document.addEventListener("mouseover",e.listener.bind(e),e.listenerOptions),document.addEventListener("mousedown",e.listener.bind(e),e.listenerOptions),document.addEventListener("touchstart",e.listener.bind(e),e.listenerOptions)}},{key:"listener",value:function(e){var t=e.target.closest("a"),n=this._prepareUrl(t);if(null!==n)switch(e.type){case"mousedown":case"touchstart":this._addPrefetchLink(n);break;case"mouseover":this._earlyPrefetch(t,n,"mouseout")}}},{key:"_earlyPrefetch",value:function(t,e,n){var i=this,r=setTimeout(function(){if(r=null,0===i.numOnHover)setTimeout(function(){return i.numOnHover=0},1e3);else if(i.numOnHover>i.config.rateThrottle)return;i.numOnHover++,i._addPrefetchLink(e)},this.config.onHoverDelay);t.addEventListener(n,function e(){t.removeEventListener(n,e,{passive:!0}),null!==r&&(clearTimeout(r),r=null)},{passive:!0})}},{key:"_addPrefetchLink",value:function(i){return this.prefetched.add(i.href),new Promise(function(e,t){var n=document.createElement("link");n.rel="prefetch",n.href=i.href,n.onload=e,n.onerror=t,document.head.appendChild(n)}).catch(function(){})}},{key:"_prepareUrl",value:function(e){if(null===e||"object"!==(void 0===e?"undefined":r(e))||!1 in e||-1===["http:","https:"].indexOf(e.protocol))return null;var t=e.href.substring(0,this.config.siteUrl.length),n=this._getPathname(e.href,t),i={original:e.href,protocol:e.protocol,origin:t,pathname:n,href:t+n};return this._isLinkOk(i)?i:null}},{key:"_getPathname",value:function(e,t){var n=t?e.substring(this.config.siteUrl.length):e;return n.startsWith("/")||(n="/"+n),this._shouldAddTrailingSlash(n)?n+"/":n}},{key:"_shouldAddTrailingSlash",value:function(e){return this.config.usesTrailingSlash&&!e.endsWith("/")&&!this.regex.fileExt.test(e)}},{key:"_isLinkOk",value:function(e){return null!==e&&"object"===(void 0===e?"undefined":r(e))&&(!this.prefetched.has(e.href)&&e.origin===this.config.siteUrl&&-1===e.href.indexOf("?")&&-1===e.href.indexOf("#")&&!this.regex.excludeUris.test(e.href)&&!this.regex.images.test(e.href))}}],[{key:"run",value:function(){"undefined"!=typeof RocketPreloadLinksConfig&&new n(new RocketBrowserCompatibilityChecker({capture:!0,passive:!0}),RocketPreloadLinksConfig).init()}}]),n}();t.run();
+    }());
+</script>
+<script type='text/javascript' src='/web/js/popper.min.js?ver=4.0423' id='popper-js'></script>
+<script type='text/javascript' src='/web/js/bootstrap.min.js?ver=4.0423' id='bootstrap-js'></script>
+<script type='text/javascript' src='/web/js/theia-sticky-sidebar.js?ver=4.0423' id='sidebar-js'></script>
+<script type='text/javascript' src='/web/js/lazyload.min.js?ver=4.0423' id='lazyload-js'></script>
+<script type='text/javascript' id='appjs-js-extra'>
+    /* <![CDATA[ */
+    var theme = {"ajaxurl":"https:\/\/nav.iowen.cn\/wp-admin\/admin-ajax.php","uri":"https:\/\/nav.iowen.cn\/wp-content\/themes\/onenav","loginurl":"https:\/\/nav.iowen.cn\/login\/?redirect_to=https:\/\/nav.iowen.cn\/contribute","sitesName":"\u4e00\u4e3a\u5bfc\u822a","addico":"https:\/\/nav.iowen.cn\/wp-content\/themes\/onenav\/images\/add.png","order":"desc","formpostion":"top","defaultclass":"io-grey-mode","isCustomize":"1","icourl":"https:\/\/api.iowen.cn\/favicon\/","icopng":".png","urlformat":"1","customizemax":"10","newWindow":"0","lazyload":"1","minNav":"0","loading":"0","hotWords":"baidu","classColumns":" col-2a col-sm-2a col-md-2a col-lg-3a col-xl-5a col-xxl-6a ","apikey":"TWpBeU1USTJNemd4TWpZM0d6RS9oZUROYVlYVm5hMmxVY0ZaNGRHWXpURlZQYWpGQ2JuRnRlVzVvYVRCYQ==","isHome":"","version":"4.0423"};
+    var localize = {"liked":"\u60a8\u5df2\u7ecf\u8d5e\u8fc7\u4e86!","like":"\u8c22\u8c22\u70b9\u8d5e!","networkerror":"\u7f51\u7edc\u9519\u8bef --.","selectCategory":"\u4e3a\u4ec0\u4e48\u4e0d\u9009\u5206\u7c7b\u3002","addSuccess":"\u6dfb\u52a0\u6210\u529f\u3002","timeout":"\u8bbf\u95ee\u8d85\u65f6\uff0c\u8bf7\u518d\u8bd5\u8bd5\uff0c\u6216\u8005\u624b\u52a8\u586b\u5199\u3002","lightMode":"\u65e5\u95f4\u6a21\u5f0f","nightMode":"\u591c\u95f4\u6a21\u5f0f","editBtn":"\u7f16\u8f91","okBtn":"\u786e\u5b9a","urlExist":"\u8be5\u7f51\u5740\u5df2\u7ecf\u5b58\u5728\u4e86 --.","cancelBtn":"\u53d6\u6d88","successAlert":"\u6210\u529f","infoAlert":"\u4fe1\u606f","warningAlert":"\u8b66\u544a","errorAlert":"\u9519\u8bef","extractionCode":"\u7f51\u76d8\u63d0\u53d6\u7801\u5df2\u590d\u5236\uff0c\u70b9\u201c\u786e\u5b9a\u201d\u8fdb\u5165\u4e0b\u8f7d\u9875\u9762\u3002","wait":"\u8bf7\u7a0d\u5019","loading":"\u6b63\u5728\u5904\u7406\u8bf7\u7a0d\u540e...","userAgreement":"\u8bf7\u5148\u9605\u8bfb\u5e76\u540c\u610f\u7528\u6237\u534f\u8bae","reSend":"\u79d2\u540e\u91cd\u65b0\u53d1\u9001","weChatPay":"\u5fae\u4fe1\u652f\u4ed8","alipay":"\u652f\u4ed8\u5b9d","scanQRPay":"\u8bf7\u626b\u7801\u652f\u4ed8","payGoto":"\u652f\u4ed8\u6210\u529f\uff0c\u9875\u9762\u8df3\u8f6c\u4e2d"};
+    /* ]]> */
+</script>
+<script type='text/javascript' src='/web/js/app.js?ver=4.0423' id='appjs-js'></script>
+<script type='text/javascript' id='appjs-js-after'>
+    $(document).ready(function(){if($("#search-text")[0]){$("#search-text").focus();}});
+</script>
+<!--<script type='text/javascript' src='https://nav.iowen.cn/wp-content/themes/onenav/inc/postviews/postviews-cache.js?ver=6.2' id='wp-postviews-cache-js'></script>-->
 </body>
+<script>
+    (function() {
+        theme.isHome="1";
+    }());
+    $('#get_info').click(function () {
+        const url=$("#url").val();
+        console.log(url);
+        $.ajax({
+            type:"get",	//提交方式
+            url:'/website/getInfo',
+            data: "url="+url,
+            dataType: "json",   	//返回数据的格式
+            success:function (res) {
+                if(res.status===200){
+                  $("#web_name").val(res.data.name);
+                  $("#web_desc").val(res.data.description);
+                  $("#imageId").val(res.data.imageId);
+                }
+            },
+        });
+    });
+    $('#addBtn').click(function () {
+        const $f = $('#applyForm');
+        const obj = {}; //声明一个对象
+        const fields = $f.serializeArray();
+        $.each(fields, function(index, field) {
+            obj[field.name] = field.value; //通过变量，将属性值，属性一起放到对象中
+        })
+    $.ajax({
+        type:"POST",	//提交方式
+        url:'/apply/submit',
+        contentType: 'application/json',
+        data: JSON.stringify(obj),//将对象转为json字符串
+        dataType: "json",   	//返回数据的格式
+        success:function (data) {
+            if(data.status===200){
+                errorAlert(data.msg);
+            }else {
+                successAlert(data.msg);
+            }
+        },
+    });
+});
+</script>
 </html>

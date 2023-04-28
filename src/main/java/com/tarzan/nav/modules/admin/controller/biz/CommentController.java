@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -38,7 +38,7 @@ public class CommentController {
 
     @PostMapping("/delete")
     public ResponseVo delete(Integer id) {
-       return deleteBatch(Arrays.asList(id));
+       return deleteBatch(Collections.singletonList(id));
     }
 
     @PostMapping("/batch/delete")

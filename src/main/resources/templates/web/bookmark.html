@@ -54,13 +54,13 @@
 <section class="quick-sites position-relative">
     <div class="container text-center px-5">
         <div class="row">
-        <a class="sites-btn col-3 col-md-2 text-center mb-4" target="_blank" href="https://nav.iowen.cn/sites/294.html" title="webstack 导航主题开源版" rel=" noopener">
+        <a th:each="website:${websites}" class="sites-btn col-3 col-md-2 text-center mb-4" target="_blank" th:href="${website?.url}" th:title="${website?.name}" rel=" noopener">
     <div class="d-flex mb-2">
         <div class="sites-icon mx-auto ub-blur-bg">
-            <img class="lazy" src="https://nav.iowen.cn/wp-content/themes/onenav/images/favicon.png" data-src="https://nav.iowen.cn/wp-content/uploads/2020/01/20200115161627_a8298e49.png" alt="webstack 导航主题开源版">
+            <img class="lazy" th:src="${website?.img?.base64}" th:data-src="${website?.img?.base64}" th:alt="${website?.name}">
         </div>
     </div>
-    <div class="sites-title ub-blur-bg px-2 text-xs overflowClip_1"><span>webstack 导航主题开源版</span></div>
+    <div class="sites-title ub-blur-bg px-2 text-xs overflowClip_1"><span>[[${website?.name}]]</span></div>
 </a>
        </div>
     </div>

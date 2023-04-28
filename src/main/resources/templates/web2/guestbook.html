@@ -348,32 +348,6 @@
                 });
                 return false;
             });
-            function showAlert(data) {
-                var alert,ico;
-                switch(data.status) {
-                    case 1:
-                        alert='success';
-                        ico='fa-check-circle';
-                        break;
-                    case 2:
-                        alert='info';
-                        ico='fa-comment';
-                        break;
-                    case 3:
-                        alert='warning';
-                        ico='fa-exclamation-circle';
-                        break;
-                    case 4:
-                        alert='danger';
-                        ico='fa-meh-o';
-                        break;
-                    default:
-                }
-                var msg = data.msg;
-                $html = $('<div class="alert-body" style="display:none;"><div class="alert alert-'+alert+'"><i class="fa '+ico+' fa-2x" style="vertical-align: middle;margin-right: 10px"></i><span style="vertical-align: middle">'+msg+'</span></div></div>');
-                $('#alert_placeholder').append( $html );//prepend
-                $html.show(100).delay(3000).hide(200, function(){ $(this).remove() });
-            }
         </script>
         <footer th:replace="web/module/footer :: footer(${SITE_CONFIG})"></footer>
     </div>

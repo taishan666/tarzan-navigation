@@ -44,7 +44,7 @@
         <div class="border-top py-2 border-color">
             <div class="flex-bottom">
                 <ul>
-                    <li id="menu-item-237" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-237 sidebar-item"><a href="https://nav.iowen.cn/contribute">
+                    <li id="menu-item-237" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-237 sidebar-item"><a href="/apply">
                         <i class="io io-tijiao icon-fw icon-lg"></i><span>网站提交</span></a>
                     </li>
                 </ul>
@@ -74,19 +74,19 @@
                 <div class="sidebar-menu-inner">
                     <ul>
                         <li class="sidebar-item" th:each="category : ${categories}">
-                            <a th:if="${#lists.isEmpty(category.children)}" th:href="${'#term-'+category.id}"  class="smooth">
+                            <a th:if="${#lists.isEmpty(category.children)}" th:href="${'/#term-'+category.id}">
                                 <i th:class="${category?.icon}+' icon-fw icon-lg'"></i>
                                 <span>[[${category.name}]]</span>
                             </a>
                             <th:block th:unless="${#lists.isEmpty(category.children)}">
-                                <a  th:href="${'#term-'+category.id}" class="smooth" th:data-change="${'#term-'+category.id}">
+                                <a  th:href="${'#term-'+category.id}"  th:data-change="${'/#term-'+category.id}">
                                     <i class="io io-zixun icon-fw icon-lg"></i>
                                     <span>[[${category.name}]]</span>
                                 </a>
                                 <i class="iconfont icon-arrow-r-m sidebar-more text-sm"></i>
                                 <ul>
                                     <li th:each="cate:${category.children}">
-                                        <a th:href="${'#term-'+category.id+'-'+cate?.id}" class="smooth"><span>[[${cate.name}]]</span></a>
+                                        <a th:href="${'/#term-'+category.id+'-'+cate?.id}"><span>[[${cate.name}]]</span></a>
                                     </li>
                                 </ul>
                             </th:block>
@@ -99,10 +99,14 @@
             <div class="flex-bottom">
                 <ul>
                     <li id="menu-item-apply" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-apply sidebar-item">
-                        <a href="https://nav.iowen.cn/contribute"><i class="io io-tijiao icon-fw icon-lg"></i><span>网站提交</span></a>
+                        <a href="/apply"><i class="io io-tijiao icon-fw icon-lg"></i><span>网站提交</span></a>
                     </li>
                 </ul>
             </div>
         </div>
     </div>
 </div>
+<script type='text/javascript' id='appjs-js-extra'>
+    var theme ={"defaultclass":"io-grey-mode","minNav":"0","isCustomize":"1","isHome":"1"}
+    var localize ={"lightMode":"\u65e5\u95f4\u6a21\u5f0f","nightMode":"\u591c\u95f4\u6a21\u5f0f"}
+</script>

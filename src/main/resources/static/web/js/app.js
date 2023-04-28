@@ -1802,12 +1802,17 @@ function isPC() {
     return flag;
 }
 function chack_name(str){
-    //var pattern = RegExp(/[( )(\ )(\~)(\!)(\@)(\#)(\$)(\%)(\^)(\&)(\*)(\()(\))(\-)(\_)(\+)(\=)(\[)(\])(\{)(\})(\|)(\\)(\;)(\:)(\')(\")(\,)(\.)(\/)(\<)(\>)(\»)(\«)(\“)(\”)(\?)(\)]+/);
-    var pattern = RegExp(/[( )(\ )(\~)(\!)(\@)(\#)(\$)(\%)(\^)(\*)(\()(\))(\+)(\=)(\[)(\])(\{)(\})(\\)(\;)(\:)(\')(\")(\,)(\.)(\/)(\<)(\>)(\»)(\«)(\“)(\”)(\?)(\)]+/);
+    var pattern = RegExp(/[( )(\ )(\~)(\!)(\@)(\#)(\$)(\%)(\^)(\*)(\()(\))(\+)(\=)(\[)(\])(\{)(\})(\\)(\;)(\:)(\')(\")(\,)(\.)(\/)(\<)(\>)(\»)(\«)(\“)(\”)(\?)(\)]+/);
     if (pattern.test(str)){
         return true;
     }
     return false;
+}
+function errorAlert(msg) {
+    showAlert(JSON.parse('{"status":4,"msg":"'+msg+'"}'))
+}
+function successAlert(msg) {
+    showAlert(JSON.parse('{"status":2,"msg":"'+msg+'"}'))
 }
 function showAlert(data) {
     var alert,ico;

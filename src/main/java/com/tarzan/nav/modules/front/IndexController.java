@@ -6,14 +6,18 @@ import com.tarzan.nav.modules.admin.service.biz.CategoryService;
 import com.tarzan.nav.modules.admin.service.biz.LinkService;
 import com.tarzan.nav.modules.admin.service.biz.NoticeService;
 import com.tarzan.nav.modules.admin.service.biz.WebsiteService;
+import com.tarzan.nav.modules.admin.vo.base.ResponseVo;
 import com.tarzan.nav.modules.network.HotNewsService;
+import com.tarzan.nav.utils.ResultUtil;
+import com.tarzan.nav.utils.StringUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -50,7 +54,7 @@ public class IndexController {
     }
 
 
-    @GetMapping({"/search"})
+    @GetMapping("/search")
     public String search(String q,Model model) {
         model.addAttribute("categories",categoryService.treeList());
         model.addAttribute("search",q);
@@ -59,14 +63,16 @@ public class IndexController {
         return  CoreConst.WEB_PREFIX+"search";
     }
 
-    @GetMapping({"/about"})
+    @GetMapping("/about")
     public String about(Model model) {
         model.addAttribute("categories",categoryService.treeList());
         return  CoreConst.WEB_PREFIX+"about";
     }
 
-    @GetMapping({"/bookmark"})
-    public String guestbook() {
+    @GetMapping("/bookmark")
+    public String guestbook(Model model) {
+        List<Website> websites=websiteService.randomList(12);
+        model.addAttribute("websites",websites);
         return  CoreConst.WEB_PREFIX+"bookmark";
     }
 
@@ -75,6 +81,37 @@ public class IndexController {
         model.addAttribute("categories",categoryService.treeList());
         model.addAttribute("notice",noticeService.getById(noticeId));
         return  CoreConst.WEB_PREFIX+"notice";
+    }
+
+
+    @GetMapping("/apply")
+    public String apply(Model model) {
+        model.addAttribute("categories",categoryService.treeList());
+        return  CoreConst.WEB_PREFIX+"apply";
+    }
+
+    @PostMapping("/apply/submit")
+    @ResponseBody
+    public ResponseVo apply(@Valid @RequestBody Website website) {
+        if(Objects.isNull(website.getName())){
+            return ResultUtil.error("请填写网站名称！");
+        }
+        if(Objects.isNull(website.getCategoryId())){
+            return ResultUtil.error("请选择分类！");
+        }
+        if(StringUtil.isBlank(website.getUrl())){
+            return ResultUtil.error("请填写网址！");
+        }
+        if(StringUtil.isBlank(website.getDescription())){
+            return ResultUtil.error("请填写描述！");
+        }
+        website.setStatus(CoreConst.STATUS_INVALID);
+        boolean flag =websiteService.save(website);
+        if (flag) {
+            return ResultUtil.success("提交申请成功！");
+        } else {
+            return ResultUtil.error("提交申请失败！");
+        }
     }
 
 

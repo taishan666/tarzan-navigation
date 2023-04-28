@@ -1,5 +1,6 @@
 package com.tarzan.nav.modules.admin.service.biz;
 
+import cn.hutool.core.util.RandomUtil;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -61,7 +62,7 @@ public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
 
     @Cacheable(value = "website", key = "'simple'")
     public List<Website> simpleList() {
-        return super.lambdaQuery().select(Website::getId,Website::getUrl).eq(Website::getStatus,CoreConst.STATUS_VALID).list();
+        return super.lambdaQuery().select(Website::getId,Website::getUrl,Website::getCategoryId).eq(Website::getStatus,CoreConst.STATUS_VALID).list();
     }
 
     @Cacheable(value = "website", key = "'all'")
@@ -134,5 +135,27 @@ public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
             return websites.stream().collect(Collectors.groupingBy(Website::getCategoryId));
         }
         return new HashMap<>(0);
+    }
+
+    public List<Website> randomList(int count) {
+        List<Website> websites= super.lambdaQuery().eq(Website::getStatus,CoreConst.STATUS_VALID).list();
+        this.wrapper(websites);
+        return RandomUtil.randomEles(websites,count);
+    }
+
+
+
+    public Website getInfo(String url) {
+        Document doc= JsoupUtil.getDocument(url);
+        String title=JsoupUtil.getTitle(doc);
+        String desc=JsoupUtil.getDescription(doc);
+        String webIcon=JsoupUtil.getWebIcon(doc);
+        BizImage image=imageService.upload(webIcon);
+        Website website=new Website();
+        website.setName(title);
+        website.setUrl(url);
+        website.setDescription(desc);
+        website.setImageId(image.getId());
+        return website;
     }
 }

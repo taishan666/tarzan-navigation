@@ -5,9 +5,12 @@ import com.tarzan.nav.modules.admin.service.biz.WebsiteService;
 import com.tarzan.nav.utils.JsoupUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author tarzan
@@ -27,6 +30,19 @@ public class WebSiteTask {
             if(!JsoupUtil.checkUrl(e.getUrl())){
                 log.info(e.getUrl());
               //  websiteService.updateStatus(e.getId(), CoreConst.STATUS_INVALID);
+            }
+        });
+        log.info("---------------------  over  -----------------------------");
+    }
+
+    @Scheduled(cron = "0/59 * * * * ?")
+    public  void noCategoryCheck() {
+        List<Website> websites=websiteService.simpleList();
+        log.info("---------------------  start  -----------------------------");
+        websites.forEach(e->{
+            if(Objects.isNull(e.getCategoryId())){
+                System.out.println(e.getId());
+                websiteService.deleteBatch(Collections.singletonList(e.getId()));
             }
         });
         log.info("---------------------  over  -----------------------------");
