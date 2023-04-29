@@ -46,7 +46,7 @@
                             <div class="d-flex flex-fill text-xs text-muted pt-2">
                                 <div class="comment-meta">
                                     <span class="info mr-2"><i class="iconfont icon-time mr-1"></i><time itemprop="datePublished" th:datetime="${comment?.createTime}">[[${#dates.format(comment?.createTime,'yyyy-MM-dd HH:mm:ss')}]]</time></span>
-                                    <span class="info-location"><i class="iconfont icon-location mr-1"></i>安徽阜阳市</span>
+                                    <span class="info-location"><i class="iconfont icon-location mr-1"></i>[[${comment?.remark}]]</span>
                                 </div>
                                 <div class="flex-fill"></div>
                                 <a rel="nofollow" class="comment-reply-link" href="https://nav.iowen.cn/sample-page?replytocom=229#respond" data-commentid="229" data-postid="2" data-belowelement="comment-229" data-respondelement="respond" data-replyto="回复给超级牛逼" aria-label="回复给超级牛逼">回复</a>                    </div>
