@@ -100,7 +100,7 @@ public class IndexController {
         if(Objects.isNull(website.getName())){
             return ResultUtil.error("请填写网站名称！");
         }
-        if(Objects.isNull(website.getCategoryId())){
+        if(Objects.isNull(website.getCategoryId())||website.getCategoryId()==0){
             return ResultUtil.error("请选择分类！");
         }
         if(StringUtil.isBlank(website.getUrl())){

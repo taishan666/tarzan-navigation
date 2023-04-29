@@ -7,8 +7,10 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tarzan.nav.common.constant.CoreConst;
+import com.tarzan.nav.modules.admin.mapper.biz.CategoryMapper;
 import com.tarzan.nav.modules.admin.mapper.biz.WebsiteMapper;
 import com.tarzan.nav.modules.admin.model.biz.BizImage;
+import com.tarzan.nav.modules.admin.model.biz.Category;
 import com.tarzan.nav.modules.admin.model.biz.Website;
 import com.tarzan.nav.utils.JsoupUtil;
 import com.tarzan.nav.utils.StringUtil;
@@ -34,6 +36,8 @@ import java.util.stream.Collectors;
 public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
 
     private final ImageService imageService;
+
+    private final CategoryMapper categoryMapper;
 
     private static final int TITLE_LEN=50;
 
@@ -122,6 +126,12 @@ public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
             List<BizImage> images= imageService.listByIds(imageIds);
             Map<String,BizImage> map=images.stream().collect(Collectors.toMap(BizImage::getId, e->e));
             websites.forEach(e->e.setImg(map.get(e.getImageId())));
+        }
+        Set<Integer> categoryIds=websites.stream().map(Website::getCategoryId).collect(Collectors.toSet());
+        if(CollectionUtils.isNotEmpty(categoryIds)){
+            List<Category> categories= categoryMapper.selectBatchIds(categoryIds);
+            Map<Integer,String> map=categories.stream().collect(Collectors.toMap(Category::getId, Category::getName));
+            websites.forEach(e->e.setCategoryName(map.get(e.getCategoryId())));
         }
         return websites;
     }

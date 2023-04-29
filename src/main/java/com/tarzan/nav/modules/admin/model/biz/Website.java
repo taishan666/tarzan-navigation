@@ -32,5 +32,7 @@ public class Website extends BaseVo {
 
     @TableField(exist = false)
     private BizImage img;
+    @TableField(exist = false)
+    private String categoryName;
 
 }

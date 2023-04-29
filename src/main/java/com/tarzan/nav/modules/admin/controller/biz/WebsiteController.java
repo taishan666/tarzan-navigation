@@ -97,9 +97,9 @@ public class WebsiteController {
     public ResponseVo deleteBatch(@RequestBody List<Integer> ids) {
         boolean flag = websiteService.deleteBatch(ids);
         if (flag) {
-            return ResultUtil.success("删除友链成功");
+            return ResultUtil.success("删除网站成功");
         } else {
-            return ResultUtil.error("删除友链失败");
+            return ResultUtil.error("删除网站失败");
         }
     }
 

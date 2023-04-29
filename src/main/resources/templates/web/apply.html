@@ -110,7 +110,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="iconfont icon-url icon-fw" aria-hidden="true"></i></span>
                                         </div>
-                                        <input id="url" type="text" class="form-control sites-link" value="" name="url" placeholder="链接">
+                                        <input id="web_url" type="text" class="form-control sites-link" value="" name="url" placeholder="链接">
                                         <div class="input-group-append tg-sites-url">
                                             <a href="javascript:" id="get_info" class="btn btn-danger custom_btn-d">一键填写</a>
                                         </div>
@@ -129,7 +129,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="iconfont icon-category icon-fw" aria-hidden="true"></i></span>
                                         </div>
-                                        <select name="categoryId"  class="form-control sites-category">
+                                        <select id="categoryId" name="categoryId"  class="form-control sites-category">
                                             <option value="0" selected="selected">选择分类</option>
                                             <option class="level-0" th:each="category : ${categories}" th:value="${category?.id}">[[${category?.name}]]&nbsp;&nbsp;</option>
                                             <th:block th:unless="${#lists.isEmpty(category?.children)}">
@@ -186,7 +186,7 @@
 </body>
 <script>
     $('#get_info').click(function () {
-        const url=$("#url").val();
+        const url=$("#web_url").val();
         console.log(url);
         $.ajax({
             type:"get",	//提交方式
@@ -218,6 +218,10 @@
         success:function (data) {
             if(data.status===200){
                 successAlert(data.msg);
+                $("#web_name").val("");
+                $("#web_url").val("");
+                $("#web_desc").val("");
+                $("#categoryId").val(0);
             }else {
                 errorAlert(data.msg);
             }
