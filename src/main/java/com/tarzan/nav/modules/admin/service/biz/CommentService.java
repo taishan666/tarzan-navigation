@@ -95,9 +95,9 @@ public class CommentService extends ServiceImpl<CommentMapper, Comment> {
                 List<Comment> childList=childMap.get(e.getId());
                 if(CollectionUtils.isNotEmpty(childList)){
                     childList.forEach(c->{
-                        Comment reply=bizMap.get(c.getReplyId());
-                        c.setReplyName(reply.getNickname());
-                        c.setReplyContent(reply.getContent());
+           //             Comment reply=bizMap.get(c.getReplyId());
+//                        c.setReplyName(reply.getNickname());
+        //                c.setReplyContent(reply.getContent());
                     });
                 }
                 e.setChildren(childList);

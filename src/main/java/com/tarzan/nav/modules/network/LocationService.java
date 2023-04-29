@@ -13,7 +13,7 @@ public class LocationService {
         JSONObject json=JSONObject.parseObject(result);
         if("Success".equals(json.getString("code"))){
             JSONObject data=json.getJSONObject("data");
-            return data.getString("prov")+"*"+data.getString("city");
+            return data.getString("prov")+data.getString("city");
         }
         return "未知";
     }
