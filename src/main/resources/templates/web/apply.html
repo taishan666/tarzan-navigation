@@ -185,9 +185,6 @@
 <!--<script type='text/javascript' src='https://nav.iowen.cn/wp-content/themes/onenav/inc/postviews/postviews-cache.js?ver=6.2' id='wp-postviews-cache-js'></script>-->
 </body>
 <script>
-    (function() {
-        theme.isHome="1";
-    }());
     $('#get_info').click(function () {
         const url=$("#url").val();
         console.log(url);
@@ -220,9 +217,9 @@
         dataType: "json",   	//返回数据的格式
         success:function (data) {
             if(data.status===200){
-                errorAlert(data.msg);
-            }else {
                 successAlert(data.msg);
+            }else {
+                errorAlert(data.msg);
             }
         },
     });

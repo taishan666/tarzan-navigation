@@ -1268,7 +1268,7 @@
             t.removeClass('is-invalid');
         }
     });
-    function getUrlInfo(_url,modal){
+/*    function getUrlInfo(_url,modal){
         $('#modal-new-url-ico').show();
         $.post("//apiv2.iotheme.cn/webinfo/get.php", { url: _url ,key: theme.apikey },function(data,status){
             if(data.code==0){
@@ -1288,7 +1288,7 @@
             $('#modal-new-url-ico').hide();
             $(".refre_msg").html('<i class="iconfont icon-tishi"></i>'+localize.timeout).show(200).delay(4000).hide(200);
         });
-    }
+    }*/
     $(document).on('click','a.sidebar-rand-post',function(){
         load_rand_post($(this).data());
     });
