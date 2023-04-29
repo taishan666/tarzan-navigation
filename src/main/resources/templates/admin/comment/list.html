@@ -89,12 +89,7 @@
 </section>
 
 <script>
-
     $(function () {
-
-        var deleteFlag = Core.parseBool("[[${@perms.hasPerm('comment:delete')}]]");
-        var auditFlag = Core.parseBool("[[${@perms.hasPerm('comment:audit')}]]");
-
         window.operateEvents = {
             // 点击审核
             'click .btn_audit': function (e, value, row, index) {
@@ -167,8 +162,8 @@
             }];
 
         function operationFormatter(value, row, index) {
-            var audit = auditFlag && row.status === 0 ? '<button class="effect-btn btn btn-info mt-2 mr-2 icon-lg btn_audit"><i class="fas fa-check"></i></button>' : '';
-            var del = deleteFlag ? '<button class="effect-btn btn btn-danger mt-2 mr-2 icon-lg btn_del"><i class="fas fa-trash-alt"></i></button>' : '';
+            const audit = '<button class="effect-btn btn btn-info mt-2 mr-2 icon-lg btn_audit"><i class="fas fa-check"></i></button>';
+            const del = '<button class="effect-btn btn btn-danger mt-2 mr-2 icon-lg btn_del"><i class="fas fa-trash-alt"></i></button>';
             return audit + del;
         }
 
@@ -220,11 +215,11 @@
             var checkedRows = Core.selectMutiData("#table");
             if (checkedRows) {
                 Core.confirm("确定删除选中的" + checkedRows.length + "条记录？", function () {
-                    var ids = [];
+                    const ids = [];
                     $.each(checkedRows, function (i, item) {
                         ids.push(item.id);
                     })
-                    var jsonStr = JSON.stringify(ids);
+                    const jsonStr = JSON.stringify(ids);
                     Core.postAjax("/comment/batch/delete",jsonStr, function (data) {
                         if (data.status === 200) {
                             refreshTable();
@@ -232,7 +227,7 @@
                         layer.msg(data.msg);
                     },function (err) {
                         layer.msg(err)
-                    }, "POST", "application/json; charset=UTF-8")
+                    },"application/json; charset=UTF-8")
                 })
             }
         })
