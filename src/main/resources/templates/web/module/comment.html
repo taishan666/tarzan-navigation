@@ -35,7 +35,7 @@
                 <li th:each="comment:${comments}" class="comment byuser even thread-even depth-1 comment" th:id="'li-comment-'+${coment?.id}">
                     <div th:id="'comment-'+${coment?.id}" class="comment_body d-flex flex-fill">
                         <div class="profile mr-2 mr-md-3">
-                            <img alt="超级牛逼" src="https://gravatar.loli.net/avatar/a4e6d5e24d35553fcfe7ede6c5e45d01?s=96&amp;d=retro&amp;r=g" srcset="https://gravatar.loli.net/avatar/a4e6d5e24d35553fcfe7ede6c5e45d01?s=192&amp;d=retro&amp;r=g 2x" class="avatar avatar-96 photo" height="96" width="96" loading="lazy" decoding="async">                </div>
+                            <img th:alt="${comment?.nickname}" th:src="${comment?.img?.base64}" class="avatar avatar-96 photo" height="96" width="96" loading="lazy" decoding="async">  </div>
                         <section class="comment-text d-flex flex-fill flex-column">
                             <div class="comment-info d-flex align-items-center mb-1">
                                 <div class="comment-author text-sm w-100">[[${comment?.nickname}]]<span class="rank" title="头衔：读者">读者</span></div>

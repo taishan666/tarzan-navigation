@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tarzan.nav.common.constant.CoreConst;
 import com.tarzan.nav.modules.admin.mapper.biz.CommentMapper;
+import com.tarzan.nav.modules.admin.model.biz.BizImage;
 import com.tarzan.nav.modules.admin.model.biz.Comment;
 import com.tarzan.nav.modules.admin.model.sys.User;
 import com.tarzan.nav.modules.admin.vo.CommentConditionVo;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -32,6 +34,8 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class CommentService extends ServiceImpl<CommentMapper, Comment> {
+
+    private final ImageService imageService;
 
     @CacheEvict(value = "comment", allEntries = true)
     public boolean deleteBatch(List<Integer> ids) {
@@ -50,7 +54,6 @@ public class CommentService extends ServiceImpl<CommentMapper, Comment> {
         page=page(page,Wrappers.lambdaQuery(comment).orderByDesc(Comment::getCreateTime));
         List<Comment> comments=page.getRecords();
         if(CollectionUtils.isNotEmpty(comments)){
-          //  List<Integer> ids=comments.stream().map(Comment::getId).collect(Collectors.toList());
             List<Integer> replyIds=comments.stream().map(Comment::getReplyId).collect(Collectors.toList());
             List<Comment> replyComments=listByIds(replyIds);
             Map<Integer,Comment> map=replyComments.stream().collect(Collectors.toMap(Comment::getId,e->e));
@@ -61,9 +64,19 @@ public class CommentService extends ServiceImpl<CommentMapper, Comment> {
                     e.setReplyContent(reply.getContent());
                 }
             });
-            page.setRecords(comments);
+            page.setRecords(this.wrapper(comments));
         }
         return page;
+    }
+
+    private List<Comment> wrapper(List<Comment> comments){
+        Set<String> imageIds=comments.stream().map(Comment::getAvatar).collect(Collectors.toSet());
+        if(CollectionUtils.isNotEmpty(imageIds)){
+            List<BizImage> images= imageService.listByIds(imageIds);
+            Map<String,BizImage> map=images.stream().collect(Collectors.toMap(BizImage::getId, e->e));
+            comments.forEach(e->e.setImg(map.get(e.getAvatar())));
+        }
+        return comments;
     }
 
     public IPage<Comment> commentsBySid(Integer sid, Integer pageNumber, Integer pageSize){
@@ -77,7 +90,6 @@ public class CommentService extends ServiceImpl<CommentMapper, Comment> {
             List<Comment> bizComments=new ArrayList<>();
             bizComments.addAll(comments);
             bizComments.addAll(children);
-          //  List<Integer> bizIds=bizComments.stream().map(Comment::getId).collect(Collectors.toList());
             Map<Integer,Comment> bizMap=bizComments.stream().collect(Collectors.toMap(Comment::getId,e->e));
             comments.forEach(e->{
                 List<Comment> childList=childMap.get(e.getId());
@@ -90,7 +102,7 @@ public class CommentService extends ServiceImpl<CommentMapper, Comment> {
                 }
                 e.setChildren(childList);
             });
-            page.setRecords(comments);
+            page.setRecords(this.wrapper(comments));
         }
         return page;
     }

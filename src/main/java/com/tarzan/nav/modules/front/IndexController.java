@@ -40,6 +40,7 @@ public class IndexController {
     private final NoticeService noticeService;
     private final HotNewsService hotNewsService;
     private final CommentService commentService;
+    private final ImageService imageService;
 
     /**
      * 首页
@@ -70,7 +71,7 @@ public class IndexController {
     @GetMapping("/about")
     public String about(Model model) {
         model.addAttribute("categories",categoryService.treeList());
-        model.addAttribute("comments",commentService.list());
+        model.addAttribute("comments",commentService.commentsBySid(-1,1,500).getRecords());
         return  CoreConst.WEB_PREFIX+"about";
     }
 
@@ -141,7 +142,7 @@ public class IndexController {
             } catch (NoSuchAlgorithmException e) {
                 log.error("MD5出现异常{}", e.getMessage(), e);
             }
-            comment.setAvatar("http://www.atoolbox.net/" + entry );
+            comment.setAvatar(imageService.letterAvatar(comment.getNickname()).getId());
         }
         boolean a = commentService.insertComment(comment);
         if (a) {

@@ -52,5 +52,7 @@ public class Comment extends BaseVo {
     private String replyContent;
     @TableField(exist = false)
     private List<Comment> children;
+    @TableField(exist = false)
+    private BizImage img;
 
 }
