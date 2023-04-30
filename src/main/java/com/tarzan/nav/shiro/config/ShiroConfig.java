@@ -1,6 +1,5 @@
 package com.tarzan.nav.shiro.config;
 
-import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import com.tarzan.nav.common.props.TarzanProperties;
 import com.tarzan.nav.shiro.cache.OnlineSessionDAO;
 import com.tarzan.nav.shiro.credentials.RetryLimitHashedCredentialsMatcher;
@@ -49,15 +48,6 @@ public class ShiroConfig {
     @Bean
     public static LifecycleBeanPostProcessor getLifecycleBeanPostProcessor() {
         return new LifecycleBeanPostProcessor();
-    }
-
-    /**
-     * ShiroDialect，为了在thymeleaf里使用shiro的标签的bean
-     * @return
-     */
-    @Bean
-    public ShiroDialect shiroDialect() {
-        return new ShiroDialect();
     }
 
     /**
