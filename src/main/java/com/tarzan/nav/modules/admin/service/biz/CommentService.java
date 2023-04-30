@@ -90,10 +90,11 @@ public class CommentService extends ServiceImpl<CommentMapper, Comment> {
             List<Comment> bizComments=new ArrayList<>();
             bizComments.addAll(comments);
             bizComments.addAll(children);
-            Map<Integer,Comment> bizMap=bizComments.stream().collect(Collectors.toMap(Comment::getId,e->e));
+            this.wrapper(comments);
             comments.forEach(e->{
                 List<Comment> childList=childMap.get(e.getId());
                 if(CollectionUtils.isNotEmpty(childList)){
+                    this.wrapper(childList);
                     childList.forEach(c->{
            //             Comment reply=bizMap.get(c.getReplyId());
 //                        c.setReplyName(reply.getNickname());
@@ -102,7 +103,7 @@ public class CommentService extends ServiceImpl<CommentMapper, Comment> {
                 }
                 e.setChildren(childList);
             });
-            page.setRecords(this.wrapper(comments));
+            page.setRecords(comments);
         }
         return page;
     }

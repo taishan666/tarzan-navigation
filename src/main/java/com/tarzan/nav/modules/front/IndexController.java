@@ -136,11 +136,7 @@ public class IndexController {
         content = XssKillerUtil.clean(content.trim()).replaceAll("(<p><br></p>)|(<p></p>)", "");
         comment.setContent(content);
         comment.setIp(IpUtil.getIpAddr(request));
-        if (StringUtils.isNotBlank(comment.getQq())) {
-            comment.setAvatar("http://q1.qlogo.cn/g?b=qq&nk=" + comment.getQq() + "&s=100");
-        } else if (StringUtils.isNotBlank(comment.getEmail())) {
-            comment.setAvatar(imageService.letterAvatar(comment.getNickname()).getId());
-        }
+        comment.setAvatar(imageService.letterAvatar(comment.getNickname()).getId());
         comment.setRemark(LocationService.getLocation(comment.getIp()));
         boolean a = commentService.insertComment(comment);
         if (a) {
