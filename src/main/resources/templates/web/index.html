@@ -48,6 +48,7 @@
     .navbar-nav .menu-item-286 a i{position: absolute;top: 0;right: -10px;color: #f13522;}
     .io-black-mode .navbar-nav .menu-item-286 a{background: #ce9412;}
     .io-black-mode .navbar-nav .menu-item-286 a i{color: #fff;}.customize-width{max-width:1850px}.sidebar-nav{width:220px}@media (min-width: 768px){.main-content{margin-left:220px;}.main-content .page-header{left:220px;}}</style><!-- 自定义代码 -->
+    [(${SITE_CONFIG?.STATISTICS_CODE})]
 </head>
 <body class="home blog">
 <sidebar th:replace="web/module/sidebar :: index(${categories})"></sidebar>
@@ -55,7 +56,9 @@
     <nav th:replace="web/module/navbar::index"></nav>
     <div class="header-big  post-top css-color mb-4" style="background-image: linear-gradient(45deg, #8618db 0%, #d711ff 50%, #460fdd 100%);">
         <div th:replace="web/module/searchbox::index"></div>
-        <div class="bulletin-big mx-3 mx-md-0"> </div>
+       <!-- <div class="bulletin-big mx-3 mx-md-0">
+        </div>-->
+        <th:block th:unless="${#lists.isEmpty(notices)}" th:include="web/module/bulletinbox"></th:block>
       <!--  <div class="auto-ad-url text-center my-4 mx-2 mb-n4 mb-md-n5">
             <div class="card my-0 mx-auto io-radius">
                 <div class="card-head d-flex align-items-center pb-0 px-2 pt-2">

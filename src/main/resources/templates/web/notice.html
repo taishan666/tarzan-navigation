@@ -1,48 +1,209 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN" class="io-grey-mode">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="author" th:content="${SITE_CONFIG.SITE_PERSON_NAME}" />
-    <title th:text="${SITE_CONFIG.SITE_NAME}"></title>
-    <meta name="keywords" th:content="${SITE_CONFIG.SITE_KWD}">
-    <meta name="description" th:content="${SITE_CONFIG.SITE_DESC}">
-    <link rel="stylesheet" href="/web/css/bootstrap.css">
-    <link rel="stylesheet" href="/web/css/nav.css">
-    <link rel="stylesheet" href="/assets/libs/linecons/css/linecons.css">
-    <link rel="stylesheet" href="/web/fonts/fontawesome/css/font-awesome.min.css">
-    [(${SITE_CONFIG?.STATISTICS_CODE})]
+    <script>
+        var default_c = "io-grey-mode";
+        var night = document.cookie.replace(/(?:(?:^|.*;\s*)io_night_mode\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+        try {
+            if (night === "0" || (!night && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+                document.documentElement.classList.add("io-black-mode");
+                document.documentElement.classList.remove(default_c);
+            } else {
+                document.documentElement.classList.remove("io-black-mode");
+                document.documentElement.classList.add(default_c);
+            }
+        } catch (_) {}
+    </script>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>[[${SITE_CONFIG?.SITE_NAME}]]</title>
+    <meta name="theme-color" content="#f9f9f9" />
+    <meta name="keywords" th:content="${SITE_CONFIG?.SITE_KWD}" />
+    <meta name="description" th:content="${SITE_CONFIG?.SITE_DESC}" />
+    <meta property="og:type" content="website">
+    <meta property="og:url" th:content="${SITE_CONFIG?.SITE_NAME}"/>
+    <meta property="og:title" content="一为导航 | 设计师网址导航">
+    <meta property="og:description" th:content="${SITE_CONFIG?.SITE_DESC}">
+    <meta property="og:image" content="/favicon.ico">
+    <meta property="og:site_name" th:content="${SITE_CONFIG?.SITE_NAME}">
+    <!--[if IE]><script src="https://nav.iowen.cn/wp-content/themes/onenav/js/html5.min.js"></script><![endif]-->
+    <meta name='robots' content='max-image-preview:large' />
+    <!--    <link rel='stylesheet' id='classic-theme-styles-css' href='https://nav.iowen.cn/wp-includes/css/classic-themes.min.css?ver=6.2' type='text/css' media='all' />-->
+    <link rel='stylesheet' id='iconfont-css' href='/web/css/iconfont.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='iconfont-io-1-css' href='//at.alicdn.com/t/font_1620678_18rbnd2homc.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='iconfont-io-2-css' href='//at.alicdn.com/t/font_2811503_rz4zraeosal.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='bootstrap-css' href='/web/css/bootstrap.min.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='swiper-css' href='/web/css/swiper-bundle.min.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='style-css' href='/web/css/style.css' type='text/css' media='all' />
+    <script type='text/javascript' src='/web/js/jquery.min.js' id='jquery-js'></script>
+    <script type='text/javascript' id='jquery-js-after'>
+        /* <![CDATA[ */
+        function loadFunc(func) {if (document.all){window.attachEvent("onload",func);}else{window.addEventListener("load",func,false);}}
+        /* ]]> */
+    </script>
+    <style>.navbar-nav .menu-item-286 a{background: #ff8116;border-radius: 50px!important;padding: 5px 10px!important;margin: 5px 0!important;color: #fff!important;}
+    .navbar-nav .menu-item-286 a i{position: absolute;top: 0;right: -10px;color: #f13522;}
+    .io-black-mode .navbar-nav .menu-item-286 a{background: #ce9412;}
+    .io-black-mode .navbar-nav .menu-item-286 a i{color: #fff;}.customize-width{max-width:1850px}.sidebar-nav{width:220px}@media (min-width: 768px){.main-content{margin-left:220px;}.main-content .page-header{left:220px;}}</style><!-- 自定义代码 -->
 </head>
-
-<body class="page-body">
-<!-- skin-white -->
-<div class="page-container">
-    <sidebar th:replace="/web/module/sidebar :: other(${categories})"></sidebar>
-    <div class="main-content page" style="">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-default">
-                    <h1 class="h2">[[${notice?.title}]]</h1>
-                    <div class="panel-body mt-2">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                [[${notice?.content}]]
-                            </div>
-                        </div>
+<body class="home blog">
+<sidebar th:replace="web/module/sidebar :: index(${categories})"></sidebar>
+<div class="main-content flex-fill">
+    <nav th:replace="web/module/navbar::other"></nav>
+    <div id="content" class="container my-4 my-md-5" style="transform: none;">
+        <div class="post-cover overlay-hover mb-3 mb-md-4">
+            <div class="media rounded-xl media-5x1">
+                <div class="media-content" data-src="//cdn.iowen.cn/gh/owen0o0/ioStaticResources@master/banner/banner015.jpg" data-was-processed="true" style="background-image: url(&quot;//cdn.iowen.cn/gh/owen0o0/ioStaticResources@master/banner/banner015.jpg&quot;);"><span class="overlay"></span></div>
+                <div class="card-img-overlay d-flex justify-content-center text-center flex-column p-3 p-md-4">
+                    <div class="h4 text-white">—— 公告 ——</div>
+                    <div class="text-xs">
+                        <a class="mx-1 custom-piece_c_b" href="https://www.daohang.wiki/bulletin" style="color:#fff;background:#f12345;padding:2px 5px;border-radius:3px;"><small>所有公告</small></a>
                     </div>
                 </div>
             </div>
         </div>
-        <footer th:replace="/web/module/footer :: footer(${SITE_CONFIG})"></footer>
-    </div>
-</div>
-<script src="/web/js/jquery.min.js"></script>
-<!-- Bottom Scripts -->
-<script src="/web/js/bootstrap.min.js"></script>
-<script src="/web/js/TweenMax.min.js"></script>
-<script src="/web/js/app.js"></script>
-<script src="/web/js/lazyload.min.js"></script>
-</body>
+        <main class="content" role="main" style="transform: none;">
+            <div class="content-wrap">
+                <div class="content-layout">
+                    <div class="panel card">
+                        <div class="card-body">
+                            <h1 class="h2 mb-3">[[${notice?.title}]]</h1>
+                            <div class="d-flex flex-fill text-muted text-sm mb-5">
+                                <span class="mr-3 d-none d-sm-block"><i class="iconfont icon-time"></i>[[${#dates.format(notice?.createTime,'yyyy-MM-dd HH:mm:ss')}]]</span>
+                                <span class="mr-3"><a href="#" title="站长"><i class="iconfont icon-user-circle"></i> 站长</a></span>
+                                <div class="flex-fill"></div>
+                                <span class="views mr-3"><i class="iconfont icon-chakan"></i> 308</span>
+                                <span class="mr-3"><a class="" href="#comments"> <i class="iconfont icon-comment"></i> 0</a></span>
+                                <span class="mr-3"><a class="btn-like btn-link-like " href="javascript:;" data-action="post_like" data-id="836"><i class="iconfont icon-like"></i> <span class="like-count">0</span></a></span>
+                            </div>
+                            <div class="panel-body single mt-2">
+                                [[${notice?.content}]]
+                            </div>
+                            <div class="tags my-2">
+                            </div>
+                        </div>
+                    </div>
+   <!--                 <div class="near-navigation rounded mt-4 py-2">
+                        <div class="nav none border-right border-color">
+                            <span>上一篇</span>
+                            <h4 class="near-title">没有更多了...</h4>
+                        </div>
+                        <div class="nav none border-left border-color" style="text-align: right;">
+                            <span>下一篇</span>
+                            <h4 class="near-title">没有更多了...</h4>
+                        </div>
+                    </div>-->
+                    <!-- comments -->
+                   <!-- <div id="comments" class="comments">
+                        <h2 id="comments-list-title" class="comments-title h5 mx-1 my-4">
+                            <i class="iconfont icon-comment"></i>
+                            <span class="noticom">
+			<a href="https://www.daohang.wiki/bulletin/836.html#respond" class="comments-title">暂无评论</a>
+		</span>
+                        </h2>
+                        <div class="card">
+                            <div class="card-body">
+                                <div id="respond_box">
+                                    <div id="respond" class="comment-respond">
+                                        <form id="commentform" class="text-sm mb-4">
+                                            <div class="visitor-avatar d-flex flex-fill mb-2">
+                                                <img class="v-avatar rounded-circle" src="https://www.daohang.wiki/wp-content/themes/onenav/images/gravatar.jpg">
+                                            </div>
+                                            <div class="comment-textarea mb-3">
+                                                <textarea name="comment" id="comment" class="form-control" placeholder="输入评论内容..." tabindex="4" cols="50" rows="3"></textarea>
+                                            </div>
 
+                                            <div id="comment-author-info" class="row  row-sm">
+                                                <div class="col-12 col-md-6 mb-3"><input type="text" name="author" id="author" class="form-control" value="" size="22" placeholder="昵称" tabindex="2"></div>
+                                                <div class="col-12 col-md-6 mb-3"><input type="text" name="email" id="email" class="form-control" value="" size="22" placeholder="邮箱" tabindex="3"></div>
+                                            </div>
+                                            <div class="com-footer d-flex justify-content-end flex-wrap">
+                                                <input type="hidden" id="_wpnonce" name="_wpnonce" value="e7d604fda6"><input type="hidden" name="_wp_http_referer" value="/bulletin/836.html">							<a rel="nofollow" id="cancel-comment-reply-link" style="display: none;" href="javascript:;" class="btn btn-light custom_btn-outline mx-2">再想想</a>
+                                                <button class="btn btn-dark custom_btn-d ml-2" type="submit" id="submit">发表评论</button>
+                                                <input type="hidden" name="action" value="ajax_comment">
+                                                <input type="hidden" name="comment_post_ID" value="836" id="comment_post_ID">
+                                                <input type="hidden" name="comment_parent" id="comment_parent" value="0">
+                                            </div>
+                                        </form>
+                                        <div class="clear"></div>
+                                    </div>
+                                </div>
+                                <div id="loading-comments"><span></span></div>
+                                <div class="not-comment card"><div class="card-body nothing text-center color-d">暂无评论...</div></div>
+                            </div>
+                        </div>
+                    </div>&lt;!&ndash; comments end &ndash;&gt;-->
+                </div> <!-- content-layout end -->
+            </div> <!-- content-wrap end -->
+    </div>
+<footer th:replace="web/module/footer"></footer>
+<script type='text/javascript' id='rocket-browser-checker-js-after'>
+    "use strict";var _createClass=function(){function defineProperties(target,props){for(var i=0;i<props.length;i++){var descriptor=props[i];descriptor.enumerable=descriptor.enumerable||!1,descriptor.configurable=!0,"value"in descriptor&&(descriptor.writable=!0),Object.defineProperty(target,descriptor.key,descriptor)}}return function(Constructor,protoProps,staticProps){return protoProps&&defineProperties(Constructor.prototype,protoProps),staticProps&&defineProperties(Constructor,staticProps),Constructor}}();function _classCallCheck(instance,Constructor){if(!(instance instanceof Constructor))throw new TypeError("Cannot call a class as a function")}var RocketBrowserCompatibilityChecker=function(){function RocketBrowserCompatibilityChecker(options){_classCallCheck(this,RocketBrowserCompatibilityChecker),this.passiveSupported=!1,this._checkPassiveOption(this),this.options=!!this.passiveSupported&&options}return _createClass(RocketBrowserCompatibilityChecker,[{key:"_checkPassiveOption",value:function(self){try{var options={get passive(){return!(self.passiveSupported=!0)}};window.addEventListener("test",null,options),window.removeEventListener("test",null,options)}catch(err){self.passiveSupported=!1}}},{key:"initRequestIdleCallback",value:function(){!1 in window&&(window.requestIdleCallback=function(cb){var start=Date.now();return setTimeout(function(){cb({didTimeout:!1,timeRemaining:function(){return Math.max(0,50-(Date.now()-start))}})},1)}),!1 in window&&(window.cancelIdleCallback=function(id){return clearTimeout(id)})}},{key:"isDataSaverModeOn",value:function(){return"connection"in navigator&&!0===navigator.connection.saveData}},{key:"supportsLinkPrefetch",value:function(){var elem=document.createElement("link");return elem.relList&&elem.relList.supports&&elem.relList.supports("prefetch")&&window.IntersectionObserver&&"isIntersecting"in IntersectionObserverEntry.prototype}},{key:"isSlowConnection",value:function(){return"connection"in navigator&&"effectiveType"in navigator.connection&&("2g"===navigator.connection.effectiveType||"slow-2g"===navigator.connection.effectiveType)}}]),RocketBrowserCompatibilityChecker}();
+</script>
+<script type='text/javascript' id='rocket-preload-links-js-extra'>
+    /* <![CDATA[ */
+    var RocketPreloadLinksConfig = {"excludeUris":"\/rankings|\/rankings\/|\/(.+\/)?feed\/?.+\/?|\/(?:.+\/)?embed\/|\/(index\\.php\/)?wp\\-json(\/.*|$)|\/wp-admin|\/logout|\/login\/","usesTrailingSlash":"","imageExt":"jpg|jpeg|gif|png|tiff|bmp|webp|avif","fileExt":"jpg|jpeg|gif|png|tiff|bmp|webp|avif|php|pdf|html|htm","siteUrl":"https:\/\/nav.iowen.cn","onHoverDelay":"100","rateThrottle":"3"};
+    /* ]]> */
+</script>
+<script type='text/javascript' id='rocket-preload-links-js-after'>
+    (function() {
+        "use strict";var r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},e=function(){function i(e,t){for(var n=0;n<t.length;n++){var i=t[n];i.enumerable=i.enumerable||!1,i.configurable=!0,"value"in i&&(i.writable=!0),Object.defineProperty(e,i.key,i)}}return function(e,t,n){return t&&i(e.prototype,t),n&&i(e,n),e}}();function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}var t=function(){function n(e,t){i(this,n),this.browser=e,this.config=t,this.options=this.browser.options,this.prefetched=new Set,this.eventTime=null,this.threshold=1111,this.numOnHover=0}return e(n,[{key:"init",value:function(){!this.browser.supportsLinkPrefetch()||this.browser.isDataSaverModeOn()||this.browser.isSlowConnection()||(this.regex={excludeUris:RegExp(this.config.excludeUris,"i"),images:RegExp(".("+this.config.imageExt+")$","i"),fileExt:RegExp(".("+this.config.fileExt+")$","i")},this._initListeners(this))}},{key:"_initListeners",value:function(e){-1<this.config.onHoverDelay&&document.addEventListener("mouseover",e.listener.bind(e),e.listenerOptions),document.addEventListener("mousedown",e.listener.bind(e),e.listenerOptions),document.addEventListener("touchstart",e.listener.bind(e),e.listenerOptions)}},{key:"listener",value:function(e){var t=e.target.closest("a"),n=this._prepareUrl(t);if(null!==n)switch(e.type){case"mousedown":case"touchstart":this._addPrefetchLink(n);break;case"mouseover":this._earlyPrefetch(t,n,"mouseout")}}},{key:"_earlyPrefetch",value:function(t,e,n){var i=this,r=setTimeout(function(){if(r=null,0===i.numOnHover)setTimeout(function(){return i.numOnHover=0},1e3);else if(i.numOnHover>i.config.rateThrottle)return;i.numOnHover++,i._addPrefetchLink(e)},this.config.onHoverDelay);t.addEventListener(n,function e(){t.removeEventListener(n,e,{passive:!0}),null!==r&&(clearTimeout(r),r=null)},{passive:!0})}},{key:"_addPrefetchLink",value:function(i){return this.prefetched.add(i.href),new Promise(function(e,t){var n=document.createElement("link");n.rel="prefetch",n.href=i.href,n.onload=e,n.onerror=t,document.head.appendChild(n)}).catch(function(){})}},{key:"_prepareUrl",value:function(e){if(null===e||"object"!==(void 0===e?"undefined":r(e))||!1 in e||-1===["http:","https:"].indexOf(e.protocol))return null;var t=e.href.substring(0,this.config.siteUrl.length),n=this._getPathname(e.href,t),i={original:e.href,protocol:e.protocol,origin:t,pathname:n,href:t+n};return this._isLinkOk(i)?i:null}},{key:"_getPathname",value:function(e,t){var n=t?e.substring(this.config.siteUrl.length):e;return n.startsWith("/")||(n="/"+n),this._shouldAddTrailingSlash(n)?n+"/":n}},{key:"_shouldAddTrailingSlash",value:function(e){return this.config.usesTrailingSlash&&!e.endsWith("/")&&!this.regex.fileExt.test(e)}},{key:"_isLinkOk",value:function(e){return null!==e&&"object"===(void 0===e?"undefined":r(e))&&(!this.prefetched.has(e.href)&&e.origin===this.config.siteUrl&&-1===e.href.indexOf("?")&&-1===e.href.indexOf("#")&&!this.regex.excludeUris.test(e.href)&&!this.regex.images.test(e.href))}}],[{key:"run",value:function(){"undefined"!=typeof RocketPreloadLinksConfig&&new n(new RocketBrowserCompatibilityChecker({capture:!0,passive:!0}),RocketPreloadLinksConfig).init()}}]),n}();t.run();
+    }());
+</script>
+<script type='text/javascript' src='/web/js/popper.min.js' id='popper-js'></script>
+<script type='text/javascript' src='/web/js/bootstrap.min.js' id='bootstrap-js'></script>
+<script type='text/javascript' src='/web/js/theia-sticky-sidebar.js' id='sidebar-js'></script>
+<script type='text/javascript' src='/web/js/lazyload.min.js' id='lazyload-js'></script>
+<script type='text/javascript' id='appjs-js-extra'>
+    const theme = {
+        "formpostion": "top",
+        "defaultclass": "io-grey-mode",
+        "isCustomize": "1",
+        "urlformat": "1",
+        "customizemax": "10",
+        "newWindow": "0",
+        "lazyload": "1",
+        "minNav": "0",
+        "loading": "0",
+        "hotWords": "baidu",
+        "classColumns": " col-2a col-sm-2a col-md-2a col-lg-3a col-xl-5a col-xxl-6a ",
+        "isHome": ""
+    };
+    const localize = {
+        "lightMode": "\u65e5\u95f4\u6a21\u5f0f",
+        "nightMode": "\u591c\u95f4\u6a21\u5f0f"
+    };
+</script>
+<script type='text/javascript' src='/web/js/app.js'></script>
+<script type='text/javascript' src='/web/js/comment-reply.js'></script>
+<script type='text/javascript' id='appjs-js-after'>
+    $(document).ready(function(){if($("#search-text")[0]){$("#search-text").focus();}});
+</script>
+<script>
+    $('#submit').click(function () {
+        const $f = $('#commentform');
+        console.log($f.serializeArray())
+        $.ajax({
+            type:"POST",	//提交方式
+            url:'/comment/submit',
+            data: $f.serialize(),//将对象转为json字符串
+            dataType: "json",   	//返回数据的格式
+            success:function (data) {
+                console.log(data)
+                if(data.status===200){
+                    successAlert(data.msg);
+                    $("#comment_content").val("");
+                    $("#nickname").val("");
+                    $("#email").val("");
+                }else {
+                    errorAlert(data.msg);
+                }
+            },
+        });
+    });
+</script>
+</body>
 </html>
