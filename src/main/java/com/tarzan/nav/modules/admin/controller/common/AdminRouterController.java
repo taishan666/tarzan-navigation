@@ -144,9 +144,17 @@ public class AdminRouterController {
     /**
      * 网站
      */
-    @GetMapping("/brokenSites")
+    @GetMapping("/websites/review")
+    public String websitesReview() {
+        return CoreConst.ADMIN_PREFIX + "website/review";
+    }
+
+    /**
+     * 网站
+     */
+    @GetMapping("/websites/broken")
     public String brokenWebsites() {
-        return CoreConst.ADMIN_PREFIX + "brokenSite/list";
+        return CoreConst.ADMIN_PREFIX + "brokenSite/broken";
     }
 
     /**

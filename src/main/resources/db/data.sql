@@ -24,15 +24,16 @@ INSERT INTO `sys_config` VALUES (8, 'STATISTICS_CODE', '', 1, '统计代码');
 -- Records of sys_menu
 -- ----------------------------
 INSERT INTO SYS_MENU VALUES (1, 0,'公告管理', '公告管理', '/notices', 'notices',1, 1, 'fas fa-volume-up', 1, '2021-07-13 15:05:47', '2021-02-27 10:53:14');
-INSERT INTO SYS_MENU VALUES (2, 0,'用户管理', '用户管理', '/users', 'users',1, 1, 'fas fa-user', 1, '2021-07-13 15:05:47', '2021-02-27 10:53:14');
+INSERT INTO SYS_MENU VALUES (2, 0,'用户管理', '用户管理', '/users', 'users',1, 2, 'fas fa-user', 1, '2021-07-13 15:05:47', '2021-02-27 10:53:14');
+INSERT INTO SYS_MENU VALUES (3, 0,'导航管理', '导航管理', NULL, 'nav', 0, 3, 'fas fa-columns', 1, '2021-07-24 15:44:23', '2021-04-19 19:08:46');
 INSERT INTO SYS_MENU VALUES (3, 0,'网站管理', '网站管理', NULL, 'website', 0, 3, 'fas fa-columns', 1, '2021-07-24 15:44:23', '2021-04-19 19:08:46');
 INSERT INTO SYS_MENU VALUES (4, 0,'运维管理', '运维管理', NULL, 'operation',0, 7, 'fas fa-people-carry', 1, '2021-07-06 15:19:26', '2021-04-19 19:09:59');
-INSERT INTO SYS_MENU VALUES (5, 3,'基础信息', '基础设置', '/siteInfo', 'siteInfo', 1, 1, 'fas fa-chess-queen', 1, '2021-07-24 15:48:13', '2021-07-24 17:43:39');
 INSERT INTO SYS_MENU VALUES (6, 3,'导航管理', '导航管理', '/websites', 'websites',1, 3, 'fas fa-chess-queen', 1, '2021-07-25 11:05:49', '2021-07-25 11:07:03');
 INSERT INTO SYS_MENU VALUES (7, 3,'失效网址', '失效网址', '/brokenSites', 'brokenSites',1, 4, 'fas fa-chess-queen', 1, '2021-07-25 11:05:49', '2021-07-25 11:07:03');
 INSERT INTO SYS_MENU VALUES (8, 3,'友链管理', '友链管理', '/links', 'links',1, 4, 'fas fa-link', 1, '2021-07-25 11:05:49', '2021-07-25 11:07:03');
 INSERT INTO SYS_MENU VALUES (9, 3,'导航分类', '导航分类', '/categories', 'categories',1, 3, 'fas fa-sitemap', 1, '2021-07-25 17:43:50', '2021-04-19 20:33:27');
 INSERT INTO SYS_MENU VALUES (10, 3,'留言管理', '留言管理', '/comments', 'comments', 1, 4, 'fas fa-comment', 1, '2021-08-10 09:44:41', '2021-09-19 15:44:13');
+INSERT INTO SYS_MENU VALUES (5, 3,'基础信息', '基础设置', '/siteInfo', 'siteInfo', 1, 1, 'fas fa-chess-queen', 1, '2021-07-24 15:48:13', '2021-07-24 17:43:39');
 INSERT INTO SYS_MENU VALUES (11, 4,'数据监控', '数据监控', '/database/monitoring', 'database',1, 1, 'fas fa-database', 1, '2021-07-06 15:19:55', '2021-07-06 15:19:55');
 INSERT INTO SYS_MENU VALUES (12,4,'数据备份', '数据备份', '/db/backup', 'dbBackup',1, 3, 'fas fa-clone', 1, '2021-07-20 16:01:23', '2021-07-20 16:01:23');
 INSERT INTO SYS_MENU VALUES (13,4,'登录日志', '登录日志', '/login/logs', 'loginLogs', 1, 2, 'fas fa-th-list', 1, '2021-07-20 16:01:23', '2021-07-20 16:01:23');

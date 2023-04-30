@@ -60,7 +60,7 @@
                 <div class="card-img-overlay d-flex justify-content-center text-center flex-column p-3 p-md-4">
                     <div class="h4 text-white">—— 公告 ——</div>
                     <div class="text-xs">
-                        <a class="mx-1 custom-piece_c_b" href="https://www.daohang.wiki/bulletin" style="color:#fff;background:#f12345;padding:2px 5px;border-radius:3px;"><small>所有公告</small></a>
+                        <a class="mx-1 custom-piece_c_b" href="/" style="color:#fff;background:#f12345;padding:2px 5px;border-radius:3px;"><small>所有公告</small></a>
                     </div>
                 </div>
             </div>
@@ -79,8 +79,7 @@
                                 <span class="mr-3"><a class="" href="#comments"> <i class="iconfont icon-comment"></i> 0</a></span>
                                 <span class="mr-3"><a class="btn-like btn-link-like " href="javascript:;" data-action="post_like" data-id="836"><i class="iconfont icon-like"></i> <span class="like-count">0</span></a></span>
                             </div>
-                            <div class="panel-body single mt-2">
-                                [[${notice?.content}]]
+                            <div class="panel-body single mt-2" th:utext="${notice?.content}" >
                             </div>
                             <div class="tags my-2">
                             </div>
