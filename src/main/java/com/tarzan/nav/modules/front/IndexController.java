@@ -74,7 +74,8 @@ public class IndexController {
     @GetMapping("/about")
     public String about(Model model) {
         model.addAttribute("categories",categoryService.treeList());
-        model.addAttribute("comments",commentService.commentsBySid(-1,1,500).getRecords());
+        model.addAttribute("comments",commentService.commentsBySid(-1));
+        model.addAttribute("commentNum",commentService.commentsBySidNum(-1));
         return  CoreConst.WEB_PREFIX+"about";
     }
 

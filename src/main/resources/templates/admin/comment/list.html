@@ -7,8 +7,7 @@
             <div class="breadcrumb-list">
                 <ul>
                     <li class="breadcrumb-link"><a th:href="@{admin}"><i class="fas fa-home mr-2"></i>首页</a></li>
-                    <li class="breadcrumb-link active">文章管理</li>
-                    <li class="breadcrumb-link active">评论管理</li>
+                    <li class="breadcrumb-link active">留言管理</li>
                 </ul>
             </div>
         </div>
@@ -114,7 +113,8 @@
                 field: 'ip',
                 title: 'ip',
                 align: "center",
-            }, {
+            },
+    /*        {
                 field: 'sid',
                 title: '文章/留言板',
                 align: "center",
@@ -126,7 +126,8 @@
                      //   return '<span class="color-2c93fd">' + (row.article.title.length <= 15 ? row.article.title : (row.article.title.substring(0, 15) + '...')) + '</span>';
                     }
                 }
-            }, {
+            },*/
+            {
                 field: 'content',
                 title: '内容',
                 align: "left",
@@ -134,7 +135,7 @@
                 formatter: function (value, row) {
                     var rtn = value;
                     if (row.replyContent != null) {
-                        rtn += '<div class="comment-parent">原评：' + row.replyContent + '</div>'
+                        rtn += '<div class="comment-parent"><b>原评：' + row.replyContent + '</b></div>'
                     }
                     return rtn;
                 }
@@ -162,7 +163,11 @@
             }];
 
         function operationFormatter(value, row, index) {
-            const audit = '<button class="effect-btn btn btn-info mt-2 mr-2 icon-lg btn_audit"><i class="fas fa-check"></i></button>';
+            let color="btn-info";
+            if(row.status==0){
+                color="btn-warning"
+            }
+            const audit = '<button class="effect-btn btn '+color+' mt-2 mr-2 icon-lg btn_audit"><i class="fas fa-check"></i></button>';
             const del = '<button class="effect-btn btn btn-danger mt-2 mr-2 icon-lg btn_del"><i class="fas fa-trash-alt"></i></button>';
             return audit + del;
         }

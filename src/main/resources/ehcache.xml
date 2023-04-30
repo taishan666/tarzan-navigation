@@ -98,7 +98,6 @@
            timeToIdleSeconds="3600"
            statistics="false">
     </cache>
-
     <!-- 通知 -->
     <cache name="notice"
            maxEntriesLocalHeap="1000"

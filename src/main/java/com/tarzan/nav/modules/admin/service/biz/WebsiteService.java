@@ -147,6 +147,7 @@ public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
         return new HashMap<>(0);
     }
 
+    @Cacheable(value = "website", key = "'random'")
     public List<Website> randomList(int count) {
         List<Website> websites= super.lambdaQuery().eq(Website::getStatus,CoreConst.STATUS_VALID).list();
         this.wrapper(websites);

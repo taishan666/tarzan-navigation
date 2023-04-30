@@ -7,6 +7,7 @@ window.addComment = function(v) {
         commentFormId: "commentform",
         temporaryFormId: "wp-temp-form-div",
         parentIdFieldId: "comment_parent",
+        replyIdFieldId: "comment_reply",
         postIdFieldId: "comment_post_ID"
     }, e = v.MutationObserver || v.WebKitMutationObserver || v.MozMutationObserver, r = "querySelector"in E && "addEventListener"in v, n = !!E.documentElement.dataset;
     function t() {
@@ -42,7 +43,7 @@ window.addComment = function(v) {
     }
     function l(e) {
         var t, n, d = g(b.temporaryFormId);
-        d && h && (g(b.parentIdFieldId).value = "0",
+        d && h && (g(b.parentIdFieldId).value = "0",g(b.replyIdFieldId).value = "0",
             t = d.textContent,
             d.parentNode.replaceChild(h, d),
             this.style.display = "none",
@@ -77,8 +78,13 @@ window.addComment = function(v) {
         {
             init: d,
             moveForm: function(e, t, n, d, o) {
-                var i, r, l, a, m, c, s, e = g(e), n = (h = g(n),
-                    g(b.parentIdFieldId)), y = g(b.postIdFieldId), p = g(b.commentReplyTitleId), u = (p = p && p.firstChild) && p.nextSibling;
+                var i, r, l, a, m, c, s,
+                    e = g(e),
+                    n = (h = g(n), g(b.parentIdFieldId)),
+                    y = g(b.postIdFieldId),
+                    p = g(b.commentReplyTitleId),
+                    f = g(b.replyIdFieldId),
+                    u = (p = p && p.firstChild) && p.nextSibling;
                 if (e && h && n) {
                     void 0 === o && (o = p && p.textContent),
                         a = h,
@@ -90,6 +96,7 @@ window.addComment = function(v) {
                         c.textContent = s,
                         a.parentNode.insertBefore(c, a)),
                     d && y && (y.value = d),
+                        f.value=o;
                         n.value = t,
                         I.style.display = "",
                         e.parentNode.insertBefore(h, e.nextSibling),
@@ -97,8 +104,7 @@ window.addComment = function(v) {
                         p.textContent = o),
                         I.onclick = function() {
                             return !1
-                        }
-                    ;
+                        };
                     try {
                         for (var f = 0; f < C.elements.length; f++)
                             if (i = C.elements[f],

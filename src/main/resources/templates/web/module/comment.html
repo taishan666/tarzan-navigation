@@ -1,7 +1,7 @@
 <div id="comments" class="comments">
     <h2 id="comments-list-title" class="comments-title h5 mx-1 my-4">
         <i class="iconfont icon-comment"></i>
-        <span class="noticom"><a href="https://nav.iowen.cn/sample-page#comments" class="comments-title">9 条评论</a></span>
+        <span class="noticom"><a href="/about#comments" class="comments-title">[[${commentNum}]]条评论</a></span>
     </h2>
     <div class="card">
         <div class="card-body">
@@ -21,10 +21,11 @@
                         <div class="com-footer d-flex justify-content-end flex-wrap">
                             <input type="hidden" id="_wpnonce" name="_wpnonce" value="a33d9a536f"><input type="hidden" name="_wp_http_referer" value="/about">
                             <a rel="nofollow" id="cancel-comment-reply-link" style="display: none;" href="javascript:;" class="btn btn-light custom_btn-outline mx-2">再想想</a>
-                            <input captcha-type="slider" type="hidden" name="captcha_type" value="slider" slider-id="">
+                           <!-- <input captcha-type="slider" type="hidden" name="captcha_type" value="slider" slider-id="">-->
                             <button class="btn btn-dark custom_btn-d ml-2" type="button" id="submit">发表评论</button>
-                            <input type="hidden" name="sid" value="-1" id="comment_post_ID">
+                            <input type="hidden" name="sid" id="comment_post_ID" value="-1" >
                             <input type="hidden" name="pid" id="comment_parent" value="0">
+                            <input type="hidden" name="replyId" id="comment_reply" value="0">
                         </div>
                     </form>
                     <div class="clear"></div>
@@ -49,7 +50,7 @@
                                     <span class="info-location"><i class="iconfont icon-location mr-1"></i>[[${comment?.remark}]]</span>
                                 </div>
                                 <div class="flex-fill"></div>
-                                <a rel="nofollow" class="comment-reply-link" th:href="'/about?replytocom='+${comment?.id}+'#respond'" th:data-commentid="${comment?.id}" th:data-postid="${comment?.sid}" th:data-belowelement="'comment-'+${comment?.id}" data-respondelement="respond" th:data-replyto="'回复给'+${comment?.nickname}" th:aria-label="'回复给'+${comment?.nickname}">回复</a> </div>
+                                <a rel="nofollow" class="comment-reply-link" th:href="'/about?replytocom='+${comment?.id}+'#respond'" th:data-commentid="${comment?.id}" th:data-postid="${comment?.sid}" th:data-belowelement="'comment-'+${comment?.id}" data-respondelement="respond" th:data-replyto="${comment?.id}" th:aria-label="'回复给'+${comment?.nickname}">回复</a> </div>
                         </section>
                     </div>
                     <ul th:if="${comment?.children}" class="children">
@@ -59,7 +60,7 @@
                                     <img th:alt="${child?.nickname}" th:src="${child?.img?.base64}" class="avatar avatar-96 photo" height="96" width="96" loading="lazy" decoding="async">  </div>
                                 <section class="comment-text d-flex flex-fill flex-column">
                                     <div class="comment-info d-flex align-items-center mb-1">
-                                        <div class="comment-author text-sm w-100">[[${child?.nickname}]]<span class="rank" title="头衔：读者">读者</span></div>
+                                        <div class="comment-author text-sm w-100">[[${child?.nickname}]] <span class="rank">回复</span>[[${child?.replyName}]]</div>
                                     </div>
                                     <div class="comment-content d-inline-block text-sm">
                                         <p>[[${child?.content}]]</p>
@@ -70,7 +71,7 @@
                                             <span class="info-location"><i class="iconfont icon-location mr-1"></i>[[${child?.remark}]]</span>
                                         </div>
                                         <div class="flex-fill"></div>
-                                        <a rel="nofollow" class="comment-reply-link" th:href="'/about?replytocom='+${child?.id}+'#respond'" th:data-commentid="${comment?.id}" th:data-postid="${child?.sid}" th:data-belowelement="'comment-'+${child?.id}" data-respondelement="respond" th:data-replyto="'回复给'+${child?.nickname}" th:aria-label="'回复给'+${child?.nickname}">回复</a> </div>
+                                        <a rel="nofollow" class="comment-reply-link" th:href="'/about?replytocom='+${child?.id}+'#respond'" th:data-commentid="${comment?.id}" th:data-postid="${child?.sid}" th:data-belowelement="'comment-'+${child?.id}" data-respondelement="respond" th:data-replyto="${child?.id}" th:aria-label="'回复给'+${child?.nickname}">回复</a> </div>
                                 </section>
                             </div>
                         </li>

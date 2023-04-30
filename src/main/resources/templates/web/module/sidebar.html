@@ -57,14 +57,14 @@
         <div class="sidebar-logo border-bottom border-color">
             <!-- logo -->
             <div class="logo overflow-hidden">
-                <h1 class="text-hide position-absolute">泰山导航</h1>
+                <h1 class="text-hide position-absolute">[[${SITE_CONFIG?.SITE_NAME}]]</h1>
                 <a href="/" class="logo-expanded">
-                    <img src="/web/images/logo.png" height="40" class="logo-light" alt="泰山导航">
-                    <img src="/web/images/logo.png" height="40" class="logo-dark d-none" alt="泰山导航">
+                    <img src="/web/images/logo.png" height="40" class="logo-light" th:alt="${SITE_CONFIG?.SITE_NAME}">
+                    <img src="/web/images/logo.png" height="40" class="logo-dark d-none" th:alt="${SITE_CONFIG?.SITE_NAME}">
                 </a>
                 <a href="/" class="logo-collapsed">
-                    <img src="/web/images/logo-collapsed.png" height="40" class="logo-light" alt="泰山导航">
-                    <img src="/web/images/logo-collapsed.png" height="40" class="logo-dark d-none" alt="泰山导航">
+                    <img src="/web/images/logo-collapsed.png" height="40" class="logo-light" th:alt="${SITE_CONFIG?.SITE_NAME}">
+                    <img src="/web/images/logo-collapsed.png" height="40" class="logo-dark d-none" th:alt="${SITE_CONFIG?.SITE_NAME}">
                 </a>
             </div>
             <!-- logo end -->

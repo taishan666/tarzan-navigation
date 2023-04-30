@@ -20,10 +20,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -78,34 +75,32 @@ public class CommentService extends ServiceImpl<CommentMapper, Comment> {
         }
         return comments;
     }
-
-    public IPage<Comment> commentsBySid(Integer sid, Integer pageNumber, Integer pageSize){
-        IPage<Comment> page = new Page<>(pageNumber, pageSize);
-        page=super.page(page,Wrappers.<Comment>lambdaQuery().eq(Comment::getSid,sid).eq(Comment::getStatus,CoreConst.STATUS_VALID).eq(Comment::getPid,CoreConst.ZERO).orderByDesc(Comment::getCreateTime));
-        List<Comment> comments=page.getRecords();
+    public Long commentsBySidNum(Integer sid){
+        return super.lambdaQuery().eq(Comment::getSid,sid).eq(Comment::getStatus,CoreConst.STATUS_VALID).count();
+    }
+    public List<Comment> commentsBySid(Integer sid){
+        List<Comment> commentTree = Collections.emptyList();
+        List<Comment> comments=super.lambdaQuery().eq(Comment::getSid,sid).eq(Comment::getStatus,CoreConst.STATUS_VALID).orderByDesc(Comment::getCreateTime).list();
         if(CollectionUtils.isNotEmpty(comments)){
-            List<Integer> ids=comments.stream().map(Comment::getId).collect(Collectors.toList());
-            List<Comment> children=super.lambdaQuery().eq(Comment::getStatus,CoreConst.STATUS_VALID).in(Comment::getPid,ids).orderByDesc(Comment::getCreateTime).list();
-            Map<Integer,List<Comment>> childMap=children.stream().collect(Collectors.groupingBy(Comment::getPid));
-            List<Comment> bizComments=new ArrayList<>();
-            bizComments.addAll(comments);
-            bizComments.addAll(children);
             this.wrapper(comments);
-            comments.forEach(e->{
+            commentTree=comments.stream().filter(e->CoreConst.ZERO.equals(e.getPid())).collect(Collectors.toList());
+            Map<Integer,Comment> commentMap=comments.stream().collect(Collectors.toMap(Comment::getId,e->e));
+            Map<Integer,List<Comment>> childMap=comments.stream().collect(Collectors.groupingBy(Comment::getPid));
+            commentTree.forEach(e->{
                 List<Comment> childList=childMap.get(e.getId());
                 if(CollectionUtils.isNotEmpty(childList)){
                     this.wrapper(childList);
                     childList.forEach(c->{
-           //             Comment reply=bizMap.get(c.getReplyId());
-//                        c.setReplyName(reply.getNickname());
-        //                c.setReplyContent(reply.getContent());
+                        Comment reply = commentMap.get(c.getReplyId());
+                        if(Objects.nonNull(reply)){
+                            c.setReplyName(reply.getNickname());
+                        }
                     });
                 }
                 e.setChildren(childList);
             });
-            page.setRecords(comments);
         }
-        return page;
+        return commentTree;
     }
 
     @CacheEvict(value = "comment", allEntries = true)

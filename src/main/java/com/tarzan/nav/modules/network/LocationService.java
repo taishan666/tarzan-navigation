@@ -2,6 +2,7 @@ package com.tarzan.nav.modules.network;
 
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSONObject;
+import com.tarzan.nav.utils.StringUtil;
 
 /**
  * @author tarzan
@@ -9,13 +10,17 @@ import com.alibaba.fastjson.JSONObject;
 public class LocationService {
 
     public static String getLocation(String ip){
-      String result= HttpUtil.get("https://qifu-api.baidubce.com/ip/geo/v1/district?ip="+ip);
+        String location="未知";
+        String result= HttpUtil.get("https://qifu-api.baidubce.com/ip/geo/v1/district?ip="+ip);
         JSONObject json=JSONObject.parseObject(result);
         if("Success".equals(json.getString("code"))){
             JSONObject data=json.getJSONObject("data");
-            return data.getString("prov")+data.getString("city");
+            String prov_city= data.getString("prov")+data.getString("city");
+            if(StringUtil.isNotBlank(prov_city)){
+                location=prov_city;
+            }
         }
-        return "未知";
+        return location;
     }
 
 }

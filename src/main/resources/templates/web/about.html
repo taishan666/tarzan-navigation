@@ -135,6 +135,7 @@
 <script>
     $('#submit').click(function () {
         const $f = $('#commentform');
+        console.log($f.serializeArray())
         $.ajax({
             type:"POST",	//提交方式
             url:'/comment/submit',
