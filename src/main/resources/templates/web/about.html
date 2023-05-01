@@ -24,17 +24,14 @@
     <meta name="keywords" th:content="${SITE_CONFIG?.SITE_KWD}" />
     <meta name="description" th:content="${SITE_CONFIG?.SITE_DESC}" />
     <meta property="og:type" content="website">
-    <meta property="og:url" th:content="${SITE_CONFIG?.SITE_NAME}"/>
-    <meta property="og:title" content="一为导航 | 设计师网址导航">
+    <meta property="og:url" content="/"/>
+    <meta property="og:title" th:content="${SITE_CONFIG?.SITE_NAME}">
     <meta property="og:description" th:content="${SITE_CONFIG?.SITE_DESC}">
     <meta property="og:image" content="/favicon.ico">
     <meta property="og:site_name" th:content="${SITE_CONFIG?.SITE_NAME}">
-    <!--[if IE]><script src="https://nav.iowen.cn/wp-content/themes/onenav/js/html5.min.js"></script><![endif]-->
     <meta name='robots' content='max-image-preview:large' />
     <!--    <link rel='stylesheet' id='classic-theme-styles-css' href='https://nav.iowen.cn/wp-includes/css/classic-themes.min.css?ver=6.2' type='text/css' media='all' />-->
     <link rel='stylesheet' id='iconfont-css' href='/web/css/iconfont.css' type='text/css' media='all' />
-    <link rel='stylesheet' id='iconfont-io-1-css' href='//at.alicdn.com/t/font_1620678_18rbnd2homc.css' type='text/css' media='all' />
-    <link rel='stylesheet' id='iconfont-io-2-css' href='//at.alicdn.com/t/font_2811503_rz4zraeosal.css' type='text/css' media='all' />
     <link rel='stylesheet' id='bootstrap-css' href='/web/css/bootstrap.min.css' type='text/css' media='all' />
     <link rel='stylesheet' id='swiper-css' href='/web/css/swiper-bundle.min.css' type='text/css' media='all' />
     <link rel='stylesheet' id='style-css' href='/web/css/style.css' type='text/css' media='all' />
@@ -104,7 +101,7 @@
 </script>
 <script type='text/javascript' src='/web/js/popper.min.js' id='popper-js'></script>
 <script type='text/javascript' src='/web/js/bootstrap.min.js' id='bootstrap-js'></script>
-<script type='text/javascript' src='/web/js/theia-sticky-sidebar.js' id='sidebar-js'></script>
+<script type='text/javascript' src='/web/js/theia-sticky-sidebar.min.js' id='sidebar-js'></script>
 <script type='text/javascript' src='/web/js/lazyload.min.js' id='lazyload-js'></script>
 <script type='text/javascript' id='appjs-js-extra'>
     const theme = {
@@ -127,7 +124,7 @@
     };
 </script>
 <script type='text/javascript' src='/web/js/app.js'></script>
-<script type='text/javascript' src='/web/js/comment-reply.js'></script>
+<script type='text/javascript' src='/web/js/comment-reply.min.js'></script>
 <script type='text/javascript' id='appjs-js-after'>
     $(document).ready(function(){if($("#search-text")[0]){$("#search-text").focus();}});
 </script>
