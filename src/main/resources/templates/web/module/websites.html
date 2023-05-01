@@ -9,7 +9,7 @@
             <div class="row io-mx-n2">
                 <div class="url-card io-px-2  col-2a col-sm-2a col-md-2a col-lg-2a col-xl-4a col-xxl-5a"  th:each="website:${category?.websites}">
                     <div class="url-body default ">
-                        <a th:href="${website?.url}"   th:data-id="${website?.id}" th:data-url="${website?.url}" th:class="${'card no-c  mb-4 site-'+website?.id}" data-toggle="tooltip" data-placement="bottom"  th:title="${website?.description}">
+                        <a th:href="${website?.url}" target="_blank"   th:data-id="${website?.id}" th:data-url="${website?.url}" th:class="${'card no-c  mb-4 site-'+website?.id}" data-toggle="tooltip" data-placement="bottom"  th:title="${website?.description}">
                             <div class="card-body url-content d-flex align-items-center">
                                 <div class="url-img rounded-circle mr-2 d-flex align-items-center justify-content-center">
                                     <img class=" lazy unfancybox" th:src="${website?.img?.base64}" th:data-src="${website?.img?.base64}"  height="auto" width="auto"  th:alt="${website?.name}">
@@ -47,7 +47,7 @@
                             <div class="row io-mx-n2 mt-4 ajax-list-body position-relative">
                                 <div th:each="website:${cate?.websites}" class="url-card io-px-2  col-2a col-sm-2a col-md-2a col-lg-2a col-xl-4a col-xxl-5a">
                                     <div class="url-body default ">
-                                        <a th:href="${website?.url}"   th:data-id="${website?.id}" th:data-url="${website?.url}" th:class="${'card no-c  mb-4 site-'+website?.id}" data-toggle="tooltip" data-placement="bottom"  th:title="${website?.description}">
+                                        <a th:href="${website?.url}"  target="_blank"  th:data-id="${website?.id}" th:data-url="${website?.url}" th:class="${'card no-c  mb-4 site-'+website?.id}" data-toggle="tooltip" data-placement="bottom"  th:title="${website?.description}">
                                             <div class="card-body url-content d-flex align-items-center">
                                                 <div class="url-img rounded-circle mr-2 d-flex align-items-center justify-content-center">
                                                     <img class=" lazy unfancybox" th:src="${website?.img?.base64}" th:data-src="${website?.img?.base64}"  height="auto" width="auto"  th:alt="${website?.name}">
