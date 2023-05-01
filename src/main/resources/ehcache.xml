@@ -17,7 +17,7 @@
             maxEntriesLocalHeap="1000"
             eternal="false"
             timeToIdleSeconds="3600"
-            timeToLiveSeconds="3600"
+            timeToLiveSeconds="1800"
             overflowToDisk="false">
     </defaultCache>
 
@@ -28,7 +28,7 @@
            eternal="false"
            diskPersistent="false"
            timeToLiveSeconds="3600"
-           timeToIdleSeconds="3600"
+           timeToIdleSeconds="1800"
            statistics="false">
     </cache>
 
@@ -39,7 +39,7 @@
            eternal="false"
            diskPersistent="false"
            timeToLiveSeconds="3600"
-           timeToIdleSeconds="3600"
+           timeToIdleSeconds="1800"
            statistics="false">
     </cache>
 
@@ -50,7 +50,7 @@
            eternal="false"
            diskPersistent="false"
            timeToLiveSeconds="3600"
-           timeToIdleSeconds="3600"
+           timeToIdleSeconds="1800"
            statistics="false">
     </cache>
 
@@ -61,7 +61,7 @@
            eternal="false"
            diskPersistent="false"
            timeToLiveSeconds="3600"
-           timeToIdleSeconds="3600"
+           timeToIdleSeconds="1800"
            statistics="false">
     </cache>
 
@@ -72,7 +72,7 @@
            eternal="false"
            diskPersistent="false"
            timeToLiveSeconds="3600"
-           timeToIdleSeconds="3600"
+           timeToIdleSeconds="1800"
            statistics="false">
     </cache>
 
@@ -84,7 +84,7 @@
            eternal="false"
            diskPersistent="false"
            timeToLiveSeconds="3600"
-           timeToIdleSeconds="3600"
+           timeToIdleSeconds="1800"
            statistics="false">
     </cache>
 
@@ -95,7 +95,7 @@
            eternal="false"
            diskPersistent="false"
            timeToLiveSeconds="3600"
-           timeToIdleSeconds="3600"
+           timeToIdleSeconds="1800"
            statistics="false">
     </cache>
     <!-- 通知 -->
@@ -105,7 +105,7 @@
            eternal="false"
            diskPersistent="false"
            timeToLiveSeconds="600"
-           timeToIdleSeconds="10"
+           timeToIdleSeconds="300"
            statistics="false">
     </cache>
 
@@ -116,7 +116,7 @@
            eternal="false"
            diskPersistent="false"
            timeToLiveSeconds="3600"
-           timeToIdleSeconds="3600"
+           timeToIdleSeconds="1800"
            statistics="false">
     </cache>
 
