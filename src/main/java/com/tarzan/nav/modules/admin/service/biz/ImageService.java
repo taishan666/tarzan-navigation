@@ -33,12 +33,25 @@ public class ImageService extends ServiceImpl<ImageMapper, BizImage> {
     }
 
     public BizImage letterAvatar(String text){
-        String letter=text.substring(0,1);
+        char letter=text.toCharArray()[0];
         String bg = toRGB(Color.BLUE.getRGB());
+        if(Character.isDigit(letter)){
+            bg = toRGB(Color.BLACK.getRGB());
+        }
+        if(Character.isLetter(letter)){
+            bg = toRGB(Color.GREEN.getRGB());
+        }
+        if(isChineseChar(letter)){
+            bg = toRGB(Color.ORANGE.getRGB());
+        }
         String color = "#ffffff";
         String svg="<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" height=\"100\" width=\"100\"><rect fill=\""+bg+"\" x=\"0\" y=\"0\" width=\"100\" height=\"100\"></rect><text x=\"50\" y=\"50\" font-size=\"50\" text-copy=\"fast\" fill=\""+color+"\" text-anchor=\"middle\" text-rights=\"admin\" dominant-baseline=\"central\">"+letter+"</text></svg>";
         String base64= "data:image/svg+xml;base64,"+Base64.getEncoder().encodeToString(svg.getBytes(StandardCharsets.UTF_8));
         return uploadBase64(base64);
+    }
+
+    public static boolean isChineseChar(char c) {
+        return String.valueOf(c).matches("[\u4e00-\u9fa5]");
     }
 
     /**
