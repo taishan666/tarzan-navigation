@@ -1033,7 +1033,6 @@
         $('.hide-type-list .s-current').removeClass("s-current");
         $('.hide-type-list input:radio[name="type"]:checked').parents(".search-group").addClass("s-current");
         $('.hide-type-list input:radio[name="type2"]:checked').parents(".search-group").addClass("s-current");
-
         $(".super-search-fm").attr("action",$('.hide-type-list input:radio:checked').val());
         $(".search-key").attr("placeholder",$('.hide-type-list input:radio:checked').data("placeholder"));
         if(searchlist=='type-zhannei' || searchlist=='type-big-zhannei'){
