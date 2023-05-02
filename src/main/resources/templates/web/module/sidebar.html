@@ -26,7 +26,7 @@
                             </a>
                             <th:block th:unless="${#lists.isEmpty(category.children)}">
                                 <a  th:href="${'#term-'+category.id}" class="smooth" th:data-change="${'#term-'+category.id}">
-                                    <i class="io io-zixun icon-fw icon-lg"></i>
+                                    <i th:class="${category?.icon}+' icon-fw icon-lg'"></i>
                                     <span>[[${category.name}]]</span>
                                 </a>
                                 <i class="iconfont icon-arrow-r-m sidebar-more text-sm"></i>
@@ -45,7 +45,7 @@
             <div class="flex-bottom">
                 <ul>
                     <li id="menu-item-237" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-237 sidebar-item"><a href="/apply">
-                        <i class="io io-tijiao icon-fw icon-lg"></i><span>网站提交</span></a>
+                        <i class="iconfont icon-email icon-fw icon-lg"></i><span>网站提交</span></a>
                     </li>
                 </ul>
             </div>
@@ -80,7 +80,7 @@
                             </a>
                             <th:block th:unless="${#lists.isEmpty(category.children)}">
                                 <a  th:href="${'#term-'+category.id}"  th:data-change="${'/#term-'+category.id}">
-                                    <i class="io io-zixun icon-fw icon-lg"></i>
+                                    <i th:class="${category?.icon}+' icon-fw icon-lg'"></i>
                                     <span>[[${category.name}]]</span>
                                 </a>
                                 <i class="iconfont icon-arrow-r-m sidebar-more text-sm"></i>
@@ -99,7 +99,7 @@
             <div class="flex-bottom">
                 <ul>
                     <li id="menu-item-apply" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-apply sidebar-item">
-                        <a href="/apply"><i class="io io-tijiao icon-fw icon-lg"></i><span>网站提交</span></a>
+                        <a href="/apply"><i class="iconfont icon-email icon-fw icon-lg"></i><span>网站提交</span></a>
                     </li>
                 </ul>
             </div>
