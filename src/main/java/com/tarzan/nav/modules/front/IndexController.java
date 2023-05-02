@@ -50,7 +50,6 @@ public class IndexController {
      */
     @GetMapping({"/","index","home"})
     public String home(Model model) {
-        long start=System.currentTimeMillis();
         model.addAttribute("notices",noticeService.simpleList());
         model.addAttribute("categories",categoryService.treeLink());
         model.addAttribute("links",linkService.simpleList());
@@ -59,7 +58,6 @@ public class IndexController {
         model.addAttribute("douYinHot",hotNewsService.douYinHot());
         model.addAttribute("jueJinHot",hotNewsService.jueJinHot());
         model.addAttribute("cSDNHot",hotNewsService.cSdnHot());
-        System.out.println("耗时 "+(System.currentTimeMillis()-start)+" ms");
         return  CoreConst.WEB_PREFIX+"index";
     }
 
