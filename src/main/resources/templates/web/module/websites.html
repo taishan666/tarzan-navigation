@@ -16,7 +16,7 @@
                                 </div>
                                 <div class="url-info flex-fill">
                                     <div class="text-sm overflowClip_1">
-                                        <span class="badge vc-red text-ss mr-1" title="推荐">热</span>
+                                        <span th:if="${website?.flag!=null}" class="badge vc-red text-ss mr-1" th:title="${website?.flag}">[[${website?.flag}]]</span>
                                         <strong>[[${website?.name}]]</strong>
                                     </div>
                                     <p class="overflowClip_1 m-0 text-muted text-xs">[[${website?.description}]]</p>

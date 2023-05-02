@@ -12,6 +12,7 @@ import com.tarzan.nav.modules.admin.mapper.biz.WebsiteMapper;
 import com.tarzan.nav.modules.admin.model.biz.BizImage;
 import com.tarzan.nav.modules.admin.model.biz.Category;
 import com.tarzan.nav.modules.admin.model.biz.Website;
+import com.tarzan.nav.utils.DateUtil;
 import com.tarzan.nav.utils.JsoupUtil;
 import com.tarzan.nav.utils.StringUtil;
 import lombok.AllArgsConstructor;
@@ -86,7 +87,17 @@ public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
 
     @Cacheable(value = "website", key = "'all'")
     public List<Website> listAll() {
-        return super.lambdaQuery().eq(Website::getStatus,CoreConst.STATUS_VALID).orderByDesc(Website::getCreateTime).list();
+        List<Website> websites= super.lambdaQuery().eq(Website::getStatus,CoreConst.STATUS_VALID).orderByDesc(Website::getCreateTime).list();
+        if (CollectionUtils.isNotEmpty(websites)){
+            Date beforeDate= DateUtil.addDays(DateUtil.now(),-3);
+            websites.forEach(e->{
+                if(beforeDate.compareTo(e.getCreateTime()) < 0){
+                //    System.out.println(DateUtil.format(beforeDate,DateUtil.datetimeFormat)+"  "+DateUtil.format(e.getCreateTime(),DateUtil.datetimeFormat));
+                   e.setFlag("新");
+                }
+            });
+        }
+        return websites;
     }
 
     @CacheEvict(value = {"website", "category"}, allEntries = true)
