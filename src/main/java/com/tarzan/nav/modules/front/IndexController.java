@@ -102,6 +102,12 @@ public class IndexController {
         return  CoreConst.WEB_PREFIX+"apply";
     }
 
+    @GetMapping("/douyin")
+    public String douyin(Model model) {
+        model.addAttribute("categories",categoryService.treeList());
+        return  CoreConst.WEB_PREFIX+"douyin";
+    }
+
     @PostMapping("/apply/submit")
     @ResponseBody
     public ResponseVo apply(@Valid @RequestBody Website website) {

@@ -41,10 +41,25 @@ public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
 
     private static final int TITLE_LEN=50;
 
+
+    public String shortUrl(String url){
+        String shortUrl=url;
+        if(url.endsWith("/")){
+            url=url.substring(0,url.length()-1);
+        }
+        if(url.contains("http://")){
+            shortUrl=url.replaceFirst("http:","");
+        }
+        if(url.contains("https://")){
+            shortUrl=url.replaceFirst("https:","");
+        }
+        return shortUrl;
+    }
+
     @CacheEvict(value = {"website", "category"}, allEntries = true)
     public boolean saveByUrl(String url,Integer categoryId){
         Website website=new Website();
-        website.setUrl(url);
+        website.setUrl(shortUrl(url));
         website.setCategoryId(categoryId);
         Document doc= JsoupUtil.getDocument(url);
         assert doc != null;

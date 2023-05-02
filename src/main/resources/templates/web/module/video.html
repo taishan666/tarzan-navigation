@@ -1,0 +1,183 @@
+<videos>
+    <th:block th:each="category: ${categories}">
+        <th:block th:if="${#lists.isEmpty(category?.children)}" >
+            <div class="d-flex flex-fill align-items-center mb-4">
+                <h4 class="text-gray text-lg m-0"><i th:class="'site-tag '+${category?.icon}+' icon-lg mr-1'" th:id="${'term-'+category?.id}"></i>[[${category?.name}]]</h4>
+                <div class="flex-fill"></div>
+                <!--  <a class='btn-move text-xs' href=''>more+</a>-->
+            </div>
+            <div class="row io-mx-n2">
+                <div class="io-px-2 col-6 col-sm-4 col-md-3 col-lg-2 col-xxl-8a ">
+                <div class="card-book list-item">
+                <div class="media media-5x7 p-0 rounded">
+                    <a class="media-content" href="https://aweme.snssdk.com/aweme/v1/play/?video_id=v0200fg10000ch5ld8rc77uclj45sk70&ratio=1080p&line=0" target="_blank" data-was-processed="true" style="background-image: url(//p3-pc-sign.douyinpic.com/tos-cn-p-0015/oIJLcCgQDjnASCZe16BZhkVaZeWA9ABSIPqob8~tplv-dy-cropcenter:323:430.jpeg?biz_tag=pcweb_cover&from=3213915784&s=PackSourceEnum_FAVORITE&sc=cover&se=true&sh=323_430&x-expires=1998306000&x-signature=Vkxd9lVQXKluoUhgCjlXYW50ZKs%3D);"></a>
+                </div>
+                <div class="list-content">
+                    <div class="list-body">
+                    <!--    <a href="https://nav.iowen.cn/book/546.html" class=" list-title text-md overflowClip_1">
+                            中国艺术史
+                        </a>-->
+                        <div class="mt-1">
+                            <div class="list-subtitle text-muted text-xs overflowClip_1">
+                                这是看的第几遍 #御姐
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+                <div class="io-px-2 col-6 col-sm-4 col-md-3 col-lg-2 col-xxl-8a ">
+                <div class="card-book list-item">
+                <div class="media media-5x7 p-0 rounded">
+                    <a class="media-content" href="https://nav.iowen.cn/book/541.html" data-bg="url(https://nav.iowen.cn/wp-content/uploads/2020/04/s4255151.jpg)" data-was-processed="true" style="background-image: url(&quot;https://nav.iowen.cn/wp-content/uploads/2020/04/s4255151.jpg&quot;);"></a>
+                </div>
+                <div class="list-content">
+                    <div class="list-body">
+                        <a href="https://nav.iowen.cn/book/541.html" class=" list-title text-md overflowClip_1">
+                            浮生六记
+                        </a>
+                        <div class="mt-1">
+                            <div class="list-subtitle text-muted text-xs overflowClip_1">
+                                清人沈复以其家居生活和浪游见闻为内容写成的《浮生六记》，为中国文学史上的一支奇葩。                    </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+                <div class="io-px-2 col-6 col-sm-4 col-md-3 col-lg-2 col-xxl-8a ">
+                    <div class="card-book list-item">
+                <div class="media media-5x7 p-0 rounded">
+                    <a class="media-content" href="https://nav.iowen.cn/book/532.html" data-bg="url(https://nav.iowen.cn/wp-content/uploads/2020/04/timg-1.jpg)" data-was-processed="true" style="background-image: url(&quot;https://nav.iowen.cn/wp-content/uploads/2020/04/timg-1.jpg&quot;);"></a>
+                </div>
+                <div class="list-content">
+                    <div class="list-body">
+                        <a href="https://nav.iowen.cn/book/532.html" class=" list-title text-md overflowClip_1">
+                            男人装
+                        </a>
+                        <div class="mt-1">
+                            <div class="list-subtitle text-muted text-xs overflowClip_1">
+                                是一部全球真性情男性杂志、国际男性杂志市场的当红杂志                    </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+                <div class="io-px-2 col-6 col-sm-4 col-md-3 col-lg-2 col-xxl-8a ">
+                    <div class="card-book list-item">
+                <div class="media media-5x7 p-0 rounded">
+                    <a class="media-content" href="https://nav.iowen.cn/book/543.html" data-bg="url(https://nav.iowen.cn/wp-content/uploads/2020/04/s33581672.jpg)" data-was-processed="true" style="background-image: url(&quot;https://nav.iowen.cn/wp-content/uploads/2020/04/s33581672.jpg&quot;);"></a>
+                </div>
+                <div class="list-content">
+                    <div class="list-body">
+                        <a href="https://nav.iowen.cn/book/543.html" class=" list-title text-md overflowClip_1">
+                            花鸟风月日本史
+                        </a>
+                        <div class="mt-1">
+                            <div class="list-subtitle text-muted text-xs overflowClip_1">
+                                不谈自然风物，何来日式美学！                    </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+                <div class="io-px-2 col-6 col-sm-4 col-md-3 col-lg-2 col-xxl-8a ">
+                    <div class="card-book list-item">
+                <div class="media media-5x7 p-0 rounded">
+                    <a class="media-content" href="https://nav.iowen.cn/book/539.html" data-bg="url(https://nav.iowen.cn/wp-content/uploads/2020/04/s29384957.jpg)" data-was-processed="true" style="background-image: url(&quot;https://nav.iowen.cn/wp-content/uploads/2020/04/s29384957.jpg&quot;);"></a>
+                </div>
+                <div class="list-content">
+                    <div class="list-body">
+                        <a href="https://nav.iowen.cn/book/539.html" class=" list-title text-md overflowClip_1">
+                            小王子
+                        </a>
+                        <div class="mt-1">
+                            <div class="list-subtitle text-muted text-xs overflowClip_1">
+                                这是一本足以让您永葆童心的不朽经典，被全球亿万读者誉为人生必读书。                    </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+                <div class="io-px-2 col-6 col-sm-4 col-md-3 col-lg-2 col-xxl-8a ">
+                    <div class="card-book list-item">
+                <div class="media media-5x7 p-0 rounded">
+                    <a class="media-content" href="https://nav.iowen.cn/book/534.html" data-bg="url(https://nav.iowen.cn/wp-content/uploads/2020/04/s33585245.jpg)" data-was-processed="true" style="background-image: url(&quot;https://nav.iowen.cn/wp-content/uploads/2020/04/s33585245.jpg&quot;);"></a>
+                </div>
+                <div class="list-content">
+                    <div class="list-body">
+                        <a href="https://nav.iowen.cn/book/534.html" class=" list-title text-md overflowClip_1">
+                            再次遇见你
+                        </a>
+                        <div class="mt-1">
+                            <div class="list-subtitle text-muted text-xs overflowClip_1">
+                                那个你念念不忘的人，总有一天会与你再次相遇。                    </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+                <div class="io-px-2 col-6 col-sm-4 col-md-3 col-lg-2 col-xxl-8a ">
+                    <div class="card-book list-item">
+                <div class="media media-5x7 p-0 rounded">
+                    <a class="media-content" href="https://nav.iowen.cn/book/531.html" data-bg="url(https://nav.iowen.cn/wp-content/uploads/2020/04/s26710519.jpg)" data-was-processed="true" style="background-image: url(&quot;https://nav.iowen.cn/wp-content/uploads/2020/04/s26710519.jpg&quot;);"></a>
+                </div>
+                <div class="list-content">
+                    <div class="list-body">
+                        <a href="https://nav.iowen.cn/book/531.html" class=" list-title text-md overflowClip_1">
+                            第七天
+                        </a>
+                        <div class="mt-1">
+                            <div class="list-subtitle text-muted text-xs overflowClip_1">
+                                浓雾弥漫之时，我走出了出租屋，在空虚混沌的城市里孑孓而行。                    </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            </div>
+        </th:block>
+        <th:block th:unless="${#lists.isEmpty(category?.children)}" >
+            <h4 class="text-gray text-lg"><i class="site-tag iconfont icon-tag icon-lg mr-1" id="term-8"></i>[[${category?.name}]]</h4>
+            <!-- tab模式菜单 -->
+            <div class="d-flex flex-fill flex-tab align-items-center">
+                <div class='slider_menu mini_tab ajax-list-home' sliderTab="sliderTab" th:data-id="${category?.id}">
+                    <ul class="nav nav-pills tab-auto-scrollbar menu overflow-x-auto" role="tablist">
+                        <li th:each="cate,stat:${category?.children}" class="pagenumber nav-item" data-sidebar="1" data-post_id="0" data-action="load_home_tab" data-taxonomy="favorites" th:data-id="${cate?.id}">
+                            <a th:id="${'term-'+category?.id+'-'+cate?.id}" th:class="'nav-link tab-noajax '+${stat.index==0? ' active' : ''}+' load'" data-toggle="pill" th:href="${'#tab-'+category?.id+'-'+cate?.id}" th:data-link="${cate?.name}">[[${cate?.name}]]</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="flex-fill"></div>
+                <!--     <a class='btn-move tab-move text-xs ml-2' href=''>more+</a>-->
+            </div>
+            <!-- tab模式菜单 end -->
+            <div class="tab-content mt-4">
+                <div th:each="cate,stat:${category?.children}"  th:id="${'tab-'+category?.id+'-'+cate?.id}" th:class="'tab-pane'+${stat.index==0? ' active' : ''}">
+                    <div class="row io-mx-n2 mt-4 ajax-list-body position-relative">
+                        <div th:each="website:${cate?.websites}" class="url-card io-px-2  col-2a col-sm-2a col-md-2a col-lg-2a col-xl-4a col-xxl-5a">
+                            <div class="url-body default ">
+                                <a th:href="${website?.url}"  target="_blank"  th:data-id="${website?.id}" th:data-url="${website?.url}" th:class="${'card no-c  mb-4 site-'+website?.id}" data-toggle="tooltip" data-placement="bottom"  th:title="${website?.description}">
+                                    <div class="card-body url-content d-flex align-items-center">
+                                        <div class="url-img rounded-circle mr-2 d-flex align-items-center justify-content-center">
+                                            <img class=" lazy unfancybox" th:src="${website?.img?.base64}" th:data-src="${website?.img?.base64}"  height="auto" width="auto"  th:alt="${website?.name}">
+                                        </div>
+                                        <div class="url-info flex-fill">
+                                            <div class="text-sm overflowClip_1">
+                                                <span class="badge vc-red text-ss mr-1" title="推荐">热</span>
+                                                <strong>[[${website?.name}]]</strong>
+                                            </div>
+                                            <p class="overflowClip_1 m-0 text-muted text-xs">[[${website?.description}]]</p>
+                                        </div>
+                                    </div>
+                                </a>
+                                <a th:href="${website?.url}" target="_blank" rel="external nofollow" title="直达" class="togo text-center text-muted is-views" th:data-id="${website?.id}" data-toggle="tooltip" data-placement="right"><i class="iconfont icon-goto"></i></a>
+                            </div>
+                        </div>
+                        <div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </th:block>
+    </th:block>
+</videos>

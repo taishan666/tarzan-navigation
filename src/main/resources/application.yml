@@ -14,26 +14,30 @@ server:
   max-http-header-size: 1MB
   compression:
     enabled: true
-    minResponseSize: 512
+    minResponseSize: 1024
     mime-types: application/json,application/xml,text/html,text/xml,text/plain
   servlet:
     encoding:
       charset: UTF-8
 spring:
+  profiles:
+    active: dev
   application:
     name: tarzan-navigation
+  web:
+    resources:
+      cache:
+        cachecontrol:
+          max-age: 60
+          no-store: false
+          no-transform: true
+          must-revalidate: true
+      chain:
+        compressed: true
   cache:
     type: ehcache
     ehcache:
       config: classpath:ehcache.xml
-  boot:
-    admin:
-      client:
-        url: http://127.0.0.1:8013
-        instance:
-          prefer-ip: true # 使用ip注册进来
-  profiles:
-    active: dev
   datasource:
     druid:
       initial-size: 1
@@ -83,12 +87,3 @@ mybatis-plus:
   mapper-locations: classpath:mapper/**/*.xml,mapper/*.xml
   type-aliases-package: com.tarzan.**.model
 
-management:
-  endpoint:
-    health:
-      show-details: always
-  endpoints:
-    web:
-      exposure:
-        include: '*'
-    enabled-by-default: true

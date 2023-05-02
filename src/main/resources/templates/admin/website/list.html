@@ -174,7 +174,7 @@
                 title: '站点链接',
                 align: "center",
                 formatter: function (value, row, index) {
-                    return '<a href="' + value + '" target="_blank">'+value+'</a>'
+                    return '<a href="' + value + '" target="_blank">'+value.replace('//','')+'</a>'
                 }
             }, {
                 field: 'description',

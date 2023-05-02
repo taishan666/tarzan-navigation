@@ -6,13 +6,12 @@ import com.tarzan.nav.common.constant.CoreConst;
 import com.tarzan.nav.modules.admin.model.biz.BizImage;
 import com.tarzan.nav.modules.admin.service.biz.ImageService;
 import com.tarzan.nav.modules.admin.vo.ImageResponse;
+import com.tarzan.nav.utils.IoUtil;
 import lombok.AllArgsConstructor;
-import net.coobird.thumbnailator.Thumbnails;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -41,10 +40,7 @@ public class ImageController {
             String suffix = originalFilename.substring(originalFilename.lastIndexOf('.')+1).toLowerCase();
             if(Objects.isNull(image)){
                 InputStream is=file.getInputStream();
-                ByteArrayOutputStream os=new  ByteArrayOutputStream();
-                Thumbnails.of(is).scale(1).toOutputStream(os);
-                base64 = "data:image/"+suffix+";base64,"+ Base64.getEncoder().encodeToString(os.toByteArray());
-                os.close();
+                base64 = "data:image/"+suffix+";base64,"+ Base64.getEncoder().encodeToString(IoUtil.readToByteArray(is));
                 boolean flag=imageService.save(BizImage.builder().id(md5).base64(base64).build());
                 if(flag){
                     return ImageResponse.success(md5, suffix, base64, file.getSize());

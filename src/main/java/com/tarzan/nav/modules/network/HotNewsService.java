@@ -32,6 +32,7 @@ public class HotNewsService {
         Document doc= JsoupUtil.getDocument("https://top.baidu.com/board?tab=realtime");
         List<HotNewsVO> hotNews=new ArrayList<>(10);
         // 获取目标HTML代码
+        assert doc != null;
         Elements news = doc.select("div[class=category-wrap_iQLoo horizontal_1eKyQ]");
         for (Element hot : news) {
             Elements hotTitle=hot.select("div[class=c-single-text-ellipsis]");
@@ -58,9 +59,9 @@ public class HotNewsService {
             JSONObject json= JSON.parseObject(text);
             JSONObject data=json.getJSONObject("data");
             JSONArray list=data.getJSONArray("band_list");
-            Iterator<JSONObject> iterator= list.stream().iterator();
+            Iterator<Object> iterator= list.stream().iterator();
             while (iterator.hasNext()){
-                JSONObject e=iterator.next();
+                JSONObject e= (JSONObject) iterator.next();
                 if(e.get("realpos")!=null){
                     String title=e.getString("note");
                     Integer index=e.getInteger("raw_hot");
@@ -86,9 +87,9 @@ public class HotNewsService {
         JSONObject json= JSON.parseObject(text);
         JSONObject data=json.getJSONObject("data");
         JSONArray list=data.getJSONArray("word_list");
-        Iterator<JSONObject> iterator= list.stream().iterator();
+        Iterator<Object> iterator= list.stream().iterator();
         while (iterator.hasNext()){
-            JSONObject e=iterator.next();
+            JSONObject e= (JSONObject) iterator.next();
             String title=e.getString("word");
             String link="https://www.douyin.com/hot/"+e.getString("sentence_id");
             Integer index=e.getInteger("hot_value");
@@ -108,9 +109,9 @@ public class HotNewsService {
         String text= HttpUtil.get("https://api.juejin.cn/content_api/v1/content/article_rank?category_id=1&type=hot");
         JSONObject json= JSON.parseObject(text);
         JSONArray list=json.getJSONArray("data");
-        Iterator<JSONObject> iterator= list.stream().iterator();
+        Iterator<Object> iterator= list.stream().iterator();
         while (iterator.hasNext()){
-            JSONObject e=iterator.next();
+            JSONObject e= (JSONObject) iterator.next();
             String title=e.getJSONObject("content").getString("title");
             String link="https://www.douyin.com/hot/"+e.getJSONObject("content").getString("content_id");
             Integer index=e.getJSONObject("content_counter").getInteger("hot_rank");
@@ -130,9 +131,9 @@ public class HotNewsService {
         String text= HttpUtil.get("https://blog.csdn.net/phoenix/web/blog/hot-rank?page=0&pageSize=25&type=");
         JSONObject json= JSON.parseObject(text);
         JSONArray list=json.getJSONArray("data");
-        Iterator<JSONObject> iterator= list.stream().iterator();
+        Iterator<Object> iterator= list.stream().iterator();
         while (iterator.hasNext()){
-            JSONObject e=iterator.next();
+            JSONObject e= (JSONObject) iterator.next();
             String title=e.getString("articleTitle");
             String link=e.getString("articleDetailUrl");
             Integer index=e.getInteger("hotRankScore");

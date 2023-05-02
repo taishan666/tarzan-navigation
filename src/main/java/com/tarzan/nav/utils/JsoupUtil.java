@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
-import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -72,7 +71,7 @@ public class JsoupUtil {
     }
 
     public static String getWebIcon(Document doc){
-        String url = StringUtils.appendIfMissing(doc.baseUri(), File.separator);
+        String url = StringUtils.appendIfMissing(doc.baseUri(), "/");
         String iconUrl=getDomain(url)+"favicon.ico";
         Element iconEle=doc.selectFirst("[rel=icon]");
         Element shortIconEle=doc.selectFirst("[rel=shortcut icon]");
@@ -107,6 +106,8 @@ public class JsoupUtil {
             }else {
                 if(iconHref.startsWith("//")){
                     return url.split(":")[0]+":"+iconHref;
+                }if(iconHref.startsWith("/")){
+                    return getDomain(url)+iconHref.substring(1);
                 }else {
                     return getDomain(url)+iconHref;
                 }

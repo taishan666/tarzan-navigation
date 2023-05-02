@@ -78,6 +78,9 @@ public class WebsiteController {
     @CacheEvict(value = {"website", "category"}, allEntries = true)
     public ResponseVo edit(Website website) {
         website.setUpdateTime(DateUtil.now());
+        if(StringUtil.isNotBlank(website.getUrl())){
+            website.setUrl(websiteService.shortUrl(website.getUrl()));
+        }
         boolean flag = websiteService.updateById(website);
         if (flag) {
             return ResultUtil.success("编辑网址成功");

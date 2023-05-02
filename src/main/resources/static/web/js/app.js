@@ -27,7 +27,6 @@
         // 初始化游客自定义数据
         if(theme.isCustomize === '1'){
             intoSites(false);
-            intoSites(true);
         }
         // 初始化TOP按钮和菜单栏状态
         if ($(window).scrollTop() >= 50) {

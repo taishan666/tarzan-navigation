@@ -18,8 +18,8 @@
     <meta name="renderer" content="webkit"/>
     <meta name="force-rendering" content="webkit"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
-    <title>[[${SITE_CONFIG?.SITE_NAME}]]-首页</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>[[${SITE_CONFIG?.SITE_NAME}]]</title>
     <meta name="theme-color" content="#f9f9f9" />
     <meta name="keywords" th:content="${SITE_CONFIG?.SITE_KWD}" />
     <meta name="description" th:content="${SITE_CONFIG?.SITE_DESC}" />
@@ -30,15 +30,17 @@
     <meta property="og:image" content="/favicon.ico">
     <meta property="og:site_name" th:content="${SITE_CONFIG?.SITE_NAME}">
     <meta name='robots' content='max-image-preview:large' />
-<!--    <link rel='stylesheet' id='iconfont-io-1-css' href='//at.alicdn.com/t/font_1620678_18rbnd2homc.css' type='text/css' media='all' />
-    <link rel='stylesheet' id='iconfont-io-2-css' href='//at.alicdn.com/t/font_2811503_rz4zraeosal.css' type='text/css' media='all' />-->
+    <link rel='stylesheet' id='iconfont-io-1-css' href='//at.alicdn.com/t/font_1620678_18rbnd2homc.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='iconfont-io-2-css' href='//at.alicdn.com/t/font_2811503_rz4zraeosal.css' type='text/css' media='all' />
     <link rel='stylesheet' id='iconfont-css' href='/web/css/iconfont.min.css' type='text/css' media='all' />
-    <link rel='stylesheet' id='bootstrap-css' href='/web/css/bootstrap.min.css' type='text/css' media='all'  />
-<!--    <link rel='stylesheet' id='swiper-css' href='/web/css/swiper-bundle.min.css' type='text/css' media='all' />-->
+    <link rel='stylesheet' id='bootstrap-css' href='/web/css/bootstrap.min.css' type='text/css' media='all' />
+    <!--    <link rel='stylesheet' id='swiper-css' href='/web/css/swiper-bundle.min.css' type='text/css' media='all' />-->
     <link rel='stylesheet' id='style-css' href='/web/css/style.min.css' type='text/css' media='all' />
-    <script type='text/javascript' src='/web/js/jquery.min.js' id='jquery-js' media="print" ></script>
+    <script type='text/javascript' src='/web/js/jquery.min.js' id='jquery-js'></script>
     <script type='text/javascript' id='jquery-js-after'>
+        /* <![CDATA[ */
         function loadFunc(func) {if (document.all){window.attachEvent("onload",func);}else{window.addEventListener("load",func,false);}}
+        /* ]]> */
     </script>
     <style>.navbar-nav .menu-item-286 a{background: #ff8116;border-radius: 50px!important;padding: 5px 10px!important;margin: 5px 0!important;color: #fff!important;}
     .navbar-nav .menu-item-286 a i{position: absolute;top: 0;right: -10px;color: #f13522;}
@@ -52,73 +54,26 @@
     <nav th:replace="web/module/navbar::index"></nav>
     <div class="header-big  post-top css-color mb-4" style="background-image: url(/web/images/index-bg.webp); ">
         <div th:replace="web/module/searchbox::index"></div>
-       <!-- <div class="bulletin-big mx-3 mx-md-0">
-        </div>-->
         <th:block th:unless="${#lists.isEmpty(notices)}" th:include="web/module/bulletinbox"></th:block>
-      <!--  <div class="auto-ad-url text-center my-4 mx-2 mb-n4 mb-md-n5">
-            <div class="card my-0 mx-auto io-radius">
-                <div class="card-head d-flex align-items-center pb-0 px-2 pt-2">
-                    <div class="text-sm"><i class="iconfont icon-hot mr-2"></i>热门</div>
-                    <a href="" class="btn vc-yellow btn-outline btn-sm py-0 io-ajax-modal-get nofx ml-auto" data-modal_type="overflow-hidden">
-                        <i class="iconfont icon-ad-copy mr-2"></i>立即入驻</a>
-                </div>
-                <div class="card-body pt-1 pb-1 px-2 row row-xs io-ajax-auto" data-href="https://nav.iowen.cn/wp-admin/admin-ajax.php?action=get_auto_ad_url_list&amp;loc=home">
-                    <div class="auto-list-6 col-3a col-md-6a my-1"><a href="https://nav.6aiq.com" class="d-flex align-items-center auto-url-list io-radius px-2 py-1" target="_blank" rel="external" title="未来百科AI工具"><div class="auto-ad-img rounded-circle overflow-hidden"><img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgd2lkdGg9IjIxIiBoZWlnaHQ9IjIxIj4NCiAgICAgICAgICAgICAgICA8cmVjdCBmaWxsPSJyZ2IoMjI5LDEzNywxNTcpIiB4PSIwIiB5PSIwIiB3aWR0aD0iMjEiIGhlaWdodD0iMjEiPjwvcmVjdD4NCiAgICAgICAgICAgICAgICA8Y2lyY2xlIGZpbGw9InJnYigyMjksMTE0LDIyNSkiIGN4PSIyNiIgY3k9IjEzIiByPSIxMi42IiAgb3BhY2l0eT0iLjQiPjwvY2lyY2xlPg0KICAgICAgICAgICAgICAgIDxjaXJjbGUgZmlsbD0icmdiKDIyOSwxNzUsMTE0KSIgY3g9IjA3IiBjeT0iMTQiIHI9IjEwLjUiICBvcGFjaXR5PSIuNiI+PC9jaXJjbGU+DQogICAgICAgICAgICAgICAgPHRleHQgeD0iMTAuNSIgeT0iMTAuNSIgZm9udC1zaXplPSIxMC41IiB0ZXh0LWNvcHk9ImZhc3QiIGZpbGw9IiNmZmZmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIHRleHQtcmlnaHRzPSJhZG1pbiIgYWxpZ25tZW50LWJhc2VsaW5lPSJjZW50cmFsIiBmb250LWZhbWlseT0iJ1BpbmdGYW5nIFNDJywnTWljcm9zb2Z0IFlhaGVpJyI+5pyqPC90ZXh0Pjwvc3ZnPg==" height="21" width="21"></div><div class="auto-ad-name text-sm ml-1 ml-md-2 overflowClip_1">未来百科AI工具</div></a></div>
-                    <div class="auto-list-null col-3a col-md-6a my-1"><div class="d-flex align-items-center auto-url-list io-radius px-2 py-1"><i class="iconfont icon-ad-copy text-muted"></i><div class="auto-ad-name ml-2"></div></div></div>
-                </div>
-             </div>
-           </div>-->
     </div>
     <div id="content" class="container container-fluid customize-width">
         <div class="home-widget-group" style="margin-top:-5.525rem!important"></div>
-        <div th:replace="web/module/hotnews"></div>
+<!--        <div th:replace="web/module/hotnews"></div>-->
         <div class="tab-content">
             <div class="content">
                 <div class="content-wrap">
                     <div class="content-layout" style="margin-right: 0px;">
-                        <websites th:replace="web/module/websites :: websites(${categories})"></websites>
+                        <videos th:replace="web/module/video"></videos>
                     </div>
                 </div>
             </div>
-        <blogroll th:unless="${#lists.isEmpty(links)}" th:include="web/module/blogroll::blogroll(${links})"></blogroll>
+            <blogroll th:unless="${#lists.isEmpty(links)}" th:include="web/module/blogroll::blogroll(${links})"></blogroll>
         </div>
     </div>
     <div th:replace="web/module/siteinfo"></div>
 </div>
 <!-- main-content end -->
 <footer th:replace="web/module/footer"></footer>
-<!--<div id='io-popup-tips' class="io-bomb" data-date='1'>
-    <div class="io-bomb-overlay"></div>
-    <div class="io-bomb-body" style="max-width:680px">
-        <div class="io-bomb-content io-popup-tips-content rounded m-3 p-4 p-md-5 bg-white">
-            <h3 class="mb-4 pb-md-2 text-center">One Nav 主题演示站</h3>
-            <div>
-            OneNav 正版主题，本站为演示站，仅作展示，一次付费，永久免费更新。
-            <a href="https://www.iotheme.cn/store/onenav.html" target="_blank" rel="noopener"><img class="my-3" src="https://www.iotheme.cn/wp-content/uploads/2021/02/onenavad.jpg" alt="One Nav 导航主题" /></a>
-            唯一官网:<a href="https://www.iotheme.cn">https://www.iotheme.cn</a>，其他均为盗版，传播盗版可耻，支持作者，为开发者留最后一丝动力。
-            <div class="mt-4 mb-n2 mb-md-n4 text-xs text-muted text-center">ioTheme</div>
-        </div>
-        </div>
-        <div class="btn-close-bomb mt-2 text-center">
-            <i class="iconfont popup-close icon-close-circle"></i>
-        </div>
-    </div>
-    <script>
-        var cookieValue='1';
-        var exdays = 1;
-        $(document).ready(function(){
-            if(getCookie('io_popup_tips')!=cookieValue)                    setTimeout(function(){
-                $('#io-popup-tips').addClass('io-bomb-open');
-            },1000);
-        });
-        $(document).on('click','.popup-close',function(ev) {
-            $('#io-popup-tips').removeClass('io-bomb-open').addClass('io-bomb-close');
-            setCookie("io_popup_tips",cookieValue,exdays);                    setTimeout(function(){
-                $('#io-popup-tips').remove();
-            },600);
-        });
-    </script>
-</div>-->
 <script type='text/javascript' id='rocket-preload-links-js-after'>
     (function() {
         "use strict";var r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},e=function(){function i(e,t){for(var n=0;n<t.length;n++){var i=t[n];i.enumerable=i.enumerable||!1,i.configurable=!0,"value"in i&&(i.writable=!0),Object.defineProperty(e,i.key,i)}}return function(e,t,n){return t&&i(e.prototype,t),n&&i(e,n),e}}();function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}var t=function(){function n(e,t){i(this,n),this.browser=e,this.config=t,this.options=this.browser.options,this.prefetched=new Set,this.eventTime=null,this.threshold=1111,this.numOnHover=0}return e(n,[{key:"init",value:function(){!this.browser.supportsLinkPrefetch()||this.browser.isDataSaverModeOn()||this.browser.isSlowConnection()||(this.regex={excludeUris:RegExp(this.config.excludeUris,"i"),images:RegExp(".("+this.config.imageExt+")$","i"),fileExt:RegExp(".("+this.config.fileExt+")$","i")},this._initListeners(this))}},{key:"_initListeners",value:function(e){-1<this.config.onHoverDelay&&document.addEventListener("mouseover",e.listener.bind(e),e.listenerOptions),document.addEventListener("mousedown",e.listener.bind(e),e.listenerOptions),document.addEventListener("touchstart",e.listener.bind(e),e.listenerOptions)}},{key:"listener",value:function(e){var t=e.target.closest("a"),n=this._prepareUrl(t);if(null!==n)switch(e.type){case"mousedown":case"touchstart":this._addPrefetchLink(n);break;case"mouseover":this._earlyPrefetch(t,n,"mouseout")}}},{key:"_earlyPrefetch",value:function(t,e,n){var i=this,r=setTimeout(function(){if(r=null,0===i.numOnHover)setTimeout(function(){return i.numOnHover=0},1e3);else if(i.numOnHover>i.config.rateThrottle)return;i.numOnHover++,i._addPrefetchLink(e)},this.config.onHoverDelay);t.addEventListener(n,function e(){t.removeEventListener(n,e,{passive:!0}),null!==r&&(clearTimeout(r),r=null)},{passive:!0})}},{key:"_addPrefetchLink",value:function(i){return this.prefetched.add(i.href),new Promise(function(e,t){var n=document.createElement("link");n.rel="prefetch",n.href=i.href,n.onload=e,n.onerror=t,document.head.appendChild(n)}).catch(function(){})}},{key:"_prepareUrl",value:function(e){if(null===e||"object"!==(void 0===e?"undefined":r(e))||!1 in e||-1===["http:","https:"].indexOf(e.protocol))return null;var t=e.href.substring(0,this.config.siteUrl.length),n=this._getPathname(e.href,t),i={original:e.href,protocol:e.protocol,origin:t,pathname:n,href:t+n};return this._isLinkOk(i)?i:null}},{key:"_getPathname",value:function(e,t){var n=t?e.substring(this.config.siteUrl.length):e;return n.startsWith("/")||(n="/"+n),this._shouldAddTrailingSlash(n)?n+"/":n}},{key:"_shouldAddTrailingSlash",value:function(e){return this.config.usesTrailingSlash&&!e.endsWith("/")&&!this.regex.fileExt.test(e)}},{key:"_isLinkOk",value:function(e){return null!==e&&"object"===(void 0===e?"undefined":r(e))&&(!this.prefetched.has(e.href)&&e.origin===this.config.siteUrl&&-1===e.href.indexOf("?")&&-1===e.href.indexOf("#")&&!this.regex.excludeUris.test(e.href)&&!this.regex.images.test(e.href))}}],[{key:"run",value:function(){"undefined"!=typeof RocketPreloadLinksConfig&&new n(new RocketBrowserCompatibilityChecker({capture:!0,passive:!0}),RocketPreloadLinksConfig).init()}}]),n}();t.run();
