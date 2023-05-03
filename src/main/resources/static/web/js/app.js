@@ -91,8 +91,6 @@
         if($('#sidebar').hasClass('show') && !_this.hasClass('change-href')){
             $('#sidebar').modal('toggle');
         }
-        console.log(_this.attr("href"))
-        console.log($(_this.attr("href")))
         if(_this.attr("href").substr(0, 1) == "#" && $(_this.attr("href"))[0]){
             $("html, body").animate({
                 scrollTop: $(_this.attr("href")).offset().top - 90
@@ -516,8 +514,7 @@
         showMenu($(this));
     });
     function showMenu(_this){
-        //console.log('--->>>'+_this.find('span').text());
-        if (!$('body').hasClass('mini-sidebar')) {//菜单栏没有最小化   
+        if (!$('body').hasClass('mini-sidebar')) {//菜单栏没有最小化
             _this.parent("li").siblings("li").removeClass('sidebar-show').children('ul').slideUp(200);
             if (_this.nextAll('ul').css('display') == "none") { //展开
                 //展开未展开
@@ -588,7 +585,6 @@
         var t = $(this);
         var id = t.data('id');
         var box = $(t.attr('href')).children('.site-list');
-        //console.log(box.children('.url-card').length);
         if( box.children('.url-card').length==0 ){
             t.addClass('disabled');
             $.ajax({
@@ -818,7 +814,6 @@
             sites = getItem("myLinks");
         for (var i = 0; i < sites.length; i++){
             if ( parseInt(sites[i].id) === parseInt(id)) {
-                console.log(sites[i].id, id);
                 sites.splice(i, 1);
                 break;
             }
@@ -831,7 +826,6 @@
             sites = getItem("livelists");
         for (var i = 0; i < sites.length; i++){
             if ( parseInt(sites[i].id) === parseInt(id)) {
-                console.log(sites[i].id, id);
                 sites.splice(i, 1);
                 break;
             }
