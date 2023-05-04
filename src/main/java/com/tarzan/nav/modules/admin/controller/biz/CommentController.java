@@ -31,7 +31,7 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("list")
-    public PageResultVo loadNotify(CommentConditionVo vo, Integer pageNumber, Integer pageSize) {
+    public PageResultVo list(CommentConditionVo vo, Integer pageNumber, Integer pageSize) {
         IPage<Comment> commentPage = commentService.selectComments(vo, pageNumber, pageSize);
         return ResultUtil.table(commentPage.getRecords(), commentPage.getTotal());
     }
@@ -59,6 +59,12 @@ public class CommentController {
         } else {
             return ResultUtil.error("审核失败");
         }
+    }
+
+    @PostMapping("/toAudit")
+    public ResponseVo loadNotify() {
+        List<Comment> comments=commentService.toAudit(5);
+        return ResultUtil.vo(comments);
     }
 
 

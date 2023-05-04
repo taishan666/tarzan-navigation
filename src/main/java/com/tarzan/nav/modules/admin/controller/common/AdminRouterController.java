@@ -41,7 +41,7 @@ public class AdminRouterController {
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         model.addAttribute("menuTree", MenuService.selectMenuTreeByUserId(user.getId()));
         model.addAttribute("loginUser",userService.getByIdWithImage(user.getId()));
-        model.addAttribute("comments",commentService.toAudit());
+        model.addAttribute("comments",commentService.toAudit(3));
         return CoreConst.ADMIN_PREFIX + "index/index";
     }
 

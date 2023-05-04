@@ -96,7 +96,31 @@
 <script th:src="@{/assets/js/custom.js}"></script>
 <script th:src="@{/assets/js/core.js}"></script>
 <script th:src="@{/assets/js/download.min.js}"></script>
+<script>
 
+  function getMessages(){
+    Core.postAjax("/comment/toAudit", {}, function (res) {
+      if (res.status === 200) {
+        if (res.data.length > 0) {
+          $("#message_num").text("你有"+res.data.length+"条新消息")
+          $("#notification-info").attr("class", "notification-info");
+          let commentOne = "";
+          $.each(res.data, function (index, value) {
+            commentOne += '<li><a href="#comments"><h5><i class="far fa-envelope mr-2"></i>待审核评论</h5><span>' + value.content + '</span></a></li>';
+          });
+          $("#notification-list").html(commentOne);
+        }else {
+          $("#message_num").text("你有0条新消息")
+          $("#notification-info").attr("class", "");
+        }
+      }
+    })
+  }
+  window.setInterval(function(){
+    getMessages();
+  }, 5000);
+
+</script>
 
 <!-- 声明项目上下文路径 -->
 <script type="text/javascript" th:inline="javascript">

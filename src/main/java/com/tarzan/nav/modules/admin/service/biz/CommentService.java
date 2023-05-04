@@ -109,8 +109,8 @@ public class CommentService extends ServiceImpl<CommentMapper, Comment> {
     }
 
     @Cacheable(value = "comment", key = "'toAudit'")
-    public List<Comment> toAudit() {
-       return super.lambdaQuery().select(Comment::getContent).eq(Comment::getStatus,CoreConst.STATUS_INVALID).list();
+    public List<Comment> toAudit(int num) {
+       return super.lambdaQuery().select(Comment::getContent).eq(Comment::getStatus,CoreConst.STATUS_INVALID).last("limit "+num).list();
     }
 
     @CacheEvict(value = "comment", allEntries = true)
