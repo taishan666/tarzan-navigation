@@ -47,7 +47,7 @@
                             <div class="d-flex flex-fill text-xs text-muted pt-2">
                                 <div class="comment-meta">
                                     <span class="info mr-2"><i class="iconfont icon-time mr-1"></i><time itemprop="datePublished" th:datetime="${comment?.createTime}">[[${#dates.format(comment?.createTime,'yyyy-MM-dd HH:mm:ss')}]]</time></span>
-                                    <span class="info-location"><i class="iconfont icon-location mr-1"></i>[[${comment?.remark}]]</span>
+                                    <span class="info-location"><i class="iconfont icon-location mr-1"></i>[[${comment?.location}]]</span>
                                 </div>
                                 <div class="flex-fill"></div>
                                 <a rel="nofollow" class="comment-reply-link" th:href="'/about?replytocom='+${comment?.id}+'#respond'" th:data-commentid="${comment?.id}" th:data-postid="${comment?.sid}" th:data-belowelement="'comment-'+${comment?.id}" data-respondelement="respond" th:data-replyto="${comment?.id}" th:aria-label="'回复给'+${comment?.nickname}">回复</a> </div>

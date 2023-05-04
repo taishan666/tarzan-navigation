@@ -42,7 +42,7 @@ public class Comment extends BaseVo {
     private String browser;
     private String browserShortName;
     private String content;
-    private String remark;
+    private String location;
 
     @TableField(exist = false)
     private Long loveCount;

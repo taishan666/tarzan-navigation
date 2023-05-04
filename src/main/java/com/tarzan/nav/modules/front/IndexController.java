@@ -144,7 +144,7 @@ public class IndexController {
         comment.setContent(content);
         comment.setIp(IpUtil.getIpAddr(request));
         comment.setAvatar(imageService.letterAvatar(comment.getNickname()).getId());
-        comment.setRemark(LocationService.getLocation(comment.getIp()));
+        comment.setLocation(LocationService.getLocation(comment.getIp()));
         boolean a = commentService.insertComment(comment);
         if (a) {
             return ResultUtil.success("评论提交成功,系统正在审核");

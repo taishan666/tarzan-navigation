@@ -103,7 +103,7 @@ CREATE TABLE
                                BROWSER VARCHAR ( 64 ) NULL DEFAULT NULL COMMENT '评论时的浏览器类型',
                                BROWSER_SHORT_NAME VARCHAR ( 10 ) NULL DEFAULT NULL COMMENT '评论时的浏览器的简称',
                                CONTENT VARCHAR ( 2000 ) NULL DEFAULT NULL COMMENT '评论的内容',
-                               REMARK VARCHAR ( 100 ) NULL DEFAULT NULL COMMENT '备注（审核不通过时添加）',
+                               LOCATION VARCHAR ( 100 ) NULL DEFAULT NULL COMMENT '位置',
                                SUPPORT INT UNSIGNED NULL DEFAULT 0 COMMENT '支持（赞）',
                                OPPOSE INT UNSIGNED NULL DEFAULT 0 COMMENT '反对（踩）',
                                CREATE_TIME datetime ( 0 ) NULL DEFAULT CURRENT_TIMESTAMP ( 0 ) COMMENT '添加时间',
