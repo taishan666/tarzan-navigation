@@ -266,6 +266,8 @@ INSERT INTO SYS_CONFIG VALUES (9,'SITE_PERSON_NAME','洛阳泰山',1,'站长名�
 INSERT INTO SYS_CONFIG VALUES (10,'SITE_PERSON_DESC','90后少年，热爱写bug，热爱编程，热爱学习，分享一些个人经验，共同学习，少走弯路。Talk is cheap, show me the code!',1,'站长描述');
 INSERT INTO SYS_CONFIG VALUES (11,'BAIDU_PUSH_URL','http://data.zz.baidu.com/urls?site=#&token=EjnfUGGJ1drKk4Oy',1,'百度推送地址');
 INSERT INTO SYS_CONFIG VALUES (11,'STATISTICS_CODE','',1,'统计代码');
+
+INSERT INTO SYS_MENU VALUES (15,0, '仪表盘', '仪表盘', '/dashboard', 'dashboard', 1, 1, 'fas fa-home', 1, '2021-09-27 21:22:02', '2021-02-27 10:53:14');
 INSERT INTO SYS_MENU VALUES (1,0,'公告管理','公告管理','/notices','notices',1,1,'fas fa-volume-up',1,'2021-07-13 15:05:47','2021-02-27 10:53:14');
 INSERT INTO SYS_MENU VALUES (2,0,'用户管理','用户管理','/users','users',1,2,'fas fa-user',1,'2021-07-13 15:05:47','2021-02-27 10:53:14');
 INSERT INTO SYS_MENU VALUES (3,0,'导航管理','导航管理',null,'nav',0,3,'fas fa-bookmark',1,'2021-07-24 15:44:23','2021-04-19 19:08:46');

@@ -44,6 +44,7 @@ public class IndexController {
     private final HotNewsService hotNewsService;
     private final CommentService commentService;
     private final ImageService imageService;
+    private final SiteLookService siteLookService;
 
     /**
      * 首页
@@ -98,6 +99,18 @@ public class IndexController {
     public String apply(Model model) {
         model.addAttribute("categories",categoryService.treeList());
         return  CoreConst.WEB_PREFIX+"apply";
+    }
+
+    @GetMapping("/site/{id}")
+    public String apply(Model model,@PathVariable("id") Integer id) {
+        siteLookService.look(id);
+        Website website=websiteService.getById(id);
+        if(Objects.isNull(website)){
+            model.addAttribute("url","/");
+        }else {
+            model.addAttribute("url",website.getUrl());
+        }
+        return  CoreConst.WEB_PREFIX+"website";
     }
 
     @GetMapping("/douyin")
