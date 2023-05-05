@@ -114,7 +114,7 @@
 
     /* Area Spaline Chart  */
     function visitChart() {
-        var options = {
+        const options = {
             chart: {
                 height: 350,
                 type: 'area',
@@ -143,7 +143,7 @@
                 type: 'datetime',
                 categories: Object.keys(lookCountByDay),
                 labels: {
-                    format:"yyyy-MM-dd",
+                    format: "yyyy-MM-dd",
                     style: {
                         colors: '#10163a',
                         background: '#10163a',
@@ -165,9 +165,9 @@
                 },
             },
             colors: ['#ffa000', '#11a0fd']
-        }
+        };
 
-        var chart = new ApexCharts(
+        const chart = new ApexCharts(
             document.querySelector("#visitChart"),
             options
         );

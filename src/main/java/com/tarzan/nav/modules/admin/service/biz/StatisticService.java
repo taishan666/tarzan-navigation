@@ -5,6 +5,7 @@ import com.tarzan.nav.modules.admin.model.biz.SiteLook;
 import com.tarzan.nav.modules.admin.vo.StatisticVo;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class StatisticService {
     private final SiteLookService siteLookService;
 
 
+    @Cacheable(value = "dashboard", key = "'statistic'")
     public StatisticVo getStatistic() {
         long linkCount = linkService.count();
         long commentCount = commentService.count();
