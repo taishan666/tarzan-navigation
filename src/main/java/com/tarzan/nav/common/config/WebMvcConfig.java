@@ -5,6 +5,7 @@ import com.tarzan.nav.common.props.StaticHtmlProperties;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -17,7 +18,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  */
 @Configuration
 @AllArgsConstructor
-@EnableConfigurationProperties({StaticHtmlProperties.class})
 public class WebMvcConfig implements WebMvcConfigurer {
 
     private final CommonDataHandler commonDataInterceptor;
@@ -51,6 +51,17 @@ public class WebMvcConfig implements WebMvcConfigurer {
         return resolver;
     }
 */
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                //是否发送Cookie
+               // .allowCredentials(true);
+                .allowedOrigins("*")
+               .allowedMethods("*")
+                .allowedHeaders("*")
+                .exposedHeaders("Authorization", "Cache-Control", "Content-Type");
+    }
 
 
 
