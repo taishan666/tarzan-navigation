@@ -2,13 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>[[${website?.name}]]</title>
 </head>
 <body>
-[[${url}]]
 </body>
-<script>
-alert(1)
-window.location.href=[[${url}]];
+<script type="text/javascript" th:inline="javascript">
+const webUrl = [[${website?.url}]];
+window.location.href=webUrl;
 </script>
 </html>

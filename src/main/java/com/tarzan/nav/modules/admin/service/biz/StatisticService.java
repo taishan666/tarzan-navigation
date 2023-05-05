@@ -31,9 +31,9 @@ public class StatisticService {
         long linkCount = linkService.count();
         long commentCount = commentService.count();
         long siteCount = websiteService.count();
-        long lookCount = websiteService.count();
-        List<SiteLook> userList=siteLookService.list(Wrappers.<SiteLook>lambdaQuery().select(SiteLook::getUserIp));
-        long userCount = userList.stream().distinct().count();
+        List<SiteLook> lookList=siteLookService.list(Wrappers.<SiteLook>lambdaQuery().select(SiteLook::getUserIp));
+        long lookCount = lookList.size();
+        long userCount = lookList.stream().distinct().count();
         int recentDays = 7;
         Map<String,List<SiteLook>> lookMap=siteLookService.looksGroupMap(recentDays);
         Map<String, Long> lookCountByDay = siteLookService.looksByDay(lookMap,recentDays);

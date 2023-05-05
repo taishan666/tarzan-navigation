@@ -106,9 +106,9 @@ public class IndexController {
         siteLookService.look(id);
         Website website=websiteService.getById(id);
         if(Objects.isNull(website)){
-            model.addAttribute("url","/");
+            model.addAttribute("website",new Website());
         }else {
-            model.addAttribute("url",website.getUrl());
+            model.addAttribute("website",website);
         }
         return  CoreConst.WEB_PREFIX+"website";
     }

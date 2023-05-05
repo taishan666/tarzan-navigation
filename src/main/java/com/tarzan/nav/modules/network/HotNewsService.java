@@ -5,8 +5,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.tarzan.nav.modules.admin.vo.HotNewsVO;
+import com.tarzan.nav.utils.JsoupUtil;
 import com.tarzan.nav.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -25,11 +29,10 @@ public class HotNewsService {
     @Cacheable(value = "hotNews", key = "'baidu'")
     public List<HotNewsVO> baiduHot(){
         log.info("百度热点");
-      //  String text= HttpUtil.get("https://top.baidu.com/board?tab=realtime");
-     //   Document doc= JsoupUtil.getDocument("https://top.baidu.com/board?tab=realtime");
+        Document doc= JsoupUtil.getDocument("https://top.baidu.com/board?tab=realtime");
         List<HotNewsVO> hotNews=new ArrayList<>(10);
         // 获取目标HTML代码
-/*        assert doc != null;
+        assert doc != null;
         Elements news = doc.select("div[class=category-wrap_iQLoo horizontal_1eKyQ]");
         for (Element hot : news) {
             Elements hotTitle=hot.select("div[class=c-single-text-ellipsis]");
@@ -43,7 +46,7 @@ public class HotNewsService {
             vo.setLink(link);
             vo.setIndex(numberFormat(Integer.parseInt(index)));
             hotNews.add(vo);
-        }*/
+        }
         return hotNews;
     }
 
