@@ -20,20 +20,6 @@ server:
   servlet:
     context-path: /
 
-file:
-  #上传的文件对外暴露的访问路径
-  access-path-pattern: /u/**
-  #文件上传目录
-  upload-folder: /file/upload/
-  #文件预览、下载的访问路径前缀
-  access-prefix-url: http://localhost:80/u
-
-static:
-  #静态html对外访问路径
-  access-path-pattern: /html/**
-  #静态html路径
-  folder: /tarzanCms/html/path
-
 tarzan:
   shiro-key: ${user.home}/.tarzan-nav/shiro_key.pub
   backup-dir: ${user.home}/.tarzan-nav/backup
