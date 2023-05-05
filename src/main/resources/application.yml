@@ -15,7 +15,7 @@ server:
   compression:
     enabled: true
     minResponseSize: 1024
-    mime-types: application/json,application/xml,text/html,text/xml,text/plain
+    mime-types: application/json,application/xml,application/javascript,text/html,text/xml,text/plain,text/css
   servlet:
     encoding:
       charset: UTF-8
@@ -28,12 +28,10 @@ spring:
     resources:
       cache:
         cachecontrol:
-          max-age: 60
+          max-age: 3600
           no-store: false
           no-transform: true
           must-revalidate: true
-      chain:
-        compressed: true
   cache:
     type: ehcache
     ehcache:

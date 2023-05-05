@@ -18,7 +18,7 @@
     <meta name="renderer" content="webkit"/>
     <meta name="force-rendering" content="webkit"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
     <title>[[${SITE_CONFIG?.SITE_NAME}]]-首页</title>
     <meta name="theme-color" content="#f9f9f9" />
     <meta name="keywords" th:content="${SITE_CONFIG?.SITE_KWD}" />
@@ -133,7 +133,7 @@
     const theme = {"defaultclass": "io-grey-mode", "minNav": "0", "isCustomize": "1", "isHome": "1","hotWords":"baidu"};
     const localize = {"lightMode": "\u65e5\u95f4\u6a21\u5f0f", "nightMode": "\u591c\u95f4\u6a21\u5f0f"};
 </script>
-<script type='text/javascript' src='/web/js/app.js' id='appjs-js'></script>
+<script type='text/javascript' src='/web/js/app.min.js' id='appjs-js'></script>
 <script type='text/javascript' id='appjs-js-after'>
     $(document).ready(function(){if($("#search-text")[0]){$("#search-text").focus();}});
 </script>

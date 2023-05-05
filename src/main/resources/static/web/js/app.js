@@ -1,9 +1,3 @@
-/*!
- * Theme Name:One Nav
- * Theme URI:https://www.iotheme.cn/
- * Author:iowen
- * Author URI:https://www.iowen.cn/
- */
 (function($){
     $(document).ready(function(){
         // 侧栏菜单初始状态设置
