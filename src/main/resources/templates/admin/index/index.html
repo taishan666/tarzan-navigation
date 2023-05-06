@@ -96,8 +96,10 @@
 <script th:src="@{/assets/js/custom.js}"></script>
 <script th:src="@{/assets/js/core.js}"></script>
 <script th:src="@{/assets/js/download.min.js}"></script>
+<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.4.2/echarts.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
 <script>
-
   function getMessages(){
     Core.postAjax("/comment/toAudit", {}, function (res) {
       if (res.status === 200) {
