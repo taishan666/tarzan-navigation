@@ -7,7 +7,6 @@ import com.google.common.collect.Maps;
 import com.tarzan.nav.modules.admin.mapper.biz.SiteLookMapper;
 import com.tarzan.nav.modules.admin.model.biz.SiteLook;
 import com.tarzan.nav.utils.DateUtil;
-import com.tarzan.nav.utils.WebUtil;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -31,9 +30,14 @@ public class SiteLookService extends ServiceImpl<SiteLookMapper, SiteLook> {
     }
 
     @Async
-    public void look(Integer siteId) {
+    public void asyncLook(Integer siteId,String userIp) {
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         /*浏览次数*/
-        String userIp= WebUtil.getIP();
+        System.out.println(userIp+" 查看1次");
         Date date = new Date();
         long checkCount = this.checkArticleLook(siteId, userIp, DateUtil.addHours(date, -1));
         if (checkCount == 0) {

@@ -7,10 +7,7 @@ import com.tarzan.nav.modules.admin.service.biz.*;
 import com.tarzan.nav.modules.admin.vo.base.ResponseVo;
 import com.tarzan.nav.modules.network.HotNewsService;
 import com.tarzan.nav.modules.network.LocationService;
-import com.tarzan.nav.utils.IpUtil;
-import com.tarzan.nav.utils.ResultUtil;
-import com.tarzan.nav.utils.StringUtil;
-import com.tarzan.nav.utils.XssKillerUtil;
+import com.tarzan.nav.utils.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -103,7 +100,8 @@ public class IndexController {
 
     @GetMapping("/site/{id}")
     public String apply(Model model,@PathVariable("id") Integer id) {
-        siteLookService.look(id);
+        String userIp= WebUtil.getIP();
+        siteLookService.asyncLook(id,userIp);
         Website website=websiteService.getById(id);
         if(Objects.isNull(website)){
             model.addAttribute("website",new Website());
