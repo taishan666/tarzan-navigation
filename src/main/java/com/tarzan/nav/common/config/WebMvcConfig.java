@@ -3,6 +3,7 @@ package com.tarzan.nav.common.config;
 import com.tarzan.nav.common.handler.CommonDataHandler;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -49,7 +50,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
     }
 */
 
-/*
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
@@ -60,7 +60,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .allowedHeaders("*")
                 .exposedHeaders("Authorization", "Cache-Control", "Content-Type");
     }
-*/
 
 
 

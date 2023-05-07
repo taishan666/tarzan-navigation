@@ -31,12 +31,13 @@ public class VideoPlayerController {
 
     @GetMapping("/player")
     public void getPlayResource(HttpServletRequest request, HttpServletResponse response) throws Exception {
-        Path path = Paths.get("C:\\Users\\Lenovo\\Desktop\\player.mp4");
+        Path path = Paths.get("C:\\Users\\liuya\\Desktop\\player.mp4");
         if (Files.exists(path)) {
             String mimeType = Files.probeContentType(path);
             if (!StringUtils.isEmpty(mimeType)) {
                 response.setContentType(mimeType);
             }
+            response.setContentLength((int) path.toFile().length());
             request.setAttribute(VideoHttpRequestHandler.ATTR_FILE, path);
             videoHttpRequestHandler.handleRequest(request, response);
         } else {
