@@ -6,6 +6,7 @@ import com.tarzan.nav.modules.admin.model.sys.User;
 import com.tarzan.nav.modules.admin.service.biz.CategoryService;
 import com.tarzan.nav.modules.admin.service.biz.CommentService;
 import com.tarzan.nav.modules.admin.service.biz.StatisticService;
+import com.tarzan.nav.modules.admin.service.biz.MatterService;
 import com.tarzan.nav.modules.admin.service.sys.MenuService;
 import com.tarzan.nav.modules.admin.service.sys.SysConfigService;
 import com.tarzan.nav.modules.admin.service.sys.UserService;
@@ -34,6 +35,7 @@ public class AdminRouterController {
     private final CategoryService categoryService;
     private final UserService userService;
     private final StatisticService statisticService;
+    private final MatterService matterService;
 
     /**
      * 后台首页
@@ -43,7 +45,7 @@ public class AdminRouterController {
         User user = (User) SecurityUtils.getSubject().getPrincipal();
         model.addAttribute("menuTree", MenuService.selectMenuTreeByUserId(user.getId()));
         model.addAttribute("loginUser",userService.getByIdWithImage(user.getId()));
-        model.addAttribute("comments",commentService.toAudit(3));
+        model.addAttribute("todoItems", matterService.todoItems());
         return CoreConst.ADMIN_PREFIX + "index/index";
     }
 

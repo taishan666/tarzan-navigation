@@ -41,4 +41,8 @@ public class LinkService extends ServiceImpl<LinkMapper, Link> {
     public List<Link>  simpleList() {
         return super.lambdaQuery().select(Link::getName,Link::getUrl).eq(Link::getStatus, CoreConst.STATUS_VALID).list();
     }
+
+    public Long toAuditNum() {
+        return super.lambdaQuery().eq(Link::getStatus,CoreConst.ZERO).count();
+    }
 }

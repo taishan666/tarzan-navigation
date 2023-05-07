@@ -113,6 +113,10 @@ public class CommentService extends ServiceImpl<CommentMapper, Comment> {
        return super.lambdaQuery().select(Comment::getContent).eq(Comment::getStatus,CoreConst.STATUS_INVALID).last("limit "+num).list();
     }
 
+    public Long toAuditNum() {
+        return super.lambdaQuery().eq(Comment::getStatus,CoreConst.STATUS_INVALID).count();
+    }
+
     @CacheEvict(value = "comment", allEntries = true)
     @Transactional(rollbackFor = Exception.class)
     public boolean audit(Comment bizComment, String replyContent) {

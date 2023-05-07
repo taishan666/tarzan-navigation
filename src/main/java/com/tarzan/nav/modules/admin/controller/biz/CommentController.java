@@ -61,11 +61,7 @@ public class CommentController {
         }
     }
 
-    @PostMapping("/toAudit")
-    public ResponseVo loadNotify() {
-        List<Comment> comments=commentService.toAudit(5);
-        return ResultUtil.vo(comments);
-    }
+
 
 
 }

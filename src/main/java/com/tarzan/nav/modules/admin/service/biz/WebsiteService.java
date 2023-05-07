@@ -195,4 +195,8 @@ public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
         website.setImageId(image.getId());
         return website;
     }
+
+    public Long toAuditNum() {
+       return super.lambdaQuery().eq(Website::getStatus,CoreConst.ZERO).count();
+    }
 }

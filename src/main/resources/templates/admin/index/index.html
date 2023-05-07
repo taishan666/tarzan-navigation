@@ -50,7 +50,7 @@
 
 </div>
 
-<div id="style-switcher">
+<!--<div id="style-switcher">
   <div>
     <ul class="colors">
       <li>
@@ -74,7 +74,7 @@
     </ul>
   </div>
   <div class="bottom"><a href="" class="settings"><i class="fa fa-cog" aria-hidden="true"></i></a></div>
-</div>
+</div>-->
 <script th:src="@{/assets/libs/jquery/jquery.min.js}"></script>
 <script th:src="@{/assets/libs/popper/popper.min.js}"></script>
 <script th:src="@{/assets/libs/bootstrap/js/bootstrap.min.js}"></script>
@@ -96,21 +96,18 @@
 <script th:src="@{/assets/js/custom.js}"></script>
 <script th:src="@{/assets/js/core.js}"></script>
 <script th:src="@{/assets/js/download.min.js}"></script>
-<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
 <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.4.2/echarts.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
 <script>
   function getMessages(){
-    Core.postAjax("/comment/toAudit", {}, function (res) {
+    Core.postAjax("/matter/todo", {}, function (res) {
       if (res.status === 200) {
-        if (res.data.length > 0) {
-          $("#message_num").text("你有"+res.data.length+"条新消息")
+        if (res.data.total > 0) {
+          $("#message_num").text("你有"+res.data.total+"条新消息");
           $("#notification-info").attr("class", "notification-info");
-          let commentOne = "";
-          $.each(res.data, function (index, value) {
-            commentOne += '<li><a href="#comments"><h5><i class="far fa-envelope mr-2"></i>待审核评论</h5><span>' + value.content + '</span></a></li>';
-          });
-          $("#notification-list").html(commentOne);
+          $("#comment-todo").text(res.data.toAuditComments);
+          $("#website-todo").text(res.data.toAuditWebsites);
+          $("#link-todo").text(res.data.toAuditLinks);
         }else {
           $("#message_num").text("你有0条新消息")
           $("#notification-info").attr("class", "");
@@ -120,7 +117,7 @@
   }
   window.setInterval(function(){
     getMessages();
-  }, 5000);
+  }, 10000);
 
 </script>
 
@@ -135,7 +132,6 @@
   $(function () {
     handleHashChange()
   });
-
   function handleHashChange() {
     let hash = location.hash;
     hash = hash ? hash : defaultPageHash
@@ -150,6 +146,5 @@
     Core.load("#content", hash.replace('#', ''));
   }
 </script>
-
 </body>
 </html>
