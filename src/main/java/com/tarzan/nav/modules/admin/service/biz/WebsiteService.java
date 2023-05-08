@@ -40,6 +40,8 @@ public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
 
     private final CategoryMapper categoryMapper;
 
+    private final SiteLookService siteLookService;
+
     private static final int TITLE_LEN=50;
 
 
@@ -90,10 +92,14 @@ public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
         List<Website> websites= super.lambdaQuery().eq(Website::getStatus,CoreConst.STATUS_VALID).orderByDesc(Website::getCreateTime).list();
         if (CollectionUtils.isNotEmpty(websites)){
             Date beforeDate= DateUtil.addDays(DateUtil.now(),-3);
+            Set<Integer> hotSites=siteLookService.topSites(10);
             websites.forEach(e->{
-                if(beforeDate.compareTo(e.getCreateTime()) < 0){
-                //    System.out.println(DateUtil.format(beforeDate,DateUtil.datetimeFormat)+"  "+DateUtil.format(e.getCreateTime(),DateUtil.datetimeFormat));
-                   e.setFlag("新");
+                if(hotSites.contains(e.getId())){
+                    e.setFlag("热");
+                }else {
+                    if(beforeDate.compareTo(e.getCreateTime()) < 0){
+                        e.setFlag("新");
+                    }
                 }
             });
         }
@@ -180,6 +186,11 @@ public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
         return RandomUtil.randomEles(websites,count);
     }
 
+/*    @Cacheable(value = "website", key = "'popular'")
+    public void popular(){
+        List<Website> websites= super.lambdaQuery().eq(Website::getStatus,CoreConst.STATUS_VALID).list();
+        this.wrapper(websites);
+    }*/
 
 
     public Website getInfo(String url) {
@@ -199,4 +210,6 @@ public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
     public Long toAuditNum() {
        return super.lambdaQuery().eq(Website::getStatus,CoreConst.ZERO).count();
     }
+
+
 }

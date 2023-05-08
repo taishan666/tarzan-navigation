@@ -28,7 +28,7 @@ CREATE TABLE
                                EMAIL VARCHAR ( 100 ) NULL DEFAULT NULL COMMENT '站长邮箱',
                                QQ VARCHAR ( 50 ) NULL DEFAULT NULL COMMENT '站长qq',
                                STATUS INT UNSIGNED NULL DEFAULT NULL COMMENT '状态',
-                               ORIGIN INT NULL DEFAULT NULL COMMENT '1-管理员添加 2-自助申请',
+                               ORIGIN INT UNSIGNED DEFAULT NULL COMMENT '1-管理员添加 2-自助申请',
                                REMARK VARCHAR ( 255 ) NULL DEFAULT NULL COMMENT '备注',
                                CATEGORY_ID INT NULL DEFAULT NULL COMMENT '分类id',
                                CREATE_TIME datetime ( 0 ) NULL DEFAULT CURRENT_TIMESTAMP ( 0 ) COMMENT '添加时间',

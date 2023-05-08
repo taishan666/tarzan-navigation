@@ -8,6 +8,7 @@ import com.tarzan.nav.modules.admin.mapper.biz.SiteLookMapper;
 import com.tarzan.nav.modules.admin.model.biz.SiteLook;
 import com.tarzan.nav.modules.network.LocationService;
 import com.tarzan.nav.utils.DateUtil;
+import com.tarzan.nav.utils.MapUtil;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,13 @@ import java.util.stream.Collectors;
  */
 @Service
 public class SiteLookService extends ServiceImpl<SiteLookMapper, SiteLook> {
+
+
+    public Set<Integer> topSites(int num) {
+        List<SiteLook> looks= super.list();
+        Map<Integer,Long> lookMap=looks.stream().collect(Collectors.groupingBy(SiteLook::getSiteId,Collectors.counting()));
+        return MapUtil.topNByValue(lookMap,num).keySet();
+    }
 
     private static Map<String, Long> buildRecentDayMap(int day) {
         Date now = DateUtil.now();
