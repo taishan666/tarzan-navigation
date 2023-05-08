@@ -1,5 +1,6 @@
 package com.tarzan.nav.utils;
 
+import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.sun.org.apache.xml.internal.serialize.LineSeparator;
 import com.tarzan.nav.common.props.TarzanProperties;
 import lombok.Data;
@@ -153,8 +154,8 @@ public class DbBackupTools {
                             if (str.contains(LineSeparator.Macintosh)) {
                                 str = str.replaceAll(LineSeparator.Macintosh, "\\\\r");
                             }
-                            if (str.contains("'")) {
-                                str = str.replaceAll("'", "''");
+                            if (str.contains(StringPool.SINGLE_QUOTE)) {
+                                str = str.replaceAll(StringPool.SINGLE_QUOTE, "''");
                             }
                             sb.append("'").append(str).append("'").append(",");
                         }else if(v instanceof Date){

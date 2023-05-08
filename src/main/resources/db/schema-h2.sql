@@ -204,6 +204,6 @@ CREATE TABLE IF NOT EXISTS biz_site_look (
                                                   ID int UNSIGNED NOT NULL AUTO_INCREMENT,
                                                   SITE_ID int UNSIGNED NOT NULL COMMENT '站点ID',
                                                   USER_IP varchar(50) NULL DEFAULT NULL COMMENT '用户IP',
-                                                  CREATE_TIME datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '添加时间',
-                                                  UPDATE_TIME datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '更新时间'
+                                                  PROVINCE VARCHAR ( 50 ) NULL DEFAULT NULL COMMENT '省份',
+                                                  CREATE_TIME datetime(0) NULL DEFAULT CURRENT_TIMESTAMP(0) COMMENT '添加时间'
 );

@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Maps;
 import com.tarzan.nav.modules.admin.mapper.biz.SiteLookMapper;
 import com.tarzan.nav.modules.admin.model.biz.SiteLook;
+import com.tarzan.nav.modules.network.LocationService;
 import com.tarzan.nav.utils.DateUtil;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -41,10 +42,11 @@ public class SiteLookService extends ServiceImpl<SiteLookMapper, SiteLook> {
         Date date = new Date();
         long checkCount = this.checkArticleLook(siteId, userIp, DateUtil.addHours(date, -1));
         if (checkCount == 0) {
-            SiteLook articleLook = new SiteLook();
-            articleLook.setSiteId(siteId);
-            articleLook.setUserIp(userIp);
-            super.save(articleLook);
+            SiteLook siteLook = new SiteLook();
+            siteLook.setSiteId(siteId);
+            siteLook.setUserIp(userIp);
+            siteLook.setProvince(LocationService.getProvince(userIp));
+            super.save(siteLook);
         }
     }
 

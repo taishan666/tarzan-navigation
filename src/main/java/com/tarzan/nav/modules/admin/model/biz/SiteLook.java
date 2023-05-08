@@ -16,4 +16,5 @@ import lombok.experimental.Accessors;
 public class SiteLook extends BaseVo {
     private Integer siteId;
     private String userIp;
+    private String province;
 }
