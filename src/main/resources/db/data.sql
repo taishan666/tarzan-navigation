@@ -257,6 +257,7 @@ INSERT INTO BIZ_WEBSITE VALUES (170,'即刻工具箱 | 打造方便、快捷、�
 INSERT INTO BIZ_WEBSITE VALUES (171,'八千网址导航 - 技术导航 - 上网导航 - 网址导航','//www.8kmm.com','八千导航(8kmm.com)是国内首屈一指的导航分类平台，收录国内外各类型网站供网友检索，八千网址导航致力于为广大用户推荐各行各业优秀网站，国内外网站大全尽在八千导航。','911c65f618d3ac8264a3102e3f1b956a',null,null,1,null,null,3,'2023-05-01 21:10:50','2023-05-01 21:10:50');
 INSERT INTO BIZ_WEBSITE VALUES (172,'OnlineConvertFree - free online converter: convert','//onlineconvertfree.com','Our file converter will help you to convert any files: documents, images, audio, and video formats for free. ✅ No installation is required for our online converter.','cf5711c1cf9c636aaa0d24cc106afac8',null,null,1,null,null,4,'2023-05-02 20:14:29','2023-05-02 20:14:29');
 INSERT INTO BIZ_WEBSITE VALUES (173,'今日热榜官网','//tophub.today','今日热榜提供各站热榜聚合：微信、今日头条、百度、知乎、V2EX、微博、贴吧、豆瓣、天涯、虎扑、Github、抖音...追踪全网热点、简单高效阅读。','37bebf5c4771138a5d6e7612551743b8',null,null,1,null,null,1,'2023-05-05 08:46:02','2023-05-05 08:46:02');
+
 INSERT INTO SYS_CONFIG VALUES (5,'SITE_NAME','泰山导航',1,'网站名称');
 INSERT INTO SYS_CONFIG VALUES (6,'SITE_KWD','Java JavaScript Spring SpringBoot Vue React',1,'网站关键字');
 INSERT INTO SYS_CONFIG VALUES (7,'SITE_DESC','个人博客网站，技术交流，经验分享。',1,'网站描述');

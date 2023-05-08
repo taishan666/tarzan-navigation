@@ -40,11 +40,6 @@ public class SiteLookService extends ServiceImpl<SiteLookMapper, SiteLook> {
 
     @Async
     public void asyncLook(Integer siteId,String userIp) {
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         /*浏览次数*/
         System.out.println(userIp+" 查看1次");
         Date date = new Date();
