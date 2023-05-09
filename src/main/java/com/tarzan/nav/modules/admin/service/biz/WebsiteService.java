@@ -75,7 +75,7 @@ public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
         }
         website.setName(title);
         website.setDescription(desc);
-        String webIconUrl=JsoupUtil.getWebIcon(doc);
+        String webIconUrl=JsoupUtil.getWebIcon(doc,url);
         BizImage image=imageService.upload(webIconUrl);
         website.setImageId(image.getId());
         website.setStatus(CoreConst.STATUS_VALID);
@@ -197,7 +197,7 @@ public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
         Document doc= JsoupUtil.getDocument(url);
         String title=JsoupUtil.getTitle(doc);
         String desc=JsoupUtil.getDescription(doc);
-        String webIcon=JsoupUtil.getWebIcon(doc);
+        String webIcon=JsoupUtil.getWebIcon(doc,url);
         BizImage image=imageService.upload(webIcon);
         Website website=new Website();
         website.setName(title);

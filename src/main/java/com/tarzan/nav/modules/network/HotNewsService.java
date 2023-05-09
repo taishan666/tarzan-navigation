@@ -113,7 +113,7 @@ public class HotNewsService {
         while (iterator.hasNext()){
             JSONObject e= (JSONObject) iterator.next();
             String title=e.getJSONObject("content").getString("title");
-            String link="https://www.douyin.com/hot/"+e.getJSONObject("content").getString("content_id");
+            String link="https://juejin.cn/post/"+e.getJSONObject("content").getString("content_id");
             Integer index=e.getJSONObject("content_counter").getInteger("hot_rank");
             HotNewsVO vo=new HotNewsVO();
             vo.setTitle(title);

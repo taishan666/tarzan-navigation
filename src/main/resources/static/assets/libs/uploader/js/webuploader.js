@@ -1850,14 +1850,14 @@
              * ```
              * {
              *     title: 'Images',
-             *     extensions: 'gif,jpg,jpeg,bmp,png',
+             *     extensions: 'gif,jpg,jpeg,bmp,png,ico',
              *     mimeTypes: 'image/*'
              * }
              * ```
              */
             accept: null/*{
                 title: 'Images',
-                extensions: 'gif,jpg,jpeg,bmp,png',
+                extensions: 'gif,jpg,jpeg,bmp,png,ico',
                 mimeTypes: 'image/*'
             }*/
         });

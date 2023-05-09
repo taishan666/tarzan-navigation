@@ -104,11 +104,14 @@ public class IndexController {
         siteLookService.asyncLook(id,userIp);
         Website website=websiteService.getById(id);
         if(Objects.isNull(website)){
-            model.addAttribute("website",new Website());
+           // model.addAttribute("website",new Website());
+            return "forward:/";
         }else {
-            model.addAttribute("website",website);
+          //  model.addAttribute("website",website);
+            return "redirect:https:"+website.getUrl();
         }
-        return  CoreConst.WEB_PREFIX+"website";
+       // return  CoreConst.WEB_PREFIX+"website";
+
     }
 
     @GetMapping("/douyin")

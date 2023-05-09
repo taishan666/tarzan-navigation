@@ -41,7 +41,6 @@ public class SiteLookService extends ServiceImpl<SiteLookMapper, SiteLook> {
     @Async
     public void asyncLook(Integer siteId,String userIp) {
         /*浏览次数*/
-        System.out.println(userIp+" 查看1次");
         Date date = new Date();
         long checkCount = this.checkArticleLook(siteId, userIp, DateUtil.addHours(date, -1));
         if (checkCount == 0) {

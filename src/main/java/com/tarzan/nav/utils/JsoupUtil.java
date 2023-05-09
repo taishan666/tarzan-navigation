@@ -1,5 +1,6 @@
 package com.tarzan.nav.utils;
 
+import cn.hutool.http.HttpUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
@@ -26,20 +27,25 @@ public class JsoupUtil {
      * @param url 访问路径
      * @return
      */
-    public static Document getDocument (String url){
+/*    public static Document getDocument (String url){
         try {
             HttpsUrlValidator.trustAllHttpsCertificates();
             //5000是设置连接超时时间，单位ms
             return Jsoup.connect(url)
+                  .header("Accept-Language", "zh-CN,zh;q=0.8")
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36")
-                    .timeout(10*1000).get();
-
+                  .timeout(10*1000).get();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
+    }*/
+
+    public static Document getDocument (String url){
+        String html=HttpUtil.get(url);
+        return Jsoup.parse(html);
     }
 
     public static String getTitle(Document doc){
@@ -70,8 +76,8 @@ public class JsoupUtil {
         return desc;
     }
 
-    public static String getWebIcon(Document doc){
-        String url = StringUtils.appendIfMissing(doc.baseUri(), "/");
+    public static String getWebIcon(Document doc,String webUrl){
+        String url = StringUtils.appendIfMissing(webUrl, "/");
         String iconUrl=getDomain(url)+"favicon.ico";
         Element iconEle=doc.selectFirst("[rel=icon]");
         Element shortIconEle=doc.selectFirst("[rel=shortcut icon]");
