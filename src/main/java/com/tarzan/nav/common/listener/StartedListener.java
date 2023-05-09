@@ -39,25 +39,12 @@ public class StartedListener implements ApplicationListener<ApplicationStartedEv
     public void onApplicationEvent(@NonNull ApplicationStartedEvent event) {
         appInstallTools.install();
         shiroService.updatePermission();
-        initHotNews();
+        hotNewsService.hotSpot();
         File backupDir=new File(tarzanProperties.getBackupDir());
         if(!backupDir.exists()){
             backupDir.mkdirs();
         }
         printStartInfo(event);
-    }
-
-
-
-    /**
-     * 初始化热点数据
-     */
-    public void initHotNews(){
-        hotNewsService.baiduHot();
-        hotNewsService.weiboHot();
-        hotNewsService.douYinHot();
-        hotNewsService.jueJinHot();
-        hotNewsService.cSdnHot();
     }
 
     /**

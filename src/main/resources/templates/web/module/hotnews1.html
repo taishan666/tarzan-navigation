@@ -10,7 +10,7 @@
                 <div class="card-body pb-3 pt-0">
                     <div class="overflow-auto hot-body">
                         <ul id="hot_news-baidu">
-                            <li class="d-flex text-sm mb-2" th:each="hotnews,stat:${hotSpot?.baiduHot}">
+                            <li class="d-flex text-sm mb-2" th:each="hotnews,stat:${baiduHot}">
                                 <div>
                                     <span th:class="${'hot-rank hot-rank-'+(stat.index+1)+' text-xs text-center'}">[[${stat.index+1}]]</span>
                                     <a class="ml-2" th:href="${hotnews?.link}" target="_blank" rel="external noopener nofollow">[[${hotnews?.title}]]</a>
@@ -38,7 +38,7 @@
                 <div class="card-body pb-3 pt-0">
                     <div class="overflow-auto hot-body">
                         <ul id="hot_news-jueJin">
-                            <li class="d-flex text-sm mb-2" th:each="hotnews,stat:${hotSpot?.jueJinHot}">
+                            <li class="d-flex text-sm mb-2" th:each="hotnews,stat:${jueJinHot}">
                                 <div>
                                     <span th:class="${'hot-rank hot-rank-'+(stat.index+1)+' text-xs text-center'}">[[${stat.index+1}]]</span>
                                     <a class="ml-2" th:href="${hotnews?.link}" target="_blank" rel="external noopener nofollow">[[${hotnews?.title}]]</a>
@@ -65,15 +65,15 @@
                 </div>
                 <div class="card-body pb-3 pt-0">
                     <div class="overflow-auto hot-body">
-                        <ul id="hot_news-csdn">
-                            <li class="d-flex text-sm mb-2" th:each="hotnews,stat:${hotSpot?.cSDNHot}">
-                                <div>
-                                    <span th:class="${'hot-rank hot-rank-'+(stat.index+1)+' text-xs text-center'}">[[${stat.index+1}]]</span>
-                                    <a class="ml-2" th:href="${hotnews?.link}" target="_blank" rel="external noopener nofollow">[[${hotnews?.title}]]</a>
-                                </div>
-                                <div class="ml-auto hot-heat d-none d-md-block text-muted">[[${hotnews?.index}]]</div>
-                            </li>
-                        </ul>
+                                 <ul id="hot_news-csdn">
+                <li class="d-flex text-sm mb-2" th:each="hotnews,stat:${cSDNHot}">
+                    <div>
+                        <span th:class="${'hot-rank hot-rank-'+(stat.index+1)+' text-xs text-center'}">[[${stat.index+1}]]</span>
+                        <a class="ml-2" th:href="${hotnews?.link}" target="_blank" rel="external noopener nofollow">[[${hotnews?.title}]]</a>
+                    </div>
+                    <div class="ml-auto hot-heat d-none d-md-block text-muted">[[${hotnews?.index}]]</div>
+                </li>
+            </ul>
                     </div>
                     <div class="d-flex text-xs text-muted pt-2 mb-n2">
                         <a href="https://blog.csdn.net/rank/list" target="_blank" title="更多" style="color:#6c757d; ">更多</a>
@@ -94,7 +94,7 @@
                 <div class="card-body pb-3 pt-0">
                     <div class="overflow-auto hot-body">
                         <ul id="hot_news-douYin">
-                            <li class="d-flex text-sm mb-2" th:each="hotnews,stat:${hotSpot?.douYinHot}">
+                            <li class="d-flex text-sm mb-2" th:each="hotnews,stat:${douYinHot}">
                                 <div>
                                     <span th:class="${'hot-rank hot-rank-'+(stat.index+1)+' text-xs text-center'}">[[${stat.index+1}]]</span>
                                     <a class="ml-2" th:href="${hotnews?.link}" target="_blank" rel="external noopener nofollow">[[${hotnews?.title}]]</a>
@@ -122,7 +122,7 @@
                 <div class="card-body pb-3 pt-0">
                     <div class="overflow-auto hot-body">
                         <ul id="hot_news-weibo">
-                            <li class="d-flex text-sm mb-2" th:each="hotnews,stat:${hotSpot?.weiboHot}">
+                            <li class="d-flex text-sm mb-2" th:each="hotnews,stat:${weiboHot}">
                                 <div>
                                     <span th:class="${'hot-rank hot-rank-'+(stat.index+1)+' text-xs text-center'}">[[${stat.index+1}]]</span>
                                     <a class="ml-2" th:href="${hotnews?.link}" target="_blank" rel="external noopener nofollow">[[${hotnews?.title}]]</a>

@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.tarzan.nav.modules.admin.vo.HotNewsVO;
+import com.tarzan.nav.modules.admin.vo.HotSpotVO;
 import com.tarzan.nav.utils.JsoupUtil;
 import com.tarzan.nav.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +26,17 @@ import java.util.List;
 @Service
 @Slf4j
 public class HotNewsService {
+
+    @Cacheable(value = "hotNews", key = "'all'")
+    public HotSpotVO hotSpot(){
+        HotSpotVO vo=new HotSpotVO();
+        vo.setBaiduHot(baiduHot());
+        vo.setWeiboHot(weiboHot());
+        vo.setDouYinHot(douYinHot());
+        vo.setJueJinHot(jueJinHot());
+        vo.setCSDNHot(cSDNHot());
+        return vo;
+    }
 
     @Cacheable(value = "hotNews", key = "'baidu'")
     public List<HotNewsVO> baiduHot(){
@@ -125,7 +137,7 @@ public class HotNewsService {
     }
 
     @Cacheable(value = "hotNews", key = "'csdn'")
-    public List<HotNewsVO> cSdnHot(){
+    public List<HotNewsVO> cSDNHot(){
         log.info("csdn热榜");
         List<HotNewsVO> hotNews=new ArrayList<>(10);
         String text= HttpUtil.get("https://blog.csdn.net/phoenix/web/blog/hot-rank?page=0&pageSize=25&type=");
