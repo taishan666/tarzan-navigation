@@ -52,11 +52,7 @@ public class IndexController {
         model.addAttribute("categories",categoryService.treeLink());
         model.addAttribute("links",linkService.simpleList());
         model.addAttribute("hotSpot",hotNewsService.hotSpot());
-/*        model.addAttribute("baiduHot",hotNewsService.baiduHot());
-        model.addAttribute("weiboHot",hotNewsService.weiboHot());
-        model.addAttribute("douYinHot",hotNewsService.douYinHot());
-        model.addAttribute("jueJinHot",hotNewsService.jueJinHot());
-        model.addAttribute("cSDNHot",hotNewsService.cSdnHot());*/
+        model.addAttribute("topWebsite",websiteService.topWebsites());
         return  CoreConst.WEB_PREFIX+"index";
     }
 

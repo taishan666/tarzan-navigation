@@ -72,8 +72,18 @@ public class SiteLookService extends ServiceImpl<SiteLookMapper, SiteLook> {
         return usersByDayMap;
     }
 
+    public  Map<String,Long> usersByProv(List<SiteLook> lookList){
+        return lookList.stream().collect(Collectors.groupingBy(SiteLook::getProvince,Collectors.counting()));
+    }
+
     public Map<String,List<SiteLook>>  looksGroupMap(int day){
         List<SiteLook> list=looksRecentDays(day);
+        return list.stream().collect(Collectors.groupingBy(e->DateUtil.format(e.getCreateTime(), DateUtil.webFormat)));
+    }
+
+    public Map<String,List<SiteLook>> looksGroupMap(List<SiteLook> lookList,int day){
+        Date beforeDate= DateUtil.addDays(DateUtil.now(),-day);
+        List<SiteLook> list=lookList.stream().filter(e->beforeDate.compareTo(e.getCreateTime()) < 0).collect(Collectors.toList());
         return list.stream().collect(Collectors.groupingBy(e->DateUtil.format(e.getCreateTime(), DateUtil.webFormat)));
     }
 

@@ -70,14 +70,15 @@
     <div id="content" class="container container-fluid customize-width">
         <div class="home-widget-group" style="margin-top:-5.525rem!important"></div>
         <div th:replace="web/module/hotnews"></div>
-        <div class="d-flex slider-menu-father mb-4">
+        <div th:replace="web/module/topwebsites"></div>
+<!--        <div class="d-flex slider-menu-father mb-4">
             <div class="slider_menu mini_tab into" slidertab="sliderTab">
                 <ul class="nav nav-pills tab-auto-scrollbar menu overflow-x-auto" role="tablist"><li class="anchor" style="position: absolute; width: 80px; height: 28px; left: 0px; opacity: 1;"></li>
                     <li class="pagenumber nav-item">
                         <a class="nav-link ajax-home-hot-list active load" data-toggle="pill" href="#ct-tab-sites-views0" data-action="load_hot_post" data-datas="{'data':{'title':'热门网址','type':'sites','order':'views','num':'10','mini':''}}">热门网址</a>
                     </li>
                     <li class="pagenumber nav-item">
-                        <a class="nav-link ajax-home-hot-list " data-toggle="pill" href="#ct-tab-sites-modified1" data-action="load_hot_post" data-datas="{'data':{'title':'大家喜欢','type':'sites','order':'modified','num':'10','mini':''}}">大家喜欢</a>
+                        <a class="nav-link ajax-home-hot-list " data-toggle="pill" href="#ct-tab-sites-modified1" data-action="load_hot_post" data-datas="{'data':{'title':'随机推荐','type':'sites','order':'modified','num':'10','mini':''}}">随机推荐</a>
                     </li>
                     <li class="pagenumber nav-item">
                         <a class="nav-link ajax-home-hot-list " data-toggle="pill" href="#ct-tab-sites-date2" data-action="load_hot_post" data-datas="{'data':{'title':'最新网址','type':'sites','order':'date','num':'10','mini':''}}">最新网址</a>
@@ -88,71 +89,71 @@
         <div class="tab-content">
             <div id="ct-tab-sites-views0" class="tab-pane active">
                 <div class="row  ajax-list-body position-relative">
-                    <div class="url-card   col-2a col-sm-2a col-md-2a col-lg-3a col-xl-5a col-xxl-6a  ">
+                    <div class="url-card   col-2a col-sm-2a col-md-2a col-lg-3a col-xl-5a col-xxl-6a" th:each="website:${topWebsite?.hotList}">
                         <div class="url-body default ">
-                            <a href="https://nav.iowen.cn/sites/725.html" data-id="725" data-url="http://16map.com" class="card no-c  mb-4 site-725" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="一流设计导航专注服务于设计师的导航网站。致力于分享优秀免费的设计网站网址，一流设计导航大全还包括免费无版权限制可商用的高品质素材，设计教程、尺寸规范、配色方案、设计素材和灵感等。">
+                            <a th:href="${'/site/'+website?.id}" th:data-id="${website?.id}" th:data-url="${website?.url}" class="card no-c  mb-4 site-725" data-toggle="tooltip" data-placement="bottom" title="" th:data-original-title="${website?.description}">
                                 <div class="card-body url-content d-flex align-items-center">
                                     <div class="url-img rounded-circle mr-2 d-flex align-items-center justify-content-center">
-                                        <img class="lazy unfancybox loaded" src="https://api.iowen.cn/favicon/16map.com.png" data-src="https://api.iowen.cn/favicon/16map.com.png" height="auto" width="auto" alt="设计导航" data-was-processed="true">
+                                        <img class="lazy unfancybox loaded" th:src="${website?.img?.base64}"  th:data-src="${website?.img?.base64}" height="auto" width="auto" th:alt="${website?.name}" data-was-processed="true">
                                     </div>
                                     <div class="url-info flex-fill">
                                         <div class="text-sm overflowClip_1">
-                                            <strong>设计导航</strong>
+                                            <strong>[[${website?.name}]]</strong>
                                         </div>
-                                        <p class="overflowClip_1 m-0 text-muted text-xs">一流设计导航专注服务于设计师的导航网站。致力于分享优秀免费的设计网站网址，一流设计导航大全还包括免费无版权限制可商用的高品质素材，设计教程、尺寸规范、配色方案、设计素材和灵感等。</p>
+                                        <p class="overflowClip_1 m-0 text-muted text-xs">[[${website?.description}]]</p>
                                     </div>
                                 </div>
                             </a>
-                            <a href="https://nav.iowen.cn/go/?url=aHR0cDovLzE2bWFwLmNvbQ%3D%3D" target="_blank" rel="external nofollow" title="" class="togo text-center text-muted is-views" data-id="725" data-toggle="tooltip" data-placement="right" data-original-title="直达"><i class="iconfont icon-goto"></i></a>
+                            <a th:href="${website?.url}" target="_blank" rel="external nofollow" title="" class="togo text-center text-muted is-views" data-id="725" data-toggle="tooltip" data-placement="right" data-original-title="直达"><i class="iconfont icon-goto"></i></a>
                         </div>
                     </div>
                 </div>
             </div>
             <div id="ct-tab-sites-modified1" class="tab-pane">
                 <div class="row  ajax-list-body position-relative">
-                    <div class="url-card   col-2a col-sm-2a col-md-2a col-lg-3a col-xl-5a col-xxl-6a  ">
+                    <div class="url-card   col-2a col-sm-2a col-md-2a col-lg-3a col-xl-5a col-xxl-6a" th:each="website:${topWebsite?.randomList}">
                         <div class="url-body default ">
-                            <a href="https://nav.iowen.cn/sites/725.html" data-id="725" data-url="http://16map.com" class="card no-c  mb-4 site-725" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="一流设计导航专注服务于设计师的导航网站。致力于分享优秀免费的设计网站网址，一流设计导航大全还包括免费无版权限制可商用的高品质素材，设计教程、尺寸规范、配色方案、设计素材和灵感等。">
+                            <a th:href="${'/site/'+website?.id}" th:data-id="${website?.id}" th:data-url="${website?.url}" class="card no-c  mb-4 site-725" data-toggle="tooltip" data-placement="bottom" title="" th:data-original-title="${website?.description}">
                                 <div class="card-body url-content d-flex align-items-center">
                                     <div class="url-img rounded-circle mr-2 d-flex align-items-center justify-content-center">
-                                        <img class="lazy unfancybox loaded" src="https://api.iowen.cn/favicon/16map.com.png" data-src="https://api.iowen.cn/favicon/16map.com.png" height="auto" width="auto" alt="设计导航" data-was-processed="true">
+                                        <img class="lazy unfancybox loaded" th:src="${website?.img?.base64}"  th:data-src="${website?.img?.base64}" height="auto" width="auto" th:alt="${website?.name}" data-was-processed="true">
                                     </div>
                                     <div class="url-info flex-fill">
                                         <div class="text-sm overflowClip_1">
-                                            <strong>设计导航</strong>
+                                            <strong>[[${website?.name}]]</strong>
                                         </div>
-                                        <p class="overflowClip_1 m-0 text-muted text-xs">一流设计导航专注服务于设计师的导航网站。致力于分享优秀免费的设计网站网址，一流设计导航大全还包括免费无版权限制可商用的高品质素材，设计教程、尺寸规范、配色方案、设计素材和灵感等。</p>
+                                        <p class="overflowClip_1 m-0 text-muted text-xs">[[${website?.description}]]</p>
                                     </div>
                                 </div>
                             </a>
-                            <a href="https://nav.iowen.cn/go/?url=aHR0cDovLzE2bWFwLmNvbQ%3D%3D" target="_blank" rel="external nofollow" title="" class="togo text-center text-muted is-views" data-id="725" data-toggle="tooltip" data-placement="right" data-original-title="直达"><i class="iconfont icon-goto"></i></a>
+                            <a th:href="${website?.url}" target="_blank" rel="external nofollow" title="" class="togo text-center text-muted is-views" data-id="725" data-toggle="tooltip" data-placement="right" data-original-title="直达"><i class="iconfont icon-goto"></i></a>
                         </div>
                     </div>
                 </div>
             </div>
             <div id="ct-tab-sites-date2" class="tab-pane">
                 <div class="row  ajax-list-body position-relative">
-                    <div class="url-card   col-2a col-sm-2a col-md-2a col-lg-3a col-xl-5a col-xxl-6a  ">
+                    <div class="url-card   col-2a col-sm-2a col-md-2a col-lg-3a col-xl-5a col-xxl-6a" th:each="website:${topWebsite?.newestList}">
                         <div class="url-body default ">
-                            <a href="https://nav.iowen.cn/sites/725.html" data-id="725" data-url="http://16map.com" class="card no-c  mb-4 site-725" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="一流设计导航专注服务于设计师的导航网站。致力于分享优秀免费的设计网站网址，一流设计导航大全还包括免费无版权限制可商用的高品质素材，设计教程、尺寸规范、配色方案、设计素材和灵感等。">
+                            <a th:href="${'/site/'+website?.id}" th:data-id="${website?.id}" th:data-url="${website?.url}" class="card no-c  mb-4 site-725" data-toggle="tooltip" data-placement="bottom" title="" th:data-original-title="${website?.description}">
                                 <div class="card-body url-content d-flex align-items-center">
                                     <div class="url-img rounded-circle mr-2 d-flex align-items-center justify-content-center">
-                                        <img class="lazy unfancybox loaded" src="https://api.iowen.cn/favicon/16map.com.png" data-src="https://api.iowen.cn/favicon/16map.com.png" height="auto" width="auto" alt="设计导航" data-was-processed="true">
+                                        <img class="lazy unfancybox loaded" th:src="${website?.img?.base64}"  th:data-src="${website?.img?.base64}" height="auto" width="auto" th:alt="${website?.name}" data-was-processed="true">
                                     </div>
                                     <div class="url-info flex-fill">
                                         <div class="text-sm overflowClip_1">
-                                            <strong>设计导航</strong>
+                                            <strong>[[${website?.name}]]</strong>
                                         </div>
-                                        <p class="overflowClip_1 m-0 text-muted text-xs">一流设计导航专注服务于设计师的导航网站。致力于分享优秀免费的设计网站网址，一流设计导航大全还包括免费无版权限制可商用的高品质素材，设计教程、尺寸规范、配色方案、设计素材和灵感等。</p>
+                                        <p class="overflowClip_1 m-0 text-muted text-xs">[[${website?.description}]]</p>
                                     </div>
                                 </div>
                             </a>
-                            <a href="https://nav.iowen.cn/go/?url=aHR0cDovLzE2bWFwLmNvbQ%3D%3D" target="_blank" rel="external nofollow" title="" class="togo text-center text-muted is-views" data-id="725" data-toggle="tooltip" data-placement="right" data-original-title="直达"><i class="iconfont icon-goto"></i></a>
+                            <a th:href="${website?.url}" target="_blank" rel="external nofollow" title="" class="togo text-center text-muted is-views" data-id="725" data-toggle="tooltip" data-placement="right" data-original-title="直达"><i class="iconfont icon-goto"></i></a>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </div>-->
         <div class="content">
             <div class="content-wrap">
                 <div class="content-layout" style="margin-right: 0px;">

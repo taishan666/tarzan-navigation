@@ -88,19 +88,4 @@
             <div style="position: absolute;bottom: -40px;width: 100%;text-align: center;"><a href="javascript:" data-dismiss="modal"><i class="iconfont icon-close-circle icon-2x" style="color: #fff;"></i></a></div>
         </div>
     </div>
-    <script>
-        var cookieValue='1';
-        var exdays = 1;
-        $(document).ready(function(){
-            if(getCookie('io_popup_tips')!=cookieValue)                    setTimeout(function(){
-                $('#io-popup-tips').addClass('io-bomb-open');
-            },1000);
-        });
-        $(document).on('click','.popup-close',function(ev) {
-            $('#io-popup-tips').removeClass('io-bomb-open').addClass('io-bomb-close');
-            setCookie("io_popup_tips",cookieValue,exdays);                    setTimeout(function(){
-                $('#io-popup-tips').remove();
-            },600);
-        });
-    </script>
 </div>

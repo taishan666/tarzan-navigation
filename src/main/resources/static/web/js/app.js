@@ -606,7 +606,8 @@
         }
     });
 
-    $(document).on('click', '.ajax-home-hot-list:not(.load)', function(event) {
+    //首页 热门/随机/最新 切换
+/*    $(document).on('click', '.ajax-home-hot-list:not(.load)', function(event) {
         event.preventDefault();
         var t = $(this);
         var box = $(t.attr('href')).children('.ajax-list-body');
@@ -632,7 +633,7 @@
             .fail(function() {
                 t.removeClass('disabled');
             })
-    });
+    });*/
 
     $(document).on('click', 'a.tab-widget-link:not(.load)',function(event) {
         event.preventDefault();

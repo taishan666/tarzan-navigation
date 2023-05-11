@@ -7,9 +7,9 @@ spring:
     password: 123456
   h2:
     console:
-      enabled: true
+      enabled: false
       settings:
-        web-allow-others: true
+        web-allow-others: false
       path: /h2-console
       #jpa:
       #show-sql: true

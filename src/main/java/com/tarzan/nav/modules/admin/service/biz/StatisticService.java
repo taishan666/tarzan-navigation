@@ -33,14 +33,24 @@ public class StatisticService {
         long linkCount = linkService.count();
         long commentCount = commentService.count();
         long siteCount = websiteService.count();
-        List<SiteLook> lookList=siteLookService.list(Wrappers.<SiteLook>lambdaQuery().select(SiteLook::getUserIp));
+        List<SiteLook> lookList=siteLookService.list(Wrappers.<SiteLook>lambdaQuery().select(SiteLook::getUserIp,SiteLook::getProvince,SiteLook::getCreateTime));
         long lookCount = lookList.size();
-        long userCount = lookList.stream().distinct().count();
+        long userCount = lookList.stream().map(SiteLook::getUserIp).distinct().count();
         int recentDays = 7;
-        Map<String,List<SiteLook>> lookMap=siteLookService.looksGroupMap(recentDays);
+        Map<String,List<SiteLook>> lookMap=siteLookService.looksGroupMap(lookList,recentDays);
         Map<String, Long> lookCountByDay = siteLookService.looksByDay(lookMap,recentDays);
         Map<String, Long> userCountByDay = siteLookService.usersByDay(lookMap,recentDays);
-        return StatisticVo.builder().siteCount(siteCount).linkCount(linkCount).commentCount(commentCount).lookCount(lookCount).userCount(userCount).lookCountByDay(lookCountByDay).userCountByDay(userCountByDay).build();
+        Map<String, Long> provUsers = siteLookService.usersByProv(lookList);
+        StatisticVo vo=new StatisticVo();
+        vo.setSiteCount(siteCount);
+        vo.setLinkCount(linkCount);
+        vo.setUserCount(userCount);
+        vo.setLookCount(lookCount);
+        vo.setCommentCount(commentCount);
+        vo.setLookCountByDay(lookCountByDay);
+        vo.setUserCountByDay(userCountByDay);
+        vo.setProUsers(provUsers);
+        return vo;
     }
 
 }

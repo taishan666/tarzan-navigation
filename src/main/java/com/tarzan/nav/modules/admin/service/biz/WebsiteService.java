@@ -12,6 +12,7 @@ import com.tarzan.nav.modules.admin.mapper.biz.WebsiteMapper;
 import com.tarzan.nav.modules.admin.model.biz.BizImage;
 import com.tarzan.nav.modules.admin.model.biz.Category;
 import com.tarzan.nav.modules.admin.model.biz.Website;
+import com.tarzan.nav.modules.admin.vo.TopWebsiteVO;
 import com.tarzan.nav.utils.DateUtil;
 import com.tarzan.nav.utils.JsoupUtil;
 import com.tarzan.nav.utils.StringUtil;
@@ -37,11 +38,8 @@ import java.util.stream.Collectors;
 public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
 
     private final ImageService imageService;
-
     private final CategoryMapper categoryMapper;
-
     private final SiteLookService siteLookService;
-
     private static final int TITLE_LEN=50;
 
 
@@ -186,13 +184,6 @@ public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
         return RandomUtil.randomEles(websites,count);
     }
 
-/*    @Cacheable(value = "website", key = "'popular'")
-    public void popular(){
-        List<Website> websites= super.lambdaQuery().eq(Website::getStatus,CoreConst.STATUS_VALID).list();
-        this.wrapper(websites);
-    }*/
-
-
     public Website getInfo(String url) {
         Document doc= JsoupUtil.getDocument(url);
         String title=JsoupUtil.getTitle(doc);
@@ -212,4 +203,12 @@ public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
     }
 
 
+    public TopWebsiteVO topWebsites() {
+        TopWebsiteVO vo=new TopWebsiteVO();
+        Set<Integer> hotSites=siteLookService.topSites(12);
+        vo.setHotList(this.wrapper(this.lambdaQuery().in(Website::getId,hotSites).list()));
+        vo.setRandomList(this.randomList(12));
+        vo.setNewestList(this.wrapper(this.lambdaQuery().orderByDesc(Website::getCreateTime).last("limit "+12).list()));
+        return vo;
+    }
 }

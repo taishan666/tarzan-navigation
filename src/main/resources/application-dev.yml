@@ -9,7 +9,7 @@ spring:
     console:
       enabled: false
       settings:
-        web-allow-others: true
+        web-allow-others: false
       path: /h2-console
   #jpa:
    #show-sql: true
