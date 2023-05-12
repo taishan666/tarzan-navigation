@@ -1,5 +1,6 @@
 package com.tarzan.nav.modules.admin.vo;
 
+import com.alibaba.fastjson.JSONArray;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,6 +27,6 @@ public class StatisticVo {
     private Long userCount;
     private Map<String, Long> lookCountByDay;
     private Map<String, Long> userCountByDay;
-    private Map<String, Long> proUsers;
+    private JSONArray provUsers;
 
 }

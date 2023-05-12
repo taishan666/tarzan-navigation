@@ -1,7 +1,9 @@
 package com.tarzan.nav.modules.admin.service.biz;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Maps;
 import com.tarzan.nav.modules.admin.mapper.biz.SiteLookMapper;
@@ -72,13 +74,20 @@ public class SiteLookService extends ServiceImpl<SiteLookMapper, SiteLook> {
         return usersByDayMap;
     }
 
-    public  Map<String,Long> usersByProv(List<SiteLook> lookList){
-        return lookList.stream().collect(Collectors.groupingBy(SiteLook::getProvince,Collectors.counting()));
-    }
-
-    public Map<String,List<SiteLook>>  looksGroupMap(int day){
-        List<SiteLook> list=looksRecentDays(day);
-        return list.stream().collect(Collectors.groupingBy(e->DateUtil.format(e.getCreateTime(), DateUtil.webFormat)));
+    public  JSONArray usersByProv(List<SiteLook> lookList){
+        String jsonStr="[{name:'北京',value:0},{name:'天津',value:0},{name:'上海',value:0},{name:'重庆',value:0},{name:'河北',value:0},{name:'河南',value:0},{name:'云南',value:0},{name:'辽宁',value:0},{name:'黑龙江',value:0},{name:'湖南',value:0},{name:'安徽',value:0},{name:'山东',value:0},{name:'新疆',value:0},{name:'江苏',value:0},{name:'浙江',value:0},{name:'江西',value:0},{name:'湖北',value:0},{name:'广西',value:0},{name:'甘肃',value:0},{name:'山西',value:0},{name:'内蒙古',value:0},{name:'陕西',value:0},{name:'吉林',value:0},{name:'福建',value:0},{name:'贵州',value:0},{name:'广东',value:0},{name:'青海',value:0},{name:'西藏',value:0},{name:'四川',value:0},{name:'宁夏',value:0},{name:'海南',value:0},{name:'台湾',value:0},{name:'香港',value:0},{name:'澳门',value:0}]";
+        JSONArray array= JSON.parseArray(jsonStr);
+        Map<String,Long> map= lookList.stream().collect(Collectors.groupingBy(e->e.getProvince().substring(0,e.getProvince().length()-1),Collectors.counting()));
+        if(CollectionUtils.isNotEmpty(map)){
+            for (int i = 0; i < array.size(); i++) {
+                JSONObject json=array.getJSONObject(i);
+                Long userNum=map.get(json.get("name"));
+                if(Objects.nonNull(userNum)){
+                    json.put("value",userNum);
+                }
+            }
+        }
+        return array;
     }
 
     public Map<String,List<SiteLook>> looksGroupMap(List<SiteLook> lookList,int day){
@@ -87,14 +96,5 @@ public class SiteLookService extends ServiceImpl<SiteLookMapper, SiteLook> {
         return list.stream().collect(Collectors.groupingBy(e->DateUtil.format(e.getCreateTime(), DateUtil.webFormat)));
     }
 
-    private List<SiteLook> looksRecentDays(int day){
-        Date curDate=DateUtil.getDayBegin(DateUtil.now());
-        Date beforeWeekDate= DateUtil.addDays(curDate,-day);
-        LambdaQueryWrapper<SiteLook> wrapper=Wrappers.lambdaQuery();
-        wrapper.select(SiteLook::getId,SiteLook::getUserIp,SiteLook::getCreateTime);
-        wrapper.ge(SiteLook::getCreateTime,beforeWeekDate);
-        wrapper.lt(SiteLook::getCreateTime,curDate);
-        return super.list(wrapper);
-    }
 
 }

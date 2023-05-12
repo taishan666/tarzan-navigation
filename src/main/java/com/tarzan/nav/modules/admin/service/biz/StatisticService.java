@@ -1,5 +1,6 @@
 package com.tarzan.nav.modules.admin.service.biz;
 
+import com.alibaba.fastjson.JSONArray;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.tarzan.nav.modules.admin.model.biz.SiteLook;
 import com.tarzan.nav.modules.admin.vo.StatisticVo;
@@ -27,7 +28,6 @@ public class StatisticService {
     private final WebsiteService websiteService;
     private final SiteLookService siteLookService;
 
-
     @Cacheable(value = "dashboard", key = "'statistic'")
     public StatisticVo getStatistic() {
         long linkCount = linkService.count();
@@ -40,7 +40,7 @@ public class StatisticService {
         Map<String,List<SiteLook>> lookMap=siteLookService.looksGroupMap(lookList,recentDays);
         Map<String, Long> lookCountByDay = siteLookService.looksByDay(lookMap,recentDays);
         Map<String, Long> userCountByDay = siteLookService.usersByDay(lookMap,recentDays);
-        Map<String, Long> provUsers = siteLookService.usersByProv(lookList);
+        JSONArray provUsers = siteLookService.usersByProv(lookList);
         StatisticVo vo=new StatisticVo();
         vo.setSiteCount(siteCount);
         vo.setLinkCount(linkCount);
@@ -49,7 +49,7 @@ public class StatisticService {
         vo.setCommentCount(commentCount);
         vo.setLookCountByDay(lookCountByDay);
         vo.setUserCountByDay(userCountByDay);
-        vo.setProUsers(provUsers);
+        vo.setProvUsers(provUsers);
         return vo;
     }
 
