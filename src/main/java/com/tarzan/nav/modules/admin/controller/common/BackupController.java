@@ -11,6 +11,7 @@ import com.tarzan.nav.utils.ResultUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.cache.ehcache.EhCacheCacheManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,6 +38,7 @@ public class BackupController {
 
     private final DbBackupTools dbTools;
     private final TarzanProperties tarzanProperties;
+    private final EhCacheCacheManager cacheCacheManager;
 
     /**
      * 备份数据库
@@ -117,7 +119,11 @@ public class BackupController {
     @PostMapping("rollback")
     @ResponseBody
     public ResponseVo rollback(String fileName){
-        if ( dbTools.rollback(fileName)) {
+        if (dbTools.rollback(fileName)) {
+            cacheCacheManager.getCache("website").clear();
+            cacheCacheManager.getCache("category").clear();
+            cacheCacheManager.getCache("link").clear();
+            cacheCacheManager.getCache("dashboard").clear();
             return ResultUtil.success("数据恢复成功");
         } else {
             return ResultUtil.error("数据恢复失败");

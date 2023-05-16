@@ -2,6 +2,7 @@ package com.tarzan.nav.modules.front;
 
 import com.tarzan.nav.common.constant.CoreConst;
 import com.tarzan.nav.modules.admin.model.biz.Comment;
+import com.tarzan.nav.modules.admin.model.biz.Link;
 import com.tarzan.nav.modules.admin.model.biz.Website;
 import com.tarzan.nav.modules.admin.service.biz.*;
 import com.tarzan.nav.modules.admin.vo.base.ResponseVo;
@@ -61,7 +62,7 @@ public class IndexController {
     public String search(String q,Model model) {
         model.addAttribute("categories",categoryService.treeList());
         model.addAttribute("search",q);
-        List<Website> websites=websiteService.listWithImage(new Website().setName(q));
+        List<Website> websites=websiteService.listWithImage(new Website().setName(q).setDescription(q));
         model.addAttribute("websites",websites);
         return  CoreConst.WEB_PREFIX+"search";
     }
@@ -123,9 +124,6 @@ public class IndexController {
         if(Objects.isNull(website.getName())){
             return ResultUtil.error("请填写网站名称！");
         }
-        if(Objects.isNull(website.getCategoryId())||website.getCategoryId()==0){
-            return ResultUtil.error("请选择分类！");
-        }
         if(StringUtil.isBlank(website.getUrl())){
             return ResultUtil.error("请填写网址！");
         }
@@ -133,7 +131,16 @@ public class IndexController {
             return ResultUtil.error("请填写描述！");
         }
         website.setStatus(CoreConst.STATUS_INVALID);
-        boolean flag =websiteService.save(website);
+        boolean flag;
+        if("link".equals(website.getApplyType())){
+            Link link=BeanUtil.copy(website,Link.class);
+            flag=linkService.save(link);
+        }else{
+            if(Objects.isNull(website.getCategoryId())||website.getCategoryId()==0){
+                return ResultUtil.error("请选择分类！");
+            }
+            flag =websiteService.save(website);
+        }
         if (flag) {
             return ResultUtil.success("提交申请成功！");
         } else {

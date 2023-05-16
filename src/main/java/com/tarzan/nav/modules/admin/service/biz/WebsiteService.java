@@ -121,7 +121,7 @@ public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
     }
 
     public List<Website> listWithImage(Website website) {
-        List<Website> websites= super.lambdaQuery().like(Website::getName,website.getName()).orderByDesc(Website::getCreateTime).list();
+        List<Website> websites= super.lambdaQuery().like(Website::getName,website.getName()).or().like(Website::getDescription,website.getDescription()).orderByDesc(Website::getCreateTime).list();
         return  this.wrapper(websites);
     }
 

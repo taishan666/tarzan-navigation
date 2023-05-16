@@ -64,12 +64,13 @@
         </div>
 <!--        <div class="text-center mb-3">
             <div class="tab-btn-group text-sm">
-                <a href="/apply/?type=site" class="tab-btn active">申请网站</a>
+                <a href="/apply?type=site" class="tab-btn active">申请网站</a>
                 <a href="/apply?type=link" class="tab-btn">申请友链</a>
             </div>
         </div>-->
        <form id="applyForm" class="post-tg tougao-form">
-            <input type="hidden" name="imageId" id="imageId">
+            <input type="hidden" name="imageId" id="imageId"/>
+            <input type="hidden" name="applyType" value="site"/>
             <div class="content-wrap">
                 <div class="content-layout">
                     <div class="panel card">
@@ -80,9 +81,10 @@
                             <div class="d-inline-block slider_menu into" slidertab="sliderTab">
                                        <ul class="nav nav-pills tab-auto-scrollbar menu" role="tablist"><li class="anchor" style="position: absolute; width: 60px; height: 40px; left: 0px; opacity: 1;"></li>
                                            <li class="pagenumber nav-item">
-                                               <a class="nav-link active" data-toggle="pill" data-type="sites" href="#sites" onclick="currentType(this)">网址</a>
-                                           </li><li class="pagenumber nav-item">
-                                               <a class="nav-link " data-toggle="pill" data-type="wechat" href="#wechat" onclick="currentType(this)">公众号</a>
+                                               <a class="nav-link active" data-toggle="pill" data-type="site" href="#site" onclick="currentType(this)">网址</a>
+                                           </li>
+                                           <li class="pagenumber nav-item">
+                                               <a class="nav-link " data-toggle="pill" data-type="link" href="#link" onclick="currentType(this)">友链</a>
                                            </li>
                                        </ul>
                             </div>
@@ -125,7 +127,7 @@
                                         <input type="text" class="form-control sites-des" value="" id="web_desc"name="description" data-status="true" placeholder="简介" maxlength="80">
                                     </div>
                                 </div>
-                                <div class="col-12 my-2">
+                                <div class="col-12 my-2 tg-sites-category" >
                                     <div class="input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="iconfont icon-category icon-fw" aria-hidden="true"></i></span>
@@ -184,6 +186,15 @@
     $(document).ready(function(){if($("#search-text")[0]){$("#search-text").focus();}});
 </script>
 <!--<script type='text/javascript' src='https://nav.iowen.cn/wp-content/themes/onenav/inc/postviews/postviews-cache.js?ver=6.2' id='wp-postviews-cache-js'></script>-->
+<script>
+    function currentType(data) {
+        const t = $(data).data('type');
+        $('input[name="applyType"]').val(t);
+        if(t=='link'){
+            $('.tg-sites-category').hide();
+        }
+    };
+</script>
 </body>
 <script>
     $('#get_info').click(function () {
