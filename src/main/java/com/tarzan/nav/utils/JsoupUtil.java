@@ -163,13 +163,14 @@ public class JsoupUtil {
         return true;
     };
 
-    public static boolean checkUrl(String website){
+    public static boolean checkLinkDead(String website){
         HttpURLConnection connection = null;
         try {
             URL url = new URL(website);
             HttpsUrlValidator.trustAllHttpsCertificates();
             HttpsURLConnection.setDefaultHostnameVerifier(hv);
             connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("HEAD");
             //设置读取超时
             connection.setReadTimeout(1000 * 15);
             connection.setRequestProperty("Accept", "*/*");
@@ -178,9 +179,7 @@ public class JsoupUtil {
             //不进行持久化连接
             connection.setRequestProperty("Connection", "close");
             int code=connection.getResponseCode();
-            if(code==HttpStatus.OK.value()){
-                return true;
-            }
+            return code==HttpURLConnection.HTTP_NOT_FOUND;
         } catch (final IOException e) {
             log.info(e.getMessage());
         } catch (final Exception e1){
@@ -190,7 +189,7 @@ public class JsoupUtil {
                 connection.disconnect();
             }
         }
-        return false;
+        return true;
     }
 
 
