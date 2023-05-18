@@ -74,7 +74,11 @@
             {
                 field: 'size',
                 title: '文件大小',
-                align: "center"
+                align: "center",
+                formatter: function (value) {
+                    const c = value / 1024;
+                    return Math.ceil(c)+'k';
+                }
             },
             {
                 field: 'createTime',

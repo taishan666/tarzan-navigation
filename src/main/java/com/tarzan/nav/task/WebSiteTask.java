@@ -5,7 +5,6 @@ import com.tarzan.nav.modules.admin.service.biz.WebsiteService;
 import com.tarzan.nav.utils.JsoupUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.net.HttpURLConnection;
@@ -24,7 +23,7 @@ public class WebSiteTask {
 
     private final WebsiteService websiteService;
 
-    @Scheduled(cron = "0/59 * * * * ?")
+  //  @Scheduled(cron = "0/59 * * * * ?")
     public  void brokenLinkCheck() {
         List<Website> websites=websiteService.simpleList();
         log.info("---------------------  start  -----------------------------");
