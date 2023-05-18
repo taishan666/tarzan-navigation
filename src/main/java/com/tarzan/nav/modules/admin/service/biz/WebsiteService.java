@@ -206,7 +206,11 @@ public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
     public TopWebsiteVO topWebsites() {
         TopWebsiteVO vo=new TopWebsiteVO();
         Set<Integer> hotSites=siteLookService.topSites(12);
-        vo.setHotList(this.wrapper(this.lambdaQuery().in(Website::getId,hotSites).list()));
+        if(CollectionUtils.isNotEmpty(hotSites)){
+            vo.setHotList(this.wrapper(this.lambdaQuery().in(Website::getId,hotSites).list()));
+        }else {
+            vo.setHotList(this.randomList(12));
+        }
         vo.setRandomList(this.randomList(12));
         vo.setNewestList(this.wrapper(this.lambdaQuery().orderByDesc(Website::getCreateTime).last("limit "+12).list()));
         return vo;
