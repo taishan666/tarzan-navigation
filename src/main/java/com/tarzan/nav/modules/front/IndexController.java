@@ -53,7 +53,7 @@ public class IndexController {
         model.addAttribute("categories",categoryService.treeLink());
         model.addAttribute("links",linkService.simpleList());
         model.addAttribute("hotSpot",hotNewsService.hotSpot());
-        model.addAttribute("topWebsite",websiteService.topWebsites());
+      //  model.addAttribute("topWebsite",websiteService.topWebsites());
         return  CoreConst.WEB_PREFIX+"index";
     }
 

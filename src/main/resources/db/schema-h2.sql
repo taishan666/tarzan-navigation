@@ -6,8 +6,9 @@ CREATE TABLE
     NOT EXISTS biz_category (
                                 ID INT UNSIGNED NOT NULL AUTO_INCREMENT,
                                 PID INT UNSIGNED NULL DEFAULT NULL,
-                                NAME VARCHAR ( 50 ) NULL DEFAULT NULL COMMENT '文章类型名',
-                                DESCRIPTION VARCHAR ( 200 ) NULL DEFAULT NULL COMMENT '类型介绍',
+                                NAME VARCHAR ( 50 ) NULL DEFAULT NULL COMMENT '分类名',
+                                DESCRIPTION VARCHAR ( 200 ) NULL DEFAULT NULL COMMENT '分类介绍',
+                                TYPE INT NULL DEFAULT 0 COMMENT '类型0目录1网站2文章',
                                 SORT INT NULL DEFAULT NULL COMMENT '排序',
                                 ICON VARCHAR ( 100 ) NULL DEFAULT NULL COMMENT '图标',
                                 STATUS tinyint UNSIGNED NULL DEFAULT 1 COMMENT '是否可用',

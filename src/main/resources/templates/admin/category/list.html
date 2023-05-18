@@ -75,6 +75,20 @@
                     return  '<i class="' + value.icon + '"></i>';
                 }
             },
+            {
+            field: 'type',
+            title: '类型',
+            align: "center",
+            formatter: function (value) {
+                if (value.type === 0) {
+                    return '目录'
+                } else if (value.type === 1) {
+                    return '网站'
+                } else if (value.type === 2) {
+                    return '文章'
+                }
+            }
+            },
         /*    {
                 field: 'description',
                 title: '分类描述',

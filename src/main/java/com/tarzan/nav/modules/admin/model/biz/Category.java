@@ -26,6 +26,10 @@ public class Category extends BaseVo {
     private Integer sort;
     private Integer status;
     private String icon;
+    /**
+     * 类型   0：目录   1：网站   2：文章
+     */
+    private Integer type;
 
     @TableField(exist = false)
     private String parentName;
