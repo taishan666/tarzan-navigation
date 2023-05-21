@@ -40,6 +40,7 @@ public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
     private final ImageService imageService;
     private final CategoryMapper categoryMapper;
     private final SiteLookService siteLookService;
+    private final PostService postService;
     private static final int TITLE_LEN=50;
 
 
@@ -59,6 +60,21 @@ public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
 
     @CacheEvict(value = {"website", "category"}, allEntries = true)
     public boolean saveByUrl(String url,Integer categoryId){
+        Category category= categoryMapper.selectById(categoryId);
+        if(category.getType()==1){
+            return saveSite(url,categoryId);
+        }
+        if(category.getType()==2){
+            return savePost(url,categoryId);
+        }
+        return true;
+    }
+    public boolean savePost(String url,Integer categoryId){
+        Website post= postService.getPost(url);
+        post.setCategoryId(categoryId);
+        return super.save(post);
+    }
+    public boolean saveSite(String url,Integer categoryId){
         Website website=new Website();
         website.setUrl(shortUrl(url));
         website.setCategoryId(categoryId);
