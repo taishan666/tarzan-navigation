@@ -474,7 +474,7 @@
     });
 
     // Trigger Resizable Function
-    var isMin = false,
+    let isMin = false,
         isMobileMin = false;
     function trigger_resizable(  ) {
         if( (theme.minNav == '1' && !isMin && 767.98<$(window).width() )||(!isMin && 767.98<$(window).width() && $(window).width()<1024) ){
