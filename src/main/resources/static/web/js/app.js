@@ -1,7 +1,8 @@
 (function($){
     $(document).ready(function(){
         // 侧栏菜单初始状态设置
-        if(theme.minNav !== '1')trigger_resizable();
+      //  if(theme.minNav !== '1')trigger_resizable();
+        trigger_resizable();
         // 主题状态
         switch_mode(false);
         // 搜索模块
@@ -477,6 +478,9 @@
     let isMin = false,
         isMobileMin = false;
     function trigger_resizable(  ) {
+        console.log(theme.minNav == '1')
+        console.log(!isMin )
+        console.log($(window).width() )
         if( (theme.minNav == '1' && !isMin && 767.98<$(window).width() )||(!isMin && 767.98<$(window).width() && $(window).width()<1024) ){
             //$('#mini-button').removeAttr('checked');
             $('#mini-button').prop('checked', false);
