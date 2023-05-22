@@ -41,11 +41,9 @@ public class PostService {
                 }
                 int end=url.indexOf("/article");
                  username=url.substring(start+1,end);
-                System.out.println(username);
             }
             int index=url.lastIndexOf("/");
             String articleId=url.substring(index+1,index+10);
-            System.out.println(articleId);
              Website post=new Website();
                 CsdnArticleVO articleVO=getArticle(username,articleId);
                 if(Objects.nonNull(articleVO)){
@@ -59,11 +57,9 @@ public class PostService {
                     post.setDescription(desc);
                     if(CollectionUtils.isNotEmpty(Arrays.asList(articleVO.getPicList()))){
                         String coverUrl=articleVO.getPicList()[0];
-                        System.out.println(coverUrl);
                         BizImage image=imageService.upload(coverUrl+",image/png");
                         post.setImageId(image.getId());
                     }
-                    System.out.println(post);
                     return post;
             }
         }
