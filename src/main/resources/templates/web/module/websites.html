@@ -57,7 +57,7 @@
                                                 </div>
                                                 <div class="url-info flex-fill">
                                                     <div class="text-sm overflowClip_1">
-                                                        <span class="badge vc-red text-ss mr-1" title="推荐">热</span>
+                                                        <span th:if="${website?.flag!=null}" class="badge vc-red text-ss mr-1" th:title="${website?.flag}">[[${website?.flag}]]</span>
                                                         <strong>[[${website?.name}]]</strong>
                                                     </div>
                                                     <p class="overflowClip_1 m-0 text-muted text-xs">[[${website?.description}]]</p>
@@ -85,9 +85,8 @@
                                     <div class="col-8">
                                         <div class="card-body list-content p-2" style="height: 100%;">
                                             <div class="list-body">
-                                                <a class="list-title no-c overflowClip_2" th:href="${'/site/'+website?.id}"
-                                                   target="_blank" th:title="${website?.name}"><span
-                                                        class="badge vc-red tag-new text-ss-new mr-1 " title="新鲜">新</span>[[${website?.name}]]</a>
+                                                <a class="list-title no-c overflowClip_2" th:href="${'/site/'+website?.id}" target="_blank" th:title="${website?.name}">
+                                                    <span th:if="${website?.flag!=null}" class="badge vc-red text-ss mr-1" th:title="${website?.flag}">[[${website?.flag}]]</span>[[${website?.name}]]</a>
                                             </div>
                                             <div>
                                                 <div class="d-flex flex-fill align-items-center text-muted text-xs">
