@@ -14,15 +14,13 @@ import lombok.AllArgsConstructor;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
 public class PostService {
 
-    private final static String POST_API="https://blog.csdn.net/community/home-api/v1/get-business-list?page=1&size=9999&businessType=blog&username=";
+    private final static String POST_API="https://blog.csdn.net/community/home-api/v1/get-business-list?businessType=blog";
 
     private final ImageService imageService;
 
@@ -48,14 +46,8 @@ public class PostService {
             int index=url.lastIndexOf("/");
             String articleId=url.substring(index+1,index+10);
             System.out.println(articleId);
-            Website post=new Website();
-            String result= HttpUtil.get(POST_API+username);
-            JSONObject json= JSON.parseObject(result);
-            if(json.getInteger("code")==200){
-                JSONObject data= json.getJSONObject("data");
-                JSONArray list=data.getJSONArray("list");
-                List<CsdnArticleVO> articles=list.toJavaList(CsdnArticleVO.class);
-                CsdnArticleVO articleVO=articles.stream().filter(e->e.getArticleId().contains(articleId)).findFirst().orElse(null);
+             Website post=new Website();
+                CsdnArticleVO articleVO=getArticle(username,articleId);
                 if(Objects.nonNull(articleVO)){
                     post.setStatus(1);
                     post.setName(articleVO.getTitle());
@@ -73,6 +65,58 @@ public class PostService {
                     }
                     System.out.println(post);
                     return post;
+            }
+        }
+        return null;
+    }
+
+    private CsdnArticleVO getArticle1(String username,String articleId){
+        String result= HttpUtil.get(POST_API+"&size=100&page=1&&username="+username);
+        JSONObject json= JSON.parseObject(result);
+        List<CsdnArticleVO> articles=new ArrayList<>(100);
+        if(json.getInteger("code")==200){
+            JSONObject data= json.getJSONObject("data");
+            JSONArray list=data.getJSONArray("list");
+            int total=data.getInteger("total");
+            articles.addAll(list.toJavaList(CsdnArticleVO.class));
+            if(total>100){
+                int pages=total/100+1;
+                for (int i = 2; i < pages+1; i++) {
+                    String body= HttpUtil.get(POST_API+"&size=100&page="+i+"&&username="+username);
+                    JSONObject json1= JSON.parseObject(body);
+                    JSONObject data1= json1.getJSONObject("data");
+                    JSONArray list1=data1.getJSONArray("list");
+                    articles.addAll(list1.toJavaList(CsdnArticleVO.class));
+                }
+            }
+        }
+        return articles.stream().filter(e->e.getArticleId().contains(articleId)).findFirst().orElse(null);
+    }
+
+    private CsdnArticleVO getArticle(String username,String articleId){
+        String result= HttpUtil.get(POST_API+"&size=100&page=1&&username="+username);
+        JSONObject json= JSON.parseObject(result);
+        if(json.getInteger("code")==200){
+            JSONObject data= json.getJSONObject("data");
+            JSONArray list=data.getJSONArray("list");
+            List<CsdnArticleVO> articles=list.toJavaList(CsdnArticleVO.class);
+            Optional<CsdnArticleVO> optional= articles.stream().filter(e->e.getArticleId().contains(articleId)).findFirst();
+            if(optional.isPresent()){
+                return optional.get();
+            }
+            int total=data.getInteger("total");
+            if(total>100){
+                int pages=total/100+1;
+                for (int i = 2; i < pages+1; i++) {
+                    String body= HttpUtil.get(POST_API+"&size=100&page="+i+"&&username="+username);
+                    JSONObject json1= JSON.parseObject(body);
+                    JSONObject data1= json1.getJSONObject("data");
+                    JSONArray list1=data1.getJSONArray("list");
+                    List<CsdnArticleVO> articles1=list1.toJavaList(CsdnArticleVO.class);
+                    Optional<CsdnArticleVO> optional1= articles1.stream().filter(e->e.getArticleId().contains(articleId)).findFirst();
+                    if(optional1.isPresent()){
+                        return optional1.get();
+                    }
                 }
             }
         }

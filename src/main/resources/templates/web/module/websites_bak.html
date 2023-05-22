@@ -44,13 +44,12 @@
             </div>
             <!-- tab模式菜单 end -->
             <div class="tab-content mt-4">
-                <!-- 网站-->
-                <div th:if="${cate?.type==1}"  th:each="cate,stat:${category?.children}"  th:id="${'tab-'+category?.id+'-'+cate?.id}" th:class="'tab-pane'+${stat.index==0? ' active' : ''}">
+                <div th:each="cate,stat:${category?.children}"  th:id="${'tab-'+category?.id+'-'+cate?.id}" th:class="'tab-pane'+${stat.index==0? ' active' : ''}">
                             <div class="row io-mx-n2 mt-4 ajax-list-body position-relative">
                                 <div th:class="'url-card io-px-2  ' +${stat.index==0&&stat.size%2!=0?'col-1a col-sm-1a col-md-1a col-lg-1a':'col-2a col-sm-2a col-md-2a col-lg-2a'}+ ' col-xl-4a col-xxl-5a'"  th:each="website,stat:${cate?.websites}">
   <!--                              <div th:each="website:${cate?.websites}" class="url-card io-px-2  col-2a col-sm-2a col-md-2a col-lg-2a col-xl-4a col-xxl-5a">-->
                                     <div class="url-body default ">
-                                        <a th:href="${'/site/'+website?.id}"  target="_blank"  th:data-id="${website?.id}" th:data-url="${website?.url}" th:class="${'card no-c  mb-4 site-'+website?.id}" data-toggle="tooltip" data-placement="bottom"  th:title="${website?.description}">
+                                        <a th:href="${website?.url}"  target="_blank"  th:data-id="${website?.id}" th:data-url="${website?.url}" th:class="${'card no-c  mb-4 site-'+website?.id}" data-toggle="tooltip" data-placement="bottom"  th:title="${website?.description}">
                                             <div class="card-body url-content d-flex align-items-center">
                                                 <div class="url-img rounded-circle mr-2 d-flex align-items-center justify-content-center">
                                                     <img class=" lazy unfancybox" th:src="${website?.img?.base64}" th:data-src="${website?.img?.base64}"  height="auto" width="auto"  th:alt="${website?.name}">
@@ -68,40 +67,6 @@
                                     </div>
                                 </div>
                             <div>
-                        </div>
-                    </div>
-                </div>
-                <!-- 文章-->
-                <div th:if="${cate?.type==2}"  th:each="cate,stat:${category?.children}"  th:id="${'tab-'+category?.id+'-'+cate?.id}" th:class="'tab-pane'+${stat.index==0? ' active' : ''}">
-                    <div class="row io-mx-n2 mt-4 ajax-list-body position-relative">
-                        <div class="io-px-2 col-12 col-sm-6 col-lg-4 col-xxl-3"  th:each="website,stat:${cate?.websites}">
-                            <div class="card flex-fill mb-3">
-                                <div class="row no-gutters">
-                                    <div class="col-4">
-                                        <div class="media media-4x3 rounded-left">
-                                            <a class="media-content" th:href="${'/site/'+website?.id}" th:style="'background-image: url('+${website?.img?.base64}+');'" target="_blank"></a>
-                                        </div>
-                                    </div>
-                                    <div class="col-8">
-                                        <div class="card-body list-content p-2" style="height: 100%;">
-                                            <div class="list-body">
-                                                <a class="list-title no-c overflowClip_2" th:href="${'/site/'+website?.id}"
-                                                   target="_blank" th:title="${website?.name}"><span
-                                                        class="badge vc-red tag-new text-ss-new mr-1 " title="新鲜">新</span>[[${website?.name}]]</a>
-                                            </div>
-                                            <div>
-                                                <div class="d-flex flex-fill align-items-center text-muted text-xs">
-                                                   <span><i class="iconfont icon-classification"></i> <a class="no-c" th:href="${'/site/'+website?.id}" target="_blank">CSDN</a> </span>
-                                                    <div class="flex-fill"></div>
-                                                    <div>
-                                                        <time class="mx-1">[[${#dates.format(website?.createTime, 'yyyy-MM-dd')}]]</time>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
