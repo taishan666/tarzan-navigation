@@ -1,11 +1,11 @@
-INSERT INTO SYS_CONFIG VALUES (5,'SITE_NAME','泰山导航',1,'网站名称');
-INSERT INTO SYS_CONFIG VALUES (6,'SITE_KWD','Java JavaScript Spring SpringBoot Vue React',1,'网站关键字');
-INSERT INTO SYS_CONFIG VALUES (7,'SITE_DESC','个人博客网站，技术交流，经验分享。',1,'网站描述');
-INSERT INTO SYS_CONFIG VALUES (8,'SITE_PERSON_PIC','e29cb694ada82a0dbd874a06576ddf13',1,'站长头像');
-INSERT INTO SYS_CONFIG VALUES (9,'SITE_PERSON_NAME','洛阳泰山',1,'站长名称');
-INSERT INTO SYS_CONFIG VALUES (10,'SITE_PERSON_DESC','90后少年，热爱写bug，热爱编程，热爱学习，分享一些个人经验，共同学习，少走弯路。Talk is cheap, show me the code!',1,'站长描述');
-INSERT INTO SYS_CONFIG VALUES (11,'BAIDU_PUSH_URL','http://data.zz.baidu.com/urls?site=#&token=EjnfUGGJ1drKk4Oy',1,'百度推送地址');
-INSERT INTO SYS_CONFIG VALUES (11,'STATISTICS_CODE','',1,'统计代码');
+INSERT INTO SYS_CONFIG VALUES (1,'SITE_NAME','泰山导航',1,'网站名称');
+INSERT INTO SYS_CONFIG VALUES (2,'SITE_KWD','Java JavaScript Spring SpringBoot Vue React',1,'网站关键字');
+INSERT INTO SYS_CONFIG VALUES (3,'SITE_DESC','个人博客网站，技术交流，经验分享。',1,'网站描述');
+INSERT INTO SYS_CONFIG VALUES (4,'SITE_PERSON_PIC','e29cb694ada82a0dbd874a06576ddf13',1,'站长头像');
+INSERT INTO SYS_CONFIG VALUES (5,'SITE_PERSON_NAME','洛阳泰山',1,'站长名称');
+INSERT INTO SYS_CONFIG VALUES (6,'SITE_PERSON_DESC','90后少年，热爱写bug，热爱编程，热爱学习，分享一些个人经验，共同学习，少走弯路。Talk is cheap, show me the code!',1,'站长描述');
+INSERT INTO SYS_CONFIG VALUES (7,'BAIDU_PUSH_URL','http://data.zz.baidu.com/urls?site=#&token=EjnfUGGJ1drKk4Oy',1,'百度推送地址');
+INSERT INTO SYS_CONFIG VALUES (8,'STATISTICS_CODE','',1,'统计代码');
 
 INSERT INTO SYS_MENU VALUES (1,0,'仪表盘','仪表盘','/dashboard','dashboard',1,1,'fas fa-home',1,'2021-09-27 21:22:02','2021-02-27 10:53:14');
 INSERT INTO SYS_MENU VALUES (2,0,'公告管理','公告管理','/notices','notices',1,1,'fas fa-volume-up',1,'2021-07-13 15:05:47','2021-02-27 10:53:14');
