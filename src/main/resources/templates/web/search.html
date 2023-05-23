@@ -61,8 +61,8 @@
             <div class="content-wrap">
                 <div class="content-layout">
                     <div class="mb-4">
-                        <a th:class="'btn btn-search mr-2 text-gray '+${type==1?'current':''}" href="/search?type=1&q=" title="网站">网站</a>
-                        <a th:class="'btn btn-search mr-2 text-gray '+${type==2?'current':''}" href="/search?type=2&q=" title="文章">文章</a>
+                        <a th:class="'btn btn-search mr-2 text-gray '+${type==1?'current':''}" th:href="'/search?type=1&q='+${search}" title="网站">网站</a>
+                        <a th:class="'btn btn-search mr-2 text-gray '+${type==2?'current':''}" th:href="'/search?type=2&q='+${search}" title="文章">文章</a>
                         <!--    <a class="btn btn-search mr-2 text-gray " href="" title="">软件</a>
                            <a class="btn btn-search mr-2 text-gray " href="" title="">书籍</a>	-->
                     </div>
