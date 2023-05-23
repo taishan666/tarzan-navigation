@@ -38,9 +38,7 @@
     <link rel='stylesheet' id='style-css' href='/web/css/style.min.css' type='text/css' media='all' />
     <script type='text/javascript' src='/web/js/jquery.min.js' id='jquery-js'></script>
     <script type='text/javascript' id='jquery-js-after'>
-        /* <![CDATA[ */
         function loadFunc(func) {if (document.all){window.attachEvent("onload",func);}else{window.addEventListener("load",func,false);}}
-        /* ]]> */
     </script>
     <style>.navbar-nav .menu-item-286 a{background: #ff8116;border-radius: 50px!important;padding: 5px 10px!important;margin: 5px 0!important;color: #fff!important;}
     .navbar-nav .menu-item-286 a i{position: absolute;top: 0;right: -10px;color: #f13522;}
@@ -55,6 +53,7 @@
         <div id="search" class="s-search mx-auto my-4">
             <form name="formsearch" method="get" action="/search?q=" id="super-search-fm">
                 <input type="text" id="search-text" required="required" name="q" class="form-control search-keyword" placeholder="输入关键字搜索" style="outline:0">
+                <input type="hidden" name="type" th:value="${type}"/>
                 <button type="submit"><i class="iconfont icon-search "></i></button>
             </form>
         </div>
@@ -62,15 +61,15 @@
             <div class="content-wrap">
                 <div class="content-layout">
                     <div class="mb-4">
-                        <a class="btn btn-search mr-2 text-gray current" href="/search?q=" th:title="${search}">网站</a>
-                     <!--   <a class="btn btn-search mr-2 text-gray " href="" title="">文章</a>
-                        <a class="btn btn-search mr-2 text-gray " href="" title="">软件</a>
-                        <a class="btn btn-search mr-2 text-gray " href="" title="">书籍</a>	-->
+                        <a th:class="'btn btn-search mr-2 text-gray '+${type==1?'current':''}" href="/search?type=1&q=" title="网站">网站</a>
+                        <a th:class="'btn btn-search mr-2 text-gray '+${type==2?'current':''}" href="/search?type=2&q=" title="文章">文章</a>
+                        <!--    <a class="btn btn-search mr-2 text-gray " href="" title="">软件</a>
+                           <a class="btn btn-search mr-2 text-gray " href="" title="">书籍</a>	-->
                     </div>
                     <h4 class="text-gray text-lg mb-4"><i class="iconfont icon-search mr-1"></i>“[[${search}]]”的搜索结果</h4>
                     <div class="row">
                         <th:block th:unless="${#lists.isEmpty(websites)}" >
-                        <div class="url-card  col-sm-6 col-md-4 " th:each="website:${websites}">
+                         <div th:if="${type==1}" class="url-card  col-sm-6 col-md-4 " th:each="website:${websites}">
                             <div class="url-body default ">
                                 <a th:href="${website?.url}" th:data-id="${website?.id}" th:data-url="${website?.url}" class="card no-c  mb-4 site-1375" data-toggle="tooltip" data-placement="bottom" title="" th:data-original-title="${website?.name}">
                                     <div class="card-body url-content d-flex align-items-center">
@@ -88,6 +87,34 @@
                                 <a th:href="${website?.url}" target="_blank" rel="external nofollow" title="" class="togo text-center text-muted is-views" data-id="1375" data-toggle="tooltip" data-placement="right" data-original-title="直达"><i class="iconfont icon-goto"></i></a>
                             </div>
                         </div>
+                         <div th:if="${type==2}" class="io-px-2 col-12 col-sm-6 col-lg-4 col-xxl-3" th:each="website:${websites}">
+                                <div class="card flex-fill mb-3">
+                                    <div class="row no-gutters">
+                                        <div class="col-4">
+                                            <div class="media media-4x3 rounded-left">
+                                                <a class="media-content" th:href="${'/site/'+website?.id}" th:style="'background-image: url('+${website?.img?.base64}+');'" target="_blank"></a>
+                                            </div>
+                                        </div>
+                                        <div class="col-8">
+                                            <div class="card-body list-content p-2" style="height: 100%;">
+                                                <div class="list-body">
+                                                    <a class="list-title no-c overflowClip_2" th:href="${'/site/'+website?.id}" target="_blank" th:title="${website?.name}">
+                                                        <span th:if="${website?.flag!=null}" class="badge vc-red text-ss mr-1" th:title="${website?.flag}">[[${website?.flag}]]</span>[[${website?.name}]]</a>
+                                                </div>
+                                                <div>
+                                                    <div class="d-flex flex-fill align-items-center text-muted text-xs">
+                                                        <span><i class="iconfont icon-classification"></i> <a class="no-c" th:href="${'/site/'+website?.id}" target="_blank">CSDN</a> </span>
+                                                        <div class="flex-fill"></div>
+                                                        <div>
+                                                            <time class="mx-1">[[${#dates.format(website?.createTime, 'yyyy-MM-dd')}]]</time>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </th:block>
                         <div th:if="${#lists.isEmpty(websites)}"  class="col-lg-12">
                             <div class="nothing">没有内容</div>

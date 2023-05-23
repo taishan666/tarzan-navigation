@@ -52,12 +52,16 @@ public class IndexController {
 
 
     @GetMapping("/search")
-    public String search(String q,Model model) {
+    public String search(String q,Integer type,Model model) {
+        if(Objects.isNull(type)){
+            type=1;
+        }
         siteLookService.asyncLook(0,WebUtil.getIP(), LookTypeConst.SEARCH);
         model.addAttribute("categories",categoryService.treeList());
         model.addAttribute("search",q);
-        List<Website> websites=websiteService.listWithImage(new Website().setName(q).setDescription(q));
+        List<Website> websites=websiteService.search(new Website().setName(q).setDescription(q),type);
         model.addAttribute("websites",websites);
+        model.addAttribute("type",type);
         return  CoreConst.WEB_PREFIX+"search";
     }
 

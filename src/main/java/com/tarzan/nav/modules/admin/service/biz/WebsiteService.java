@@ -238,4 +238,14 @@ public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
         vo.setNewestList(this.wrapper(this.lambdaQuery().orderByDesc(Website::getCreateTime).last("limit "+num).list()));
         return vo;
     }
+
+    public List<Website> search(Website website,Integer type) {
+        List<Category>  categories=categoryMapper.selectList(Wrappers.<Category>lambdaQuery().eq(Category::getType,type));
+        if(CollectionUtils.isNotEmpty(categories)){
+            Set<Integer> cateIds=categories.stream().map(Category::getId).collect(Collectors.toSet());
+            List<Website> websites= super.lambdaQuery().and(wrap->wrap.like(Website::getName,website.getName()).or().like(Website::getDescription,website.getDescription())).in(Website::getCategoryId,cateIds).orderByDesc(Website::getCreateTime).list();
+            return  this.wrapper(websites);
+        }
+       return Collections.emptyList();
+    }
 }
