@@ -5,23 +5,39 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.google.common.collect.Maps;
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import com.tarzan.nav.modules.admin.mapper.biz.SiteLookMapper;
 import com.tarzan.nav.modules.admin.model.biz.SiteLook;
 import com.tarzan.nav.modules.network.LocationService;
 import com.tarzan.nav.utils.DateUtil;
 import com.tarzan.nav.utils.MapUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
  * @author TARZAN
  */
 @Service
+@Slf4j
 public class SiteLookService extends ServiceImpl<SiteLookMapper, SiteLook> {
+
+
+    Cache<String, String> cache = Caffeine.newBuilder()
+            .initialCapacity(5)
+            // 超出时淘汰
+            .maximumSize(100000)
+            //设置写缓存后n秒钟过期
+            .expireAfterWrite(60, TimeUnit.SECONDS)
+            //设置读写缓存后n秒钟过期,实际很少用到,类似于expireAfterWrite
+            //.expireAfterAccess(17, TimeUnit.SECONDS)
+            .build();
+
 
 
     public Set<Integer> topSites(int num) {
@@ -32,7 +48,7 @@ public class SiteLookService extends ServiceImpl<SiteLookMapper, SiteLook> {
 
     private static Map<String, Long> buildRecentDayMap(int day) {
         Date now = DateUtil.now();
-        LinkedHashMap<String, Long> map = Maps.newLinkedHashMap();
+        LinkedHashMap<String, Long> map = new LinkedHashMap<>(7);
         for (int i = day; i >= 1; i--) {
             Long count = 0L;
             map.put(DateUtil.format(DateUtil.addDays(now, -i), DateUtil.webFormat), count);
@@ -41,22 +57,23 @@ public class SiteLookService extends ServiceImpl<SiteLookMapper, SiteLook> {
     }
 
     @Async
-    public void asyncLook(Integer siteId,String userIp) {
-        /*浏览次数*/
-        Date date = new Date();
-        long checkCount = this.checkArticleLook(siteId, userIp, DateUtil.addHours(date, -1));
-        if (checkCount == 0) {
+    public void asyncLook(Integer siteId,String userIp,String type) {
+        boolean check = this.checkArticleLook(siteId, userIp);
+        if (check) {
+            log.info(userIp+"查看"+siteId+"一次！");
             SiteLook siteLook = new SiteLook();
             siteLook.setSiteId(siteId);
             siteLook.setUserIp(userIp);
             siteLook.setProvince(LocationService.getProvince(userIp));
+            siteLook.setType(type);
             super.save(siteLook);
         }
+        cache.put(userIp+"_"+siteId,"1");
     }
 
 
-    public long checkArticleLook(Integer siteId, String userIp, Date lookTime) {
-        return super.lambdaQuery().eq(SiteLook::getSiteId,siteId).eq(SiteLook::getUserIp,userIp).eq(SiteLook::getCreateTime,lookTime).count();
+    public boolean checkArticleLook(Integer siteId, String userIp) {
+        return cache.getIfPresent(userIp+"_"+siteId)==null;
     }
 
     public  Map<String,Long> looksByDay(Map<String, List<SiteLook>> lookMap, int day){
@@ -81,7 +98,7 @@ public class SiteLookService extends ServiceImpl<SiteLookMapper, SiteLook> {
         if(CollectionUtils.isNotEmpty(map)){
             for (int i = 0; i < array.size(); i++) {
                 JSONObject json=array.getJSONObject(i);
-                Long userNum=map.get(json.get("name"));
+                Long userNum=map.get(json.getString("name"));
                 if(Objects.nonNull(userNum)){
                     json.put("value",userNum);
                 }

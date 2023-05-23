@@ -1,24 +1,17 @@
 package com.tarzan.nav.modules.front;
 
 import com.tarzan.nav.common.constant.CoreConst;
-import com.tarzan.nav.modules.admin.model.biz.Comment;
-import com.tarzan.nav.modules.admin.model.biz.Link;
+import com.tarzan.nav.common.constant.LookTypeConst;
 import com.tarzan.nav.modules.admin.model.biz.Website;
 import com.tarzan.nav.modules.admin.service.biz.*;
-import com.tarzan.nav.modules.admin.vo.base.ResponseVo;
 import com.tarzan.nav.modules.network.HotNewsService;
-import com.tarzan.nav.modules.network.LocationService;
 import com.tarzan.nav.utils.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Objects;
 
@@ -41,7 +34,6 @@ public class IndexController {
     private final NoticeService noticeService;
     private final HotNewsService hotNewsService;
     private final CommentService commentService;
-    private final ImageService imageService;
     private final SiteLookService siteLookService;
 
     /**
@@ -49,17 +41,19 @@ public class IndexController {
      */
     @GetMapping({"/","index","home"})
     public String home(Model model) {
+        siteLookService.asyncLook(0,WebUtil.getIP(), LookTypeConst.HOME);
         model.addAttribute("notices",noticeService.simpleList());
         model.addAttribute("categories",categoryService.treeLink());
         model.addAttribute("links",linkService.simpleList());
         model.addAttribute("hotSpot",hotNewsService.hotSpot());
-        model.addAttribute("topWebsite",websiteService.topWebsites());
+        model.addAttribute("topWebsite",websiteService.topWebsites(12));
         return  CoreConst.WEB_PREFIX+"index";
     }
 
 
     @GetMapping("/search")
     public String search(String q,Model model) {
+        siteLookService.asyncLook(0,WebUtil.getIP(), LookTypeConst.SEARCH);
         model.addAttribute("categories",categoryService.treeList());
         model.addAttribute("search",q);
         List<Website> websites=websiteService.listWithImage(new Website().setName(q).setDescription(q));
@@ -69,6 +63,7 @@ public class IndexController {
 
     @GetMapping("/about")
     public String about(Model model) {
+        siteLookService.asyncLook(0,WebUtil.getIP(), LookTypeConst.ABOUT);
         model.addAttribute("categories",categoryService.treeList());
         model.addAttribute("comments",commentService.commentsBySid(-1));
         model.addAttribute("commentNum",commentService.commentsBySidNum(-1));
@@ -77,6 +72,7 @@ public class IndexController {
 
     @GetMapping("/bookmark")
     public String guestbook(Model model) {
+        siteLookService.asyncLook(0,WebUtil.getIP(), LookTypeConst.BOOKMARK);
         List<Website> websites=websiteService.randomList(12);
         model.addAttribute("websites",websites);
         return  CoreConst.WEB_PREFIX+"bookmark";
@@ -84,6 +80,7 @@ public class IndexController {
 
     @GetMapping({"/notice/{noticeId}"})
     public String about(Model model, @PathVariable("noticeId") Integer noticeId) {
+        siteLookService.asyncLook(noticeId,WebUtil.getIP(), LookTypeConst.NOTICE);
         model.addAttribute("categories",categoryService.treeList());
         model.addAttribute("notice",noticeService.getById(noticeId));
         return  CoreConst.WEB_PREFIX+"notice";
@@ -92,24 +89,20 @@ public class IndexController {
 
     @GetMapping("/apply")
     public String apply(Model model) {
+        siteLookService.asyncLook(0,WebUtil.getIP(), LookTypeConst.APPLY);
         model.addAttribute("categories",categoryService.treeList());
         return  CoreConst.WEB_PREFIX+"apply";
     }
 
     @GetMapping("/site/{id}")
-    public String apply(Model model,@PathVariable("id") Integer id) {
-        String userIp= WebUtil.getIP();
-        siteLookService.asyncLook(id,userIp);
-        Website website=websiteService.getById(id);
+    public String apply(@PathVariable("id") Integer id) {
+        Website website=websiteService.get(id);
+        siteLookService.asyncLook(id,WebUtil.getIP(), LookTypeConst.SITE);
         if(Objects.isNull(website)){
-           // model.addAttribute("website",new Website());
             return "forward:/";
         }else {
-          //  model.addAttribute("website",website);
             return "redirect:https:"+website.getUrl();
         }
-       // return  CoreConst.WEB_PREFIX+"website";
-
     }
 
     @GetMapping("/douyin")
@@ -117,61 +110,5 @@ public class IndexController {
         model.addAttribute("categories",categoryService.treeList());
         return  CoreConst.WEB_PREFIX+"douyin";
     }
-
-    @PostMapping("/apply/submit")
-    @ResponseBody
-    public ResponseVo apply(@Valid @RequestBody Website website) {
-        if(Objects.isNull(website.getName())){
-            return ResultUtil.error("请填写网站名称！");
-        }
-        if(StringUtil.isBlank(website.getUrl())){
-            return ResultUtil.error("请填写网址！");
-        }
-        if(StringUtil.isBlank(website.getDescription())){
-            return ResultUtil.error("请填写描述！");
-        }
-        website.setStatus(CoreConst.STATUS_INVALID);
-        boolean flag;
-        if("link".equals(website.getApplyType())){
-            Link link=BeanUtil.copy(website,Link.class);
-            flag=linkService.save(link);
-        }else{
-            if(Objects.isNull(website.getCategoryId())||website.getCategoryId()==0){
-                return ResultUtil.error("请选择分类！");
-            }
-            flag =websiteService.save(website);
-        }
-        if (flag) {
-            return ResultUtil.success("提交申请成功！");
-        } else {
-            return ResultUtil.error("提交申请失败！");
-        }
-    }
-
-    @PostMapping("/comment/submit")
-    @ResponseBody
-    public ResponseVo saveComment(HttpServletRequest request, Comment comment) throws UnsupportedEncodingException {
-        if (StringUtils.isEmpty(comment.getNickname())) {
-            return ResultUtil.error("请输入昵称");
-        }
-        String content = comment.getContent();
-        if (!XssKillerUtil.isValid(content)) {
-            return ResultUtil.error("内容不合法");
-        }
-        content = XssKillerUtil.clean(content.trim()).replaceAll("(<p><br></p>)|(<p></p>)", "");
-        comment.setContent(content);
-        comment.setIp(IpUtil.getIpAddr(request));
-        comment.setAvatar(imageService.letterAvatar(comment.getNickname()).getId());
-        comment.setLocation(LocationService.getLocation(comment.getIp()));
-        boolean a = commentService.insertComment(comment);
-        if (a) {
-            return ResultUtil.success("评论提交成功,系统正在审核");
-        } else {
-            return ResultUtil.error("评论提交失败");
-        }
-    }
-
-
-
 
 }

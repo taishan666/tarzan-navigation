@@ -30,11 +30,18 @@
             <artifactId>httpmime</artifactId>
             <version>4.5.14</version>
         </dependency>-->
-        <dependency>
+  <!--      <dependency>
             <groupId>com.sun.net.httpserver</groupId>
             <artifactId>http</artifactId>
             <version>20070405</version>
+        </dependency>-->
+
+        <dependency>
+            <groupId>com.github.ben-manes.caffeine</groupId>
+            <artifactId>caffeine</artifactId>
+            <version>2.7.0</version>
         </dependency>
+
 
         <dependency>
             <groupId>commons-codec</groupId>
@@ -156,11 +163,11 @@
             <version>1.18.26</version>
             <optional>true</optional>
         </dependency>
-        <dependency>
+ <!--       <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>31.1-jre</version>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>

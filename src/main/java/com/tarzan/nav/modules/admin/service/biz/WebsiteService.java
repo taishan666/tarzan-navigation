@@ -69,17 +69,19 @@ public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
         }
         return true;
     }
+
     public boolean savePost(String url,Integer categoryId){
         Website post= postService.getPost(url);
+        post.setUrl(shortUrl(url));
         post.setCategoryId(categoryId);
         return super.save(post);
     }
+
     public boolean saveSite(String url,Integer categoryId){
         Website website=new Website();
         website.setUrl(shortUrl(url));
         website.setCategoryId(categoryId);
         Document doc= JsoupUtil.getDocument(url);
-        assert doc != null;
         String title=JsoupUtil.getTitle(doc);
         String desc=JsoupUtil.getDescription(doc);
         if(StringUtil.isNotBlank(title)){
@@ -99,6 +101,11 @@ public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
     @Cacheable(value = "website", key = "'simple'")
     public List<Website> simpleList() {
         return super.lambdaQuery().select(Website::getId,Website::getUrl,Website::getCategoryId).eq(Website::getStatus,CoreConst.STATUS_VALID).list();
+    }
+
+    @Cacheable(value = "website", key = "#id")
+    public Website get(Integer id) {
+        return super.getById(id);
     }
 
     @Cacheable(value = "website", key = "'all'")
@@ -219,16 +226,16 @@ public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
     }
 
 
-    public TopWebsiteVO topWebsites() {
+    public TopWebsiteVO topWebsites(int num) {
         TopWebsiteVO vo=new TopWebsiteVO();
-        Set<Integer> hotSites=siteLookService.topSites(12);
+        Set<Integer> hotSites=siteLookService.topSites(num);
         if(CollectionUtils.isNotEmpty(hotSites)){
             vo.setHotList(this.wrapper(this.lambdaQuery().in(Website::getId,hotSites).list()));
         }else {
-            vo.setHotList(this.randomList(10));
+            vo.setHotList(this.randomList(num));
         }
-        vo.setRandomList(this.randomList(10));
-        vo.setNewestList(this.wrapper(this.lambdaQuery().orderByDesc(Website::getCreateTime).last("limit "+10).list()));
+        vo.setRandomList(this.randomList(num));
+        vo.setNewestList(this.wrapper(this.lambdaQuery().orderByDesc(Website::getCreateTime).last("limit "+num).list()));
         return vo;
     }
 }

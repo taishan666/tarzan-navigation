@@ -19,4 +19,5 @@ public class SiteLook{
     private Integer siteId;
     private String userIp;
     private String province;
+    private String type;
 }

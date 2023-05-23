@@ -16,8 +16,8 @@
 <div class="tab-content">
     <div id="ct-tab-sites-views0" class="tab-pane active">
         <div class="row  ajax-list-body position-relative">
-            <div class="url-card   col-2a col-sm-2a col-md-2a col-lg-3a col-xl-5a col-xxl-6a" th:each="website:${topWebsite?.hotList}">
-                <div class="url-body default ">
+            <div class="url-card  col-2a col-sm-2a col-md-2a col-lg-3a col-xl-5a col-xxl-6a" th:each="website:${topWebsite?.hotList}">
+                <div class="url-body mini">
                     <a th:href="${'/site/'+website?.id}" target="_blank" th:data-id="${website?.id}" th:data-url="${website?.url}" class="card no-c  mb-4 site-725" data-toggle="tooltip" data-placement="bottom" title="" th:data-original-title="${website?.description}">
                         <div class="card-body url-content d-flex align-items-center">
                             <div class="url-img rounded-circle mr-2 d-flex align-items-center justify-content-center">
@@ -27,7 +27,7 @@
                                 <div class="text-sm overflowClip_1">
                                     <strong>[[${website?.name}]]</strong>
                                 </div>
-                                <p class="overflowClip_1 m-0 text-muted text-xs">[[${website?.description}]]</p>
+               <!--                 <p class="overflowClip_1 m-0 text-muted text-xs">[[${website?.description}]]</p>-->
                             </div>
                         </div>
                     </a>
@@ -39,7 +39,7 @@
     <div id="ct-tab-sites-modified1" class="tab-pane">
         <div class="row  ajax-list-body position-relative">
             <div class="url-card   col-2a col-sm-2a col-md-2a col-lg-3a col-xl-5a col-xxl-6a" th:each="website:${topWebsite?.randomList}">
-                <div class="url-body default ">
+                <div class="url-body mini ">
                     <a th:href="${'/site/'+website?.id}" target="_blank" th:data-id="${website?.id}" th:data-url="${website?.url}" class="card no-c  mb-4 site-725" data-toggle="tooltip" data-placement="bottom" title="" th:data-original-title="${website?.description}">
                         <div class="card-body url-content d-flex align-items-center">
                             <div class="url-img rounded-circle mr-2 d-flex align-items-center justify-content-center">
@@ -49,7 +49,7 @@
                                 <div class="text-sm overflowClip_1">
                                     <strong>[[${website?.name}]]</strong>
                                 </div>
-                                <p class="overflowClip_1 m-0 text-muted text-xs">[[${website?.description}]]</p>
+         <!--                       <p class="overflowClip_1 m-0 text-muted text-xs">[[${website?.description}]]</p>-->
                             </div>
                         </div>
                     </a>
@@ -61,7 +61,7 @@
     <div id="ct-tab-sites-date2" class="tab-pane">
         <div class="row  ajax-list-body position-relative">
             <div class="url-card   col-2a col-sm-2a col-md-2a col-lg-3a col-xl-5a col-xxl-6a" th:each="website:${topWebsite?.newestList}">
-                <div class="url-body default ">
+                <div class="url-body mini ">
                     <a th:href="${'/site/'+website?.id}" target="_blank"  th:data-id="${website?.id}" th:data-url="${website?.url}" class="card no-c  mb-4 site-725" data-toggle="tooltip" data-placement="bottom" title="" th:data-original-title="${website?.description}">
                         <div class="card-body url-content d-flex align-items-center">
                             <div class="url-img rounded-circle mr-2 d-flex align-items-center justify-content-center">
@@ -71,7 +71,7 @@
                                 <div class="text-sm overflowClip_1">
                                     <strong>[[${website?.name}]]</strong>
                                 </div>
-                                <p class="overflowClip_1 m-0 text-muted text-xs">[[${website?.description}]]</p>
+  <!--                              <p class="overflowClip_1 m-0 text-muted text-xs">[[${website?.description}]]</p>-->
                             </div>
                         </div>
                     </a>
