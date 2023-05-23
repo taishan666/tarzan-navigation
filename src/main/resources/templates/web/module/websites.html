@@ -29,7 +29,7 @@
             </div>
         </th:block>
         <th:block th:unless="${#lists.isEmpty(category?.children)}" >
-            <h4 class="text-gray text-lg"><i class="site-tag iconfont icon-tag icon-lg mr-1" id="term-8"></i>[[${category?.name}]]</h4>
+            <h4 class="text-gray text-lg"><i th:class="'site-tag '+${category?.icon}+' icon-lg mr-1'" id="term-8"></i>[[${category?.name}]]</h4>
             <!-- tab模式菜单 -->
             <div class="d-flex flex-fill flex-tab align-items-center">
                 <div class='slider_menu mini_tab ajax-list-home' sliderTab="sliderTab" th:data-id="${category?.id}">
