@@ -1,4 +1,46 @@
-
+<style>
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 60px;
+        height: 34px;
+    }
+    .switch input[type="checkbox"] {
+        display:none;
+    }
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+        border-radius: 34px;
+    }
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+        border-radius: 50%;
+    }
+    input:checked + .slider {
+        background-color: #2196F3;
+    }
+    input:checked + .slider:before {
+        -webkit-transform: translateX(26px);
+        -ms-transform: translateX(26px);
+        transform: translateX(26px);
+    }
+</style>
 <div class="row">
     <div class="colxl-12 col-lg-12 col-md-12 col-sm-12 col-12">
         <div class="page-title-wrapper">
@@ -54,7 +96,7 @@
 
 
 <script>
-    var treeTableConf = {
+    const treeTableConf = {
         id: "table",
         table: null,
         columns: [
@@ -72,52 +114,58 @@
                 title: '图标',
                 align: "center",
                 formatter: function (value, row, index) {
-                    return  '<i class="' + value.icon + '"></i>';
+                    return '<i class="' + value.icon + '"></i>';
                 }
             },
             {
-            field: 'type',
-            title: '类型',
-            align: "center",
-            formatter: function (value) {
-                if (value.type === 0) {
-                    return '目录'
-                } else if (value.type === 1) {
-                    return '网站'
-                } else if (value.type === 2) {
-                    return '文章'
+                field: 'type',
+                title: '类型',
+                align: "center",
+                formatter: function (value) {
+                    if (value.type === 0) {
+                        return '目录'
+                    } else if (value.type === 1) {
+                        return '网站'
+                    } else if (value.type === 2) {
+                        return '文章'
+                    }
                 }
-            }
             },
-        /*    {
-                field: 'description',
-                title: '分类描述',
-                align: "center"
-            },*/
+            /*    {
+                    field: 'description',
+                    title: '分类描述',
+                    align: "center"
+                },*/
             {
                 field: 'sort',
                 title: '排序',
                 align: "center",
             },
             {
+                field: 'status',
+                title: '显示/隐藏',
+                align: "center",
+                formatter: typeSwitch
+            },
+            {
                 field: 'operation',
                 title: '操作',
                 align: "center",
                 formatter: function (row, index) {
-                    let add='';
-                    if(row.pid===0){
-                      add = '<button type="button" class="effect-btn btn btn-warning mt-2 mr-2 icon-lg" onclick="addRow(' + row.id + ')"><i class="fas fa-plus"></i></button>';
+                    let add = '';
+                    if (row.pid === 0) {
+                        add = '<button type="button" class="effect-btn btn btn-warning mt-2 mr-2 icon-lg" onclick="addRow(' + row.id + ')"><i class="fas fa-plus"></i></button>';
                     }
                     const edit = '<button type="button" class="effect-btn btn btn-info mt-2 mr-2 icon-lg" onclick="editRow(' + row.id + ')"><i class="fas fa-edit"></i></button>';
                     const del = '<button type="button"  class="effect-btn btn btn-danger mt-2 mr-2 icon-lg" onclick="deleteRow(' + row.id + ')"><i class="fas fa-trash-alt"></i></button>';
-                    return add+edit+del;
+                    return add + edit + del;
                 }
             }]
     };
 
     /*加载列表*/
     $(function () {
-        var table = new TreeTable(treeTableConf.id, "/category/list", treeTableConf.columns, "id");
+        const table = new TreeTable(treeTableConf.id, "/category/list", treeTableConf.columns, "id");
         table.setExpandColumn(1);
         table.setIdField("id");
         table.setCodeField("id");
@@ -125,6 +173,7 @@
         table.setStriped(false);
         table.init();
         treeTableConf.table = table;
+
     });
 
     /*新增*/
@@ -160,6 +209,30 @@
                 }
                 layer.msg(data.msg);
             })
+        })
+    }
+
+    //表格中开关控件
+    function typeSwitch(value, row, index){
+        let isChecked = "";
+        if (value.status==1) {
+            isChecked="checked";
+        }
+        return '<label class="switch"> <input id="switch_' + value.id + '" onclick="switchChange(' + value.id + ')"  type="checkbox" '+isChecked+'> <span class="slider"></span></label>';
+    }
+
+    function switchChange(id) {
+        const state=$("#switch_"+id).is(":checked");
+        const status = state ? 1:0;
+        const params = {id: id, status: status};
+        const str = jQuery.param(params);
+        Core.postAjax('/category/update/status', str, function (data) {
+            if (data.status === 200) {
+                treeTableConf.table.refresh();
+            }
+            layer.msg(data.msg);
+        },function () {
+            Core.unmask("#switch_"+id);
         })
     }
 

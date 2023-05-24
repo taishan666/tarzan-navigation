@@ -9,6 +9,7 @@ import com.tarzan.nav.modules.admin.model.biz.Website;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Comparator;
 import java.util.List;
@@ -29,6 +30,11 @@ public class CategoryService extends ServiceImpl<CategoryMapper, Category> {
     @Cacheable(value = "category", key = "'list'")
     public List<Category> selectCategories(int status) {
         return super.lambdaQuery().eq(Category::getStatus,status).orderByAsc(Category::getSort).list();
+    }
+
+    @Cacheable(value = "category", key = "'all'")
+    public List<Category> selectCategories() {
+        return super.lambdaQuery().orderByAsc(Category::getSort).list();
     }
 
     @Override
@@ -85,5 +91,16 @@ public class CategoryService extends ServiceImpl<CategoryMapper, Category> {
             return websiteService.lambdaQuery().eq(Website::getCategoryId,id).count()!=0L;
         }
        return false;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public boolean updateStatus(Category bizCategory) {
+        boolean flag= super.updateById(bizCategory);
+        List<Category> children=super.lambdaQuery().eq(Category::getPid,bizCategory.getId()).list();
+        if(CollectionUtils.isNotEmpty(children)){
+            List<Integer> cateIds=children.stream().map(Category::getId).collect(Collectors.toList());
+            return super.lambdaUpdate().set(Category::getStatus,bizCategory.getStatus()).in(Category::getId,cateIds).update();
+        }
+        return flag;
     }
 }

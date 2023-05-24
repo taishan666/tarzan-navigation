@@ -128,18 +128,18 @@
                 events: operateEvents,
                 formatter: operationFormatter
             }];
-        var onLoadSuccess=function () {	//在成功加载远程数据时触发
+        const onLoadSuccess = function () {	//在成功加载远程数据时触发
             $("[name='switch']").bootstrapSwitch({
-                onText : "启用",      // 设置ON文本
-                offText : "禁用",    // 设置OFF文本
-                onColor : "success",// 设置ON文本颜色(info/success/warning/danger/primary)
-                offColor : "warning",  // 设置OFF文本颜色 (info/success/warning/danger/primary)
-                size : "small",    // 设置控件大小,从小到大  (mini/small/normal/large)
+                onText: "启用",      // 设置ON文本
+                offText: "禁用",    // 设置OFF文本
+                onColor: "success",// 设置ON文本颜色(info/success/warning/danger/primary)
+                offColor: "warning",  // 设置OFF文本颜色 (info/success/warning/danger/primary)
+                size: "small",    // 设置控件大小,从小到大  (mini/small/normal/large)
                 // 当开关状态改变时触发
-                onSwitchChange : function(event, state) {
-                    var status=state?1:0;
-                    var params={id:this.value,status:status};
-                    var str = jQuery.param(params);
+                onSwitchChange: function (event, state) {
+                    const status = state ? 1 : 0;
+                    const params = {id: this.value, status: status};
+                    const str = jQuery.param(params);
                     Core.postAjax('/link/edit', str, function (data) {
                         if (data.status === 200) {
                             refreshTable();
@@ -149,6 +149,7 @@
                 }
             });
         };
+
         //表格中开关控件
         function typeSwitch(value, row, index){
             if (value) {

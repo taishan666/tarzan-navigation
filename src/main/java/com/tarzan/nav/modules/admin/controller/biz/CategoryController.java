@@ -32,7 +32,7 @@ public class CategoryController {
     @PostMapping("list")
     @ResponseBody
     public List<Category> loadCategory() {
-        return categoryService.selectCategories(CoreConst.STATUS_VALID);
+        return categoryService.selectCategories();
     }
 
     @GetMapping("/add")
@@ -63,7 +63,7 @@ public class CategoryController {
     @CacheEvict(value = "category", allEntries = true)
     public ResponseVo add(Category bizCategory) {
         if (categoryService.existWebsites(bizCategory.getPid())) {
-                return ResultUtil.error("添加失败，父级分类不能存在网站");
+             return ResultUtil.error("添加失败，父级分类不能存在网站");
         }
         bizCategory.setStatus(CoreConst.STATUS_VALID);
         boolean flag = categoryService.save(bizCategory);
@@ -101,6 +101,18 @@ public class CategoryController {
             return ResultUtil.success("编辑分类成功");
         } else {
             return ResultUtil.error("编辑分类失败");
+        }
+    }
+
+    @PostMapping("/update/status")
+    @ResponseBody
+    @CacheEvict(value = "category", allEntries = true)
+    public ResponseVo updateStatus(Category bizCategory) {
+        boolean flag = categoryService.updateStatus(bizCategory);
+        if (flag) {
+            return ResultUtil.success("状态修改成功");
+        } else {
+            return ResultUtil.error("状态修改失败");
         }
     }
 

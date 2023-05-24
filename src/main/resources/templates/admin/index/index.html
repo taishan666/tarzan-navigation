@@ -96,8 +96,8 @@
 <script th:src="@{/assets/js/custom.js}"></script>
 <script th:src="@{/assets/js/core.js}"></script>
 <script th:src="@{/assets/js/download.min.js}"></script>
-<script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.4.2/echarts.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
+<script th:src="@{/assets/libs/echarts/echarts.js}"></script>
+<script th:src="@{/assets/libs/echarts/map/js/china.js}"></script>
 <script>
   function getMessages(){
     Core.postAjax("/matter/todo", {}, function (res) {
