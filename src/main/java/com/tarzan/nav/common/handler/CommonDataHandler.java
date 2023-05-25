@@ -40,6 +40,7 @@ public class CommonDataHandler implements HandlerInterceptor {
                 }
             }
         }
+        response.addHeader("X-Content-Type-Options", "nosniff");
         return true;
     }
 
@@ -51,5 +52,6 @@ public class CommonDataHandler implements HandlerInterceptor {
                }
                 mv.addObject("SITE_CONFIG",sysConfigService.getInfo());
             }
+           response.setHeader("Cache-Control","max-age=31536000");
     }
 }

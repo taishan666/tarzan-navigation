@@ -5,12 +5,13 @@ import com.tarzan.nav.common.constant.LookTypeConst;
 import com.tarzan.nav.modules.admin.model.biz.Website;
 import com.tarzan.nav.modules.admin.service.biz.*;
 import com.tarzan.nav.modules.network.HotNewsService;
-import com.tarzan.nav.utils.*;
+import com.tarzan.nav.utils.WebUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.Objects;
@@ -41,12 +42,14 @@ public class IndexController {
      */
     @GetMapping({"/","index","home"})
     public String home(Model model) {
+        long start=System.currentTimeMillis();
         siteLookService.asyncLook(0,WebUtil.getIP(), LookTypeConst.HOME);
         model.addAttribute("notices",noticeService.simpleList());
         model.addAttribute("categories",categoryService.treeLink());
         model.addAttribute("links",linkService.simpleList());
         model.addAttribute("hotSpot",hotNewsService.hotSpot());
         model.addAttribute("topWebsite",websiteService.topWebsites(12));
+        System.out.println("耗时 "+(System.currentTimeMillis()-start)+" ms");
         return  CoreConst.WEB_PREFIX+"index";
     }
 

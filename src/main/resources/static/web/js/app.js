@@ -478,9 +478,6 @@
     let isMin = false,
         isMobileMin = false;
     function trigger_resizable(  ) {
-        console.log(theme.minNav == '1')
-        console.log(!isMin )
-        console.log($(window).width() )
         if( (theme.minNav == '1' && !isMin && 767.98<$(window).width() )||(!isMin && 767.98<$(window).width() && $(window).width()<1024) ){
             //$('#mini-button').removeAttr('checked');
             $('#mini-button').prop('checked', false);

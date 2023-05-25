@@ -48,9 +48,9 @@
     .io-black-mode .navbar-nav .menu-item-286 a i{color: #fff;}.customize-width{max-width:1850px}.sidebar-nav{width:220px}@media (min-width: 768px){.main-content{margin-left:220px;}.main-content .page-header{left:220px;}}</style><!-- 自定义代码 -->
 </head>
 <body class="home blog">
-<sidebar th:replace="web/module/sidebar :: index(${categories})"></sidebar>
+<sidebar th:replace="web/module/sidebar::index(false)"></sidebar>
 <div class="main-content flex-fill">
-    <nav th:replace="web/module/navbar::other"></nav>
+    <nav th:replace="web/module/navbar::banner(false)"></nav>
     <div id="content" class="container my-4 my-md-5" style="transform: none;">
         <div class="post-cover overlay-hover mb-3 mb-md-4">
             <div class="media rounded-xl media-5x1">

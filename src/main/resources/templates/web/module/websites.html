@@ -1,4 +1,4 @@
-<websites th:fragment="websites(categories)">
+<websites th:fragment="websites">
     <th:block th:each="category: ${categories}">
         <th:block th:if="${#lists.isEmpty(category?.children)}" >
             <div class="d-flex flex-fill align-items-center mb-4">

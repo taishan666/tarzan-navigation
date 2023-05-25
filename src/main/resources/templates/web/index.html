@@ -45,9 +45,9 @@
     [(${SITE_CONFIG?.STATISTICS_CODE})]
 </head>
 <body class="home blog">
-<sidebar th:replace="web/module/sidebar :: index(${categories})"></sidebar>
+<sidebar th:replace="web/module/sidebar::index(true)"></sidebar>
 <div class="main-content flex-fill">
-    <nav th:replace="web/module/navbar::index"></nav>
+    <nav th:replace="web/module/navbar::banner(true)"></nav>
     <div class="header-big  post-top css-color mb-4" style="background-image: url(/web/images/index-bg.webp); ">
         <div th:replace="web/module/searchbox::index"></div>
         <th:block th:unless="${#lists.isEmpty(notices)}" th:include="web/module/bulletinbox"></th:block>
@@ -55,12 +55,11 @@
     <div id="content" class="container container-fluid customize-width">
         <div class="home-widget-group" style="margin-top:-5.525rem!important"></div>
         <div th:replace="web/module/hotnews"></div>
-        <div th:replace="web/module/topwebsites"></div>
+<!--        <div th:replace="web/module/topwebsites"></div>-->
         <div class="content">
             <div class="content-wrap">
                 <div class="content-layout" style="margin-right: 0px;">
-               <!--     <websites th:replace="web/module/postbox"></websites>-->
-                    <websites th:replace="web/module/websites :: websites(${categories})"></websites>
+                    <websites th:replace="web/module/websites :: websites"></websites>
                 </div>
             </div>
         </div>
