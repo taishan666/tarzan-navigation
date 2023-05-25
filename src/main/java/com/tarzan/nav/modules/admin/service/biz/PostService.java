@@ -66,29 +66,6 @@ public class PostService {
         return null;
     }
 
-    private CsdnArticleVO getArticle1(String username,String articleId){
-        String result= HttpUtil.get(POST_API+"&size=100&page=1&&username="+username);
-        JSONObject json= JSON.parseObject(result);
-        List<CsdnArticleVO> articles=new ArrayList<>(100);
-        if(json.getInteger("code")==200){
-            JSONObject data= json.getJSONObject("data");
-            JSONArray list=data.getJSONArray("list");
-            int total=data.getInteger("total");
-            articles.addAll(list.toJavaList(CsdnArticleVO.class));
-            if(total>100){
-                int pages=total/100+1;
-                for (int i = 2; i < pages+1; i++) {
-                    String body= HttpUtil.get(POST_API+"&size=100&page="+i+"&&username="+username);
-                    JSONObject json1= JSON.parseObject(body);
-                    JSONObject data1= json1.getJSONObject("data");
-                    JSONArray list1=data1.getJSONArray("list");
-                    articles.addAll(list1.toJavaList(CsdnArticleVO.class));
-                }
-            }
-        }
-        return articles.stream().filter(e->e.getArticleId().contains(articleId)).findFirst().orElse(null);
-    }
-
     private CsdnArticleVO getArticle(String username,String articleId){
         String result= HttpUtil.get(POST_API+"&size=100&page=1&&username="+username);
         JSONObject json= JSON.parseObject(result);

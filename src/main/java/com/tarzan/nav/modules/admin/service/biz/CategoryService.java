@@ -52,33 +52,35 @@ public class CategoryService extends ServiceImpl<CategoryMapper, Category> {
     @Cacheable(value = "category", key = "'treeLink'")
     public List<Category> treeLink() {
         List<Category> sourceList=this.selectCategories(CoreConst.STATUS_VALID);
-        List<Category> topList=sourceList.stream().filter(e-> e.getPid().equals(CoreConst.TOP_CATEGORY_ID)).collect(Collectors.toList());
         Map<Integer,List<Website>> map=websiteService.getCategoryWebsiteMap();
-        topList.forEach(e->assemblyTree(sourceList,e,map));
-        return topList;
+        return binaryTree(sourceList,map);
     }
 
     @Cacheable(value = "category", key = "'tree'")
     public List<Category> treeList() {
         List<Category> sourceList=this.selectCategories(CoreConst.STATUS_VALID);
-        List<Category> topList=sourceList.stream().filter(e-> e.getPid().equals(CoreConst.TOP_CATEGORY_ID)).collect(Collectors.toList());
-        topList.forEach(e->assemblyTree(sourceList,e,null));
-        return topList;
+        return binaryTree(sourceList,null);
     }
-
-    /**
-     * 目录-组装树
-     * @param sourceList&parent
-     */
-    public void assemblyTree(List<Category> sourceList, Category parent,Map<Integer,List<Website>> map) {
-        if (CollectionUtils.isNotEmpty(sourceList)) {
-            List<Category> resultList = sourceList.stream().filter(e -> e.getPid().equals(parent.getId())).sorted(Comparator.comparing(Category::getSort)).collect(Collectors.toList());
-            parent.setChildren(resultList);
-            if(CollectionUtils.isNotEmpty(map)){
-                parent.setWebsites(map.get(parent.getId()));
-            }
-            resultList.forEach(e -> assemblyTree(sourceList, e,map));
+    
+    public List<Category> binaryTree(List<Category> sourceList,Map<Integer,List<Website>> map) {
+        List<Category> topList=sourceList.stream().filter(e-> e.getPid().equals(CoreConst.TOP_CATEGORY_ID)).collect(Collectors.toList());
+        if (CollectionUtils.isNotEmpty(topList)) {
+            topList.forEach(category->{
+                List<Category> children = sourceList.stream().filter(e -> e.getPid().equals(category.getId())).sorted(Comparator.comparing(Category::getSort)).collect(Collectors.toList());
+                if(CollectionUtils.isNotEmpty(children)){
+                    category.setChildren(children);
+                    if(CollectionUtils.isNotEmpty(map)){
+                        Category firstChild=children.get(0);
+                        firstChild.setWebsites(map.get(firstChild.getId()));
+                    }
+                }else {
+                    if(CollectionUtils.isNotEmpty(map)){
+                        category.setWebsites(map.get(category.getId()));
+                    }
+                }
+            });
         }
+        return topList;
     }
 
     public List<Category> selectByPid(Integer pid) {
