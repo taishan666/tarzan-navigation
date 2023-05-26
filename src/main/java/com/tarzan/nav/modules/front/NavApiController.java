@@ -8,6 +8,7 @@ import com.tarzan.nav.modules.admin.model.biz.Website;
 import com.tarzan.nav.modules.admin.service.biz.*;
 import com.tarzan.nav.modules.admin.vo.base.ResponseVo;
 import com.tarzan.nav.modules.front.query.ItemQuery;
+import com.tarzan.nav.modules.network.HotNewsService;
 import com.tarzan.nav.modules.network.LocationService;
 import com.tarzan.nav.utils.*;
 import lombok.AllArgsConstructor;
@@ -41,6 +42,7 @@ public class NavApiController {
     private final LinkService linkService;
     private final CommentService commentService;
     private final ImageService imageService;
+    private final HotNewsService hotNewsService;
 
     @PostMapping("/apply/submit")
     @ResponseBody
@@ -134,8 +136,23 @@ public class NavApiController {
             default:
                 return CoreConst.WEB_PREFIX+"component/site5";
         }
-
     }
 
+    @GetMapping("/hotSpot")
+    @ResponseBody
+    public ResponseVo hotSpot(String type) {
+        switch (type){
+            case "csdn":
+                return ResultUtil.vo(hotNewsService.cSDNHot());
+            case "weibo":
+                return ResultUtil.vo(hotNewsService.weiboHot());
+            case "douyin":
+                return ResultUtil.vo(hotNewsService.douYinHot());
+            case "juejin":
+                return ResultUtil.vo(hotNewsService.jueJinHot());
+            default:
+                return ResultUtil.vo(hotNewsService.baiduHot());
+        }
+    }
 
 }
