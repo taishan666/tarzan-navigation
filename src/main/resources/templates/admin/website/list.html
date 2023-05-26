@@ -148,7 +148,6 @@
         function onRightClick(event, treeId, treeNode) {
 
         }
-
         window.operateEvents = {
             // 点击编辑
             'click .btn_edit': function (e, value, row, index) {
@@ -163,7 +162,7 @@
                 previewImg(row.img.base64)
             }
         }
-        var columns = [
+        const columns = [
             {checkbox: true},
             {
                 field: 'name',
@@ -174,7 +173,7 @@
                 title: '站点链接',
                 align: "center",
                 formatter: function (value, row, index) {
-                    return '<a href="' + value + '" target="_blank">'+value.replace('//','')+'</a>'
+                    return '<a href="' + value + '" target="_blank">' + value.replace('//', '') + '</a>'
                 }
             }, {
                 field: 'description',
@@ -190,21 +189,21 @@
                     return '<img src="' + value + '" style="height: 40px;" class="btn_view" referrerPolicy="no-referrer" />'
                 }
             },
-      /*      {
-               field: 'email',
-               title: '站长邮箱',
-               align : "center",
-           },{
-               field: 'qq',
-               title: '站长QQ',
-               align : "center",
-           },
-        {
-               field: 'status',
-               title: '状态',
-               align : "center",
-               formatter: typeSwitch
-           }, */
+            /*      {
+                     field: 'email',
+                     title: '站长邮箱',
+                     align : "center",
+                 },{
+                     field: 'qq',
+                     title: '站长QQ',
+                     align : "center",
+                 },
+              {
+                     field: 'status',
+                     title: '状态',
+                     align : "center",
+                     formatter: typeSwitch
+                 }, */
             {
                 field: 'operation',
                 title: '操作',
@@ -234,30 +233,21 @@
                 }
             });
         };
-
-        //表格中开关控件
-        function typeSwitch(value, row, index){
-            if (value) {
-                return "<input value=" + row.id + " name='switch' type='checkbox' checked />";
-            } else {
-                return "<input value=" + row.id + " name='switch' type='checkbox' />";
-            }
-        }
         function operationFormatter(value, row, index) {
-            var edit =  '<button class="effect-btn btn btn-info mt-2 mr-2 icon-lg btn_edit"><i class="fas fa-edit"></i></button>';
-            var del =  '<button class="effect-btn btn btn-danger mt-2 mr-2 icon-lg btn_del"><i class="fas fa-trash-alt"></i></button>';
+            const edit = '<button class="effect-btn btn btn-info mt-2 mr-2 icon-lg btn_edit"><i class="fas fa-edit"></i></button>';
+            const del = '<button class="effect-btn btn btn-danger mt-2 mr-2 icon-lg btn_del"><i class="fas fa-trash-alt"></i></button>';
             return edit + del;
         }
 
-        var options = {
+        const options = {
             id: "#table",
             url: '/website/list',
             columns: columns,
             toolbar: '#toolbar',
             showRefresh: true,
-            onLoadSuccess:onLoadSuccess,
+            onLoadSuccess: onLoadSuccess,
             queryParams: queryParams
-        }
+        };
         Core.initTable(options);
 
         function refreshTable() {
@@ -293,7 +283,7 @@
         //只是在点击后初始化的时候生成
         $("#formModal").on("shown.bs.modal", function () {
             // 初始化Web Uploader
-            var uploader = WebUploader.create({
+            const uploader = WebUploader.create({
                 // 选完文件后，是否自动上传。
                 auto: true,
                 // swf文件路径
@@ -340,16 +330,17 @@
                 })
             })
         }
-
         //树-初始化设置
         const setting = {
             view: {
                 showIcon: false,
-                selectedMulti: false        //禁止多点选中
+                selectedMulti: false //禁止多点选中
             },
             check: {
                 enable: true,
                 chkStyle: "radio",
+                checkStrictly: true,// 禁止部分选中，设为 true
+                radioType: "all",
                 chkboxType: {"Y": "ps", "N": "s"}
             },
             data: {
@@ -418,6 +409,7 @@
             if (checkedRows) {
                 const treeObj = $.fn.zTree.getZTreeObj("modalTree");
                 const nodes = treeObj.getCheckedNodes(true);
+                console.log(nodes)
                 if(nodes.length>0){
                     const ids = [];
                     $.each(checkedRows, function (i, item) {
