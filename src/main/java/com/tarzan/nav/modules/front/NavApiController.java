@@ -155,4 +155,9 @@ public class NavApiController {
         }
     }
 
+    @GetMapping("/hotSpot/all")
+    @ResponseBody
+    public ResponseVo hotSpotAll() {
+        return ResultUtil.vo(hotNewsService.hotSpot());
+    }
 }
