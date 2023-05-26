@@ -61,7 +61,7 @@ public class CategoryService extends ServiceImpl<CategoryMapper, Category> {
         List<Category> sourceList=this.selectCategories(CoreConst.STATUS_VALID);
         return binaryTree(sourceList,null);
     }
-    
+
     public List<Category> binaryTree(List<Category> sourceList,Map<Integer,List<Website>> map) {
         List<Category> topList=sourceList.stream().filter(e-> e.getPid().equals(CoreConst.TOP_CATEGORY_ID)).collect(Collectors.toList());
         if (CollectionUtils.isNotEmpty(topList)) {

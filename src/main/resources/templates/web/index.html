@@ -55,7 +55,7 @@
     <div id="content" class="container container-fluid customize-width">
         <div class="home-widget-group" style="margin-top:-5.525rem!important"></div>
         <div th:replace="web/module/hotnews"></div>
-<!--        <div th:replace="web/module/topwebsites"></div>-->
+        <div th:replace="web/module/topwebsites"></div>
         <div class="content">
             <div class="content-wrap">
                 <div class="content-layout" style="margin-right: 0px;">
@@ -81,7 +81,7 @@
 <script type='text/javascript' src='/web/js/theia-sticky-sidebar.min.js' id='sidebar-js'></script>
 <script type='text/javascript' src='/web/js/lazyload.min.js' id='lazyload-js'></script>
 <script type='text/javascript' id='appjs-js-extra'>
-    const theme = {"defaultclass": "io-grey-mode", "minNav": "1", "isCustomize": "1", "isHome": "1","hotWords":"baidu"};
+    const theme = {"defaultclass": "io-grey-mode", "minNav": "1", "isCustomize": "1", "isHome": "1","hotWords":"baidu","ajaxurl":"/tag/items"};
     const localize = {"lightMode": "\u65e5\u95f4\u6a21\u5f0f", "nightMode": "\u591c\u95f4\u6a21\u5f0f"};
 </script>
 <script type='text/javascript' src='/web/js/app.js' id='appjs-js'></script>

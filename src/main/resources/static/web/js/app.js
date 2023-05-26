@@ -169,7 +169,7 @@
                     url : theme.ajaxurl,
                     data : {
                         action: t.data('action'),
-                        post_id: t.data("id"),
+                        postId: t.data("id"),
                         ticket: t.data("ticket")
                     },
                     success : function( data ){
@@ -198,7 +198,7 @@
                 url : theme.ajaxurl,
                 data : {
                     action: t.data("action"),
-                    post_id: t.data("id"),
+                    postId: t.data("id"),
                     post_type: t.data("post_type"),
                     delete: _delete,
                     ticket: t.data("ticket")
@@ -242,7 +242,7 @@
                 url : theme.ajaxurl,
                 data : {
                     action: "post_like",
-                    post_id: id
+                    postId: id
                 },
                 success : function( data ){
                     var $am = $('<i class="iconfont icon-heart" style="color: #f12345;transform: scale(1) translateY(0);position: absolute;transition: .6s;opacity: 1;"></i>');
@@ -608,9 +608,10 @@
     });
 
     //首页 热门/随机/最新 切换
-/*    $(document).on('click', '.ajax-home-hot-list:not(.load)', function(event) {
+    $(document).on('click', '.ajax-home-hot-list:not(.load)', function(event) {
         event.preventDefault();
         var t = $(this);
+        console.log(t.data('datas'));
         var box = $(t.attr('href')).children('.ajax-list-body');
         t.addClass('disabled');
         $.ajax({
@@ -621,8 +622,7 @@
                 action: t.data('action'),
             }, t.data('datas')),
             cache: true,
-        })
-            .done(function(response) {
+        }).done(function(response) {
                 if (response.trim()) {
                     var url = $(response);
                     box.html(url);
@@ -634,7 +634,7 @@
             .fail(function() {
                 t.removeClass('disabled');
             })
-    });*/
+    });
 
     $(document).on('click', 'a.tab-widget-link:not(.load)',function(event) {
         event.preventDefault();
@@ -685,8 +685,7 @@
             dataType: 'html',
             data : data,
             cache: true,
-        })
-            .done(function(response) {
+        }).done(function(response) {
                 if (response.trim()) {
                     body.html(response);
                     if(isPC()) $('.ajax-url [data-toggle="tooltip"]').tooltip({ trigger: 'hover' });

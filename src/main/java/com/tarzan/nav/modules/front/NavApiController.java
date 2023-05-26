@@ -1,24 +1,26 @@
 package com.tarzan.nav.modules.front;
 
 import com.tarzan.nav.common.constant.CoreConst;
+import com.tarzan.nav.modules.admin.model.biz.Category;
 import com.tarzan.nav.modules.admin.model.biz.Comment;
 import com.tarzan.nav.modules.admin.model.biz.Link;
 import com.tarzan.nav.modules.admin.model.biz.Website;
 import com.tarzan.nav.modules.admin.service.biz.*;
 import com.tarzan.nav.modules.admin.vo.base.ResponseVo;
+import com.tarzan.nav.modules.front.query.ItemQuery;
 import com.tarzan.nav.modules.network.LocationService;
 import com.tarzan.nav.utils.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
+import java.util.Collections;
 import java.util.Objects;
 
 
@@ -34,6 +36,7 @@ import java.util.Objects;
 @Slf4j
 public class NavApiController {
 
+    private final CategoryService categoryService;
     private final WebsiteService websiteService;
     private final LinkService linkService;
     private final CommentService commentService;
@@ -93,6 +96,46 @@ public class NavApiController {
     }
 
 
+
+    @PostMapping("/tag/items")
+    public String tagItemsHtml(@RequestParam("action") String action,
+                               @RequestParam("data[title]") String title,
+                               @RequestParam("data[type]") String type,
+                               @RequestParam("data[order]") String order,
+                               @RequestParam("data[num]") int num, Model model) {
+        switch (title){
+            case "热门网址":
+                model.addAttribute("websites",websiteService.hotList(num));
+                break;
+            case "随机推荐":
+                model.addAttribute("websites",websiteService.randomList(num));
+                break;
+            case "最新网址":
+                model.addAttribute("websites",websiteService.newestList(num));
+                break;
+            default:
+                model.addAttribute("websites", Collections.emptyList());
+                break;
+        }
+        return CoreConst.WEB_PREFIX+"component/minisite";
+    }
+
+    @GetMapping("/tag/items")
+    public String tagItemsHtml(ItemQuery query, Model model) {
+        Integer id= query.getId();
+        Category category=categoryService.getById(id);
+        if(Objects.isNull(category)){
+            return CoreConst.WEB_PREFIX+"component/site5";
+        }
+        model.addAttribute("websites",websiteService.getCategoryWebsiteMap().get(id));
+        switch (category.getType()){
+            case 2:
+                return CoreConst.WEB_PREFIX+"component/postbox";
+            default:
+                return CoreConst.WEB_PREFIX+"component/site5";
+        }
+
+    }
 
 
 }

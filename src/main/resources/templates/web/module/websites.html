@@ -34,8 +34,8 @@
             <div class="d-flex flex-fill flex-tab align-items-center">
                 <div class='slider_menu mini_tab ajax-list-home' sliderTab="sliderTab" th:data-id="${category?.id}">
                     <ul class="nav nav-pills tab-auto-scrollbar menu overflow-x-auto" role="tablist">
-                        <li th:each="cate,stat:${category?.children}" class="pagenumber nav-item" data-sidebar="1" data-post_id="0" data-action="load_home_tab" data-taxonomy="favorites" th:data-id="${cate?.id}">
-                            <a th:id="${'term-'+category?.id+'-'+cate?.id}" th:class="'nav-link tab-noajax '+${stat.index==0? ' active' : ''}+' load'" data-toggle="pill" th:href="${'#tab-'+category?.id+'-'+cate?.id}" th:data-link="${cate?.name}">[[${cate?.name}]]</a>
+                        <li th:each="cate,stat:${category?.children}" class="pagenumber nav-item" data-sidebar="1" data-postId="0" data-action="load_home_tab" data-taxonomy="favorites" th:data-id="${cate?.id}">
+                            <a th:id="${'term-'+category?.id+'-'+cate?.id}" th:class="'nav-link tab-noajax '+${stat.index==0? ' active load' : ''}" data-toggle="pill" th:href="${'#tab-'+category?.id+'-'+cate?.id}" th:data-link="${cate?.name}">[[${cate?.name}]]</a>
                         </li>
                     </ul>
                 </div>

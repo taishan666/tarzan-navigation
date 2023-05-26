@@ -12,7 +12,6 @@ import com.tarzan.nav.modules.admin.mapper.biz.WebsiteMapper;
 import com.tarzan.nav.modules.admin.model.biz.BizImage;
 import com.tarzan.nav.modules.admin.model.biz.Category;
 import com.tarzan.nav.modules.admin.model.biz.Website;
-import com.tarzan.nav.modules.admin.vo.TopWebsiteVO;
 import com.tarzan.nav.utils.DateUtil;
 import com.tarzan.nav.utils.JsoupUtil;
 import com.tarzan.nav.utils.StringUtil;
@@ -200,12 +199,7 @@ public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
         return new HashMap<>(0);
     }
 
-    @Cacheable(value = "website", key = "'random'")
-    public List<Website> randomList(int count) {
-        List<Website> websites= super.lambdaQuery().eq(Website::getStatus,CoreConst.STATUS_VALID).list();
-        this.wrapper(websites);
-        return RandomUtil.randomEles(websites,count);
-    }
+
 
     public Website getInfo(String url) {
         Document doc= JsoupUtil.getDocument(url);
@@ -225,18 +219,26 @@ public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
        return super.lambdaQuery().eq(Website::getStatus,CoreConst.ZERO).count();
     }
 
-
-    public TopWebsiteVO topWebsites(int num) {
-        TopWebsiteVO vo=new TopWebsiteVO();
+    @Cacheable(value = "website", key = "'hot'")
+    public List<Website>  hotList(int num) {
         Set<Integer> hotSites=siteLookService.topSites(num);
         if(CollectionUtils.isNotEmpty(hotSites)){
-            vo.setHotList(this.wrapper(this.lambdaQuery().in(Website::getId,hotSites).list()));
+            return this.wrapper(this.lambdaQuery().in(Website::getId,hotSites).list());
         }else {
-            vo.setHotList(this.randomList(num));
+            return this.randomList(num);
         }
-        vo.setRandomList(this.randomList(num));
-        vo.setNewestList(this.wrapper(this.lambdaQuery().orderByDesc(Website::getCreateTime).last("limit "+num).list()));
-        return vo;
+    }
+
+    @Cacheable(value = "website", key = "'newest'")
+    public List<Website>  newestList(int num) {
+        return this.wrapper(this.lambdaQuery().orderByDesc(Website::getCreateTime).last("limit "+num).list());
+    }
+
+    @Cacheable(value = "website", key = "'random'")
+    public List<Website> randomList(int count) {
+        List<Website> websites= super.lambdaQuery().eq(Website::getStatus,CoreConst.STATUS_VALID).list();
+        this.wrapper(websites);
+        return RandomUtil.randomEles(websites,count);
     }
 
     public List<Website> search(Website website,Integer type) {

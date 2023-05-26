@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
+import com.tarzan.nav.common.constant.CoreConst;
 import com.tarzan.nav.modules.admin.mapper.biz.SiteLookMapper;
 import com.tarzan.nav.modules.admin.model.biz.SiteLook;
 import com.tarzan.nav.modules.network.LocationService;
@@ -41,7 +42,7 @@ public class SiteLookService extends ServiceImpl<SiteLookMapper, SiteLook> {
 
 
     public Set<Integer> topSites(int num) {
-        List<SiteLook> looks= super.list();
+        List<SiteLook> looks= super.lambdaQuery().ne(SiteLook::getSiteId, CoreConst.ZERO).list();
         Map<Integer,Long> lookMap=looks.stream().collect(Collectors.groupingBy(SiteLook::getSiteId,Collectors.counting()));
         return MapUtil.topNByValue(lookMap,num).keySet();
     }

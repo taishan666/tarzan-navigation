@@ -48,7 +48,7 @@ public class IndexController {
         model.addAttribute("categories",categoryService.treeLink());
         model.addAttribute("links",linkService.simpleList());
         model.addAttribute("hotSpot",hotNewsService.hotSpot());
-        model.addAttribute("topWebsite",websiteService.topWebsites(12));
+        model.addAttribute("hotWebsites",websiteService.hotList(12));
         System.out.println("耗时 "+(System.currentTimeMillis()-start)+" ms");
         return  CoreConst.WEB_PREFIX+"index";
     }

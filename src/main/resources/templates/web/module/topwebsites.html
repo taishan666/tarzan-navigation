@@ -2,13 +2,13 @@
     <div class="slider_menu mini_tab into" slidertab="sliderTab">
         <ul class="nav nav-pills tab-auto-scrollbar menu overflow-x-auto" role="tablist"><li class="anchor" style="position: absolute; width: 80px; height: 28px; left: 0px; opacity: 1;"></li>
             <li class="pagenumber nav-item">
-                <a class="nav-link ajax-home-hot-list active load" data-toggle="pill" href="#ct-tab-sites-views0" data-action="load_hot_post" data-datas="{'data':{'title':'热门网址','type':'sites','order':'views','num':'10','mini':''}}">热门网址</a>
+                <a class="nav-link ajax-home-hot-list active load" data-toggle="pill" href="#ct-tab-sites-views0" data-action="load_hot_post" data-datas="{&quot;data&quot;:{&quot;title&quot;:&quot;热门网址&quot;,&quot;type&quot;:&quot;sites&quot;,&quot;order&quot;:&quot;date&quot;,&quot;num&quot;:&quot;12&quot;}}">热门网址</a>
             </li>
             <li class="pagenumber nav-item">
-                <a class="nav-link ajax-home-hot-list " data-toggle="pill" href="#ct-tab-sites-modified1" data-action="load_hot_post" data-datas="{'data':{'title':'随机推荐','type':'sites','order':'modified','num':'10','mini':''}}">随机推荐</a>
+                <a class="nav-link ajax-home-hot-list " data-toggle="pill" href="#ct-tab-sites-modified1" data-action="load_hot_post" data-datas="{&quot;data&quot;:{&quot;title&quot;:&quot;随机推荐&quot;,&quot;type&quot;:&quot;sites&quot;,&quot;order&quot;:&quot;date&quot;,&quot;num&quot;:&quot;12&quot;}}">随机推荐</a>
             </li>
             <li class="pagenumber nav-item">
-                <a class="nav-link ajax-home-hot-list " data-toggle="pill" href="#ct-tab-sites-date2" data-action="load_hot_post" data-datas="{'data':{'title':'最新网址','type':'sites','order':'date','num':'10','mini':''}}">最新网址</a>
+                <a class="nav-link ajax-home-hot-list " data-toggle="pill" href="#ct-tab-sites-date2" data-action="load_hot_post" data-datas="{&quot;data&quot;:{&quot;title&quot;:&quot;最新网址&quot;,&quot;type&quot;:&quot;sites&quot;,&quot;order&quot;:&quot;date&quot;,&quot;num&quot;:&quot;12&quot;}}">最新网址</a>
             </li>
         </ul>
     </div>
@@ -16,7 +16,7 @@
 <div class="tab-content">
     <div id="ct-tab-sites-views0" class="tab-pane active">
         <div class="row  ajax-list-body position-relative">
-            <div class="url-card  col-2a col-sm-2a col-md-2a col-lg-3a col-xl-5a col-xxl-6a" th:each="website:${topWebsite?.hotList}">
+            <div class="url-card  col-2a col-sm-2a col-md-2a col-lg-3a col-xl-5a col-xxl-6a" th:each="website:${hotWebsites}">
                 <div class="url-body mini">
                     <a th:href="${'/site/'+website?.id}" target="_blank" th:data-id="${website?.id}" th:data-url="${website?.url}" class="card no-c  mb-4 site-725" data-toggle="tooltip" data-placement="bottom" title="" th:data-original-title="${website?.description}">
                         <div class="card-body url-content d-flex align-items-center">
@@ -38,46 +38,10 @@
     </div>
     <div id="ct-tab-sites-modified1" class="tab-pane">
         <div class="row  ajax-list-body position-relative">
-            <div class="url-card   col-2a col-sm-2a col-md-2a col-lg-3a col-xl-5a col-xxl-6a" th:each="website:${topWebsite?.randomList}">
-                <div class="url-body mini ">
-                    <a th:href="${'/site/'+website?.id}" target="_blank" th:data-id="${website?.id}" th:data-url="${website?.url}" class="card no-c  mb-4 site-725" data-toggle="tooltip" data-placement="bottom" title="" th:data-original-title="${website?.description}">
-                        <div class="card-body url-content d-flex align-items-center">
-                            <div class="url-img rounded-circle mr-2 d-flex align-items-center justify-content-center">
-                                <img class="lazy unfancybox loaded" th:src="${website?.img?.base64}"  th:data-src="${website?.img?.base64}" height="auto" width="auto" th:alt="${website?.name}" data-was-processed="true">
-                            </div>
-                            <div class="url-info flex-fill">
-                                <div class="text-sm overflowClip_1">
-                                    <strong>[[${website?.name}]]</strong>
-                                </div>
-         <!--                       <p class="overflowClip_1 m-0 text-muted text-xs">[[${website?.description}]]</p>-->
-                            </div>
-                        </div>
-                    </a>
-                    <a th:href="${website?.url}" target="_blank" rel="external nofollow" title="" class="togo text-center text-muted is-views" data-id="725" data-toggle="tooltip" data-placement="right" data-original-title="直达"><i class="iconfont icon-goto"></i></a>
-                </div>
-            </div>
         </div>
     </div>
     <div id="ct-tab-sites-date2" class="tab-pane">
         <div class="row  ajax-list-body position-relative">
-            <div class="url-card   col-2a col-sm-2a col-md-2a col-lg-3a col-xl-5a col-xxl-6a" th:each="website:${topWebsite?.newestList}">
-                <div class="url-body mini ">
-                    <a th:href="${'/site/'+website?.id}" target="_blank"  th:data-id="${website?.id}" th:data-url="${website?.url}" class="card no-c  mb-4 site-725" data-toggle="tooltip" data-placement="bottom" title="" th:data-original-title="${website?.description}">
-                        <div class="card-body url-content d-flex align-items-center">
-                            <div class="url-img rounded-circle mr-2 d-flex align-items-center justify-content-center">
-                                <img class="lazy unfancybox loaded" th:src="${website?.img?.base64}"  th:data-src="${website?.img?.base64}" height="auto" width="auto" th:alt="${website?.name}" data-was-processed="true">
-                            </div>
-                            <div class="url-info flex-fill">
-                                <div class="text-sm overflowClip_1">
-                                    <strong>[[${website?.name}]]</strong>
-                                </div>
-  <!--                              <p class="overflowClip_1 m-0 text-muted text-xs">[[${website?.description}]]</p>-->
-                            </div>
-                        </div>
-                    </a>
-                    <a th:href="${website?.url}" target="_blank" rel="external nofollow" title="" class="togo text-center text-muted is-views" data-id="725" data-toggle="tooltip" data-placement="right" data-original-title="直达"><i class="iconfont icon-goto"></i></a>
-                </div>
-            </div>
         </div>
     </div>
 </div>
