@@ -55,15 +55,15 @@
     <div id="content" class="container container-fluid customize-width">
         <div class="home-widget-group" style="margin-top:-5.525rem!important"></div>
         <div th:replace="web/module/hotspot"></div>
-        <div th:replace="web/module/topwebsites"></div>
+        <div th:replace="web/module/topsites"></div>
         <div class="content">
             <div class="content-wrap">
                 <div class="content-layout" style="margin-right: 0px;">
-                    <websites th:replace="web/module/websites :: websites"></websites>
+                    <websites th:replace="web/module/websites"></websites>
                 </div>
             </div>
         </div>
-        <blogroll th:unless="${#lists.isEmpty(links)}" th:include="web/module/blogroll::blogroll(${links})"></blogroll>
+        <blogroll th:unless="${#lists.isEmpty(links)}" th:include="web/module/blogroll"></blogroll>
     </div>
     <div th:replace="web/module/siteinfo"></div>
 </div>
