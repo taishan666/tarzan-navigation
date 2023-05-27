@@ -21,14 +21,14 @@
             overflowToDisk="false">
     </defaultCache>
 
-    <!-- 热点缓存 -->
+    <!-- 热点缓存 10小时更新-->
     <cache name="hotNews"
            maxEntriesLocalHeap="10"
            overflowToDisk="false"
            eternal="false"
            diskPersistent="false"
-           timeToLiveSeconds="3600"
-           timeToIdleSeconds="1800"
+           timeToLiveSeconds="36000"
+           timeToIdleSeconds="18000"
            statistics="false">
     </cache>
 
