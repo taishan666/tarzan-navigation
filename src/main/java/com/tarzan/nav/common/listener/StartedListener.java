@@ -39,7 +39,7 @@ public class StartedListener implements ApplicationListener<ApplicationStartedEv
     public void onApplicationEvent(@NonNull ApplicationStartedEvent event) {
         appInstallTools.install();
         shiroService.updatePermission();
-        hotNewsService.hotSpot();
+        //hotNewsService.hotSpot();
         File backupDir=new File(tarzanProperties.getBackupDir());
         if(!backupDir.exists()){
             backupDir.mkdirs();

@@ -47,7 +47,7 @@ public class IndexController {
         model.addAttribute("notices",noticeService.simpleList());
         model.addAttribute("categories",categoryService.treeLink());
         model.addAttribute("links",linkService.simpleList());
-        model.addAttribute("hotSpot",hotNewsService.hotSpot());
+      //  model.addAttribute("hotSpot",hotNewsService.hotSpot());
         model.addAttribute("hotWebsites",websiteService.hotList(12));
         System.out.println("耗时 "+(System.currentTimeMillis()-start)+" ms");
         return  CoreConst.WEB_PREFIX+"index";
@@ -99,6 +99,13 @@ public class IndexController {
         siteLookService.asyncLook(0,WebUtil.getIP(), LookTypeConst.APPLY);
         model.addAttribute("categories",categoryService.treeList());
         return  CoreConst.WEB_PREFIX+"apply";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+       // siteLookService.asyncLook(0,WebUtil.getIP(), LookTypeConst.APPLY);
+        //model.addAttribute("categories",categoryService.treeList());
+        return  CoreConst.WEB_PREFIX+"login";
     }
 
     @GetMapping("/site/{id}")

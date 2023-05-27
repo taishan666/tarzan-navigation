@@ -30,7 +30,7 @@
                 </div>
                 <div class="card-body pb-3 pt-0">
                     <div class="overflow-auto hot-body">
-                        <ul id="hot_news-jueJin">
+                        <ul id="hot_news-juejin">
                         </ul>
                     </div>
                     <div class="d-flex text-xs text-muted pt-2 mb-n2">
@@ -72,7 +72,7 @@
                     </div>
                     <div class="card-body pb-3 pt-0">
                         <div class="overflow-auto hot-body">
-                            <ul id="hot_news-douYin">
+                            <ul id="hot_news-douyin">
                             </ul>
                         </div>
                         <div class="d-flex text-xs text-muted pt-2 mb-n2">
@@ -107,28 +107,48 @@
             </div>
             <style>@media screen and (max-width: 1199.98px){.hot-search {min-width: 1500px;}}</style>
         </div>
-        <script>
-            $.get("/hotSpot/all", {},function(response,status){
+    <script>
+            $.get("/hotSpot/baidu", {},function(response,status){
                 const data = response.data;
                 console.log(data);
-                hotspot("baidu",data.baiduHot);
-                hotspot("csdn",data.csdnhot);
-                hotspot("douyin",data.douYinHot);
-                hotspot("juejin",data.jueJinHot);
-                hotspot("weibo",data.weiboHot);
+                hotspot("baidu",data);
             }).fail(function () {
                 getError("baidu");
+            });
+            $.get("/hotSpot/csdn", {},function(response,status){
+                const data = response.data;
+                console.log(data);
+                hotspot("csdn",data);
+            }).fail(function () {
                 getError("csdn");
+            });
+            $.get("/hotSpot/douyin", {},function(response,status){
+                const data = response.data;
+                console.log(data);
+                hotspot("douyin",data);
+            }).fail(function () {
                 getError("douyin");
+            });
+            $.get("/hotSpot/juejin", {},function(response,status){
+                const data = response.data;
+                console.log(data);
+                hotspot("juejin",data);
+            }).fail(function () {
                 getError("juejin");
+            });
+            $.get("/hotSpot/weibo", {},function(response,status){
+                const data = response.data;
+                console.log(data);
+                hotspot("weibo",data);
+            }).fail(function () {
                 getError("weibo");
             });
             function hotspot(type,data){
                 let html = '';
                 //  $('.title-'+type).text(response.title);
                 //  $('.slug-'+type).text(response.subtitle);
-                for(var i=0;i<data.length;i++) {
-                    html += '<li class="d-flex text-sm mb-2"><div><span class="hot-rank hot-rank-'+ (data[i]['index'])+' text-xs text-center">'+ (data[i]['index'])+'</span><a class="ml-2" href="'+data[i]['link']+'" target="_blank" rel="external noopener nofollow">'+data[i]['title']+'</a></div><div class="ml-auto hot-heat d-none d-md-block text-muted">'+data[i]['hot']+'</div></li>';
+                for(let i=0; i<data.length; i++) {
+                    html += '<li class="d-flex text-sm mb-2"><div><span class="hot-rank hot-rank-'+ (i+1)+' text-xs text-center">'+ (i+1)+'</span><a class="ml-2" href="'+data[i]['link']+'" target="_blank" rel="external noopener nofollow">'+data[i]['title']+'</a></div><div class="ml-auto hot-heat d-none d-md-block text-muted">'+data[i]['index']+'</div></li>';
                 }
                 $('#hot-loading-'+type).fadeOut(200);
                 // $('#hot-lod-'+type).children('i').removeClass('icon-spin');
@@ -139,4 +159,4 @@
                 $('#hot-success-'+type).show(200).html('获取失败，请再试一次！').parent().delay(3500).fadeOut(200);
             }
         </script>
-    </div>
+</div>

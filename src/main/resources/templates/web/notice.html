@@ -2,8 +2,8 @@
 <html lang="zh-CN" class="io-grey-mode">
 <head>
     <script>
-        var default_c = "io-grey-mode";
-        var night = document.cookie.replace(/(?:(?:^|.*;\s*)io_night_mode\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+        const default_c = "io-grey-mode";
+        const night = document.cookie.replace(/(?:(?:^|.*;\s*)io_night_mode\s*\=\s*([^;]*).*$)|^.*$/, "$1");
         try {
             if (night === "0" || (!night && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
                 document.documentElement.classList.add("io-black-mode");

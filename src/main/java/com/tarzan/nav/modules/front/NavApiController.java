@@ -138,9 +138,9 @@ public class NavApiController {
         }
     }
 
-    @GetMapping("/hotSpot")
+    @GetMapping("/hotSpot/{type}")
     @ResponseBody
-    public ResponseVo hotSpot(String type) {
+    public ResponseVo hotSpot(@PathVariable("type") String type) {
         switch (type){
             case "csdn":
                 return ResultUtil.vo(hotNewsService.cSDNHot());
@@ -155,9 +155,9 @@ public class NavApiController {
         }
     }
 
-    @GetMapping("/hotSpot/all")
+  /*  @GetMapping("/hotSpot/all")
     @ResponseBody
     public ResponseVo hotSpotAll() {
         return ResultUtil.vo(hotNewsService.hotSpot());
-    }
+    }*/
 }
