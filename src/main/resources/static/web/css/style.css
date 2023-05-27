@@ -7359,7 +7359,8 @@ input.nav-link[readonly] {
 }
 
 .io-grey-mode .sidebar-nav-inner {
-    background: #f9f9f9
+    /*  background: #f9f9f9*/
+      background: #fff
 }
 
 .io-grey-mode .border-color {
@@ -9038,4 +9039,18 @@ a.openlogin-gitee-a {
     .tab-auto-scrollbar::-webkit-scrollbar {
         display: none;
     }
+}
+
+.url-body .badge.text-ss {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    background: rgb(255 0 20 / 0.7);
+    border-radius: 100px;
+    z-index: 1;
+    -moz-transform: rotate(-15deg);
+    -webkit-transform: rotate(-15deg);
+    -ms-transform: rotate(-15deg);
+    -o-transform: rotate(-15deg);
+    transform: rotate(-15deg);
 }

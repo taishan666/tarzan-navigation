@@ -110,35 +110,30 @@
     <script>
             $.get("/hotSpot/baidu", {},function(response){
                 const data = response.data;
-                console.log(data);
                 hotspot("baidu",data);
             }).fail(function () {
                 getError("baidu");
             });
             $.get("/hotSpot/csdn", {},function(response){
                 const data = response.data;
-                console.log(data);
                 hotspot("csdn",data);
             }).fail(function () {
                 getError("csdn");
             });
             $.get("/hotSpot/douyin", {},function(response){
                 const data = response.data;
-                console.log(data);
                 hotspot("douyin",data);
             }).fail(function () {
                 getError("douyin");
             });
             $.get("/hotSpot/juejin", {},function(response){
                 const data = response.data;
-                console.log(data);
                 hotspot("juejin",data);
             }).fail(function () {
                 getError("juejin");
             });
             $.get("/hotSpot/weibo", {},function(response){
                 const data = response.data;
-                console.log(data);
                 hotspot("weibo",data);
             }).fail(function () {
                 getError("weibo");
