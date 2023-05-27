@@ -1,4 +1,5 @@
 <div class="overflow-x-auto hot-search-panel mb-3 pb-2" style="margin:0 -.5rem;padding:0 .5rem">
+    <style>@media screen and (max-width: 1199.98px){.hot-search {min-width: 1500px;}}</style>
     <div class="row row-sm hot-search">
         <!--百度热点-->
         <div class="col col-md col-lg">
@@ -19,7 +20,7 @@
                     </div>
                 </div>
             </div>
-            <div id="hot-loading-baidu" class="ajax-loading text-center rounded" style="position: absolute; display: none; width: 100%; left: 0px; top: 0px; bottom: 0px; background: rgba(125, 125, 125, 0.5);"><div id="hot-success-juejin" class="col align-self-center"><i class="iconfont icon-loading icon-spin icon-2x"></i></div></div>
+            <div id="hot-loading-baidu" class="ajax-loading text-center " style="position: absolute; display: none; width: 100%; left: 0px; top: 0px; bottom: 0px; background: rgba(125, 125, 125, 0.5);"><div id="hot-success-juejin" class="col align-self-center"><i class="iconfont icon-loading icon-spin icon-2x"></i></div></div>
         </div>
         <!--掘金热榜-->
         <div class="col col-md col-lg">
@@ -105,38 +106,37 @@
                 </div>
                 <div id="hot-loading-weibo" class="ajax-loading text-center rounded" style="position: absolute; display: none; width: 100%; left: 0px; top: 0px; bottom: 0px; background: rgba(125, 125, 125, 0.5);"><div id="hot-success-406632494" class="col align-self-center"><i class="iconfont icon-loading icon-spin icon-2x"></i></div></div>
             </div>
-            <style>@media screen and (max-width: 1199.98px){.hot-search {min-width: 1500px;}}</style>
         </div>
     <script>
-            $.get("/hotSpot/baidu", {},function(response,status){
+            $.get("/hotSpot/baidu", {},function(response){
                 const data = response.data;
                 console.log(data);
                 hotspot("baidu",data);
             }).fail(function () {
                 getError("baidu");
             });
-            $.get("/hotSpot/csdn", {},function(response,status){
+            $.get("/hotSpot/csdn", {},function(response){
                 const data = response.data;
                 console.log(data);
                 hotspot("csdn",data);
             }).fail(function () {
                 getError("csdn");
             });
-            $.get("/hotSpot/douyin", {},function(response,status){
+            $.get("/hotSpot/douyin", {},function(response){
                 const data = response.data;
                 console.log(data);
                 hotspot("douyin",data);
             }).fail(function () {
                 getError("douyin");
             });
-            $.get("/hotSpot/juejin", {},function(response,status){
+            $.get("/hotSpot/juejin", {},function(response){
                 const data = response.data;
                 console.log(data);
                 hotspot("juejin",data);
             }).fail(function () {
                 getError("juejin");
             });
-            $.get("/hotSpot/weibo", {},function(response,status){
+            $.get("/hotSpot/weibo", {},function(response){
                 const data = response.data;
                 console.log(data);
                 hotspot("weibo",data);

@@ -119,7 +119,7 @@ public class NavApiController {
                 model.addAttribute("websites", Collections.emptyList());
                 break;
         }
-        return CoreConst.WEB_PREFIX+"component/minisite";
+        return CoreConst.WEB_PREFIX+"card/minicard";
     }
 
     @GetMapping("/tag/items")
@@ -127,14 +127,14 @@ public class NavApiController {
         Integer id= query.getId();
         Category category=categoryService.getById(id);
         if(Objects.isNull(category)){
-            return CoreConst.WEB_PREFIX+"component/site5";
+            return CoreConst.WEB_PREFIX+"card/sitecard";
         }
         model.addAttribute("websites",websiteService.getCategoryWebsiteMap().get(id));
         switch (category.getType()){
             case 2:
-                return CoreConst.WEB_PREFIX+"component/postbox";
+                return CoreConst.WEB_PREFIX+"card/postcard";
             default:
-                return CoreConst.WEB_PREFIX+"component/site5";
+                return CoreConst.WEB_PREFIX+"card/sitecard";
         }
     }
 
