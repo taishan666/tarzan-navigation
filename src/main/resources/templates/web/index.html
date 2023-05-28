@@ -33,7 +33,7 @@
     <link rel='stylesheet' id='iconfont-css' href='/web/css/iconfont.min.css' type='text/css' media='all' />
     <link rel='stylesheet' id='bootstrap-css' href='/web/css/bootstrap.min.css' type='text/css' media='all'  />
     <link rel='stylesheet' id='swiper-css' href='/web/css/swiper-bundle.min.css' type='text/css' media='all' />
-    <link rel='stylesheet' id='style-css' href='/web/css/style.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='style-css' href='/web/css/style.min.css' type='text/css' media='all' />
     <script type='text/javascript' src='/web/js/jquery.min.js' id='jquery-js' media="print" ></script>
     <script type='text/javascript' id='jquery-js-after'>
         function loadFunc(func) {if (document.all){window.attachEvent("onload",func);}else{window.addEventListener("load",func,false);}}
@@ -49,7 +49,7 @@
 <div class="main-content flex-fill">
     <nav th:replace="web/module/navbar::banner(true)"></nav>
     <div class="header-big  post-top css-color mb-4" style="background-image: url(/web/images/index-bg.webp); ">
-        <div th:replace="web/module/searchbox::index"></div>
+        <div th:replace="web/module/searchbox::index(true)"></div>
         <th:block th:unless="${#lists.isEmpty(notices)}" th:include="web/module/bulletinbox"></th:block>
     </div>
     <div id="content" class="container container-fluid customize-width" style="transform: none;">
