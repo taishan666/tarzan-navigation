@@ -4,12 +4,15 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.tarzan.nav.common.constant.CoreConst;
 import com.tarzan.nav.modules.admin.mapper.biz.SiteLookMapper;
+import com.tarzan.nav.modules.admin.mapper.biz.WebsiteMapper;
 import com.tarzan.nav.modules.admin.model.biz.SiteLook;
+import com.tarzan.nav.modules.admin.model.biz.Website;
 import com.tarzan.nav.modules.network.LocationService;
 import com.tarzan.nav.utils.DateUtil;
 import com.tarzan.nav.utils.MapUtil;
@@ -17,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
@@ -28,6 +32,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class SiteLookService extends ServiceImpl<SiteLookMapper, SiteLook> {
 
+    @Resource
+    private  WebsiteMapper websiteMapper;
 
     Cache<String, String> cache = Caffeine.newBuilder()
             .initialCapacity(5)
@@ -38,8 +44,6 @@ public class SiteLookService extends ServiceImpl<SiteLookMapper, SiteLook> {
             //设置读写缓存后n秒钟过期,实际很少用到,类似于expireAfterWrite
             //.expireAfterAccess(17, TimeUnit.SECONDS)
             .build();
-
-
 
     public Set<Integer> topSites(int num) {
         List<SiteLook> looks= super.lambdaQuery().ne(SiteLook::getSiteId, CoreConst.ZERO).list();
@@ -70,6 +74,14 @@ public class SiteLookService extends ServiceImpl<SiteLookMapper, SiteLook> {
             super.save(siteLook);
         }
         cache.put(userIp+"_"+siteId,"1");
+    }
+
+    @Async
+    public void asyncLook(String url,String userIp,String type) {
+        Website site=websiteMapper.selectOne(Wrappers.<Website>lambdaQuery().eq(Website::getUrl,url).last("limit 1"));
+        if(Objects.nonNull(site)){
+            asyncLook(site.getId(),userIp,type);
+        }
     }
 
 

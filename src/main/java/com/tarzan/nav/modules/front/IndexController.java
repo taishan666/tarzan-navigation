@@ -4,7 +4,6 @@ import com.tarzan.nav.common.constant.CoreConst;
 import com.tarzan.nav.common.constant.LookTypeConst;
 import com.tarzan.nav.modules.admin.model.biz.Website;
 import com.tarzan.nav.modules.admin.service.biz.*;
-import com.tarzan.nav.modules.network.HotNewsService;
 import com.tarzan.nav.utils.WebUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +32,6 @@ public class IndexController {
     private final WebsiteService websiteService;
     private final LinkService linkService;
     private final NoticeService noticeService;
-    private final HotNewsService hotNewsService;
     private final CommentService commentService;
     private final SiteLookService siteLookService;
 
@@ -47,7 +45,6 @@ public class IndexController {
         model.addAttribute("notices",noticeService.simpleList());
         model.addAttribute("categories",categoryService.treeLink());
         model.addAttribute("links",linkService.simpleList());
-      //  model.addAttribute("hotSpot",hotNewsService.hotSpot());
         model.addAttribute("hotWebsites",websiteService.hotList(12));
         System.out.println("耗时 "+(System.currentTimeMillis()-start)+" ms");
         return  CoreConst.WEB_PREFIX+"index";
@@ -120,6 +117,13 @@ public class IndexController {
         }else {
             return "redirect:https:"+website.getUrl();
         }
+    }
+
+    @GetMapping("/link")
+    public String targetLink(String target,Model model) {
+        siteLookService.asyncLook(target,WebUtil.getIP(), LookTypeConst.SITE);
+        model.addAttribute("target","https:"+target);
+        return  CoreConst.WEB_PREFIX+"link";
     }
 
     @GetMapping("/douyin")
