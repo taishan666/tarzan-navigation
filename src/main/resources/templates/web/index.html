@@ -33,7 +33,7 @@
     <link rel='stylesheet' id='iconfont-css' href='/web/css/iconfont.min.css' type='text/css' media='all' />
     <link rel='stylesheet' id='bootstrap-css' href='/web/css/bootstrap.min.css' type='text/css' media='all'  />
     <link rel='stylesheet' id='swiper-css' href='/web/css/swiper-bundle.min.css' type='text/css' media='all' />
-    <link rel='stylesheet' id='style-css' href='/web/css/style.min.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='style-css' href='/web/css/style.css' type='text/css' media='all' />
     <script type='text/javascript' src='/web/js/jquery.min.js' id='jquery-js' media="print" ></script>
     <script type='text/javascript' id='jquery-js-after'>
         function loadFunc(func) {if (document.all){window.attachEvent("onload",func);}else{window.addEventListener("load",func,false);}}
@@ -44,7 +44,7 @@
     .io-black-mode .navbar-nav .menu-item-286 a i{color: #fff;}.customize-width{max-width:1850px}.sidebar-nav{width:220px}@media (min-width: 768px){.main-content{margin-left:220px;}.main-content .page-header{left:220px;}}</style><!-- 自定义代码 -->
     [(${SITE_CONFIG?.STATISTICS_CODE})]
 </head>
-<body class="home blog mini-sidebar">
+<body class="home blog sidebar_right animate-nav mini-sidebar" style="transform: none;">
 <sidebar th:replace="web/module/sidebar::index(true)"></sidebar>
 <div class="main-content flex-fill">
     <nav th:replace="web/module/navbar::banner(true)"></nav>
@@ -69,6 +69,7 @@
 </div>
 <!-- main-content end -->
 <footer th:replace="web/module/footer"></footer>
+<footer th:replace="web/module/footerleft"></footer>
 <footer th:replace="web/module/popuptips"></footer>
 <script type='text/javascript' id='rocket-preload-links-js-after'>
     (function() {

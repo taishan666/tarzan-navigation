@@ -105,6 +105,23 @@
             }
         }
     });
+/*    $(document).on("click", "a.smooth", function(e) {
+        const a = $(this);
+        if (e.preventDefault(),
+        $("#sidebar").hasClass("show") && !a.hasClass("change-href") && $("#sidebar").modal("toggle"),
+        "#" == a.attr("href").substr(0, 1) && $(a.attr("href"))[0] && $("html, body").animate({
+            scrollTop: $(a.attr("href")).offset().top - 90
+        }, {
+            duration: 500,
+            easing: "swing"
+        }),
+        a.hasClass("go-search-btn") && t("#search-text").focus(),
+            !a.hasClass("change-href")) {
+            var i = $("a" + a.attr("href"));
+            i[0] && (i.click(),
+                toTarget(i.closest("ul"), !0, !0))
+        }
+    })*/
     $(document).on('click','a.smooth-n',function(ev) {
         ev.preventDefault();
         $("html, body").animate({

@@ -9054,3 +9054,38 @@ a.openlogin-gitee-a {
     -o-transform: rotate(-15deg);
     transform: rotate(-15deg);
 }
+
+.footernav {
+    background: rgba(210, 210, 210, .5);
+    padding: 5px 0px;
+    border-radius: 50px;
+}
+
+#nav-tools {
+    position: fixed;
+    bottom: 20px;
+   /* left: 5px;*/
+    display: flex;
+    z-index: 5
+}
+
+#nav-tools .mybtn {
+    color: #282a2d;
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+    text-align: center;
+    line-height: 40px;
+    padding: unset;
+    display: block;
+    border: unset;
+}
+
+#nav-tools .mybtn:hover {
+    background: rgba(0,0,0,.1);
+    border-radius: 50px;
+}
+
+#nav-tools a i {
+    font-size: 20px;
+}

@@ -20,19 +20,15 @@
                 <div class="sidebar-menu-inner">
                     <ul>
                         <li class="sidebar-item" th:each="category : ${categories}">
-                            <a th:if="${#lists.isEmpty(category.children)}" th:href="${(flag?'':'/')+'#term-'+category.id}"  th:class="${flag?'smooth':''}">
+                            <a  th:href="${(flag?'':'/')+'#term-'+category.id}"  th:class="${flag?'smooth':''}" th:data-change="${flag?('#term-'+category.id):''}">
                                 <i th:class="${category?.icon}+' icon-fw icon-lg'"></i>
                                 <span>[[${category.name}]]</span>
                             </a>
                             <th:block th:unless="${#lists.isEmpty(category.children)}">
-                                <a  th:href="${'#term-'+category.id}" class="smooth" th:data-change="${(flag?'':'/')+'#term-'+category.id}">
-                                    <i th:class="${category?.icon}+' icon-fw icon-lg'"></i>
-                                    <span>[[${category.name}]]</span>
-                                </a>
                                 <i class="iconfont icon-arrow-r-m sidebar-more text-sm"></i>
                                 <ul>
                                     <li th:each="cate:${category.children}">
-                                        <a th:href="${(flag?'':'/')+'#term-'+category.id+'-'+cate?.id}" class="smooth"><span>[[${cate.name}]]</span></a>
+                                        <a th:href="${(flag?'':'/')+'#term-'+category.id+'-'+cate?.id}" th:class="${flag?'smooth':''}"><span>[[${cate.name}]]</span></a>
                                     </li>
                                 </ul>
                             </th:block>
