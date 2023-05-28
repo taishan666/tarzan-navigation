@@ -17,8 +17,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>登录 - [[${SITE_CONFIG?.SITE_NAME}]]</title>
-<!--    <link rel="shortcut icon" href="https://nav.iowen.cn/wp-content/uploads/2020/01/favicon.ico">
-    <link rel="apple-touch-icon" href="https://nav.iowen.cn/wp-content/themes/onenav/images/app-ico.png">-->
     <meta name='robots' content='noindex,nofollow' />
     <meta name='robots' content='max-image-preview:large' />
     <meta name='robots' content='max-image-preview:large' />
@@ -40,7 +38,7 @@
         --bg-color-l: #7d00a0;
         --bg-color-r: #c11b8d;
     }
-</style>
+    </style>
 </head>
 <body class="sidebar_right login-body-login" >
 <script type="text/javascript">
@@ -94,9 +92,15 @@
                                     <a href="/" class="btn vc-red btn-outline btn-block mt-0 ml-4">首页</a>
                                 </div>
                                 <div class=" text-muted">
-                                    <small>没有账号？<a href="https://nav.iowen.cn/login/?action=register&#038;redirect_to=https%3A%2F%2Fnav.iowen.cn" class="signup">注册</a> / <a href="https://nav.iowen.cn/login/?action=lostpassword&#038;redirect_to=https%3A%2F%2Fnav.iowen.cn" class="signup">找回密码</a></small>
+                                    <small>没有账号？<a href="/register" class="signup">注册</a> / <a href="/lostpassword" class="signup">找回密码</a></small>
                                 </div>
-                                <div class="login-form mt-4"><p id="openlogin-box" class="openlogin-box text-center"><span class="social-separator separator text-muted text-xs mb-3">社交帐号登录</span><a href="https://nav.iowen.cn/wp-content/themes/onenav/inc/auth/qq.php?loginurl=https://nav.iowen.cn" title="QQ登录" class="open-login openlogin-qq-a"><i class="iconfont icon-qq"></i></a><a href="https://nav.iowen.cn/wp-content/themes/onenav/inc/auth/dyh.php?loginurl=https://nav.iowen.cn" title="微信登录" class="open-login openlogin-wechat-gzh-a qrcode-signin"><i class="iconfont icon-wechat"></i></a></p><script type="text/javascript">var _state="";
+                                <div class="login-form mt-4">
+                                    <p id="openlogin-box" class="openlogin-box text-center">
+                                        <span class="social-separator separator text-muted text-xs mb-3">社交帐号登录</span>
+                                        <a href="#" title="QQ登录" class="open-login openlogin-qq-a"><i class="iconfont icon-qq"></i></a>
+<!--                                        <a href="https://nav.iowen.cn/wp-content/themes/onenav/inc/auth/dyh.php?loginurl=https://nav.iowen.cn" title="微信登录" class="open-login openlogin-wechat-gzh-a qrcode-signin"><i class="iconfont icon-wechat"></i></a>-->
+                                    </p>
+                                    <script type="text/javascript">var _state="";
                                 $(document).on("click", ".qrcode-signin", function () {
                                     if ($("#user_agreement")[0] && !$("#user_agreement").is(":checked")) {
                                         ioPopupTips(2, localize.userAgreement);
@@ -147,8 +151,8 @@
                                         alert("请输入验证码～");
                                     }
                                     return false;
-                                });</script></div>
-                <!--                <input type="hidden" name="redirect_to" value="https://nav.iowen.cn" />-->
+                                });</script>
+                                </div>
                             </form>
                         </div>
                     </div>
@@ -252,8 +256,8 @@
     $(document).ready(function(){if($("#search-text")[0]){$("#search-text").focus();}});
     /* ]]> */
 </script>
-<script type='text/javascript' src='https://nav.iowen.cn/wp-content/themes/onenav/js/longbow.slidercaptcha.min.js?ver=4.0510' id='captcha-007-js'></script>
-<script type='text/javascript' src='https://nav.iowen.cn/wp-content/themes/onenav/js/captcha.js?ver=4.0510' id='captcha-js'></script>
+<!--<script type='text/javascript' src='https://nav.iowen.cn/wp-content/themes/onenav/js/longbow.slidercaptcha.min.js?ver=4.0510' id='captcha-007-js'></script>
+<script type='text/javascript' src='https://nav.iowen.cn/wp-content/themes/onenav/js/captcha.js?ver=4.0510' id='captcha-js'></script>-->
 
 </body>
 </html>

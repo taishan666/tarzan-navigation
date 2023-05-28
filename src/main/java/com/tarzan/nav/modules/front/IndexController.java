@@ -103,9 +103,12 @@ public class IndexController {
 
     @GetMapping("/login")
     public String login() {
-       // siteLookService.asyncLook(0,WebUtil.getIP(), LookTypeConst.APPLY);
-        //model.addAttribute("categories",categoryService.treeList());
         return  CoreConst.WEB_PREFIX+"login";
+    }
+
+    @GetMapping("/register")
+    public String register() {
+        return  CoreConst.WEB_PREFIX+"register";
     }
 
     @GetMapping("/site/{id}")

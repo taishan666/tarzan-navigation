@@ -1,15 +1,6 @@
 <footer>
     <div id="nav-tools" class="d-flex flex-column footernav">
-<!--        <a href="javascript:" id="go-to-up" class="mybtn rounded-circle go-up m-1" rel="go-top" style="">
-            <i class="iconfont icon-to-up"></i>
-        </a>
-        <a href="https://0mo.com/bookmark/" class="mybtn rounded-circle m-1 bookmark-home" data-toggle="tooltip" data-placement="left" title="" data-original-title="mini 书签">
-            <i class="iconfont icon-minipanel"></i>
-        </a>
-        <a href="javascript:" id="switch-mode" class="mybtn rounded-circle switch-dark-mode m-1" data-toggle="tooltip" data-placement="left" title="" data-original-title="夜间模式">
-            <i class="iconfont icon-light"></i>
-        </a>-->
-        <a  th:each="category:${categories}" th:href="${'#term-'+category?.id}" class="mybtn rounded-circle m-1 smooth" data-toggle="tooltip" data-placement="right" th:title="${category?.name}" th:data-original-title="${category?.name}">
+        <a  th:each="category:${categories}" th:href="${'#term-'+category?.id}" class="mybtn rounded-circle smooth" data-toggle="tooltip" data-placement="right" th:title="${category?.name}" th:data-original-title="${category?.name}">
             <i th:class="${category?.icon}"></i>
         </a>
     </div>
