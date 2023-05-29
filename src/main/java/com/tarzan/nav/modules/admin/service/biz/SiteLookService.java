@@ -78,7 +78,7 @@ public class SiteLookService extends ServiceImpl<SiteLookMapper, SiteLook> {
 
     @Async
     public void asyncLook(String url,String userIp,String type) {
-        Website site=websiteMapper.selectOne(Wrappers.<Website>lambdaQuery().eq(Website::getUrl,url).last("limit 1"));
+        Website site=websiteMapper.selectOne(Wrappers.<Website>lambdaQuery().select(Website::getId).eq(Website::getUrl,url).last("limit 1"));
         if(Objects.nonNull(site)){
             asyncLook(site.getId(),userIp,type);
         }

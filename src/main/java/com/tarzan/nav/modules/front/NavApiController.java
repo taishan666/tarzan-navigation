@@ -147,17 +147,14 @@ public class NavApiController {
             case "weibo":
                 return ResultUtil.vo(hotNewsService.weiboHot());
             case "douyin":
-                return ResultUtil.vo(hotNewsService.douYinHot());
+                return ResultUtil.vo(hotNewsService.zhiHuHot());
             case "juejin":
                 return ResultUtil.vo(hotNewsService.jueJinHot());
+            case "zhihu":
+                return ResultUtil.vo(hotNewsService.zhiHuHot());
             default:
                 return ResultUtil.vo(hotNewsService.baiduHot());
         }
     }
 
-  /*  @GetMapping("/hotSpot/all")
-    @ResponseBody
-    public ResponseVo hotSpotAll() {
-        return ResultUtil.vo(hotNewsService.hotSpot());
-    }*/
 }

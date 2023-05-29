@@ -16,24 +16,8 @@
 <div class="tab-content">
     <div id="ct-tab-sites-views0" class="tab-pane active">
         <div class="row  ajax-list-body position-relative">
-            <div class="url-card  col-2a col-sm-2a col-md-2a col-lg-3a col-xl-5a col-xxl-6a" th:each="website:${hotWebsites}">
-                <div class="url-body mini">
-                    <a th:href="${'/site/'+website?.id}" target="_blank" th:data-id="${website?.id}" th:data-url="${website?.url}" class="card no-c  mb-4 site-725" data-toggle="tooltip" data-placement="bottom" title="" th:data-original-title="${website?.description}">
-                        <div class="card-body url-content d-flex align-items-center">
-                            <div class="url-img rounded-circle mr-2 d-flex align-items-center justify-content-center">
-                                <img class="lazy unfancybox loaded" th:src="${website?.img?.base64}"  th:data-src="${website?.img?.base64}" height="auto" width="auto" th:alt="${website?.name}" data-was-processed="true">
-                            </div>
-                            <div class="url-info flex-fill">
-                                <div class="text-sm overflowClip_1">
-                                    <strong>[[${website?.name}]]</strong>
-                                </div>
-               <!--                 <p class="overflowClip_1 m-0 text-muted text-xs">[[${website?.description}]]</p>-->
-                            </div>
-                        </div>
-                    </a>
-<!--                    <a th:href="${website?.url}" target="_blank" rel="external nofollow" title="" class="togo text-center text-muted is-views" data-id="725" data-toggle="tooltip" data-placement="right" data-original-title="直达"><i class="iconfont icon-goto"></i></a>-->
-                </div>
-            </div>
+            <!-- 网站-->
+            <div th:replace="web/card/minicard::params(${hotWebsites},true)"></div>
         </div>
     </div>
     <div id="ct-tab-sites-modified1" class="tab-pane">

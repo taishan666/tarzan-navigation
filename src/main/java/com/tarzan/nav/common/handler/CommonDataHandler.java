@@ -52,6 +52,6 @@ public class CommonDataHandler implements HandlerInterceptor {
                }
                 mv.addObject("SITE_CONFIG",sysConfigService.getInfo());
             }
-           response.setHeader("Cache-Control","max-age=31536000");
+          // response.setHeader("Cache-Control","max-age=31536000");
     }
 }

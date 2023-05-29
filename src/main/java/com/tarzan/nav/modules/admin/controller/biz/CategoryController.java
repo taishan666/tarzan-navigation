@@ -77,7 +77,6 @@ public class CategoryController {
     @GetMapping("/edit")
     public String edit(Model model, Integer id) {
         Category bizCategory = categoryService.selectById(id);
-        bizCategory.setPid(bizCategory.getPid());
         if(bizCategory.getPid().equals(CoreConst.TOP_CATEGORY_ID)){
             bizCategory.setParentName(CoreConst.TOP_CATEGORY_NAME);
         }else{

@@ -15,6 +15,7 @@ import org.jsoup.select.Elements;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -158,8 +159,37 @@ public class HotNewsService {
         return hotNews;
     }
 
+    @Cacheable(value = "hotNews", key = "'zhihu'")
+    public List<HotNewsVO>  zhiHuHot() {
+        log.info("知乎热榜");
+        List<HotNewsVO> hotNews=new ArrayList<>(10);
+        String text= HttpUtil.get("https://www.zhihu.com/api/v3/feed/topstory/hot-lists/total?limit=50&desktop=true");
+        byte[] bytes=text.getBytes(StandardCharsets.UTF_8);
+        text=new String(bytes);
+        JSONObject json= JSON.parseObject(text);
+        JSONArray list= json.getJSONArray("data");
+        Iterator<Object> iterator= list.stream().iterator();
+        while (iterator.hasNext()){
+            JSONObject e= (JSONObject) iterator.next();
+            JSONObject target=e.getJSONObject("target");
+            String title=target.getString("title");
+            String link=target.getString("url");
+            link=link.replace("api.","").replace("questions","question");
+            String index=e.getString("detail_text");
+            index=index.replace("热度","");
+            HotNewsVO vo=new HotNewsVO();
+            vo.setTitle(title);
+            vo.setLink(link);
+            vo.setIndex(index);
+            hotNews.add(vo);
+        }
+        return hotNews;
+    }
+
     private String numberFormat(int num){
         DecimalFormat df = new DecimalFormat("#0.0万");
         return df.format(num / 10000.0);
     }
+
+
 }
