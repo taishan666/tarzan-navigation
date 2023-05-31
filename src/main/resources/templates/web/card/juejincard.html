@@ -1,4 +1,3 @@
-<!--掘金热榜-->
 <div class="col col-md col-lg">
     <div class="card hot-card mb-0 rounded-xl">
         <div class="card-header widget-header d-flex align-items-center" style="background-color:transparent;border-bottom:0">
@@ -19,3 +18,9 @@
     </div>
     <div id="hot-loading-juejin" class="ajax-loading text-center rounded" style="position: absolute; display: flex; width: 100%; left: 0px; top: 0px; bottom: 0px; background: rgba(125, 125, 125, 0.5);"><div id="hot-success-juejin" class="col align-self-center"><i class="iconfont icon-loading icon-spin icon-2x"></i></div></div>
 </div>
+<script>
+    getList("juejin");
+    $('#hot-lod-juejin').on('click', function() {
+        refresh("juejin");
+    });
+</script>

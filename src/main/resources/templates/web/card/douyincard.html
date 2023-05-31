@@ -18,3 +18,9 @@
     </div>
     <div id="hot-loading-douyin" class="ajax-loading text-center rounded" style="position: absolute; display: flex; width: 100%; left: 0px; top: 0px; bottom: 0px; background: rgba(125, 125, 125, 0.5);"><div id="hot-success-douyin" class="col align-self-center"><i class="iconfont icon-loading icon-spin icon-2x"></i></div></div>
 </div>
+<script>
+    getList("douyin");
+    $('#hot-lod-douyin').on('click', function() {
+        refresh("douyin");
+    });
+</script>
