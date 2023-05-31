@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tarzan.nav.common.constant.CoreConst;
+import com.tarzan.nav.common.enums.NavigationTypeEnum;
 import com.tarzan.nav.modules.admin.mapper.biz.CategoryMapper;
 import com.tarzan.nav.modules.admin.mapper.biz.WebsiteMapper;
 import com.tarzan.nav.modules.admin.model.biz.BizImage;
@@ -112,7 +113,7 @@ public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
         List<Website> websites= super.lambdaQuery().eq(Website::getStatus,CoreConst.STATUS_VALID).orderByDesc(Website::getCreateTime).list();
         if (CollectionUtils.isNotEmpty(websites)){
             Date beforeDate= DateUtil.addDays(DateUtil.now(),-3);
-            Set<Integer> hotSites=siteLookService.topSites(10);
+            Set<Integer> hotSites=siteLookService.topSites(10,null);
             websites.forEach(e->{
                 if(hotSites.contains(e.getId())){
                     e.setFlag("热");
@@ -140,11 +141,6 @@ public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
             return this.wrapper(website);
         }
         return website;
-    }
-
-    public List<Website> listWithImage(Website website) {
-        List<Website> websites= super.lambdaQuery().like(Website::getName,website.getName()).or().like(Website::getDescription,website.getDescription()).orderByDesc(Website::getCreateTime).list();
-        return  this.wrapper(websites);
     }
 
     public IPage<Website> pageList(Website website, Integer pageNumber, Integer pageSize) {
@@ -220,25 +216,34 @@ public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
     }
 
     @Cacheable(value = "website", key = "'hot'")
-    public List<Website>  hotList(int num) {
-        Set<Integer> hotSites=siteLookService.topSites(num);
+    public List<Website>  hotList(NavigationTypeEnum typeEnum, int num) {
+        Set<Integer> hotSites=siteLookService.topSites(num,typeEnum);
         if(CollectionUtils.isNotEmpty(hotSites)){
             return this.wrapper(this.lambdaQuery().in(Website::getId,hotSites).list());
         }else {
-            return this.randomList(num);
+            return this.randomList(typeEnum,num);
         }
     }
 
     @Cacheable(value = "website", key = "'newest'")
-    public List<Website>  newestList(int num) {
-        return this.wrapper(this.lambdaQuery().orderByDesc(Website::getCreateTime).last("limit "+num).list());
+    public List<Website>  newestList(NavigationTypeEnum typeEnum,int num) {
+        List<Category> categories=categoryMapper.selectList(Wrappers.<Category>lambdaQuery().eq(Category::getType,typeEnum.getType()));
+        if(CollectionUtils.isNotEmpty(categories)){
+            Set<Integer> cateIds=categories.stream().map(Category::getId).collect(Collectors.toSet());
+            return this.wrapper(super.lambdaQuery().eq(Website::getStatus,CoreConst.STATUS_VALID).in(Website::getCategoryId,cateIds).orderByDesc(Website::getCreateTime).last("limit "+num).list());
+        }
+        return Collections.emptyList();
     }
 
     @Cacheable(value = "website", key = "'random'")
-    public List<Website> randomList(int count) {
-        List<Website> websites= super.lambdaQuery().eq(Website::getStatus,CoreConst.STATUS_VALID).list();
-        this.wrapper(websites);
-        return RandomUtil.randomEles(websites,count);
+    public List<Website> randomList(NavigationTypeEnum typeEnum,int count) {
+        List<Category> categories=categoryMapper.selectList(Wrappers.<Category>lambdaQuery().eq(Category::getType,typeEnum.getType()));
+        if(CollectionUtils.isNotEmpty(categories)){
+            Set<Integer> cateIds=categories.stream().map(Category::getId).collect(Collectors.toSet());
+            List<Website> websites= this.wrapper(super.lambdaQuery().eq(Website::getStatus,CoreConst.STATUS_VALID).in(Website::getCategoryId,cateIds).list());
+            return RandomUtil.randomEles(websites,count);
+        }
+        return Collections.emptyList();
     }
 
     public List<Website> search(Website website,Integer type) {

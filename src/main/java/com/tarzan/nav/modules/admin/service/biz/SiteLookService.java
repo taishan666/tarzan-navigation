@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.tarzan.nav.common.constant.CoreConst;
+import com.tarzan.nav.common.enums.NavigationTypeEnum;
 import com.tarzan.nav.modules.admin.mapper.biz.SiteLookMapper;
 import com.tarzan.nav.modules.admin.mapper.biz.WebsiteMapper;
 import com.tarzan.nav.modules.admin.model.biz.SiteLook;
@@ -16,6 +17,7 @@ import com.tarzan.nav.modules.admin.model.biz.Website;
 import com.tarzan.nav.modules.network.LocationService;
 import com.tarzan.nav.utils.DateUtil;
 import com.tarzan.nav.utils.MapUtil;
+import com.tarzan.nav.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -45,8 +47,8 @@ public class SiteLookService extends ServiceImpl<SiteLookMapper, SiteLook> {
             //.expireAfterAccess(17, TimeUnit.SECONDS)
             .build();
 
-    public Set<Integer> topSites(int num) {
-        List<SiteLook> looks= super.lambdaQuery().ne(SiteLook::getSiteId, CoreConst.ZERO).list();
+    public Set<Integer> topSites(int num, NavigationTypeEnum typeEnum) {
+        List<SiteLook> looks= super.lambdaQuery().ne(SiteLook::getSiteId, CoreConst.ZERO).eq(StringUtil.isNotBlank(typeEnum.getName()),SiteLook::getType,typeEnum.getName()).list();
         Map<Integer,Long> lookMap=looks.stream().collect(Collectors.groupingBy(SiteLook::getSiteId,Collectors.counting()));
         return MapUtil.topNByValue(lookMap,num).keySet();
     }

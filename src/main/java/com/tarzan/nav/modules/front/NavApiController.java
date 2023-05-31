@@ -1,6 +1,7 @@
 package com.tarzan.nav.modules.front;
 
 import com.tarzan.nav.common.constant.CoreConst;
+import com.tarzan.nav.common.enums.NavigationTypeEnum;
 import com.tarzan.nav.modules.admin.model.biz.Category;
 import com.tarzan.nav.modules.admin.model.biz.Comment;
 import com.tarzan.nav.modules.admin.model.biz.Link;
@@ -107,13 +108,13 @@ public class NavApiController {
                                @RequestParam("data[num]") int num, Model model) {
         switch (title){
             case "热门网址":
-                model.addAttribute("websites",websiteService.hotList(num));
+                model.addAttribute("websites",websiteService.hotList(NavigationTypeEnum.SITE,num));
                 break;
             case "随机推荐":
-                model.addAttribute("websites",websiteService.randomList(num));
+                model.addAttribute("websites",websiteService.randomList(NavigationTypeEnum.SITE,num));
                 break;
             case "最新网址":
-                model.addAttribute("websites",websiteService.newestList(num));
+                model.addAttribute("websites",websiteService.newestList(NavigationTypeEnum.SITE,num));
                 break;
             default:
                 model.addAttribute("websites", Collections.emptyList());

@@ -2,6 +2,7 @@ package com.tarzan.nav.modules.front;
 
 import com.tarzan.nav.common.constant.CoreConst;
 import com.tarzan.nav.common.constant.LookTypeConst;
+import com.tarzan.nav.common.enums.NavigationTypeEnum;
 import com.tarzan.nav.modules.admin.model.biz.Website;
 import com.tarzan.nav.modules.admin.service.biz.*;
 import com.tarzan.nav.utils.WebUtil;
@@ -45,7 +46,7 @@ public class IndexController {
         model.addAttribute("notices",noticeService.simpleList());
         model.addAttribute("categories",categoryService.treeLink());
         model.addAttribute("links",linkService.simpleList());
-        model.addAttribute("hotWebsites",websiteService.hotList(12));
+        model.addAttribute("hotWebsites",websiteService.hotList(NavigationTypeEnum.SITE,12));
         System.out.println("耗时 "+(System.currentTimeMillis()-start)+" ms");
         return  CoreConst.WEB_PREFIX+"index";
     }
@@ -77,7 +78,7 @@ public class IndexController {
     @GetMapping("/bookmark")
     public String guestbook(Model model) {
         siteLookService.asyncLook(0,WebUtil.getIP(), LookTypeConst.BOOKMARK);
-        List<Website> websites=websiteService.randomList(12);
+        List<Website> websites=websiteService.randomList(NavigationTypeEnum.SITE,12);
         model.addAttribute("websites",websites);
         return  CoreConst.WEB_PREFIX+"bookmark";
     }
