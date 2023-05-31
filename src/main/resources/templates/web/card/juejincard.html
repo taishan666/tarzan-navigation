@@ -1,0 +1,21 @@
+<!--掘金热榜-->
+<div class="col col-md col-lg">
+    <div class="card hot-card mb-0 rounded-xl">
+        <div class="card-header widget-header d-flex align-items-center" style="background-color:transparent;border-bottom:0">
+            <span><img class="hot-ico" src="/web/images/hotspot/juejin.ico" alt="掘金热榜"><span class="title-juejin">掘金热榜</span></span>
+            <span class="ml-auto d-none d-md-block text-xs slug-juejin">今日热榜</span>
+        </div>
+        <div class="card-body pb-3 pt-0">
+            <div class="overflow-auto hot-body">
+                <ul id="hot_news-juejin">
+                </ul>
+            </div>
+            <div class="d-flex text-xs text-muted pt-2 mb-n2">
+                <!--              <a href="https://juejin.cn/hot/articles" target="_blank" title="更多" style="color:#6c757d; ">更多</a>-->
+                <div class="flex-fill"></div>
+                <span><a href="javascript:" id="hot-lod-juejin" title="刷新" style="color:#6c757d"><i class="iconfont icon-refresh text-md"></i></a></span>
+            </div>
+        </div>
+    </div>
+    <div id="hot-loading-juejin" class="ajax-loading text-center rounded" style="position: absolute; display: flex; width: 100%; left: 0px; top: 0px; bottom: 0px; background: rgba(125, 125, 125, 0.5);"><div id="hot-success-juejin" class="col align-self-center"><i class="iconfont icon-loading icon-spin icon-2x"></i></div></div>
+</div>
