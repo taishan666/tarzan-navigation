@@ -8,6 +8,7 @@ import com.tarzan.nav.modules.admin.model.biz.Link;
 import com.tarzan.nav.modules.admin.model.biz.Website;
 import com.tarzan.nav.modules.admin.service.biz.*;
 import com.tarzan.nav.modules.admin.vo.base.ResponseVo;
+import com.tarzan.nav.modules.front.dto.RegisterDTO;
 import com.tarzan.nav.modules.front.query.ItemQuery;
 import com.tarzan.nav.modules.network.HotNewsService;
 import com.tarzan.nav.modules.network.LocationService;
@@ -148,7 +149,7 @@ public class NavApiController {
             case "weibo":
                 return ResultUtil.vo(hotNewsService.weiboHot());
             case "douyin":
-                return ResultUtil.vo(hotNewsService.zhiHuHot());
+                return ResultUtil.vo(hotNewsService.douYinHot());
             case "juejin":
                 return ResultUtil.vo(hotNewsService.jueJinHot());
             case "zhihu":
@@ -156,6 +157,14 @@ public class NavApiController {
             default:
                 return ResultUtil.vo(hotNewsService.baiduHot());
         }
+    }
+
+
+    @PostMapping("/register")
+    @ResponseBody
+    public ResponseVo emailCode(RegisterDTO dto) {
+        System.out.println(dto);
+        return  ResultUtil.success("邮件已经发送");
     }
 
 }

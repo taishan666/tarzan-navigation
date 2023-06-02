@@ -1562,6 +1562,7 @@
             $(".verification").slideDown();
     });
     $(document).on("click", ".btn-token", function() {
+        let countdown = 60;
         const settime = function () {
             if (countdown > 0) {
                 btn.html(countdown + localize.reSend).attr('disabled', true);
@@ -1581,7 +1582,7 @@
         if (!email[0]) {
             email = p.find('.mm_mail');
         }
-        countdown = 60;
+
         const btn = p.find(".btn-token");
         const _text = t.html();
         const token_submit = function () {

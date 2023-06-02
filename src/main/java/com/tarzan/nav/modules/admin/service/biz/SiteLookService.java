@@ -48,7 +48,8 @@ public class SiteLookService extends ServiceImpl<SiteLookMapper, SiteLook> {
             .build();
 
     public Set<Integer> topSites(int num, NavigationTypeEnum typeEnum) {
-        List<SiteLook> looks= super.lambdaQuery().ne(SiteLook::getSiteId, CoreConst.ZERO).eq(StringUtil.isNotBlank(typeEnum.getName()),SiteLook::getType,typeEnum.getName()).list();
+        String type=Objects.isNull(typeEnum)?"":typeEnum.getName();
+        List<SiteLook> looks= super.lambdaQuery().ne(SiteLook::getSiteId, CoreConst.ZERO).eq(StringUtil.isNotBlank(type),SiteLook::getType,type).list();
         Map<Integer,Long> lookMap=looks.stream().collect(Collectors.groupingBy(SiteLook::getSiteId,Collectors.counting()));
         return MapUtil.topNByValue(lookMap,num).keySet();
     }

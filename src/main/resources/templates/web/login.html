@@ -1,19 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <script>
-        var default_c = "io-grey-mode";
-        var night = document.cookie.replace(/(?:(?:^|.*;\s*)io_night_mode\s*\=\s*([^;]*).*$)|^.*$/, "$1");
-        try {
-            if (night === "0" || (!night && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
-                document.documentElement.classList.add("io-black-mode");
-                document.documentElement.classList.remove(default_c);
-            } else {
-                document.documentElement.classList.remove("io-black-mode");
-                document.documentElement.classList.add(default_c);
-            }
-        } catch (_) {}
-    </script><meta charset="UTF-8">
+<meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>登录 - [[${SITE_CONFIG?.SITE_NAME}]]</title>
@@ -42,8 +30,8 @@
 </head>
 <body class="sidebar_right login-body-login" >
 <script type="text/javascript">
-    var default_c = "io-grey-mode";
-    var night = document.cookie.replace(/(?:(?:^|.*;\s*)io_night_mode\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+    const default_c = "io-grey-mode";
+    const night = document.cookie.replace(/(?:(?:^|.*;\s*)io_night_mode\s*\=\s*([^;]*).*$)|^.*$/, "$1");
     if(night == "1"){
         document.body.classList.remove("io-black-mode");
         document.body.classList.add(default_c);
@@ -51,13 +39,14 @@
         document.body.classList.remove(default_c);
         document.body.classList.add("io-black-mode");
     }
-</script>     <div class="page login-page">
+</script>
+<div class="page login-page">
     <div class="container d-flex align-items-center">
         <div class="form-holder has-shadow">
             <div class="row no-gutters">
                 <!-- Logo & Information Panel-->
                 <div class="col-md-6 col-lg-7 col-xl-8 my-n5 d-none d-md-block">
-                    <div class="info d-flex p-5 mr-n5 position-relative login-img rounded-xl shadow-lg" style="background-image: url(https://nav.iowen.cn/wp-content/themes/onenav/images/login.jpg);">
+                    <div class="info d-flex p-5 mr-n5 position-relative login-img rounded-xl shadow-lg" style="background-image: url(/web/images/index-bg.webp);">
                         <div class="content position-absolute mr-5 pr-5">
                             <div class="logo">
                                 <h1>[[${SITE_CONFIG?.SITE_NAME}]]</h1>
@@ -81,7 +70,8 @@
                                     <div class="password-show-btn" data-show="0"><i class="iconfont icon-chakan-line"></i></div>
                                 </div>
                                 <div class="form-group mb-3">
-                                    <input captcha-type="slider" type="hidden" name="captcha_type" value="slider" slider-id="">                                    </div>
+                                    <input captcha-type="slider" type="hidden" name="captcha_type" value="slider" slider-id="">
+                                </div>
                                 <div class="custom-control custom-checkbox text-xs mb-3">
                                     <input type="checkbox" class="custom-control-input" checked="checked" name="rememberme" id="check1" value="forever">
                                     <label class="custom-control-label" for="check1">记住我的登录信息</label>
@@ -250,7 +240,7 @@
     };
     /* ]]> */
 </script>
-<script type='text/javascript' src='/web/js/app.min.js' id='appjs-js'></script>
+<script type='text/javascript' src='/web/js/app.js' id='appjs-js'></script>
 <script type='text/javascript' id='appjs-js-after'>
     /* <![CDATA[ */
     $(document).ready(function(){if($("#search-text")[0]){$("#search-text").focus();}});
