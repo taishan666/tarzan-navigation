@@ -5,26 +5,27 @@ spring:
     url:  jdbc:h2:file:${user.home}/.tarzan-nav/db/tarzan-nav;MODE=MYSQL
     username: root
     password: 123456
+  mail:
+    host: smtp.163.com
+    username: 13083633972@163.com
+    password: a1334512682
+    default-encoding: UTF-8
+    properties:
+      smtp:
+        auth: true
+        starttls:
+          enable: true
+          required: true
   h2:
     console:
       enabled: false
       settings:
         web-allow-others: false
       path: /h2-console
-  #jpa:
-   #show-sql: true
-   #hibernate:
-     #ddl-auto: update
-   #generate-ddl: false
-server:
-  servlet:
-    context-path: /
-
 tarzan:
   shiro-key: ${user.home}/.tarzan-nav/shiro_key.pub
   backup-dir: ${user.home}/.tarzan-nav/backup
   preview-enabled: false
-
 social:
   enabled: true
   domain: http://127.0.0.1

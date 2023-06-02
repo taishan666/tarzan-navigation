@@ -45,6 +45,7 @@ public class NavApiController {
     private final CommentService commentService;
     private final ImageService imageService;
     private final HotNewsService hotNewsService;
+    private final MailService mailService;
 
     @PostMapping("/apply/submit")
     @ResponseBody
@@ -164,6 +165,7 @@ public class NavApiController {
     @ResponseBody
     public ResponseVo emailCode(RegisterDTO dto) {
         System.out.println(dto);
+        mailService.sendAccountActivationEmail(dto.getEmail_phone(),"1234");
         return  ResultUtil.success("邮件已经发送");
     }
 

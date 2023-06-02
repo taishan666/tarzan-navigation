@@ -11,19 +11,10 @@ spring:
       settings:
         web-allow-others: false
       path: /h2-console
-      #jpa:
-      #show-sql: true
-      #hibernate:
-      #ddl-auto: update
-    #generate-ddl: false
-server:
-  servlet:
-    context-path: /
 tarzan:
   shiro-key: ${user.home}/.tarzan-nav/shiro_key.pub
   backup-dir: ${user.home}/.tarzan-nav/backup
   preview-enabled: false
-
 social:
   enabled: true
   domain: http://127.0.0.1
