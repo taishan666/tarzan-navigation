@@ -10,6 +10,7 @@ spring:
     username: 18838811955@163.com
     password: IFXYOPGFGTXWRRTE
     default-encoding: UTF-8
+    protocol: smtp
     properties:
       smtp:
         auth: true

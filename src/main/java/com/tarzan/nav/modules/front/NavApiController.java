@@ -2,8 +2,6 @@ package com.tarzan.nav.modules.front;
 
 import com.tarzan.nav.common.constant.CoreConst;
 import com.tarzan.nav.common.enums.NavigationTypeEnum;
-import com.tarzan.nav.email.EmailUtil;
-import com.tarzan.nav.email.SimpleEmail;
 import com.tarzan.nav.modules.admin.model.biz.Category;
 import com.tarzan.nav.modules.admin.model.biz.Comment;
 import com.tarzan.nav.modules.admin.model.biz.Link;
@@ -22,13 +20,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.mail.MessagingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
 
@@ -170,16 +165,7 @@ public class NavApiController {
     @ResponseBody
     public ResponseVo emailCode(RegisterDTO dto) {
         System.out.println(dto);
-        SimpleEmail simpleEmail = new SimpleEmail();
-        simpleEmail.setSubject("验证码");
-        simpleEmail.setContent("1234");
-        List<String> recipients = new ArrayList<String>();
-        recipients.add("1334512682@qq.com");
-        try {
-            EmailUtil.massSend(recipients, simpleEmail);
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
+        mailService.sendEmailCode(dto.getEmail_phone(),"1234");
         return  ResultUtil.success("邮件已经发送");
     }
 

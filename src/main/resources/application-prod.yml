@@ -11,6 +11,18 @@ spring:
       settings:
         web-allow-others: false
       path: /h2-console
+  mail:
+    host: smtp.163.com
+    username: 18838811955@163.com
+    password: IFXYOPGFGTXWRRTE
+    default-encoding: UTF-8
+    protocol: smtp
+    properties:
+      smtp:
+        auth: true
+        starttls:
+          enable: true
+          required: true
 tarzan:
   shiro-key: ${user.home}/.tarzan-nav/shiro_key.pub
   backup-dir: ${user.home}/.tarzan-nav/backup

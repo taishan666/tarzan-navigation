@@ -1,9 +1,12 @@
 package com.tarzan.nav.modules.admin.service.biz;
 
+import lombok.extern.slf4j.Slf4j;
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -15,7 +18,10 @@ import javax.mail.internet.MimeMessage;
  * @author tarzan
  */
 @Component("mailService")
+@Slf4j
 public class MailService {
+
+	public static StringTemplateGroup templateGroup;
 	
 	static{
 		String classpath = MailService.class.getClassLoader().getResource("").getPath();
@@ -23,29 +29,27 @@ public class MailService {
 	}
 	
 	public static String IMG_BASE_URL;
-	public static String MAIL_FROM="tarzan@163.com";
 	public static String ACTIVATE_CONTEXT="http:";
 	public static String RESET_PWD_CONTEXT;
-	
-	public static StringTemplateGroup templateGroup;
 
-	
+	@Value("${spring.mail.username}")
+	private String username;
     @Resource
     private JavaMailSender mailSender;
-    
+
+
     private void sendMail(String to, String subject, String body) {
     	MimeMessage mail = mailSender.createMimeMessage();	
     	try {
     		MimeMessageHelper helper = new MimeMessageHelper(mail, true, "utf-8");
-			helper.setFrom(MAIL_FROM);
+			helper.setFrom(username);
 			helper.setTo(to);
 			helper.setSubject(subject);
 			helper.setText(body, true);
 			mailSender.send(mail);
 		} catch (MessagingException e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
-    	
     }
     
     /**
@@ -61,6 +65,7 @@ public class MailService {
     	sendMail(to, "OSF账户激活", activation_temp.toString());
     }
 
+	@Async
 	public void sendEmailCode(String to, String code){
 		StringTemplate activation_temp = templateGroup.getInstanceOf("activation");
 		activation_temp.setAttribute("img_base_url", IMG_BASE_URL);
