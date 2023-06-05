@@ -1,12 +1,12 @@
 package com.tarzan.nav.modules.admin.service.biz;
 
+import com.tarzan.nav.utils.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -46,6 +46,7 @@ public class MailService {
 			helper.setTo(to);
 			helper.setSubject(subject);
 			helper.setText(body, true);
+			helper.setSentDate(DateUtil.now());
 			mailSender.send(mail);
 		} catch (MessagingException e) {
 			log.error(e.getMessage());
@@ -65,7 +66,7 @@ public class MailService {
     	sendMail(to, "OSF账户激活", activation_temp.toString());
     }
 
-	@Async
+//	@Async
 	public void sendEmailCode(String to, String code){
 		StringTemplate activation_temp = templateGroup.getInstanceOf("activation");
 		activation_temp.setAttribute("img_base_url", IMG_BASE_URL);
