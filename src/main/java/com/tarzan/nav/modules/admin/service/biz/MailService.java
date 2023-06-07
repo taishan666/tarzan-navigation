@@ -1,5 +1,6 @@
 package com.tarzan.nav.modules.admin.service.biz;
 
+import com.tarzan.nav.modules.admin.service.sys.SysConfigService;
 import com.tarzan.nav.utils.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.antlr.stringtemplate.StringTemplate;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.util.Objects;
 
 
 /**
@@ -22,10 +24,12 @@ import javax.mail.internet.MimeMessage;
 @Slf4j
 public class MailService {
 
-	public static StringTemplateGroup templateGroup;
-	
+	private static final StringTemplateGroup templateGroup;
+	@Resource
+	private  SysConfigService sysConfigService;
+
 	static{
-		String classpath = MailService.class.getClassLoader().getResource("").getPath();
+		String classpath = Objects.requireNonNull(MailService.class.getClassLoader().getResource("")).getPath();
 		templateGroup = new StringTemplateGroup("mailTemplates", classpath + "/mailTemplates");
 	}
 	
@@ -56,7 +60,7 @@ public class MailService {
     
     /**
      * send activation mail to
-     * @param to
+     * @param to,key
      */
     public void sendAccountActivationEmail(String to, String key){
     	StringTemplate activation_temp = templateGroup.getInstanceOf("activation");
@@ -64,28 +68,27 @@ public class MailService {
     	activation_temp.setAttribute("email", to);
     	activation_temp.setAttribute("href", ACTIVATE_CONTEXT+key+"?email="+to);
     	activation_temp.setAttribute("link", ACTIVATE_CONTEXT+key+"?email="+to);
-    	sendMail(to, "OSF账户激活", activation_temp.toString());
+    	sendMail(to, sysConfigService.getSiteName()+"账户激活", activation_temp.toString());
     }
 
 	@Async
 	public void sendEmailCode(String to, String code){
-		StringTemplate activation_temp = templateGroup.getInstanceOf("activation");
+		StringTemplate activation_temp = templateGroup.getInstanceOf("verificationCode");
 		activation_temp.setAttribute("img_base_url", IMG_BASE_URL);
 		activation_temp.setAttribute("email", to);
-		activation_temp.setAttribute("href", code);
-		activation_temp.setAttribute("link", code);
-		sendMail(to, "OSF账户激活", activation_temp.toString());
+		activation_temp.setAttribute("code", code);
+		sendMail(to, sysConfigService.getSiteName()+"邮箱验证码", activation_temp.toString());
 	}
     
     /**
      * send change password link to
-     * @param to
+     * @param to,key
      */
     public void sendResetPwdEmail(String to, String key){
     	StringTemplate activation_temp = templateGroup.getInstanceOf("resetpwd");
     	activation_temp.setAttribute("img_base_url", IMG_BASE_URL);
     	activation_temp.setAttribute("href", RESET_PWD_CONTEXT+"?key="+key+"&email="+to);
     	activation_temp.setAttribute("link", RESET_PWD_CONTEXT+"?key="+key+"&email="+to);
-    	sendMail(to, "OSF账户密码重置", activation_temp.toString());
+    	sendMail(to, sysConfigService.getSiteName()+"账户密码重置", activation_temp.toString());
     }
 }

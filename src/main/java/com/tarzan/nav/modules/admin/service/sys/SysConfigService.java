@@ -3,6 +3,7 @@ package com.tarzan.nav.modules.admin.service.sys;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.tarzan.nav.common.constant.CoreConst;
 import com.tarzan.nav.modules.admin.mapper.sys.SysConfigMapper;
 import com.tarzan.nav.modules.admin.model.biz.BizImage;
 import com.tarzan.nav.modules.admin.model.sys.SysConfig;
@@ -52,6 +53,15 @@ public class SysConfigService extends ServiceImpl<SysConfigMapper, SysConfig> {
           }
         }
         return vo;
+    }
+
+    @Cacheable(value = "site", key = "'name'")
+    public String getSiteName() {
+        SiteInfoVO vo=getInfo();
+        if(Objects.nonNull(vo) && StringUtil.isNotBlank(vo.getSITE_NAME())){
+            return vo.getSITE_NAME();
+        }
+        return CoreConst.DEFAULT_SITE_NAME;
     }
 
     @CacheEvict(value = "site", key = "'config'", allEntries = true)

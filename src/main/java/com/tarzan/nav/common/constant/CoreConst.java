@@ -28,6 +28,7 @@ public class CoreConst {
     public static final String TOP_CATEGORY_NAME = "顶级分类";
     public static final String SHIRO_REDIS_CACHE_NAME = "shiro_tarzan_cms";
     public final static String USER_TYPE_HEADER_KEY = "User-Type";
+    public final static String DEFAULT_SITE_NAME = "泰山导航";
 
     public final static String SYSTEM_REGISTER = "/system/register";
 
