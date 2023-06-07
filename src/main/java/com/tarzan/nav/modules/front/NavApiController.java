@@ -6,13 +6,18 @@ import com.tarzan.nav.modules.admin.model.biz.Category;
 import com.tarzan.nav.modules.admin.model.biz.Comment;
 import com.tarzan.nav.modules.admin.model.biz.Link;
 import com.tarzan.nav.modules.admin.model.biz.Website;
+import com.tarzan.nav.modules.admin.model.sys.User;
 import com.tarzan.nav.modules.admin.service.biz.*;
+import com.tarzan.nav.modules.admin.service.sys.UserService;
 import com.tarzan.nav.modules.admin.vo.base.ResponseVo;
 import com.tarzan.nav.modules.front.dto.RegisterDTO;
 import com.tarzan.nav.modules.front.query.ItemQuery;
 import com.tarzan.nav.modules.network.HotNewsService;
 import com.tarzan.nav.modules.network.LocationService;
 import com.tarzan.nav.utils.*;
+import com.wf.captcha.SpecCaptcha;
+import com.wf.captcha.base.Captcha;
+import com.wf.captcha.utils.CaptchaUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -46,6 +51,7 @@ public class NavApiController {
     private final ImageService imageService;
     private final HotNewsService hotNewsService;
     private final MailService mailService;
+    private final UserService userService;
 
     @PostMapping("/apply/submit")
     @ResponseBody
@@ -163,10 +169,90 @@ public class NavApiController {
 
     @PostMapping("/register")
     @ResponseBody
-    public ResponseVo emailCode(RegisterDTO dto) {
-        System.out.println(dto);
-        mailService.sendEmailCode(dto.getEmail_phone(),"1234");
-        return  ResultUtil.success("邮件已经发送");
+    public ResponseVo register(HttpServletRequest request,RegisterDTO dto) {
+        if ("reg_email_or_phone_token".equals(dto.getAction())) {
+            SpecCaptcha captcha = new SpecCaptcha(10, 10, 4);
+            captcha.setCharType(Captcha.TYPE_ONLY_NUMBER);
+           // System.out.println(captcha.text());
+            request.getSession().setAttribute("captcha", captcha.text().toLowerCase());
+            mailService.sendEmailCode(dto.getEmail_phone(),captcha.text());
+            return ResultUtil.success("邮件已经发送");
+        }//判断验证码
+        return registerUser(request,dto);
     }
+
+    public ResponseVo registerUser(HttpServletRequest request,RegisterDTO dto){
+        //判断验证码
+        if (!CaptchaUtil.ver(dto.getVerification_code(), request)) {
+            return ResultUtil.error("验证码错误！");
+        }
+        // 清除session中的验证码
+        CaptchaUtil.clear(request);
+        String username = dto.getUser_login();
+        if (userService.exists(username)) {
+            return ResultUtil.error("用户名已存在！");
+        }
+        String email = dto.getEmail_phone();
+        if (userService.existsEmail(email)) {
+            return ResultUtil.error("邮箱已被注册！");
+        }
+        String password = dto.getUser_pass();
+        String confirmPassword = dto.getUser_pass2();
+        //判断两次输入密码是否相等
+        if (confirmPassword != null && password != null) {
+            if (!confirmPassword.equals(password)) {
+                return ResultUtil.error("两次密码不一致！");
+            }
+        }
+        User registerUser=new User();
+        registerUser.setUsername(username);
+        registerUser.setPassword(password);
+        registerUser.setEmail(dto.getEmail_phone());
+        registerUser.setNickname(null);
+        registerUser.setStatus(CoreConst.STATUS_VALID);
+        PasswordHelper.encryptPassword(registerUser);
+        //注册
+        boolean flag = userService.save(registerUser);
+        if(flag){
+            return ResultUtil.success("注册成功！");
+        }else {
+            return ResultUtil.error("注册失败，请稍后再试！");
+        }
+
+    }
+
+    @PostMapping("/login")
+    @ResponseBody
+    public ResponseVo<String> login(HttpServletRequest request, RegisterDTO dto) {
+        //判断验证码
+        if (!CaptchaUtil.ver(dto.getVerification_code(), request)) {
+            // 清除session中的验证码
+            CaptchaUtil.clear(request);
+            return ResultUtil.error("验证码错误！");
+        }
+/*        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+        try {
+            Subject subject = SecurityUtils.getSubject();
+            subject.login(token);
+        } catch (ExcessiveAttemptsException e) {
+            // 密码输错次数达到上限
+            token.clear();
+            return ResultUtil.error("密码输错次数达到上限，请30分钟后重试。");
+        } catch (UnknownAccountException e) {
+            // 未知账号
+            token.clear();
+            return ResultUtil.error("用户账户不存在！");
+        } catch (LockedAccountException e) {
+            token.clear();
+            return ResultUtil.error("用户已经被锁定不能登录，请联系管理员！");
+        } catch (AuthenticationException e) {
+            token.clear();
+            return ResultUtil.error("用户名或者密码错误！");
+        }*/
+        //后续处理
+     //   loginProcess(request);
+        return ResultUtil.success("登录成功！");
+    }
+
 
 }

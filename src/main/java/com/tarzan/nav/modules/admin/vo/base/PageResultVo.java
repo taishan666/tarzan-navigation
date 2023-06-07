@@ -1,6 +1,5 @@
 package com.tarzan.nav.modules.admin.vo.base;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -13,10 +12,13 @@ import java.util.List;
  * @date 2021年5月11日
  */
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class PageResultVo implements Serializable {
-    private List<?> rows;
+public class  PageResultVo<T> implements Serializable {
+    private List<T> rows;
     private Long total;
 
+    public PageResultVo(List<T> rows, Long total) {
+        this.rows = rows;
+        this.total = total;
+    }
 }

@@ -54,6 +54,10 @@ public class UserService extends ServiceImpl<UserMapper, User> {
         Long count= super.lambdaQuery().eq(User::getUsername, username).count();
         return count!=0;
     }
+    public boolean existsEmail(String email) {
+        Long count= super.lambdaQuery().eq(User::getEmail, email).count();
+        return count!=0;
+    }
 
     public void updateLastLoginTime(Integer userId) {
         Assert.notNull(userId, "param: userId is null");
