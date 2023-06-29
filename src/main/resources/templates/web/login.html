@@ -61,7 +61,7 @@
                         <div class="content">
                             <div class="sign-header h4 mb-3 mb-md-4">欢迎回来</div>
                             <form method="post" action="" class="form-validate wp-user-form" id="wp_login_form">
-                                <input type="hidden" name="action" value="user_login" />
+              <!--                  <input type="hidden" name="action" value="user_login" />-->
                                 <div class="form-group mb-3">
                                     <input type="text" name="username" placeholder="用户名或邮箱" class="form-control">
                                 </div>
@@ -69,11 +69,11 @@
                                     <input type="password" name="password" placeholder="密码" class="form-control">
                                     <div class="password-show-btn" data-show="0"><i class="iconfont icon-chakan-line"></i></div>
                                 </div>
-                                <div class="form-group mb-3">
+                           <!--     <div class="form-group mb-3">
                                     <input captcha-type="slider" type="hidden" name="captcha_type" value="slider" slider-id="">
-                                </div>
+                                </div>-->
                                 <div class="custom-control custom-checkbox text-xs mb-3">
-                                    <input type="checkbox" class="custom-control-input" checked="checked" name="rememberme" id="check1" value="forever">
+                                    <input type="checkbox" class="custom-control-input" checked="checked" name="rememberMe" id="check1" value="forever">
                                     <label class="custom-control-label" for="check1">记住我的登录信息</label>
                                 </div>
                                 <div class="login-form mb-3"></div>
@@ -88,7 +88,7 @@
                                     <p id="openlogin-box" class="openlogin-box text-center">
                                         <span class="social-separator separator text-muted text-xs mb-3">社交帐号登录</span>
                                         <a href="#" title="QQ登录" class="open-login openlogin-qq-a"><i class="iconfont icon-qq"></i></a>
-<!--                                        <a href="https://nav.iowen.cn/wp-content/themes/onenav/inc/auth/dyh.php?loginurl=https://nav.iowen.cn" title="微信登录" class="open-login openlogin-wechat-gzh-a qrcode-signin"><i class="iconfont icon-wechat"></i></a>-->
+                                        <a href="#" title="微信登录" class="open-login openlogin-wechat-gzh-a qrcode-signin"><i class="iconfont icon-wechat"></i></a>
                                     </p>
                                     <script type="text/javascript">var _state="";
                                 $(document).on("click", ".qrcode-signin", function () {
@@ -152,7 +152,7 @@
     </div>
     <div class="footer-copyright my-4">
         <div class="text-white-50 text-center">
-            <small>Copyright © 2023 <a href="/" th:title="${SITE_CONFIG?.SITE_NAME}" class="text-white-50" rel="home">[[${SITE_CONFIG?.SITE_NAME}]]</a>&nbsp;由<a href="https://www.iotheme.cn/?aff=" th:title="${SITE_CONFIG?.SITE_NAME}" target="_blank" class="text-white-50" rel="noopener"><strong> [[${SITE_CONFIG?.SITE_PERSON_NAME}]] </strong></a>强力驱动&nbsp</small>
+            <small>Copyright © 2023 <a href="/" th:title="${SITE_CONFIG?.SITE_NAME}" class="text-white-50" rel="home">[[${SITE_CONFIG?.SITE_NAME}]]</a>&nbsp;由<a href="/" th:title="${SITE_CONFIG?.SITE_NAME}" target="_blank" class="text-white-50" rel="noopener"><strong> [[${SITE_CONFIG?.SITE_PERSON_NAME}]] </strong></a>强力驱动&nbsp</small>
         </div>
     </div>
 </div>
@@ -182,9 +182,9 @@
 <script type='text/javascript' id='appjs-js-extra'>
     /* <![CDATA[ */
     const theme = {
-        "ajaxurl": "https:\/\/nav.iowen.cn\/wp-admin\/admin-ajax.php",
-        "uri": "https:\/\/nav.iowen.cn\/wp-content\/themes\/onenav",
-        "loginurl": "https:\/\/nav.iowen.cn\/login\/?redirect_to=https:\/\/nav.iowen.cn\/login",
+        "ajaxurl": "/login",
+        "uri":"/login3",
+        "loginurl": "/",
         "sitesName": "\u4e00\u4e3a\u5bfc\u822a",
         "addico": "https:\/\/nav.iowen.cn\/wp-content\/themes\/onenav\/images\/add.png",
         "order": "desc",

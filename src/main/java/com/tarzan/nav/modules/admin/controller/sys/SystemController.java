@@ -147,18 +147,16 @@ public class SystemController {
             subject.login(token);
         } catch (ExcessiveAttemptsException e) {
             // 密码输错次数达到上限
-            token.clear();
             return ResultUtil.error("密码输错次数达到上限，请30分钟后重试。");
         } catch (UnknownAccountException e) {
             // 未知账号
-            token.clear();
             return ResultUtil.error("用户账户不存在！");
         } catch (LockedAccountException e) {
-            token.clear();
             return ResultUtil.error("用户已经被锁定不能登录，请联系管理员！");
         } catch (AuthenticationException e) {
-            token.clear();
             return ResultUtil.error("用户名或者密码错误！");
+        }finally {
+            token.clear();
         }
         //后续处理
         loginProcess(request);

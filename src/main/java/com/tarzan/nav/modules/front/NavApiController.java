@@ -1,5 +1,6 @@
 package com.tarzan.nav.modules.front;
 
+import com.alibaba.fastjson.JSON;
 import com.tarzan.nav.common.constant.CoreConst;
 import com.tarzan.nav.common.enums.NavigationTypeEnum;
 import com.tarzan.nav.modules.admin.model.biz.Category;
@@ -10,6 +11,7 @@ import com.tarzan.nav.modules.admin.model.sys.User;
 import com.tarzan.nav.modules.admin.service.biz.*;
 import com.tarzan.nav.modules.admin.service.sys.UserService;
 import com.tarzan.nav.modules.admin.vo.base.ResponseVo;
+import com.tarzan.nav.modules.front.dto.LoginDTO;
 import com.tarzan.nav.modules.front.dto.RegisterDTO;
 import com.tarzan.nav.modules.front.query.ItemQuery;
 import com.tarzan.nav.modules.network.HotNewsService;
@@ -21,6 +23,9 @@ import com.wf.captcha.utils.CaptchaUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.*;
+import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +35,8 @@ import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 /**
@@ -52,6 +59,9 @@ public class NavApiController {
     private final HotNewsService hotNewsService;
     private final MailService mailService;
     private final UserService userService;
+
+    private static final String EMAIL_REGEX= "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+    private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
 
     @PostMapping("/apply/submit")
     @ResponseBody
@@ -173,35 +183,39 @@ public class NavApiController {
         if ("reg_email_or_phone_token".equals(dto.getAction())) {
             SpecCaptcha captcha = new SpecCaptcha(10, 10, 4);
             captcha.setCharType(Captcha.TYPE_ONLY_NUMBER);
-           // System.out.println(captcha.text());
             request.getSession().setAttribute("captcha", captcha.text().toLowerCase());
-            mailService.sendEmailCode(dto.getEmail_phone(),captcha.text());
-            return ResultUtil.success("邮件已经发送");
-        }//判断验证码
+            Matcher matcher = EMAIL_PATTERN.matcher(dto.getEmail_phone());
+            if(matcher.matches()){
+                mailService.sendEmailCode(dto.getEmail_phone(),captcha.text());
+                return ResultUtil.status(1,"邮件已经发送");
+            }else{
+                return ResultUtil.status(4,"邮箱格式错误");
+            }
+        }
         return registerUser(request,dto);
     }
 
     public ResponseVo registerUser(HttpServletRequest request,RegisterDTO dto){
         //判断验证码
         if (!CaptchaUtil.ver(dto.getVerification_code(), request)) {
-            return ResultUtil.error("验证码错误！");
+            return ResultUtil.status(4,"验证码错误！");
         }
         // 清除session中的验证码
         CaptchaUtil.clear(request);
         String username = dto.getUser_login();
         if (userService.exists(username)) {
-            return ResultUtil.error("用户名已存在！");
+            return ResultUtil.status(4,"用户名已存在！");
         }
         String email = dto.getEmail_phone();
         if (userService.existsEmail(email)) {
-            return ResultUtil.error("邮箱已被注册！");
+            return ResultUtil.status(4,"邮箱已被注册！");
         }
         String password = dto.getUser_pass();
         String confirmPassword = dto.getUser_pass2();
         //判断两次输入密码是否相等
         if (confirmPassword != null && password != null) {
             if (!confirmPassword.equals(password)) {
-                return ResultUtil.error("两次密码不一致！");
+                return ResultUtil.status(4,"两次密码不一致！");
             }
         }
         User registerUser=new User();
@@ -214,44 +228,37 @@ public class NavApiController {
         //注册
         boolean flag = userService.save(registerUser);
         if(flag){
-            return ResultUtil.success("注册成功！");
+            return ResultUtil.status(1,"注册成功！");
         }else {
-            return ResultUtil.error("注册失败，请稍后再试！");
+            return ResultUtil.status(4,"注册失败，请稍后再试！");
         }
 
     }
 
     @PostMapping("/login")
     @ResponseBody
-    public ResponseVo<String> login(HttpServletRequest request, RegisterDTO dto) {
-        //判断验证码
-        if (!CaptchaUtil.ver(dto.getVerification_code(), request)) {
-            // 清除session中的验证码
-            CaptchaUtil.clear(request);
-            return ResultUtil.error("验证码错误！");
-        }
-/*        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+    public ResponseVo login(LoginDTO dto) {
+        UsernamePasswordToken token = new UsernamePasswordToken(dto.getUsername(), dto.getPassword());
         try {
+            token.setRememberMe("forever".equals(dto.getRememberMe()));
             Subject subject = SecurityUtils.getSubject();
             subject.login(token);
         } catch (ExcessiveAttemptsException e) {
             // 密码输错次数达到上限
-            token.clear();
-            return ResultUtil.error("密码输错次数达到上限，请30分钟后重试。");
+            return ResultUtil.status(4,"密码输错次数达到上限，请30分钟后重试。");
         } catch (UnknownAccountException e) {
             // 未知账号
-            token.clear();
-            return ResultUtil.error("用户账户不存在！");
+            return ResultUtil.status(4,"用户账户不存在！");
         } catch (LockedAccountException e) {
-            token.clear();
-            return ResultUtil.error("用户已经被锁定不能登录，请联系管理员！");
+            return ResultUtil.status(4,"用户已经被锁定不能登录，请联系管理员！");
         } catch (AuthenticationException e) {
+            return ResultUtil.status(4,"用户名或者密码错误！");
+        }finally {
             token.clear();
-            return ResultUtil.error("用户名或者密码错误！");
-        }*/
+        }
         //后续处理
      //   loginProcess(request);
-        return ResultUtil.success("登录成功！");
+        return ResultUtil.vo(1,"登录成功！", JSON.parse("{goto:\"/\"}"));
     }
 
 

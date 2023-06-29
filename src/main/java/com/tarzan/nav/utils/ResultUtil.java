@@ -41,6 +41,10 @@ public class ResultUtil {
         return vo(CoreConst.FAIL_CODE, msg, data);
     }
 
+    public static <T> ResponseVo<T> status(Integer status, String message) {
+        return vo(status, message, null);
+    }
+
     public static <T> PageResultVo<T> table(List<T> list, Long total) {
         return new PageResultVo<>(list, total);
     }

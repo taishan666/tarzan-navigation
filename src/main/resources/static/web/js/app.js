@@ -16,8 +16,9 @@
         // 初始化tab滑块
         intoSlider();
         // 初始化theiaStickySidebar
-        if($('.sidebar-tools')[0])
-            $('.sidebar-tools').theiaStickySidebar({
+        const sidebar_tools=$('.sidebar-tools');
+        if(sidebar_tools[0])
+            sidebar_tools.theiaStickySidebar({
                 additionalMarginTop: 90,
                 additionalMarginBottom: 20
             });
@@ -31,8 +32,9 @@
             $('.big-header-banner').addClass('header-bg');
         }
         // 全屏加载
-        if($('#loading')[0]){
-            const siteWelcome = $('#loading');
+        const siteWelcome=$('#loading');
+        if(siteWelcome[0]){
+           // const siteWelcome = $('#loading');
             siteWelcome.addClass('close');
             setTimeout(function() {
                 siteWelcome.remove();
@@ -41,8 +43,9 @@
         // 首页标签切换
         if(theme.isHome === '1'){
             setTimeout(function () {
-                if($('a.smooth[href="'+window.location.hash+'"]')[0]){
-                    $('a.smooth[href="'+window.location.hash+'"]').click();
+                const $smooth=$('a.smooth[href="'+window.location.hash+'"]');
+                if($smooth[0]){
+                    $smooth.click();
                 }
                 else if(window.location.hash !== ''){
                     $("html, body").animate({
@@ -62,7 +65,7 @@
             if (!url) {
                 url = _this.data('href');
             }
-            $.get(url, null, function (data, status) {
+            $.get(url, null, function (data) {
                 _this.html(data);
             });
             return false;
@@ -71,7 +74,7 @@
             if (!window.load_io_pay) {
                 window.load_io_pay = true;
                 $.getScript(theme.uri+"/iopay/assets/js/pay.js",function() {
-                    weixin_auto_send();
+                 //   weixin_auto_send();
                 });
             }
         }
@@ -84,8 +87,9 @@
     $(document).on('click','a.smooth',function(ev) {
         const _this = $(this);
         ev.preventDefault();
-        if($('#sidebar').hasClass('show') && !_this.hasClass('change-href')){
-            $('#sidebar').modal('toggle');
+        const sidebar=$('#sidebar');
+        if(sidebar.hasClass('show') && !_this.hasClass('change-href')){
+            sidebar.modal('toggle');
         }
         if(_this.attr("href").substr(0, 1) === "#" && $(_this.attr("href"))[0]){
             $("html, body").animate({
@@ -115,7 +119,7 @@
             easing: "swing"
         });
     });
-    $(".panel-body.single img:not(.unfancybox)").each(function(i) {
+    $(".panel-body.single img:not(.unfancybox)").each(function() {
         const _this = $(this);
         if (!_this.hasClass('wp-smiley') && !this.parentNode.href) {
             if(theme.lazyload === '1')
@@ -271,7 +275,7 @@
             cache:false,
         });
     });
-    //夜间模式
+    //暗黑模式
     $(document).on('click', '.switch-dark-mode', function(event) {
         event.preventDefault();
         $('html').toggleClass('io-black-mode '+theme.defaultclass);
@@ -338,7 +342,7 @@
     });
     //滑块菜单
     $('.slider_menu li:not(.anchor)').hover(function() {
-        $(this).addClass("hover"),
+        $(this).addClass("hover")
             toTarget($(this).parent(),true,true)
     }, function() {
         $(this).removeClass("hover") ;
@@ -362,7 +366,7 @@
             scrollLeft: _x_dist
         }, 300)
     }
-    $(document).on('click', '.tab-auto-scrollbar a', function (e) {
+    $(document).on('click', '.tab-auto-scrollbar a', function () {
         $(this).closest('.tab-auto-scrollbar').tabToCenter($(this).parent('li'));
     });
     function intoSlider() {
@@ -383,7 +387,7 @@
                 _this.addClass('into');
             }
         })
-        if(is_function('Swiper')){
+/*        if(is_function('Swiper')){
             const swiper_post = new Swiper(".swiper-post-module", {
                 autoplay: {
                     disableOnInteraction: false,
@@ -442,7 +446,7 @@
                 watchSlidesProgress: true,
                 resistanceRatio: false
             });
-        }
+        }*/
     }
     //粘性页脚
     function stickFooter() {
@@ -471,10 +475,11 @@
     // Trigger Resizable Function
     let isMin = false,
         isMobileMin = false;
-    function trigger_resizable(  ) {
+    const $mini_button=$('#mini-button');
+    function trigger_resizable() {
         if( (theme.minNav === '1' && !isMin && 767.98<$(window).width() )||(!isMin && 767.98<$(window).width() && $(window).width()<1024) ){
             //$('#mini-button').removeAttr('checked');
-            $('#mini-button').prop('checked', false);
+            $mini_button.prop('checked', false);
             trigger_lsm_mini();
             isMin = true;
             if(isMobileMin){
@@ -482,9 +487,8 @@
                 //$('.sidebar-nav .change-href').each(function(){$(this).attr('href',$(this).data('change'))});
                 isMobileMin = false;
             }
-        }
-        else if( ( theme.minNav !== '1')&&((isMin && $(window).width()>=1024) || ( isMobileMin && !isMin && $(window).width()>=1024 ) ) ){
-            $('#mini-button').prop('checked', true);
+        } else if( ( theme.minNav !== '1')&&((isMin && $(window).width()>=1024) || ( isMobileMin && !isMin && $(window).width()>=1024 ) ) ){
+            $mini_button.prop('checked', true);
             trigger_lsm_mini();
             isMin = false;
             if(isMobileMin){
@@ -519,7 +523,7 @@
         }
     }
     //菜单栏最小化
-    $('#mini-button').on('click',function(){
+    $mini_button.on('click',function(){
         if(!$('.sidebar-nav').hasClass())
             $('body').addClass('animate-nav');
         trigger_lsm_mini();
@@ -543,9 +547,9 @@
         let sidebar_second = $(".sidebar-popup.second");
         if(sidebar_second.length === 0){
             ($("body").append("<div class='second sidebar-popup sidebar-menu-inner text-sm'><div></div></div>"))
-            sidebar_second = $(".sidebar-popup.second");
+           // sidebar_second = $(".sidebar-popup.second");
         }
-        $(".sidebar-popup.second>div").html(_this.html());
+        sidebar_second.html(_this.html());
         sidebar_second.show();
         let top = _this.offset().top - $(window).scrollTop() + offset;
         const d = $(window).height() - $(".sidebar-popup.second>div").height();
@@ -651,7 +655,7 @@
     });
 
     // 非ajax加载时切换选项卡
-    $(document).on('click','a.tab-noajax',function(ev) {
+    $(document).on('click','a.tab-noajax',function() {
         const _this = $(this);
         const url = _this.data('link');
         if(url)
@@ -662,7 +666,7 @@
     //登录
     $(document).on('click', '.login-btn-action', function () {
         window.location.href = theme.loginurl;
-        window.location.reload;
+        window.location.reload();
     });
     //首页tab模式请求内容
     $(document).on('click', '.ajax-list-home a:not(.load)', function(event) {
@@ -750,7 +754,7 @@
             '<div class="card-body" style="padding:0.4rem 0.5rem;">' +
             '<div class="url-content d-flex align-items-center">' +
             '<div class="url-img rounded-circle mr-2 d-flex align-items-center justify-content-center">' +
-            '<img src="' + theme.icourl + url_f + theme.icopng + '">' +
+            '<img alt="" src="' + theme.icourl + url_f + theme.icopng + '">' +
             '</div>' +
             '<div class="url-info flex-fill">' +
             '<div class="text-sm overflowClip_1">' +
@@ -778,7 +782,7 @@
     }
     function getItem(key) {
         let a = window.localStorage.getItem(key);
-        return a ? a = JSON.parse(a) : [];
+        return a ?  JSON.parse(a) : [];
     }
     function setItem(sites,key) {
         window.localStorage.setItem(key, JSON.stringify(sites));
@@ -819,18 +823,16 @@
         setItem(sites,"livelists");
         $(this).parent().remove();
     }
-    $(document).on('click', '.add-new-custom-site', function(event) {
+    $(document).on('click', '.add-new-custom-site', function() {
         const t = $(this);
         $.ajax({
             url: theme.ajaxurl,
             type: 'POST',
             dataType: 'json',
             data : t.data(),
-        })
-            .done(function(response) {
+        }).done(function(response) {
                 showAlert(response);
-            })
-            .fail(function() {
+            }).fail(function() {
                 showAlert(JSON.parse('{"status":4,"msg":"'+localize.networkerror+'"}'));
             })
     });
@@ -869,7 +871,7 @@
                     '<div class="card-body" style="padding:0.4rem 0.5rem;">' +
                     '<div class="url-content d-flex align-items-center">' +
                     '<div class="url-img rounded-circle mr-2 d-flex align-items-center justify-content-center">' +
-                    '<img src="' + theme.icourl + url_f + theme.icopng + '">' +
+                    '<img alt="" src="' + theme.icourl + url_f + theme.icopng + '">' +
                     '</div>' +
                     '<div class="url-info flex-fill">' +
                     '<div class="text-sm overflowClip_1">' +
@@ -889,10 +891,9 @@
             })
             .fail(function() {
                 showAlert(JSON.parse('{"status":4,"msg":"'+localize.networkerror+'"}'));
-                return;
             })
     });
-    $(document).on("click",'.url-card .remove-cm-site', function(event){
+    $(document).on("click",'.url-card .remove-cm-site', function(){
         const t = $(this);
         t.addClass('disabled');
         $.ajax({
@@ -921,7 +922,7 @@
                 items: '.sortable',
                 containment: ".main-content",
                 //'placeholder': "ui-state-highlight",
-                update : function(e, ui) {
+                update : function() {
                     $('.customize-sites .site-list').sortable('disable');
                     const term_id = $(this).data('term_id');
                     const order = $(this).sortable('serialize');
@@ -938,7 +939,7 @@
                             }
                             $('.customize-sites .site-list').sortable('enable');
                         },
-                        error: function(html){
+                        error: function(){
                             $('.customize-sites .site-list').sortable('enable');
                             showAlert(JSON.parse('{"status":4,"msg":"'+localize.networkerror+'"}'));
                         }
@@ -958,10 +959,10 @@
         const this_input = $("input[name=term_id]");
         this_input.prop('checked', false);
     });
-    $('.form_custom_term_id').on("click", function(event){
+    $('.form_custom_term_id').on("click", function(){
         $("input[name=term_name]").val("");
     });
-    $(document).on('click', '.url-card a.card', function(event) {
+    $(document).on('click', '.url-card a.card', function() {
         const _this = $(this);
         const site = {
             id: _this.data("id"),
@@ -990,7 +991,8 @@
     });
     // 搜索模块 -----------------------
     function intoSearch() {
-        const page = $('.s-type-list.big label').data('page');
+        const search_label=$('.s-type-list.big label');
+        const page = search_label.data('page');
         const searchlist = window.localStorage.getItem("searchlist_" + page);
         const searchlistmenu = window.localStorage.getItem("searchlistmenu_" + page);
         if(searchlist){
@@ -1002,7 +1004,7 @@
             $(".hide-type-list input#m_"+searchlist).prop('checked', true);
         }
         if(searchlistmenu){
-            $('.s-type-list.big label').removeClass('active');
+            search_label.removeClass('active');
             $(".s-type-list [data-id="+searchlistmenu+"]").addClass('active');
         }
         toTarget($(".s-type-list.big"),false,false);
@@ -1010,13 +1012,15 @@
         $('.hide-type-list .s-current').removeClass("s-current");
         $('.hide-type-list input:radio[name="type"]:checked').parents(".search-group").addClass("s-current");
         $('.hide-type-list input:radio[name="type2"]:checked').parents(".search-group").addClass("s-current");
-        $(".super-search-fm").attr("action",$('.hide-type-list input:radio:checked').val());
-        $(".search-key").attr("placeholder",$('.hide-type-list input:radio:checked').data("placeholder"));
+        const search_radio_checked=$('.hide-type-list input:radio:checked');
+        $(".super-search-fm").attr("action",search_radio_checked.val());
+        const $search_key=$(".search-key");
+        $search_key.attr("placeholder",search_radio_checked.data("placeholder"));
         if(searchlist==='type-zhannei' || searchlist==='type-big-zhannei'){
-            $(".search-key").attr("zhannei","true");
+            $search_key.attr("zhannei","true");
         }
     }
-    $(document).on('click', '.s-type-list label', function(event) {
+    $(document).on('click', '.s-type-list label', function() {
         //event.preventDefault();
         const _this = $(this);
         $('.s-type-list.big label').removeClass('active');
@@ -1079,13 +1083,13 @@
                             parents.children(".super-search-fm").submit();
                             list.slideUp(200);
                         });
-                    };
+                    }
                     list.slideDown(200);
                 } else {
                     list.slideUp(200);
                 }
             },
-            error: function(res) {
+            error: function() {
                 tipsList = 0;
             }
         })
@@ -1111,13 +1115,13 @@
                             parents.children(".super-search-fm").submit();
                             list.slideUp(200);
                         });
-                    };
+                    }
                     list.slideDown(200);
                 } else {
                     list.slideUp(200);
                 }
             },
-            error: function(res) {
+            error: function() {
                 tipsList = 0;
             }
         })
@@ -1244,16 +1248,16 @@
             t.removeClass('is-invalid');
         }
     });
-/*    function getUrlInfo(_url,modal){
+    function getUrlInfo(_url,modal){
         $('#modal-new-url-ico').show();
-        $.post("//apiv2.iotheme.cn/webinfo/get.php", { url: _url ,key: theme.apikey },function(data,status){
-            if(data.code==0){
+        $.post("//apiv2.iotheme.cn/webinfo/get.php", { url: _url ,key: theme.apikey },function(data){
+            if(data.code===0){
                 $('#modal-new-url-ico').hide();
                 $("#modal-new-url-summary").addClass('is-invalid');
             }
             else{
                 $('#modal-new-url-ico').hide();
-                if(data.site_title=="" && data.site_description==""){
+                if(data.site_title==="" && data.site_description===""){
                     $("#modal-new-url-summary").addClass('is-invalid');
                 }else{
                     modal.find('[name="url_name"]').val(data.site_title);
@@ -1264,13 +1268,13 @@
             $('#modal-new-url-ico').hide();
             $(".refre_msg").html('<i class="iconfont icon-tishi"></i>'+localize.timeout).show(200).delay(4000).hide(200);
         });
-    }*/
+    }
     $(document).on('click','a.sidebar-rand-post',function(){
         load_rand_post($(this).data());
     });
 
     //复制
-    $(document).on('click', "[data-clipboard-text]", function (e) {
+    $(document).on('click', "[data-clipboard-text]", function () {
         const _this = $(this);
         const text = _this.data('clipboard-text');
         if (_this.hasClass('down_count')) {
@@ -1289,8 +1293,9 @@
         }, this);
     });
     loadFunc(function() {
-        if($('a.sidebar-rand-post')[0]){
-            $('a.sidebar-rand-post').click();
+        const $sidebar_rand_post=$('a.sidebar-rand-post');
+        if($sidebar_rand_post[0]){
+            $sidebar_rand_post.click();
         }
     });
 
@@ -1359,6 +1364,8 @@
         const _this = $(this);
         captcha_ajax(_this, '', function(m) {
             if(m.status === 1){
+                console.log(m)
+                console.log(m.data.goto)
                 if(!m.goto){
                     window.location.reload();
                 }
@@ -1367,8 +1374,8 @@
         return false;
     });
     $(document).on('click',".open-login",function() {
-        const _this = $(this);
-        if ($('#user_agreement')[0] && !$('#user_agreement').is(':checked')) {
+        const $user_agreement = $('#user_agreement');
+        if ($user_agreement[0] && !$user_agreement.is(':checked')) {
             ioPopupTips(2, localize.userAgreement);
             return false;
         }
@@ -1384,7 +1391,7 @@
         },200);
         content.find('.io-modal-content').html('');
         content.find('.loading-anim').fadeIn(200);
-        $.get(url, null, function (data, status) {
+        $.get(url, null, function (data) {
             content.find('.io-modal-content').html(data).slideDown(200, function () {
                 content.find('.loading-anim').fadeOut(200);
                 const height = $(this).outerHeight();
@@ -1406,7 +1413,7 @@
         const t = $(this);
         const url = t.attr('href');
         const modal = ioModal(t);
-        $.get(url, null, function (data, status) {
+        $.get(url, null, function (data) {
             modal.find('.io-modal-content').html(data).slideDown(200, function () {
                 modal.find('.loading-anim').fadeOut(200);
                 const height = $(this).outerHeight();
@@ -1454,7 +1461,7 @@
             url = t.data('href');
         }
         const modal = ioModal(t);
-        $.get(url, null, function (data, status) {
+        $.get(url, null, function (data) {
             modal.find('.io-modal-content').html(data).slideDown(200, function () {
                 modal.find('.loading-anim').fadeOut(200);
                 const height = $(this).outerHeight();
@@ -1494,7 +1501,7 @@
         const content = p.find(t.data('target'));
         const loading = '<div class="d-flex align-items-center justify-content-center bg-o-muted position-absolute io-radius h-100 w-100"><i class="iconfont icon-loading icon-spin icon-2x"></i></div>';
         content.append(loading);
-        $.get(url, null, function (data, status) {
+        $.get(url, null, function (data) {
             const _t = $(data);
             content.html(_t);
             _t[0].click();
@@ -1514,7 +1521,7 @@
         const hh = '<i class="iconfont icon-point"></i>';
         const loading = '<i class="iconfont icon-loading icon-spin"></i>';
         content.html(loading);
-        $.get(url, p.serializeObject(), function (data, status) {
+        $.get(url, p.serializeObject(), function (data) {
             if (data.msg) {
                 alert.status = data.status?data.status:(data.error ? 4 : 1);
                 alert.msg = data.msg;
@@ -1618,7 +1625,7 @@
                     break;
             }
             return v;
-        };
+        }
 
         function evalCondition(condition, val1, val2) {
             let i;
@@ -1675,7 +1682,7 @@
                     $.each(controllers, function (index, depend_id) {
                         const value = values[index] || '',
                             condition = conditions[index] || conditions[0] || '==';
-                        $this.on('change', "[name='" + depend_id + "']", function (elem) {
+                        $this.on('change', "[name='" + depend_id + "']", function () {
                             const $elem = $(this);
                             const _type = $elem.attr('type');
                             const val2 = (_type === 'checkbox') ? $elem.is(':checked') : $elem.val();
@@ -1738,11 +1745,11 @@ function isPC() {
     }
     return flag;
 }
-function chack_name(str){
+/*function chack_name(str){
     const pattern = RegExp(/[( )(\ )(\~)(\!)(\@)(\#)(\$)(\%)(\^)(\*)(\()(\))(\+)(\=)(\[)(\])(\{)(\})(\\)(\;)(\:)(\')(\")(\,)(\.)(\/)(\<)(\>)(\»)(\«)(\“)(\”)(\?)(\)]+/);
     return pattern.test(str);
+}*/
 
-}
 function errorAlert(msg) {
     showAlert(JSON.parse('{"status":4,"msg":"'+msg+'"}'))
 }
@@ -1780,12 +1787,13 @@ function showAlert(data) {
         default:
     }
     const msg = data.msg;
-    if(!$('#alert_placeholder')[0]){
+    const alert_placeholder=$('#alert_placeholder');
+    if(!alert_placeholder[0]){
         $('body').append('<div id="alert_placeholder" class="alert-system"></div>')
     }
     const $html = $('<div class="alert-body text-sm io-alert-' + alert + ' alert alert-' + alert + ' d-flex py-2 align-items-center"><i class="iconfont ' + ico + ' text-lg mr-2"></i><span class="mr-2">' + msg + '</span></div>');
     removeAlert();
-    $('#alert_placeholder').append( $html );
+    alert_placeholder.append( $html );
     if(alert === 'primary'){
         $html.slideDown().addClass('show');
     } else {
@@ -1843,9 +1851,10 @@ function toTarget(menu, padding, isMult) {
 let ioadindex = 0;
 
 function loadingShow(parent = "body",only=true){
-    if(only && $('.load-loading')[0]){
+    const load_loading=$('.load-loading');
+    if(only && load_loading[0]){
         ioadindex ++;
-        return $('.load-loading');
+        return load_loading;
     }
     const load = $('<div class="load-loading" style="display:none"><div class="bg"></div><div class="rounded-lg bg-light" style="z-index:1"><div class="spinner-border m-4" role="status"><span class="sr-only">Loading...</span></div></div></div>');
     $(parent).prepend(load);
@@ -1887,11 +1896,12 @@ function ioPopupTips(type, msg, callBack) {
         '</div>' +
         '</section>';
     const tips = $(html);
-    $('body').addClass('modal-open').append(tips);
-    if(hasScrollbar())$('body').css("padding-right",getScrollbarWidth());
+    const body=$('body');
+    body.addClass('modal-open').append(tips);
+    if(hasScrollbar())body.css("padding-right",getScrollbarWidth());
     setTimeout(function(){
-        $('body').removeClass('modal-open');
-        if(hasScrollbar())$('body').css("padding-right",'');
+        body.removeClass('modal-open');
+        if(hasScrollbar())body.css("padding-right",'');
         if ($.isFunction(callBack)) callBack(true);
         tips.removeClass('io-bomb-open').addClass('io-bomb-close');
         setTimeout(function(){
@@ -1902,97 +1912,7 @@ function ioPopupTips(type, msg, callBack) {
         },400);
     },2000);
 }
-function ioPopup(type, html, maskStyle, btnCallBack) {
-    const _maskStyle = maskStyle ? 'style="' + maskStyle + '"' : '';
-    let size = '';
-    if( type === 'big' ){
-        size = 'io-bomb-lg';
-    }else if( type === 'no-padding' ){
-        size = 'io-bomb-nopd';
-    }else if( type === 'cover' ){
-        size = 'io-bomb-cover io-bomb-nopd';
-    }else if( type === 'full' ){
-        size = 'io-bomb-xl';
-    }else if( type === 'small' ){
-        size = 'io-bomb-sm';
-    }else if( type === 'confirm' ){
-        size = 'io-bomb-md';
-    }else if( type === 'pay' ){
-        size = 'io-bomb-sm io-bomb-nopd';
-    }
-    const template = '\
-	<div class="io-bomb ' + size + ' io-bomb-open">\
-		<div class="io-bomb-overlay" ' + _maskStyle + '></div>\
-		<div class="io-bomb-body text-center">\
-			<div class="io-bomb-content bg-white">\
-				' + html + '\
-			</div>\
-			<div class="btn-close-bomb mt-2">\
-                <i class="iconfont icon-close-circle"></i>\
-            </div>\
-		</div>\
-	</div>\
-	';
-    const popup = $(template);
-    $('body').addClass('modal-open').append(popup);
-    if(hasScrollbar())$('body').css("padding-right",getScrollbarWidth());
-    const close = function(){
-        $('body').removeClass('modal-open');
-        if(hasScrollbar())$('body').css("padding-right",'');
-        $(popup).removeClass('io-bomb-open').addClass('io-bomb-close');
-        setTimeout(function(){
-            $(popup).removeClass('io-bomb-close');
-            setTimeout(function(){
-                popup.remove();
-            }, 200);
-        },600);
-    };
-    $(popup).on('click touchstart', '.btn-close-bomb i, .io-bomb-overlay', function(event) {
-        event.preventDefault();
-        if ($.isFunction(btnCallBack)) btnCallBack(true);
-        close();
-    });
-    return popup;
-}
-function ioConfirm(title, message, btnCallBack) {
-    const template = '\
-	<div class="io-bomb io-bomb-confirm io-bomb-open">\
-		<div class="io-bomb-overlay"></div>\
-		<div class="io-bomb-body">\
-			<div class="io-bomb-content bg-white text-sm">\
-                <div class="io-bomb-header fx-yellow modal-header-bg text-center p-3">\
-                    <i class="iconfont icon-tishi icon-2x"></i>\
-                    <div class="text-md mt-1">'+title+'</div>\
-                </div>\
-				<div class="m-4">'+message+'</div>\
-                <div class="text-center mb-4">\
-                    <button class="btn vc-red btn-shadow mx-2 px-5" onclick="_onclick(true);">'+localize.okBtn+'</button>\
-                    <button class="btn vc-l-yellow btn-outline mx-2 px-5" onclick="_onclick(false);">'+localize.cancelBtn+'</button>\
-                </div>\
-			</div>\
-		</div>\
-	</div>\
-	';
-    const popup = $(template);
-    $('body').addClass('modal-open').append(popup);
-    if(hasScrollbar())$('body').css("padding-right",getScrollbarWidth());
-    _onclick = function (r) {
-        close();
-        if ($.isFunction(btnCallBack)) btnCallBack(r ,$(this));
-    };
-    const close = function(){
-        $('body').removeClass('modal-open');
-        if(hasScrollbar())$('body').css("padding-right",'');
-        $(popup).removeClass('io-bomb-open').addClass('io-bomb-close');
-        setTimeout(function(){
-            $(popup).removeClass('io-bomb-close');
-            setTimeout(function(){
-                popup.remove();
-            }, 200);
-        },600);
-    };
-    return popup;
-}
+
 function debounce(callback, delay, immediate) {
     let timeout;
     return function () {
@@ -2027,7 +1947,7 @@ function ioModal(_this) {
     let modal = $('#'+id);
     if (!modal[0]) {
         $('body').append(modal_html);
-        modal = $('#'+id);
+      //  modal = $('#'+id);
     }
     modal.find('.modal-content').html(loading).css({
         'height': '220px',
@@ -2159,10 +2079,11 @@ function captcha_ajax(_this, data='', success='') {
             removeAlert();
         }
         _this.attr('disabled', false).html(_text);
-        $.isFunction(success) && success(n, _this, data);
-        if (n.goto) {
-            window.location.href = n.goto;
-            window.location.reload;
+      //  $.isFunction(success) && success(n, _this, data);
+        console.log(n.data.goto)
+        if (n.data.goto) {
+            window.location.href = n.data.goto;
+          //  window.location.reload();
         } else if (n.reload) {
             window.location.reload();
         }
