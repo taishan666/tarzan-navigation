@@ -1,6 +1,8 @@
 package com.tarzan.nav.modules.front;
 
 import com.alibaba.fastjson.JSON;
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import com.tarzan.nav.common.constant.CoreConst;
 import com.tarzan.nav.common.enums.NavigationTypeEnum;
 import com.tarzan.nav.modules.admin.model.biz.Comment;
@@ -32,6 +34,7 @@ import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -48,7 +51,6 @@ import java.util.regex.Pattern;
 @Slf4j
 public class NavApiController {
 
-    private final CategoryService categoryService;
     private final WebsiteService websiteService;
     private final LinkService linkService;
     private final CommentService commentService;
@@ -59,6 +61,15 @@ public class NavApiController {
 
     private static final String EMAIL_REGEX= "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
+
+    private static final Cache<String, String> AUTH_CODE_ACHE = Caffeine.newBuilder()
+            .initialCapacity(5)
+            // 超出时淘汰
+            .maximumSize(100000)
+            //设置写缓存后n秒钟过期
+            .expireAfterWrite(300, TimeUnit.SECONDS)
+            .build();
+
 
     @PostMapping("/apply/submit")
     public ResponseVo apply(@Valid @RequestBody Website website) {
@@ -161,7 +172,7 @@ public class NavApiController {
         if ("reg_email_or_phone_token".equals(dto.getAction())) {
             SpecCaptcha captcha = new SpecCaptcha(10, 10, 4);
             captcha.setCharType(Captcha.TYPE_ONLY_NUMBER);
-            request.getSession().setAttribute("captcha", captcha.text().toLowerCase());
+            request.getSession().setAttribute("captcha", captcha.text());
             Matcher matcher = EMAIL_PATTERN.matcher(dto.getEmail_phone());
             if(matcher.matches()){
                 mailService.sendEmailCode(dto.getEmail_phone(),captcha.text());
@@ -174,13 +185,16 @@ public class NavApiController {
     }
 
     @PostMapping("/lostpassword")
-    public ResponseVo lostPassword(HttpServletRequest request,RegisterDTO dto) {
-        if ("reset_password".equals(dto.getAction())) {
+    public ResponseVo lostPassword(RegisterDTO dto) {
+        if ("lost_email_or_phone_token".equals(dto.getAction())) {
             Matcher matcher = EMAIL_PATTERN.matcher(dto.getEmail_phone());
             if(matcher.matches()){
                 User user=userService.lambdaQuery().eq(User::getEmail,dto.getEmail_phone()).last("limit 1").one();
                 if(Objects.nonNull(user)){
-                    mailService.sendResetPwdEmail(dto.getEmail_phone(),user.getPassword());
+                    SpecCaptcha captcha = new SpecCaptcha(10, 10, 4);
+                    captcha.setCharType(Captcha.TYPE_ONLY_NUMBER);
+                    AUTH_CODE_ACHE.put(dto.getEmail_phone(),captcha.text());
+                    mailService.sendEmailCode(dto.getEmail_phone(),captcha.text());
                     return ResultUtil.status(1,"邮件已经发送");
                 }else {
                     return ResultUtil.status(4,"邮箱未注册");
@@ -189,21 +203,17 @@ public class NavApiController {
                 return ResultUtil.status(4,"邮箱格式错误");
             }
         }
-        return  updatePassword(request,dto);
+        return  updatePassword(dto);
     }
 
-    public ResponseVo updatePassword(HttpServletRequest request,RegisterDTO dto){
+    public ResponseVo updatePassword(RegisterDTO dto){
         String email=dto.getEmail_phone();
         if(StringUtil.isNotBlank(email)){
-            //验证邮箱
-            String sendEmail = (String) request.getSession().getAttribute("email");
-            if(email.equals(sendEmail)){
+            String code=AUTH_CODE_ACHE.getIfPresent(email);
                 //判断验证码
-                if (!CaptchaUtil.ver(dto.getVerification_code(), request)) {
+                if (Objects.isNull(code)||!code.equals(dto.getVerification_code())) {
                     return ResultUtil.status(4,"验证码错误！");
                 }
-                // 清除session中的验证码
-                CaptchaUtil.clear(request);
                 String password = dto.getUser_pass();
                 String confirmPassword = dto.getUser_pass2();
                 //判断两次输入密码是否相等
@@ -223,7 +233,6 @@ public class NavApiController {
                 }else {
                     return ResultUtil.status(4,"密码修改，请稍后再试！");
                 }
-            }
         }
         return null;
     }

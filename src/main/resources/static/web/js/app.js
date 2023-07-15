@@ -387,66 +387,6 @@
                 _this.addClass('into');
             }
         })
-/*        if(is_function('Swiper')){
-            const swiper_post = new Swiper(".swiper-post-module", {
-                autoplay: {
-                    disableOnInteraction: false,
-                },
-                lazy: {
-                    loadPrevNext: true,
-                },
-                slidesPerView: 1,
-                loop: true,
-                pagination: {
-                    el: ".swiper-pagination",
-                    clickable: true,
-                },
-                navigation: {
-                    nextEl: ".swiper-button-next",
-                    prevEl: ".swiper-button-prev",
-                }
-            });
-            const swiper_widgets = new Swiper(".swiper-widgets", {
-                autoplay: {
-                    disableOnInteraction: false,
-                    delay: 5000,
-                },
-                effect: 'fade',
-                thumbs: {
-                    swiper: {
-                        el: '.swiper-widgets-thumbs',
-                        slidesPerView: "auto",
-                        freeMode: true,
-                        centerInsufficientSlides: true,
-                    },
-                    autoScrollOffset: 1,
-                },
-                on: {
-                    init: function (swiper) {
-                        const slide = this.slides.eq(0);
-                        slide.addClass('anim-slide');
-                    },
-                    transitionStart: function () {
-                        for (let i = 0; i < this.slides.length; i++) {
-                            const slide = this.slides.eq(i);
-                            slide.removeClass('anim-slide');
-                        }
-                    },
-                    transitionEnd: function () {
-                        const slide = this.slides.eq(this.activeIndex);
-                        slide.addClass('anim-slide');
-                    },
-                }
-            });
-            const swiper_term_content = new Swiper(".swiper-term-content", {
-                nested: true,
-                slidesPerView: "auto",
-                freeMode: true,
-                mousewheel: true,
-                watchSlidesProgress: true,
-                resistanceRatio: false
-            });
-        }*/
     }
     //粘性页脚
     function stickFooter() {
@@ -1303,7 +1243,7 @@
         const _this = $(this);
         const _ico = _this.find('.iconfont');
         const _input = _this.siblings('input');
-        if (_this.data('show') === "0") {
+        if (_this.data('show') === 0) {
             _ico.removeClass("icon-chakan-line");
             _ico.addClass("icon-hide-line");
             _input.attr('type', 'text');
@@ -1757,7 +1697,7 @@ function successAlert(msg) {
     showAlert(JSON.parse('{"status":2,"msg":"'+msg+'"}'))
 }
 function showAlert(data) {
-    let alert,ico;
+    let alert,ico,title;
     switch(data.status) {
         case 0:
             title = localize.successAlert;
