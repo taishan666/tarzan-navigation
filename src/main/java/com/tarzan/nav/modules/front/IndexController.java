@@ -3,8 +3,10 @@ package com.tarzan.nav.modules.front;
 import com.tarzan.nav.common.constant.CoreConst;
 import com.tarzan.nav.common.constant.LookTypeConst;
 import com.tarzan.nav.common.enums.NavigationTypeEnum;
+import com.tarzan.nav.modules.admin.model.biz.Category;
 import com.tarzan.nav.modules.admin.model.biz.Website;
 import com.tarzan.nav.modules.admin.service.biz.*;
+import com.tarzan.nav.modules.front.query.ItemQuery;
 import com.tarzan.nav.utils.WebUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -120,11 +122,34 @@ public class IndexController {
         }
     }
 
+    @GetMapping("/lostpassword")
+    public String lostPassword() {
+        return  CoreConst.WEB_PREFIX+"lostpassword";
+    }
+
     @GetMapping("/link")
     public String targetLink(String target,Model model) {
         siteLookService.asyncLook(target,WebUtil.getIP(), LookTypeConst.SITE);
         model.addAttribute("target","https:"+target);
         return  CoreConst.WEB_PREFIX+"link";
+    }
+
+
+
+    @GetMapping("/tag/items")
+    public String tagItemsHtml(ItemQuery query, Model model) {
+        Integer id= query.getId();
+        Category category=categoryService.getById(id);
+        if(Objects.isNull(category)){
+            return CoreConst.WEB_PREFIX+"card/sitecard";
+        }
+        model.addAttribute("websites",websiteService.getCategoryWebsiteMap().get(id));
+        switch (category.getType()){
+            case 2:
+                return CoreConst.WEB_PREFIX+"card/postcard";
+            default:
+                return CoreConst.WEB_PREFIX+"card/sitecard";
+        }
     }
 
     @GetMapping("/douyin")

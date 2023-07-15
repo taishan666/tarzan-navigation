@@ -3,7 +3,6 @@ package com.tarzan.nav.modules.front;
 import com.alibaba.fastjson.JSON;
 import com.tarzan.nav.common.constant.CoreConst;
 import com.tarzan.nav.common.enums.NavigationTypeEnum;
-import com.tarzan.nav.modules.admin.model.biz.Category;
 import com.tarzan.nav.modules.admin.model.biz.Comment;
 import com.tarzan.nav.modules.admin.model.biz.Link;
 import com.tarzan.nav.modules.admin.model.biz.Website;
@@ -13,7 +12,6 @@ import com.tarzan.nav.modules.admin.service.sys.UserService;
 import com.tarzan.nav.modules.admin.vo.base.ResponseVo;
 import com.tarzan.nav.modules.front.dto.LoginDTO;
 import com.tarzan.nav.modules.front.dto.RegisterDTO;
-import com.tarzan.nav.modules.front.query.ItemQuery;
 import com.tarzan.nav.modules.network.HotNewsService;
 import com.tarzan.nav.modules.network.LocationService;
 import com.tarzan.nav.utils.*;
@@ -26,7 +24,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.Subject;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,7 +43,7 @@ import java.util.regex.Pattern;
  * @since JDK1.8
  * @date 2021年5月11日
  */
-@Controller
+@RestController
 @AllArgsConstructor
 @Slf4j
 public class NavApiController {
@@ -64,7 +61,6 @@ public class NavApiController {
     private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
 
     @PostMapping("/apply/submit")
-    @ResponseBody
     public ResponseVo apply(@Valid @RequestBody Website website) {
         if(Objects.isNull(website.getName())){
             return ResultUtil.error("请填写网站名称！");
@@ -94,7 +90,6 @@ public class NavApiController {
     }
 
     @PostMapping("/comment/submit")
-    @ResponseBody
     public ResponseVo saveComment(HttpServletRequest request, Comment comment) throws UnsupportedEncodingException {
         if (StringUtils.isEmpty(comment.getNickname())) {
             return ResultUtil.error("请输入昵称");
@@ -141,22 +136,6 @@ public class NavApiController {
         return CoreConst.WEB_PREFIX+"card/minicard";
     }
 
-    @GetMapping("/tag/items")
-    public String tagItemsHtml(ItemQuery query, Model model) {
-        Integer id= query.getId();
-        Category category=categoryService.getById(id);
-        if(Objects.isNull(category)){
-            return CoreConst.WEB_PREFIX+"card/sitecard";
-        }
-        model.addAttribute("websites",websiteService.getCategoryWebsiteMap().get(id));
-        switch (category.getType()){
-            case 2:
-                return CoreConst.WEB_PREFIX+"card/postcard";
-            default:
-                return CoreConst.WEB_PREFIX+"card/sitecard";
-        }
-    }
-
     @GetMapping("/hotSpot/{type}")
     @ResponseBody
     public ResponseVo hotSpot(@PathVariable("type") String type) {
@@ -176,7 +155,6 @@ public class NavApiController {
         }
     }
 
-
     @PostMapping("/register")
     @ResponseBody
     public ResponseVo register(HttpServletRequest request,RegisterDTO dto) {
@@ -195,6 +173,60 @@ public class NavApiController {
         return registerUser(request,dto);
     }
 
+    @PostMapping("/lostpassword")
+    public ResponseVo lostPassword(HttpServletRequest request,RegisterDTO dto) {
+        if ("reset_password".equals(dto.getAction())) {
+            Matcher matcher = EMAIL_PATTERN.matcher(dto.getEmail_phone());
+            if(matcher.matches()){
+                User user=userService.lambdaQuery().eq(User::getEmail,dto.getEmail_phone()).last("limit 1").one();
+                if(Objects.nonNull(user)){
+                    mailService.sendResetPwdEmail(dto.getEmail_phone(),user.getPassword());
+                    return ResultUtil.status(1,"邮件已经发送");
+                }else {
+                    return ResultUtil.status(4,"邮箱未注册");
+                }
+            }else{
+                return ResultUtil.status(4,"邮箱格式错误");
+            }
+        }
+        return  updatePassword(request,dto);
+    }
+
+    public ResponseVo updatePassword(HttpServletRequest request,RegisterDTO dto){
+        String email=dto.getEmail_phone();
+        if(StringUtil.isNotBlank(email)){
+            //验证邮箱
+            String sendEmail = (String) request.getSession().getAttribute("email");
+            if(email.equals(sendEmail)){
+                //判断验证码
+                if (!CaptchaUtil.ver(dto.getVerification_code(), request)) {
+                    return ResultUtil.status(4,"验证码错误！");
+                }
+                // 清除session中的验证码
+                CaptchaUtil.clear(request);
+                String password = dto.getUser_pass();
+                String confirmPassword = dto.getUser_pass2();
+                //判断两次输入密码是否相等
+                if (confirmPassword != null && password != null) {
+                    if (!confirmPassword.equals(password)) {
+                        return ResultUtil.status(4,"两次密码不一致！");
+                    }
+                }
+                User updateUser=new User();
+                updateUser.setPassword(password);
+                updateUser.setEmail(dto.getEmail_phone());
+                PasswordHelper.encryptPassword(updateUser);
+                //修改密码
+                boolean flag = userService.lambdaUpdate().set(User::getPassword,updateUser.getPassword()).eq(User::getEmail,updateUser.getEmail()).update();
+                if(flag){
+                    return ResultUtil.status(1,"密码修改成功！");
+                }else {
+                    return ResultUtil.status(4,"密码修改，请稍后再试！");
+                }
+            }
+        }
+        return null;
+    }
     public ResponseVo registerUser(HttpServletRequest request,RegisterDTO dto){
         //判断验证码
         if (!CaptchaUtil.ver(dto.getVerification_code(), request)) {
@@ -236,7 +268,6 @@ public class NavApiController {
     }
 
     @PostMapping("/login")
-    @ResponseBody
     public ResponseVo login(LoginDTO dto) {
         UsernamePasswordToken token = new UsernamePasswordToken(dto.getUsername(), dto.getPassword());
         try {

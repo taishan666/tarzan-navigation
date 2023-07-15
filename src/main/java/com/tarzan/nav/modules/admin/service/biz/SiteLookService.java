@@ -87,7 +87,6 @@ public class SiteLookService extends ServiceImpl<SiteLookMapper, SiteLook> {
         }
     }
 
-
     public boolean checkArticleLook(Integer siteId, String userIp) {
         return cache.getIfPresent(userIp+"_"+siteId)==null;
     }

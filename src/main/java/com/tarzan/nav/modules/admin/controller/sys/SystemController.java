@@ -273,7 +273,7 @@ public class SystemController {
         User newUser = BeanUtil.copy(loginUser, User.class);
         String sysOldPassword = loginUser.getPassword();
         newUser.setPassword(changePasswordVo.getOldPassword());
-        String entryOldPassword = PasswordHelper.getPassword(newUser);
+        String entryOldPassword = PasswordHelper.getEncryptPassword(newUser);
         if (sysOldPassword.equals(entryOldPassword)) {
             newUser.setPassword(changePasswordVo.getNewPassword());
             PasswordHelper.encryptPassword(newUser);

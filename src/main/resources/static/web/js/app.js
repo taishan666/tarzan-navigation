@@ -2080,13 +2080,12 @@ function captcha_ajax(_this, data='', success='') {
         }
         _this.attr('disabled', false).html(_text);
       //  $.isFunction(success) && success(n, _this, data);
-        console.log(n.data.goto)
-        if (n.data.goto) {
+   /*     if (n.data.goto) {
             window.location.href = n.data.goto;
           //  window.location.reload();
         } else if (n.reload) {
             window.location.reload();
-        }
+        }*/
     }).fail(function (n) {
         n = n.responseJSON;
         if (n && n.msg) {

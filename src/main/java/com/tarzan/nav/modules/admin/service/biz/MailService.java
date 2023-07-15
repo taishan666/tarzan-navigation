@@ -13,7 +13,10 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import javax.mail.MessagingException;
+import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeUtility;
+import java.io.UnsupportedEncodingException;
 import java.util.Objects;
 
 
@@ -47,16 +50,16 @@ public class MailService {
     	MimeMessage mail = mailSender.createMimeMessage();	
     	try {
     		MimeMessageHelper helper = new MimeMessageHelper(mail, true, "utf-8");
-			helper.setFrom(username);
+			helper.setFrom(new InternetAddress(MimeUtility.encodeText(sysConfigService.getSiteName())+"<"+username+">").toString());
 			helper.setTo(to);
 			helper.setSubject(subject);
 			helper.setText(body, true);
 			helper.setSentDate(DateUtil.now());
 			mailSender.send(mail);
-		} catch (MessagingException e) {
+		} catch (MessagingException|UnsupportedEncodingException e) {
 			log.error(e.getMessage());
 		}
-    }
+	}
     
     /**
      * send activation mail to
