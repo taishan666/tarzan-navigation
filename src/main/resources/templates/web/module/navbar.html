@@ -26,8 +26,23 @@
                 </ul>
             </div>
                 <ul class="nav navbar-menu text-xs order-1 order-md-2 position-relative">
-                    <li class="nav-login ml-3 ml-md-4">
+                    <li th:if="${loginUser==null}" class="nav-login ml-3 ml-md-4">
                         <a href="/login" title="登录"><i class="iconfont icon-user icon-lg"></i></a>
+                    </li>
+                    <li th:unless="${loginUser==null}" class="nav-login-user dropdown ml-3 ml-md-4 show">
+                        <a class="user-ico" href="#" data-toggle="dropdown" aria-expanded="true">
+                            <img alt="" src="https://gravatar.loli.net/avatar/?s=96&amp;d=retro&amp;r=g" srcset="https://gravatar.loli.net/avatar/?s=192&amp;d=retro&amp;r=g 2x" class="avatar avatar-96 photo avatar-default" height="96" width="96" loading="lazy" decoding="async">
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right text-center" style="min-width:auto">
+                            <a class="dropdown-item" href="/user/settings"><i class="iconfont mr-2 icon-user"></i>个人中心</a>
+                            <a class="dropdown-item" href="/user/settings"><i class="iconfont mr-2 icon-business"></i>用户信息</a>
+                            <a class="dropdown-item" href="/user/sites"><i class="iconfont mr-2 icon-category"></i>网址管理</a>
+                            <a class="dropdown-item" href="/user/stars"><i class="iconfont mr-2 icon-heart"></i>我的收藏</a>
+                            <a class="dropdown-item" href="/user/security"><i class="iconfont mr-2 icon-statement"></i>安全设置</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/bookmark/Y5eJc5N-ap8"><i class="iconfont mr-2 icon-tags"></i>我的书签</a>
+                            <a class="dropdown-item nofx" href="/logout"><i class="iconfont mr-2 icon-close-circle"></i>安全退出</a>
+                        </div>
                     </li>
             <!--        <li class="nav-search ml-3 ml-md-4">
                         <a href="javascript:" data-toggle="modal" data-target="#search-modal"><i class="iconfont icon-search icon-lg"></i></a>

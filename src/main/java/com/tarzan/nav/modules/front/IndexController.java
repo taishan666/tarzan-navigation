@@ -10,6 +10,8 @@ import com.tarzan.nav.modules.front.query.ItemQuery;
 import com.tarzan.nav.utils.WebUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -156,6 +158,19 @@ public class IndexController {
     public String douyin(Model model) {
         model.addAttribute("categories",categoryService.treeList());
         return  CoreConst.WEB_PREFIX+"douyin";
+    }
+
+    /**
+     * 登出
+     *
+     * @return
+     */
+    @GetMapping("/logout")
+    public String logout() {
+        Subject subject = SecurityUtils.getSubject();
+        assert subject != null;
+        subject.logout();
+        return "redirect:/";
     }
 
 }

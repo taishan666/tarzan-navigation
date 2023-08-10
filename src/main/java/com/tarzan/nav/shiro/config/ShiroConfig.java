@@ -141,17 +141,9 @@ public class ShiroConfig {
      */
     @Bean
     public EhCacheManager getEhCacheManager() {
-     //   net.sf.ehcache.CacheManager cacheManager = net.sf.ehcache.CacheManager.getCacheManager("shiro");
         EhCacheManager em = new EhCacheManager();
         em.setCacheManager(cacheCacheManager.getCacheManager());
         return em;
-  /*      if (Objects.isNull(cacheManager)) {
-            em.setCacheManager((net.sf.ehcache.CacheManager) cacheManager);
-            return em;
-        } else {
-            em.setCacheManager(cacheManager);
-            return em;
-        }*/
     }
 
 

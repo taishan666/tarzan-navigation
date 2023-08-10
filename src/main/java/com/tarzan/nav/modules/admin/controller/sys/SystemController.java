@@ -214,7 +214,7 @@ public class SystemController {
      *
      * @return
      */
-    @RequestMapping("/logout")
+    @GetMapping("/logout")
     public ModelAndView logout() {
         Subject subject = SecurityUtils.getSubject();
         if (null != subject) {

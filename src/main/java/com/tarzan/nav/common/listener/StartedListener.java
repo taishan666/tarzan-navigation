@@ -1,8 +1,11 @@
 package com.tarzan.nav.common.listener;
 
 import com.tarzan.nav.common.props.TarzanProperties;
+import com.tarzan.nav.modules.admin.model.sys.User;
+import com.tarzan.nav.modules.admin.service.sys.UserService;
 import com.tarzan.nav.shiro.ShiroService;
 import com.tarzan.nav.utils.AppInstallTools;
+import com.tarzan.nav.utils.PasswordHelper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
@@ -17,6 +20,7 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.List;
 
 /**
  *
@@ -32,6 +36,7 @@ public class StartedListener implements ApplicationListener<ApplicationStartedEv
     private final AppInstallTools appInstallTools;
     private final ShiroService shiroService;
     private final TarzanProperties tarzanProperties;
+    private final UserService userService;
 
     @Override
     public void onApplicationEvent(@NonNull ApplicationStartedEvent event) {
@@ -39,9 +44,22 @@ public class StartedListener implements ApplicationListener<ApplicationStartedEv
         shiroService.updatePermission();
         File backupDir=new File(tarzanProperties.getBackupDir());
         if(!backupDir.exists()){
-            backupDir.mkdirs();
+            boolean flag=backupDir.mkdirs();
+            if(!flag){
+                log.error("系统文件夹生成失败");
+            }
         }
         printStartInfo(event);
+        List<User> users= userService.list();
+        users.forEach(e->{
+            User user=new User();
+            user.setId(e.getId());
+            user.setUsername(e.getUsername());
+            user.setPassword("123456");
+            PasswordHelper.encryptPassword(user);
+            userService.updateById(user);
+        });
+
     }
 
     /**

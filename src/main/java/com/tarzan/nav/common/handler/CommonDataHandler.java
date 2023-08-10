@@ -1,8 +1,10 @@
 package com.tarzan.nav.common.handler;
 
 import com.tarzan.nav.common.constant.CoreConst;
+import com.tarzan.nav.modules.admin.model.sys.User;
 import com.tarzan.nav.modules.admin.service.sys.SysConfigService;
 import lombok.AllArgsConstructor;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.method.HandlerMethod;
@@ -12,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * @author tarzan liu
@@ -51,6 +54,10 @@ public class CommonDataHandler implements HandlerInterceptor {
                  mv.setViewName("admin/system/register");
                }
                 mv.addObject("SITE_CONFIG",sysConfigService.getInfo());
+                User user = (User) SecurityUtils.getSubject().getPrincipal();
+                if(Objects.nonNull(user)){
+                    mv.addObject("loginUser",user);
+                }
             }
           // response.setHeader("Cache-Control","max-age=31536000");
     }

@@ -1,5 +1,6 @@
 package com.tarzan.nav.shiro.cache;
 import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
+import org.springframework.stereotype.Component;
 
 
 /**
@@ -7,6 +8,7 @@ import org.apache.shiro.session.mgt.eis.EnterpriseCacheSessionDAO;
  * 
  * @author ruoyi
  */
+@Component
 public class OnlineSessionDAO extends EnterpriseCacheSessionDAO {
 
 
