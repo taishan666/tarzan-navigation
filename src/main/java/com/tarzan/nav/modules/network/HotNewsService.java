@@ -15,7 +15,6 @@ import org.jsoup.select.Elements;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -45,7 +44,6 @@ public class HotNewsService {
         Document doc= JsoupUtil.getDocument("https://top.baidu.com/board?tab=realtime");
         List<HotNewsVO> hotNews=new ArrayList<>(10);
         // 获取目标HTML代码
-        assert doc != null;
         Elements news = doc.select("div[class=category-wrap_iQLoo horizontal_1eKyQ]");
         for (Element hot : news) {
             Elements hotTitle=hot.select("div[class=c-single-text-ellipsis]");
@@ -164,8 +162,6 @@ public class HotNewsService {
         log.info("知乎热榜");
         List<HotNewsVO> hotNews=new ArrayList<>(10);
         String text= HttpUtil.get("https://www.zhihu.com/api/v3/feed/topstory/hot-lists/total?limit=50&desktop=true");
-        byte[] bytes=text.getBytes(StandardCharsets.UTF_8);
-        text=new String(bytes);
         JSONObject json= JSON.parseObject(text);
         JSONArray list= json.getJSONArray("data");
         Iterator<Object> iterator= list.stream().iterator();
@@ -183,6 +179,7 @@ public class HotNewsService {
             vo.setIndex(index);
             hotNews.add(vo);
         }
+
         return hotNews;
     }
 
