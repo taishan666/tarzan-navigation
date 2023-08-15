@@ -16,7 +16,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -140,6 +143,7 @@ public class IndexController {
 
     @GetMapping("/tag/items")
     public String tagItemsHtml(ItemQuery query, Model model) {
+        model.addAttribute("flag",true);
         Integer id= query.getId();
         Category category=categoryService.getById(id);
         if(Objects.isNull(category)){
@@ -152,6 +156,30 @@ public class IndexController {
             default:
                 return CoreConst.WEB_PREFIX+"card/sitecard";
         }
+    }
+
+    @PostMapping("/tag/items")
+    public String tagItemsHtml(@RequestParam("action") String action,
+                               @RequestParam("data[title]") String title,
+                               @RequestParam("data[type]") String type,
+                               @RequestParam("data[order]") String order,
+                               @RequestParam("data[num]") int num, Model model) {
+        model.addAttribute("flag",true);
+        switch (title){
+            case "热门网址":
+                model.addAttribute("websites",websiteService.hotList(NavigationTypeEnum.SITE,num));
+                break;
+            case "随机推荐":
+                model.addAttribute("websites",websiteService.randomList(NavigationTypeEnum.SITE,num));
+                break;
+            case "最新网址":
+                model.addAttribute("websites",websiteService.newestList(NavigationTypeEnum.SITE,num));
+                break;
+            default:
+                model.addAttribute("websites", Collections.emptyList());
+                break;
+        }
+        return CoreConst.WEB_PREFIX+"card/minicard";
     }
 
     @GetMapping("/douyin")

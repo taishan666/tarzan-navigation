@@ -124,28 +124,7 @@ public class NavApiController {
 
 
 
-    @PostMapping("/tag/items")
-    public String tagItemsHtml(@RequestParam("action") String action,
-                               @RequestParam("data[title]") String title,
-                               @RequestParam("data[type]") String type,
-                               @RequestParam("data[order]") String order,
-                               @RequestParam("data[num]") int num, Model model) {
-        switch (title){
-            case "热门网址":
-                model.addAttribute("websites",websiteService.hotList(NavigationTypeEnum.SITE,num));
-                break;
-            case "随机推荐":
-                model.addAttribute("websites",websiteService.randomList(NavigationTypeEnum.SITE,num));
-                break;
-            case "最新网址":
-                model.addAttribute("websites",websiteService.newestList(NavigationTypeEnum.SITE,num));
-                break;
-            default:
-                model.addAttribute("websites", Collections.emptyList());
-                break;
-        }
-        return CoreConst.WEB_PREFIX+"card/minicard";
-    }
+
 
     @GetMapping("/hotSpot/{type}")
     @ResponseBody
