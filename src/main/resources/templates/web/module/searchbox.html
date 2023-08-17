@@ -1,6 +1,6 @@
 <div class="s-search" th:fragment="index(flag)">
     <div id="search" class="s-search mx-auto">
-        <div th:if="${flag}" class="big-title text-center mb-3 mb-md-5 mt-2">
+        <div th:unless="${flag}" class="big-title text-center mb-3 mb-md-5 mt-2">
             <p class="h1" style="letter-spacing: 6px;">[[${SITE_CONFIG?.SITE_NAME}]]</p>
         </div>
         <div id="search-list-menu" class="">
