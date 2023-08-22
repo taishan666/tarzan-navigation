@@ -2,7 +2,9 @@ package com.tarzan.nav.modules.admin.controller.biz;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tarzan.nav.common.constant.CoreConst;
+import com.tarzan.nav.modules.admin.model.biz.Category;
 import com.tarzan.nav.modules.admin.model.biz.Website;
+import com.tarzan.nav.modules.admin.service.biz.CategoryService;
 import com.tarzan.nav.modules.admin.service.biz.WebsiteService;
 import com.tarzan.nav.modules.admin.vo.base.PageResultVo;
 import com.tarzan.nav.modules.admin.vo.base.ResponseVo;
@@ -34,6 +36,7 @@ import java.util.Objects;
 public class WebsiteController {
 
     private final WebsiteService websiteService;
+    private final CategoryService categoryService;
 
     @PostMapping("list")
     @ResponseBody
@@ -54,13 +57,21 @@ public class WebsiteController {
     @PostMapping("/add")
     @ResponseBody
     public ResponseVo add(@Valid Website website) {
-        if(Objects.nonNull(website.getCategoryId())&&website.getCategoryId()>0){
-            boolean flag = websiteService.saveByUrl(website.getUrl(),website.getCategoryId());
-            if (flag) {
-                return ResultUtil.success("新增网址成功");
-            } else {
-                return ResultUtil.error("新增网址失败");
+        Integer categoryId=website.getCategoryId();
+        if(Objects.nonNull(categoryId)&&categoryId>0){
+            Category category= categoryService.getById(categoryId);
+            if(Objects.nonNull(category)){
+                if(Objects.nonNull(category.getType())||category.getType()==0){
+                    boolean flag = websiteService.saveByUrl(website.getUrl(),website.getCategoryId(),category.getType());
+                    if (flag) {
+                        return ResultUtil.success("新增网址成功");
+                    } else {
+                        return ResultUtil.error("新增网址失败");
+                    }
+                }
+                return ResultUtil.error("分类的类型有误！");
             }
+            return ResultUtil.error("分类不存在！");
         }else{
             return ResultUtil.error("分类id不能为空！");
         }

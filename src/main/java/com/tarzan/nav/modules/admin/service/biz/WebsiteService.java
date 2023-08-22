@@ -59,12 +59,11 @@ public class WebsiteService extends ServiceImpl<WebsiteMapper, Website> {
     }
 
     @CacheEvict(value = {"website", "category"}, allEntries = true)
-    public boolean saveByUrl(String url,Integer categoryId){
-        Category category= categoryMapper.selectById(categoryId);
-        if(category.getType()==1){
+    public boolean saveByUrl(String url,Integer categoryId,Integer type){
+        if(type==1){
             return saveSite(url,categoryId);
         }
-        if(category.getType()==2){
+        if(type==2){
             return savePost(url,categoryId);
         }
         return true;
