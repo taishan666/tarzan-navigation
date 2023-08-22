@@ -1,0 +1,122 @@
+<div class="row">
+    <div class="colxl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="page-title-wrapper">
+            <div class="page-title-box">
+                <h4 class="page-title bold">登录日志</h4>
+            </div>
+            <div class="breadcrumb-list">
+                <ul>
+                    <li class="breadcrumb-link"><a th:href="@{admin}"><i class="fas fa-home mr-2"></i>首页</a></li>
+                    <li class="breadcrumb-link active">运维管理</li>
+                    <li class="breadcrumb-link active">登录日志</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main content -->
+<section class="content">
+    <div class="card card-info card-header">
+            <form id="searchForm" class="needs-validation form-inline" novalidate="">
+                <div class="form-group">
+                    <label for="loginName">登录名:</label>
+                    <input type="text" class="form-control m-2" id="loginName" required="">
+                </div>
+                <div class="form-group">
+                    <label for="phone">手机号:</label>
+                    <input type="text" class="form-control m-2" id="phone" required="">
+                </div>
+                <div class="form-group">
+                    <label for="sourceIp">IP:</label>
+                    <input type="text" class="form-control m-2" id="sourceIp" required="">
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary ml-3" type="submit">查询</button>
+                    <button class="btn btn-light ml-2" type="reset">重置</button>
+                </div>
+            </form>
+    </div>
+    <div class="card table-card card-body">
+        <table class="table-sm" id="table"></table>
+    </div>
+    </div>
+</section>
+
+<script>
+
+    $(function () {
+        var columns = [
+            {checkbox: true},
+            {
+                field: 'name',
+                title: '昵称',
+                align: "center"
+            },
+            {
+                field: 'loginName',
+                title: '登录名',
+                align: "center"
+            }, {
+                field: 'phone',
+                title: '手机号',
+                align: "center"
+            },
+            {
+                field: 'source',
+                title: '登录方式',
+                align: "center"
+            },
+            {
+                field: 'sourceIp',
+                title: '来源IP',
+                align: "center"
+            },
+            {
+                field: 'startTime',
+                title: '登录时间',
+                align: "center"
+            },
+            {
+                field: 'endTime',
+                title: '退出时间',
+                align: "center"
+            }];
+
+
+        var options = {
+            id: "#table",
+            url: '/log/login/list',
+            columns: columns,
+            toolbar: '#toolbar',
+            showRefresh: true,
+            queryParams: queryParams
+        }
+        Core.initTable(options);
+
+        function refreshTable() {
+            Core.refreshTable("#table")
+        }
+
+        // 查询参数
+        function queryParams(params) {
+            return {
+                pageNumber: params.pageNumber,
+                pageSize: params.pageSize,
+                loginName: $("#loginName").val(),
+                phone: $("#phone").val(),
+                sourceIp: $("#sourceIp").val()
+            };
+        }
+
+        // 查询
+        $('#searchForm').submit(function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            refreshTable();
+        })
+
+
+    });
+
+
+</script>

@@ -1,0 +1,49 @@
+<div class="main-footer footer-stick container container-fluid customize-width pt-4 pb-3 footer-type-big">
+    <div class="footer-inner card rounded-xl m-0">
+        <div class="footer-text card-body text-muted text-center text-md-left">
+            <div class="row my-4">
+                <div class="col-12 col-md-4 mb-4 mb-md-0">
+                    <a class="footer-logo" href="/" th:title="${SITE_CONFIG?.SITE_NAME}">
+                        <img src="/web/images/logo.png" class="logo-light mb-3" th:alt="${SITE_CONFIG?.SITE_NAME}" height="40">
+                        <img src="/web/images/logo.png" class="logo-dark d-none mb-3" th:alt="${SITE_CONFIG?.SITE_NAME}" height="40">
+                    </a>
+                    <div class="text-sm">[[${SITE_CONFIG?.SITE_DESC}]]</div>
+                </div>
+                <div class="col-12 col-md-5 mb-4 mb-md-0">
+                    <p class="footer-links text-sm mb-3"><a href="/">友链申请</a>
+                        <a href="/">免责声明</a>
+                        <a href="/">广告合作</a>
+                        <a href="/">关于我们</a></p>
+                    <div class="footer-social">
+                    <a class="rounded-circle bg-light qr-img" href="javascript:;" data-toggle="tooltip" data-placement="top" data-html="true" title="<img src='' height='100' width='100'>">
+                        <i class="iconfont icon-wechat"></i>
+                    </a><a class="rounded-circle bg-light" href="http://wpa.qq.com/msgrd?v=3&uin=1334512682&site=qq&menu=yes" target="_blank"  data-toggle="tooltip" data-placement="top" title="QQ" rel="external noopener nofollow">
+                    <i class="iconfont icon-qq"></i>
+                </a><a class="rounded-circle bg-light" href="#" target="_blank"  data-toggle="tooltip" data-placement="top" title="微博" rel="external noopener nofollow">
+                    <i class="iconfont icon-weibo"></i>
+                </a><a class="rounded-circle bg-light" href="#" target="_blank"  data-toggle="tooltip" data-placement="top" title="GitHub" rel="external noopener nofollow">
+                    <i class="iconfont icon-github"></i>
+                </a><a class="rounded-circle bg-light" href="mailto:1334512682@QQ.COM" target="_blank"  data-toggle="tooltip" data-placement="top" title="Email" rel="external noopener nofollow">
+                    <i class="iconfont icon-email"></i>
+                </a>                    </div>
+                </div>
+               <!-- <div class="col-12 col-md-3 text-md-right mb-4 mb-md-0">
+                    <div class="footer-mini-img" data-toggle="tooltip" title="扫码加QQ群">
+                        <p class="bg-light rounded-lg p-1">
+                            <img class=" " src="" alt="扫码加QQ群">
+                        </p>
+                        <span class="text-muted text-ss mt-2">扫码加QQ群</span>
+                    </div>
+                    <div class="footer-mini-img" data-toggle="tooltip" title="扫码加微信">
+                        <p class="bg-light rounded-lg p-1">
+                            <img class=" " src="" alt="扫码加微信">
+                        </p>
+                        <span class="text-muted text-ss mt-2">扫码加微信</span>
+                    </div>
+                </div>-->
+            </div>
+            <div class="footer-copyright text-xs">
+                Copyright © 2023 <a href="/" th:title="${SITE_CONFIG?.SITE_NAME}" class="" rel="home">[[${SITE_CONFIG?.SITE_NAME}]]</a>&nbsp;由<a href="/" th:title="${SITE_CONFIG?.SITE_NAME}" target="_blank" class="" rel="noopener"><strong> [[${SITE_CONFIG?.SITE_PERSON_NAME}]] </strong></a>强力驱动&nbsp            </div>
+        </div>
+    </div>
+</div>

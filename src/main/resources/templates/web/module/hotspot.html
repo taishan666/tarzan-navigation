@@ -1,0 +1,46 @@
+<script>
+    function refresh(type){
+        $(this).children('i').addClass('icon-spin');
+        $("#hot-success-"+type).html('<i class="iconfont icon-loading icon-spin icon-2x"></i>');
+        $("#hot-loading-"+type).fadeIn(200);
+        getList(type);
+    }
+    function getList(type){
+        $.get("/hotSpot/"+type, {},function(response){
+            const data = response.data;
+            hotspot(type,data);
+        }).fail(function () {
+            getError(type);
+        });
+    }
+    function hotspot(type,data){
+        let html = '';
+        //  $('.title-'+type).text(response.title);
+        //  $('.slug-'+type).text(response.subtitle);
+        for(let i=0; i<data.length; i++) {
+            html += '<li class="d-flex text-sm mb-2"><div><span class="hot-rank hot-rank-'+ (i+1)+' text-xs text-center">'+ (i+1)+'</span><a class="ml-2" href="'+data[i]['link']+'" target="_blank" rel="external noopener nofollow">'+data[i]['title']+'</a></div><div class="ml-auto hot-heat d-none d-md-block text-muted">'+data[i]['index']+'</div></li>';
+        }
+        $('#hot-loading-'+type).fadeOut(200);
+        $('#hot-lod-'+type).children('i').removeClass('icon-spin');
+        $('#hot_news-'+type).html(html);
+    }
+    function getError(type){
+        $('#hot-lod-'+type).children('i').removeClass('icon-spin');
+        $('#hot-success-'+type).show(200).html('获取失败，请再试一次！').parent().delay(3500).fadeOut(200);
+    }
+</script>
+<div class="overflow-x-auto hot-search-panel mb-3 pb-2" style="margin:0 -.5rem;padding:0 .5rem">
+    <div class="row row-sm hot-search">
+        <!--百度热点-->
+        <div th:replace="web/card/baiducard"></div>
+        <!--掘金热榜-->
+        <div th:replace="web/card/juejincard"></div>
+       <!--CSDN热榜-->
+        <div th:replace="web/card/csdncard"></div>
+        <!--知乎热榜-->
+        <div th:replace="web/card/zhihucard"></div>
+        <!--新浪热榜-->
+        <div th:replace="web/card/weibocard"></div>
+        <style>@media screen and (max-width: 1199.98px){.hot-search {min-width: 1500px;}}</style>
+    </div>
+</div>

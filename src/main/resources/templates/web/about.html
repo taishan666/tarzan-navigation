@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="io-grey-mode">
+<head>
+    <script>
+        var default_c = "io-grey-mode";
+        var night = document.cookie.replace(/(?:(?:^|.*;\s*)io_night_mode\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+        try {
+            if (night === "0" || (!night && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+                document.documentElement.classList.add("io-black-mode");
+                document.documentElement.classList.remove(default_c);
+            } else {
+                document.documentElement.classList.remove("io-black-mode");
+                document.documentElement.classList.add(default_c);
+            }
+        } catch (_) {}
+    </script>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>[[${SITE_CONFIG?.SITE_NAME}]]</title>
+    <meta name="theme-color" content="#f9f9f9" />
+    <meta name="keywords" th:content="${SITE_CONFIG?.SITE_KWD}" />
+    <meta name="description" th:content="${SITE_CONFIG?.SITE_DESC}" />
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="/"/>
+    <meta property="og:title" th:content="${SITE_CONFIG?.SITE_NAME}">
+    <meta property="og:description" th:content="${SITE_CONFIG?.SITE_DESC}">
+    <meta property="og:image" content="/favicon.ico">
+    <meta property="og:site_name" th:content="${SITE_CONFIG?.SITE_NAME}">
+    <meta name='robots' content='max-image-preview:large' />
+    <!--    <link rel='stylesheet' id='classic-theme-styles-css' href='https://nav.iowen.cn/wp-includes/css/classic-themes.min.css?ver=6.2' type='text/css' media='all' />-->
+    <link rel='stylesheet' id='iconfont-io-1-css' href='//at.alicdn.com/t/font_1620678_18rbnd2homc.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='iconfont-io-2-css' href='//at.alicdn.com/t/font_2811503_rz4zraeosal.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='iconfont-css' href='/web/css/iconfont.min.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='bootstrap-css' href='/web/css/bootstrap.min.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='swiper-css' href='/web/css/swiper-bundle.min.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='style-css' href='/web/css/style.min.css' type='text/css' media='all' />
+    <script type='text/javascript' src='/web/js/jquery.min.js' id='jquery-js'></script>
+    <script type='text/javascript' id='jquery-js-after'>
+        /* <![CDATA[ */
+        function loadFunc(func) {if (document.all){window.attachEvent("onload",func);}else{window.addEventListener("load",func,false);}}
+        /* ]]> */
+    </script>
+    <style>.navbar-nav .menu-item-286 a{background: #ff8116;border-radius: 50px!important;padding: 5px 10px!important;margin: 5px 0!important;color: #fff!important;}
+    .navbar-nav .menu-item-286 a i{position: absolute;top: 0;right: -10px;color: #f13522;}
+    .io-black-mode .navbar-nav .menu-item-286 a{background: #ce9412;}
+    .io-black-mode .navbar-nav .menu-item-286 a i{color: #fff;}.customize-width{max-width:1850px}.sidebar-nav{width:220px}@media (min-width: 768px){.main-content{margin-left:220px;}.main-content .page-header{left:220px;}}</style><!-- 自定义代码 -->
+</head>
+<body class="home blog">
+<sidebar th:replace="web/module/sidebar::index(false)"></sidebar>
+<div class="main-content flex-fill">
+    <nav th:replace="web/module/navbar::banner(false)"></nav>
+    <div id="content" class="container my-4 my-md-5" style="transform: none;">
+        <div class="content-wrap">
+            <div class="content-layout">
+                <div class="panel card">
+                    <div class="card-body">
+                        <div class="panel-header mb-4">
+                            <h1 class="h3">关于网站</h1>
+                        </div>
+                        <div class="panel-body mt-2">
+                            <blockquote>
+                                <p>有一段时间我发现我的收藏夹越来越多，很难找到某个不常用的网站。所以就有了这个网站，这里收集的基本都是我自己浏览器收藏夹里的网站，我平时用的相对比较多的一些都在这里。</p>
+                                </br>
+                                <p>如果你也是设计师，如果你也正好喜欢设计，那希望这个网站能给你带来一些作用。</p>
+                                <p>闲聊或者有任何建议都可以加QQ号交流：1334512682</p>
+                            </blockquote>
+                        </div>
+                        <div class="panel-header mb-4">
+                            <h1 class="h3">关于站长</h1>
+                        </div>
+                        <div class="panel-body mt-2">
+                            <blockquote>
+                                <p>有一段时间我发现我的收藏夹越来越多，很难找到某个不常用的网站。所以就有了这个网站，这里收集的基本都是我自己浏览器收藏夹里的网站，我平时用的相对比较多的一些都在这里。</p>
+                                </br>
+                                <p>如果你也是设计师，如果你也正好喜欢设计，那希望这个网站能给你带来一些作用。</p>
+                                <p>闲聊或者有任何建议都可以加QQ号交流：1334512682</p>
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+                <!-- comments -->
+                <div th:replace="web/module/comment"></div>
+                <!-- comments end -->
+            </div>
+        </div>
+    </div></div>
+<footer th:replace="web/module/footer"></footer>
+<script type='text/javascript' id='rocket-browser-checker-js-after'>
+    "use strict";var _createClass=function(){function defineProperties(target,props){for(var i=0;i<props.length;i++){var descriptor=props[i];descriptor.enumerable=descriptor.enumerable||!1,descriptor.configurable=!0,"value"in descriptor&&(descriptor.writable=!0),Object.defineProperty(target,descriptor.key,descriptor)}}return function(Constructor,protoProps,staticProps){return protoProps&&defineProperties(Constructor.prototype,protoProps),staticProps&&defineProperties(Constructor,staticProps),Constructor}}();function _classCallCheck(instance,Constructor){if(!(instance instanceof Constructor))throw new TypeError("Cannot call a class as a function")}var RocketBrowserCompatibilityChecker=function(){function RocketBrowserCompatibilityChecker(options){_classCallCheck(this,RocketBrowserCompatibilityChecker),this.passiveSupported=!1,this._checkPassiveOption(this),this.options=!!this.passiveSupported&&options}return _createClass(RocketBrowserCompatibilityChecker,[{key:"_checkPassiveOption",value:function(self){try{var options={get passive(){return!(self.passiveSupported=!0)}};window.addEventListener("test",null,options),window.removeEventListener("test",null,options)}catch(err){self.passiveSupported=!1}}},{key:"initRequestIdleCallback",value:function(){!1 in window&&(window.requestIdleCallback=function(cb){var start=Date.now();return setTimeout(function(){cb({didTimeout:!1,timeRemaining:function(){return Math.max(0,50-(Date.now()-start))}})},1)}),!1 in window&&(window.cancelIdleCallback=function(id){return clearTimeout(id)})}},{key:"isDataSaverModeOn",value:function(){return"connection"in navigator&&!0===navigator.connection.saveData}},{key:"supportsLinkPrefetch",value:function(){var elem=document.createElement("link");return elem.relList&&elem.relList.supports&&elem.relList.supports("prefetch")&&window.IntersectionObserver&&"isIntersecting"in IntersectionObserverEntry.prototype}},{key:"isSlowConnection",value:function(){return"connection"in navigator&&"effectiveType"in navigator.connection&&("2g"===navigator.connection.effectiveType||"slow-2g"===navigator.connection.effectiveType)}}]),RocketBrowserCompatibilityChecker}();
+</script>
+<script type='text/javascript' id='rocket-preload-links-js-extra'>
+    /* <![CDATA[ */
+    var RocketPreloadLinksConfig = {"excludeUris":"\/rankings|\/rankings\/|\/(.+\/)?feed\/?.+\/?|\/(?:.+\/)?embed\/|\/(index\\.php\/)?wp\\-json(\/.*|$)|\/wp-admin|\/logout|\/login\/","usesTrailingSlash":"","imageExt":"jpg|jpeg|gif|png|tiff|bmp|webp|avif","fileExt":"jpg|jpeg|gif|png|tiff|bmp|webp|avif|php|pdf|html|htm","siteUrl":"https:\/\/nav.iowen.cn","onHoverDelay":"100","rateThrottle":"3"};
+    /* ]]> */
+</script>
+<script type='text/javascript' id='rocket-preload-links-js-after'>
+    (function() {
+        "use strict";var r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},e=function(){function i(e,t){for(var n=0;n<t.length;n++){var i=t[n];i.enumerable=i.enumerable||!1,i.configurable=!0,"value"in i&&(i.writable=!0),Object.defineProperty(e,i.key,i)}}return function(e,t,n){return t&&i(e.prototype,t),n&&i(e,n),e}}();function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}var t=function(){function n(e,t){i(this,n),this.browser=e,this.config=t,this.options=this.browser.options,this.prefetched=new Set,this.eventTime=null,this.threshold=1111,this.numOnHover=0}return e(n,[{key:"init",value:function(){!this.browser.supportsLinkPrefetch()||this.browser.isDataSaverModeOn()||this.browser.isSlowConnection()||(this.regex={excludeUris:RegExp(this.config.excludeUris,"i"),images:RegExp(".("+this.config.imageExt+")$","i"),fileExt:RegExp(".("+this.config.fileExt+")$","i")},this._initListeners(this))}},{key:"_initListeners",value:function(e){-1<this.config.onHoverDelay&&document.addEventListener("mouseover",e.listener.bind(e),e.listenerOptions),document.addEventListener("mousedown",e.listener.bind(e),e.listenerOptions),document.addEventListener("touchstart",e.listener.bind(e),e.listenerOptions)}},{key:"listener",value:function(e){var t=e.target.closest("a"),n=this._prepareUrl(t);if(null!==n)switch(e.type){case"mousedown":case"touchstart":this._addPrefetchLink(n);break;case"mouseover":this._earlyPrefetch(t,n,"mouseout")}}},{key:"_earlyPrefetch",value:function(t,e,n){var i=this,r=setTimeout(function(){if(r=null,0===i.numOnHover)setTimeout(function(){return i.numOnHover=0},1e3);else if(i.numOnHover>i.config.rateThrottle)return;i.numOnHover++,i._addPrefetchLink(e)},this.config.onHoverDelay);t.addEventListener(n,function e(){t.removeEventListener(n,e,{passive:!0}),null!==r&&(clearTimeout(r),r=null)},{passive:!0})}},{key:"_addPrefetchLink",value:function(i){return this.prefetched.add(i.href),new Promise(function(e,t){var n=document.createElement("link");n.rel="prefetch",n.href=i.href,n.onload=e,n.onerror=t,document.head.appendChild(n)}).catch(function(){})}},{key:"_prepareUrl",value:function(e){if(null===e||"object"!==(void 0===e?"undefined":r(e))||!1 in e||-1===["http:","https:"].indexOf(e.protocol))return null;var t=e.href.substring(0,this.config.siteUrl.length),n=this._getPathname(e.href,t),i={original:e.href,protocol:e.protocol,origin:t,pathname:n,href:t+n};return this._isLinkOk(i)?i:null}},{key:"_getPathname",value:function(e,t){var n=t?e.substring(this.config.siteUrl.length):e;return n.startsWith("/")||(n="/"+n),this._shouldAddTrailingSlash(n)?n+"/":n}},{key:"_shouldAddTrailingSlash",value:function(e){return this.config.usesTrailingSlash&&!e.endsWith("/")&&!this.regex.fileExt.test(e)}},{key:"_isLinkOk",value:function(e){return null!==e&&"object"===(void 0===e?"undefined":r(e))&&(!this.prefetched.has(e.href)&&e.origin===this.config.siteUrl&&-1===e.href.indexOf("?")&&-1===e.href.indexOf("#")&&!this.regex.excludeUris.test(e.href)&&!this.regex.images.test(e.href))}}],[{key:"run",value:function(){"undefined"!=typeof RocketPreloadLinksConfig&&new n(new RocketBrowserCompatibilityChecker({capture:!0,passive:!0}),RocketPreloadLinksConfig).init()}}]),n}();t.run();
+    }());
+</script>
+<script type='text/javascript' src='/web/js/popper.min.js' id='popper-js'></script>
+<script type='text/javascript' src='/web/js/bootstrap.min.js' id='bootstrap-js'></script>
+<script type='text/javascript' src='/web/js/theia-sticky-sidebar.min.js' id='sidebar-js'></script>
+<script type='text/javascript' src='/web/js/lazyload.min.js' id='lazyload-js'></script>
+<script type='text/javascript' id='appjs-js-extra'>
+    const theme = {
+        "formpostion": "top",
+        "defaultclass": "io-grey-mode",
+        "isCustomize": "1",
+        "urlformat": "1",
+        "customizemax": "10",
+        "newWindow": "0",
+        "lazyload": "1",
+        "minNav": "0",
+        "loading": "0",
+        "hotWords": "baidu",
+        "classColumns": " col-2a col-sm-2a col-md-2a col-lg-3a col-xl-5a col-xxl-6a ",
+        "isHome": ""
+    };
+    const localize = {
+        "lightMode": "\u65e5\u95f4\u6a21\u5f0f",
+        "nightMode": "\u591c\u95f4\u6a21\u5f0f"
+    };
+</script>
+<script type='text/javascript' src='/web/js/app.js'></script>
+<script type='text/javascript' src='/web/js/comment-reply.min.js'></script>
+<script type='text/javascript' id='appjs-js-after'>
+    $(document).ready(function(){if($("#search-text")[0]){$("#search-text").focus();}});
+</script>
+<script>
+    $('#submit').click(function () {
+        const $f = $('#commentform');
+        console.log($f.serializeArray())
+        $.ajax({
+            type:"POST",	//提交方式
+            url:'/comment/submit',
+            data: $f.serialize(),//将对象转为json字符串
+            dataType: "json",   	//返回数据的格式
+            success:function (data) {
+                console.log(data)
+                if(data.status===200){
+                    successAlert(data.msg);
+                    $("#comment_content").val("");
+                    $("#nickname").val("");
+                    $("#email").val("");
+                }else {
+                    errorAlert(data.msg);
+                }
+            },
+        });
+    });
+</script>
+</body>
+</html>

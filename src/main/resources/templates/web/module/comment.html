@@ -1,0 +1,83 @@
+<div id="comments" class="comments">
+    <h2 id="comments-list-title" class="comments-title h5 mx-1 my-4">
+        <i class="iconfont icon-comment"></i>
+        <span class="noticom"><a href="/about#comments" class="comments-title">[[${commentNum}]]条评论</a></span>
+    </h2>
+    <div class="card">
+        <div class="card-body">
+            <div id="respond_box">
+                <div id="respond" class="comment-respond">
+                    <form id="commentform" class="text-sm mb-4">
+                        <!--        <div class="visitor-avatar d-flex flex-fill mb-2">
+                                    <img class="v-avatar rounded-circle" src="https://nav.iowen.cn/wp-content/themes/onenav/images/gravatar.jpg">
+                                </div>-->
+                        <div class="comment-textarea mb-3">
+                            <textarea name="content" id="comment_content" class="form-control" placeholder="输入评论内容..." tabindex="4" cols="50" rows="3"></textarea>
+                        </div>
+                        <div id="comment-author-info" class="row  row-sm">
+                            <div class="col-12 col-md-6 mb-3"><input type="text" name="nickname" id="nickname" class="form-control" value="" size="22" placeholder="昵称" tabindex="2"></div>
+                            <div class="col-12 col-md-6 mb-3"><input type="text" name="email" id="email" class="form-control" value="" size="22" placeholder="邮箱" tabindex="3"></div>
+                        </div>
+                        <div class="com-footer d-flex justify-content-end flex-wrap">
+                            <input type="hidden" id="_wpnonce" name="_wpnonce" value="a33d9a536f"><input type="hidden" name="_wp_http_referer" value="/about">
+                            <a rel="nofollow" id="cancel-comment-reply-link" style="display: none;" href="javascript:;" class="btn btn-light custom_btn-outline mx-2">再想想</a>
+                           <!-- <input captcha-type="slider" type="hidden" name="captcha_type" value="slider" slider-id="">-->
+                            <button class="btn btn-dark custom_btn-d ml-2" type="button" id="submit">发表评论</button>
+                            <input type="hidden" name="sid" id="comment_post_ID" value="-1" >
+                            <input type="hidden" name="pid" id="comment_parent" value="0">
+                            <input type="hidden" name="replyId" id="comment_reply" value="0">
+                        </div>
+                    </form>
+                    <div class="clear"></div>
+                </div>
+            </div>
+            <div id="loading-comments"><span></span></div>
+            <ul class="comment-list">
+                <li th:each="comment:${comments}" class="comment byuser even thread-even depth-1 comment" th:id="'li-comment-'+${coment?.id}">
+                    <div th:id="'comment-'+${comment?.id}" class="comment_body d-flex flex-fill">
+                        <div class="profile mr-2 mr-md-3">
+                            <img th:alt="${comment?.nickname}" th:src="${comment?.img?.base64}" class="avatar avatar-96 photo" height="96" width="96" loading="lazy" decoding="async">  </div>
+                        <section class="comment-text d-flex flex-fill flex-column">
+                            <div class="comment-info d-flex align-items-center mb-1">
+                                <div class="comment-author text-sm w-100">[[${comment?.nickname}]]<span class="rank" title="头衔：读者">读者</span></div>
+                            </div>
+                            <div class="comment-content d-inline-block text-sm">
+                                <p>[[${comment?.content}]]</p>
+                            </div>
+                            <div class="d-flex flex-fill text-xs text-muted pt-2">
+                                <div class="comment-meta">
+                                    <span class="info mr-2"><i class="iconfont icon-time mr-1"></i><time itemprop="datePublished" th:datetime="${comment?.createTime}">[[${#dates.format(comment?.createTime,'yyyy-MM-dd HH:mm:ss')}]]</time></span>
+                                    <span class="info-location"><i class="iconfont icon-location mr-1"></i>[[${comment?.location}]]</span>
+                                </div>
+                                <div class="flex-fill"></div>
+                                <a rel="nofollow" class="comment-reply-link" th:href="'/about?replytocom='+${comment?.id}+'#respond'" th:data-commentid="${comment?.id}" th:data-postid="${comment?.sid}" th:data-belowelement="'comment-'+${comment?.id}" data-respondelement="respond" th:data-replyto="${comment?.id}" th:aria-label="'回复给'+${comment?.nickname}">回复</a> </div>
+                        </section>
+                    </div>
+                    <ul th:if="${comment?.children}" class="children">
+                        <li th:each="child:${comment?.children}"  class="comment even depth-2 comment" id="li-comment-89">
+                            <div th:id="'comment-'+${child?.id}" class="comment_body d-flex flex-fill">
+                                <div class="profile mr-2 mr-md-3">
+                                    <img th:alt="${child?.nickname}" th:src="${child?.img?.base64}" class="avatar avatar-96 photo" height="96" width="96" loading="lazy" decoding="async">  </div>
+                                <section class="comment-text d-flex flex-fill flex-column">
+                                    <div class="comment-info d-flex align-items-center mb-1">
+                                        <div class="comment-author text-sm w-100">[[${child?.nickname}]] <span class="rank">回复</span>[[${child?.replyName}]]</div>
+                                    </div>
+                                    <div class="comment-content d-inline-block text-sm">
+                                        <p>[[${child?.content}]]</p>
+                                    </div>
+                                    <div class="d-flex flex-fill text-xs text-muted pt-2">
+                                        <div class="comment-meta">
+                                            <span class="info mr-2"><i class="iconfont icon-time mr-1"></i><time itemprop="datePublished" th:datetime="${comment?.createTime}">[[${#dates.format(child?.createTime,'yyyy-MM-dd HH:mm:ss')}]]</time></span>
+                                            <span class="info-location"><i class="iconfont icon-location mr-1"></i>[[${child?.remark}]]</span>
+                                        </div>
+                                        <div class="flex-fill"></div>
+                                        <a rel="nofollow" class="comment-reply-link" th:href="'/about?replytocom='+${child?.id}+'#respond'" th:data-commentid="${comment?.id}" th:data-postid="${child?.sid}" th:data-belowelement="'comment-'+${child?.id}" data-respondelement="respond" th:data-replyto="${child?.id}" th:aria-label="'回复给'+${child?.nickname}">回复</a> </div>
+                                </section>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

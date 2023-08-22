@@ -1,0 +1,18 @@
+<aside th:fragment="sidebar(menuTree)" class="sidebar-wrapper">
+    <div class="side-menu-wrap">
+        <ul th:include="this::menu(${menuTree})" class="main-menu">
+        </ul>
+    </div>
+</aside>
+<th:block th:fragment="menu(menuTree)">
+    <li th:each="menu : ${menuTree}" class="active-li">
+        <a th:href="${menu.url}">
+            <span th:classappend="${menu.icon}" th:if="${menu.pid == 0}" class="icon-menu feather-icon"></span>
+            <span th:if="${menu.pid != 0}" class="icon-dash"></span>
+            <span class="menu-text" th:text="${menu.name}"> </span>
+        </a>
+        <ul th:unless="${#lists.isEmpty(menu.children)}" th:include="this::menu(${menu.children})" class="sub-menu">
+        </ul>
+    </li>
+</th:block>
+

@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="io-grey-mode">
+<head>
+    <script>
+        var default_c = "io-grey-mode";
+        var night = document.cookie.replace(/(?:(?:^|.*;\s*)io_night_mode\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+        try {
+            if (night === "0" || (!night && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+                document.documentElement.classList.add("io-black-mode");
+                document.documentElement.classList.remove(default_c);
+            } else {
+                document.documentElement.classList.remove("io-black-mode");
+                document.documentElement.classList.add(default_c);
+            }
+        } catch (_) {}
+    </script>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>[[${SITE_CONFIG?.SITE_NAME}]]</title>
+    <meta name="theme-color" content="#f9f9f9" />
+    <meta name="keywords" th:content="${SITE_CONFIG?.SITE_KWD}" />
+    <meta name="description" th:content="${SITE_CONFIG?.SITE_DESC}" />
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="/"/>
+    <meta property="og:title" th:content="${SITE_CONFIG?.SITE_NAME}">
+    <meta property="og:description" th:content="${SITE_CONFIG?.SITE_DESC}">
+    <meta property="og:image" content="/favicon.ico">
+    <meta property="og:site_name" th:content="${SITE_CONFIG?.SITE_NAME}">
+    <meta name='robots' content='max-image-preview:large' />
+    <link rel='stylesheet' id='iconfont-io-1-css' href='//at.alicdn.com/t/font_1620678_18rbnd2homc.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='iconfont-io-2-css' href='//at.alicdn.com/t/font_2811503_rz4zraeosal.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='iconfont-css' href='/web/css/iconfont.min.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='bootstrap-css' href='/web/css/bootstrap.min.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='swiper-css' href='/web/css/swiper-bundle.min.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='style-css' href='/web/css/style.min.css' type='text/css' media='all' />
+    <script type='text/javascript' src='/web/js/jquery.min.js' id='jquery-js'></script>
+    <script type='text/javascript' id='jquery-js-after'>
+        function loadFunc(func) {if (document.all){window.attachEvent("onload",func);}else{window.addEventListener("load",func,false);}}
+    </script>
+    <style>.navbar-nav .menu-item-286 a{background: #ff8116;border-radius: 50px!important;padding: 5px 10px!important;margin: 5px 0!important;color: #fff!important;}
+    .navbar-nav .menu-item-286 a i{position: absolute;top: 0;right: -10px;color: #f13522;}
+    .io-black-mode .navbar-nav .menu-item-286 a{background: #ce9412;}
+    .io-black-mode .navbar-nav .menu-item-286 a i{color: #fff;}.customize-width{max-width:1850px}.sidebar-nav{width:220px}@media (min-width: 768px){.main-content{margin-left:220px;}.main-content .page-header{left:220px;}}</style><!-- 自定义代码 -->
+</head>
+<body class="home blog">
+<sidebar th:replace="web/module/sidebar::index(false)"></sidebar>
+<div class="main-content flex-fill">
+    <nav th:replace="web/module/navbar::banner(false)"></nav>
+    <div id="content" class="container my-4 my-md-5">
+        <h1 id="comments-list-title" class="comments-title h5 mx-1 my-4">
+            <i class="iconfont icon-tishi mr-2"></i>投稿须知
+        </h1>
+        <div class="panel card">
+            <div class="card-body">
+                <div class="panel-body single mt-2">
+                    <h5><span>如果你有不错网站，想显示在本导航网站上，请在下方填写申请，本人审核通过后，即可在本站中显示你的提交的网站！</span></h5>
+                </div>
+            </div>
+        </div>
+<!--        <div class="text-center mb-3">
+            <div class="tab-btn-group text-sm">
+                <a href="/apply?type=site" class="tab-btn active">申请网站</a>
+                <a href="/apply?type=link" class="tab-btn">申请友链</a>
+            </div>
+        </div>-->
+       <form id="applyForm" class="post-tg tougao-form">
+            <input type="hidden" name="imageId" id="imageId"/>
+            <input type="hidden" name="applyType" value="site"/>
+            <div class="content-wrap">
+                <div class="content-layout">
+                    <div class="panel card">
+                        <div class="card-header widget-header">
+                            <h3 class="text-md mb-0"><i class="iconfont icon-publish mr-2"></i>网址选项</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-inline-block slider_menu into" slidertab="sliderTab">
+                                       <ul class="nav nav-pills tab-auto-scrollbar menu" role="tablist"><li class="anchor" style="position: absolute; width: 60px; height: 40px; left: 0px; opacity: 1;"></li>
+                                           <li class="pagenumber nav-item">
+                                               <a class="nav-link active" data-toggle="pill" data-type="site" href="#site" onclick="currentType(this)">网址</a>
+                                           </li>
+                                           <li class="pagenumber nav-item">
+                                               <a class="nav-link " data-toggle="pill" data-type="link" href="#link" onclick="currentType(this)">友链</a>
+                                           </li>
+                                       </ul>
+                            </div>
+                    <!--        <div class="my-2">
+                                <label for="tougao_ico">图标:</label>
+                                <input type="hidden" value="" id="tougao_ico" class="tougao-sites" name="tougao_ico">
+                                <div class="upload_img">
+                                    <div class="show_ico">
+                                        <img id="show_ico" class="show-sites" src="/images/add.png" alt="图标">
+                                        <i id="remove_ico" class="iconfont icon-close-circle remove-ico remove-sites" data-id="" data-type="ico" style="display: none;"></i>
+                                    </div>
+                                    <input type="file" id="upload_ico" class="upload-sites" name="tougao_ico" data-type="ico" accept="image/*" onchange="uploadImg(this)">
+                                </div>
+                            </div>-->
+                            <div class="row row-sm">
+                                <div class="col-12 my-2">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="iconfont icon-name icon-fw" aria-hidden="true"></i></span>
+                                        </div>
+                                        <input type="text" id="web_name" class="form-control sites-title" value="" name="name" placeholder="名称" maxlength="30">
+                                    </div>
+                                </div>
+                                <div class="col-12 my-2">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="iconfont icon-url icon-fw" aria-hidden="true"></i></span>
+                                        </div>
+                                        <input id="web_url" type="text" class="form-control sites-link" value="" name="url" placeholder="链接">
+                                        <div class="input-group-append tg-sites-url">
+                                            <a href="javascript:" id="get_info" class="btn btn-danger custom_btn-d">一键填写</a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 my-2">
+                                    <div class="input-group count-tips" data-min="0" data-max="80">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="iconfont icon-tishi icon-fw" aria-hidden="true"></i></span>
+                                        </div>
+                                        <input type="text" class="form-control sites-des" value="" id="web_desc"name="description" data-status="true" placeholder="简介" maxlength="80">
+                                    </div>
+                                </div>
+                                <div class="col-12 my-2 tg-sites-category" >
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="iconfont icon-category icon-fw" aria-hidden="true"></i></span>
+                                        </div>
+                                        <select id="categoryId" name="categoryId"  class="form-control sites-category">
+                                            <option value="0" selected="selected">选择分类</option>
+                                            <option class="level-0" th:each="category : ${categories}" th:value="${category?.id}">[[${category?.name}]]&nbsp;&nbsp;</option>
+                                            <th:block th:unless="${#lists.isEmpty(category?.children)}">
+                                                <option class="level-1" th:each="cate:${category?.children}" th:value="${cate?.id}">&nbsp;&nbsp;&nbsp;[[${cate?.name}]]&nbsp;&nbsp;</option>
+                                            </th:block>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar show-sidebar">
+                <div class="card rounded-lg relative">
+                    <div class="card-body">
+                        <button type="button" id="addBtn" class="btn btn-danger custom_btn-d text-sm col-12 custom-submit"><i class="iconfont icon-upload-wd mr-2"></i>提交审核</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div th:replace="web/module/siteinfo"></div>
+ </div>
+<footer th:replace="web/module/footer"></footer>
+<script type='text/javascript' id='rocket-browser-checker-js-after'>
+    "use strict";var _createClass=function(){function defineProperties(target,props){for(var i=0;i<props.length;i++){var descriptor=props[i];descriptor.enumerable=descriptor.enumerable||!1,descriptor.configurable=!0,"value"in descriptor&&(descriptor.writable=!0),Object.defineProperty(target,descriptor.key,descriptor)}}return function(Constructor,protoProps,staticProps){return protoProps&&defineProperties(Constructor.prototype,protoProps),staticProps&&defineProperties(Constructor,staticProps),Constructor}}();function _classCallCheck(instance,Constructor){if(!(instance instanceof Constructor))throw new TypeError("Cannot call a class as a function")}var RocketBrowserCompatibilityChecker=function(){function RocketBrowserCompatibilityChecker(options){_classCallCheck(this,RocketBrowserCompatibilityChecker),this.passiveSupported=!1,this._checkPassiveOption(this),this.options=!!this.passiveSupported&&options}return _createClass(RocketBrowserCompatibilityChecker,[{key:"_checkPassiveOption",value:function(self){try{var options={get passive(){return!(self.passiveSupported=!0)}};window.addEventListener("test",null,options),window.removeEventListener("test",null,options)}catch(err){self.passiveSupported=!1}}},{key:"initRequestIdleCallback",value:function(){!1 in window&&(window.requestIdleCallback=function(cb){var start=Date.now();return setTimeout(function(){cb({didTimeout:!1,timeRemaining:function(){return Math.max(0,50-(Date.now()-start))}})},1)}),!1 in window&&(window.cancelIdleCallback=function(id){return clearTimeout(id)})}},{key:"isDataSaverModeOn",value:function(){return"connection"in navigator&&!0===navigator.connection.saveData}},{key:"supportsLinkPrefetch",value:function(){var elem=document.createElement("link");return elem.relList&&elem.relList.supports&&elem.relList.supports("prefetch")&&window.IntersectionObserver&&"isIntersecting"in IntersectionObserverEntry.prototype}},{key:"isSlowConnection",value:function(){return"connection"in navigator&&"effectiveType"in navigator.connection&&("2g"===navigator.connection.effectiveType||"slow-2g"===navigator.connection.effectiveType)}}]),RocketBrowserCompatibilityChecker}();
+</script>
+<script type='text/javascript' id='rocket-preload-links-js-extra'>
+    /* <![CDATA[ */
+    var RocketPreloadLinksConfig = {"excludeUris":"\/rankings|\/rankings\/|\/(.+\/)?feed\/?.+\/?|\/(?:.+\/)?embed\/|\/(index\\.php\/)?wp\\-json(\/.*|$)|\/wp-admin|\/logout|\/login\/","usesTrailingSlash":"","imageExt":"jpg|jpeg|gif|png|tiff|bmp|webp|avif","fileExt":"jpg|jpeg|gif|png|tiff|bmp|webp|avif|php|pdf|html|htm","siteUrl":"https:\/\/nav.iowen.cn","onHoverDelay":"100","rateThrottle":"3"};
+    /* ]]> */
+</script>
+<script type='text/javascript' id='rocket-preload-links-js-after'>
+    (function() {
+        "use strict";var r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},e=function(){function i(e,t){for(var n=0;n<t.length;n++){var i=t[n];i.enumerable=i.enumerable||!1,i.configurable=!0,"value"in i&&(i.writable=!0),Object.defineProperty(e,i.key,i)}}return function(e,t,n){return t&&i(e.prototype,t),n&&i(e,n),e}}();function i(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}var t=function(){function n(e,t){i(this,n),this.browser=e,this.config=t,this.options=this.browser.options,this.prefetched=new Set,this.eventTime=null,this.threshold=1111,this.numOnHover=0}return e(n,[{key:"init",value:function(){!this.browser.supportsLinkPrefetch()||this.browser.isDataSaverModeOn()||this.browser.isSlowConnection()||(this.regex={excludeUris:RegExp(this.config.excludeUris,"i"),images:RegExp(".("+this.config.imageExt+")$","i"),fileExt:RegExp(".("+this.config.fileExt+")$","i")},this._initListeners(this))}},{key:"_initListeners",value:function(e){-1<this.config.onHoverDelay&&document.addEventListener("mouseover",e.listener.bind(e),e.listenerOptions),document.addEventListener("mousedown",e.listener.bind(e),e.listenerOptions),document.addEventListener("touchstart",e.listener.bind(e),e.listenerOptions)}},{key:"listener",value:function(e){var t=e.target.closest("a"),n=this._prepareUrl(t);if(null!==n)switch(e.type){case"mousedown":case"touchstart":this._addPrefetchLink(n);break;case"mouseover":this._earlyPrefetch(t,n,"mouseout")}}},{key:"_earlyPrefetch",value:function(t,e,n){var i=this,r=setTimeout(function(){if(r=null,0===i.numOnHover)setTimeout(function(){return i.numOnHover=0},1e3);else if(i.numOnHover>i.config.rateThrottle)return;i.numOnHover++,i._addPrefetchLink(e)},this.config.onHoverDelay);t.addEventListener(n,function e(){t.removeEventListener(n,e,{passive:!0}),null!==r&&(clearTimeout(r),r=null)},{passive:!0})}},{key:"_addPrefetchLink",value:function(i){return this.prefetched.add(i.href),new Promise(function(e,t){var n=document.createElement("link");n.rel="prefetch",n.href=i.href,n.onload=e,n.onerror=t,document.head.appendChild(n)}).catch(function(){})}},{key:"_prepareUrl",value:function(e){if(null===e||"object"!==(void 0===e?"undefined":r(e))||!1 in e||-1===["http:","https:"].indexOf(e.protocol))return null;var t=e.href.substring(0,this.config.siteUrl.length),n=this._getPathname(e.href,t),i={original:e.href,protocol:e.protocol,origin:t,pathname:n,href:t+n};return this._isLinkOk(i)?i:null}},{key:"_getPathname",value:function(e,t){var n=t?e.substring(this.config.siteUrl.length):e;return n.startsWith("/")||(n="/"+n),this._shouldAddTrailingSlash(n)?n+"/":n}},{key:"_shouldAddTrailingSlash",value:function(e){return this.config.usesTrailingSlash&&!e.endsWith("/")&&!this.regex.fileExt.test(e)}},{key:"_isLinkOk",value:function(e){return null!==e&&"object"===(void 0===e?"undefined":r(e))&&(!this.prefetched.has(e.href)&&e.origin===this.config.siteUrl&&-1===e.href.indexOf("?")&&-1===e.href.indexOf("#")&&!this.regex.excludeUris.test(e.href)&&!this.regex.images.test(e.href))}}],[{key:"run",value:function(){"undefined"!=typeof RocketPreloadLinksConfig&&new n(new RocketBrowserCompatibilityChecker({capture:!0,passive:!0}),RocketPreloadLinksConfig).init()}}]),n}();t.run();
+    }());
+</script>
+<script type='text/javascript' src='/web/js/popper.min.js' id='popper-js'></script>
+<script type='text/javascript' src='/web/js/bootstrap.min.js' id='bootstrap-js'></script>
+<script type='text/javascript' src='/web/js/theia-sticky-sidebar.min.js' id='sidebar-js'></script>
+<script type='text/javascript' src='/web/js/lazyload.min.js' id='lazyload-js'></script>
+<script type='text/javascript' id='appjs-js-extra'>
+    const theme = {
+        "ajaxurl": "https:\/\/nav.iowen.cn\/wp-admin\/admin-ajax.php",
+        "uri": "https:\/\/nav.iowen.cn\/wp-content\/themes\/onenav",
+        "loginurl": "https:\/\/nav.iowen.cn\/login\/?redirect_to=https:\/\/nav.iowen.cn\/contribute",
+        "sitesName": "\u4e00\u4e3a\u5bfc\u822a",
+        "addico": "https:\/\/nav.iowen.cn\/wp-content\/themes\/onenav\/images\/add.png",
+        "order": "desc",
+        "formpostion": "top",
+        "defaultclass": "io-grey-mode",
+        "isCustomize": "1",
+        "icourl": "https:\/\/api.iowen.cn\/favicon\/",
+        "icopng": ".png",
+        "urlformat": "1",
+        "customizemax": "10",
+        "newWindow": "0",
+        "lazyload": "1",
+        "minNav": "0",
+        "loading": "0",
+        "hotWords": "baidu",
+        "classColumns": " col-2a col-sm-2a col-md-2a col-lg-3a col-xl-5a col-xxl-6a ",
+        "apikey": "TWpBeU1USTJNemd4TWpZM0d6RS9oZUROYVlYVm5hMmxVY0ZaNGRHWXpURlZQYWpGQ2JuRnRlVzVvYVRCYQ==",
+        "isHome": "",
+        "version": "4.0423"
+    };
+    const localize = {
+        "liked": "\u60a8\u5df2\u7ecf\u8d5e\u8fc7\u4e86!",
+        "like": "\u8c22\u8c22\u70b9\u8d5e!",
+        "networkerror": "\u7f51\u7edc\u9519\u8bef --.",
+        "selectCategory": "\u4e3a\u4ec0\u4e48\u4e0d\u9009\u5206\u7c7b\u3002",
+        "addSuccess": "\u6dfb\u52a0\u6210\u529f\u3002",
+        "timeout": "\u8bbf\u95ee\u8d85\u65f6\uff0c\u8bf7\u518d\u8bd5\u8bd5\uff0c\u6216\u8005\u624b\u52a8\u586b\u5199\u3002",
+        "lightMode": "\u65e5\u95f4\u6a21\u5f0f",
+        "nightMode": "\u591c\u95f4\u6a21\u5f0f",
+        "editBtn": "\u7f16\u8f91",
+        "okBtn": "\u786e\u5b9a",
+        "urlExist": "\u8be5\u7f51\u5740\u5df2\u7ecf\u5b58\u5728\u4e86 --.",
+        "cancelBtn": "\u53d6\u6d88",
+        "successAlert": "\u6210\u529f",
+        "infoAlert": "\u4fe1\u606f",
+        "warningAlert": "\u8b66\u544a",
+        "errorAlert": "\u9519\u8bef",
+        "extractionCode": "\u7f51\u76d8\u63d0\u53d6\u7801\u5df2\u590d\u5236\uff0c\u70b9\u201c\u786e\u5b9a\u201d\u8fdb\u5165\u4e0b\u8f7d\u9875\u9762\u3002",
+        "wait": "\u8bf7\u7a0d\u5019",
+        "loading": "\u6b63\u5728\u5904\u7406\u8bf7\u7a0d\u540e...",
+        "userAgreement": "\u8bf7\u5148\u9605\u8bfb\u5e76\u540c\u610f\u7528\u6237\u534f\u8bae",
+        "reSend": "\u79d2\u540e\u91cd\u65b0\u53d1\u9001",
+        "weChatPay": "\u5fae\u4fe1\u652f\u4ed8",
+        "alipay": "\u652f\u4ed8\u5b9d",
+        "scanQRPay": "\u8bf7\u626b\u7801\u652f\u4ed8",
+        "payGoto": "\u652f\u4ed8\u6210\u529f\uff0c\u9875\u9762\u8df3\u8f6c\u4e2d"
+    };
+</script>
+<script type='text/javascript' src='/web/js/app.js' id='appjs-js'></script>
+<script type='text/javascript' id='appjs-js-after'>
+    $(document).ready(function(){if($("#search-text")[0]){$("#search-text").focus();}});
+</script>
+<!--<script type='text/javascript' src='https://nav.iowen.cn/wp-content/themes/onenav/inc/postviews/postviews-cache.js?ver=6.2' id='wp-postviews-cache-js'></script>-->
+<script>
+    function currentType(data) {
+        const t = $(data).data('type');
+        $('input[name="applyType"]').val(t);
+        if(t=='link'){
+            $('.tg-sites-category').hide();
+        }
+    };
+</script>
+</body>
+<script>
+    $('#get_info').click(function () {
+        const url=$("#web_url").val();
+        console.log(url);
+        $.ajax({
+            type:"get",	//提交方式
+            url:'/website/getInfo',
+            data: "url="+url,
+            dataType: "json",   	//返回数据的格式
+            success:function (res) {
+                if(res.status===200){
+                  $("#web_name").val(res.data.name);
+                  $("#web_desc").val(res.data.description);
+                  $("#imageId").val(res.data.imageId);
+                }
+            },
+        });
+    });
+    $('#addBtn').click(function () {
+        const $f = $('#applyForm');
+        const obj = {}; //声明一个对象
+        const fields = $f.serializeArray();
+        $.each(fields, function(index, field) {
+            obj[field.name] = field.value; //通过变量，将属性值，属性一起放到对象中
+        })
+    $.ajax({
+        type:"POST",	//提交方式
+        url:'/apply/submit',
+        contentType: 'application/json',
+        data: JSON.stringify(obj),//将对象转为json字符串
+        dataType: "json",   	//返回数据的格式
+        success:function (data) {
+            if(data.status===200){
+                successAlert(data.msg);
+                $("#web_name").val("");
+                $("#web_url").val("");
+                $("#web_desc").val("");
+                $("#categoryId").val(0);
+            }else {
+                errorAlert(data.msg);
+            }
+        },
+    });
+});
+</script>
+</html>

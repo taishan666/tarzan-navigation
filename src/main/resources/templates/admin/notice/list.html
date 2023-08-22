@@ -1,0 +1,186 @@
+<div class="row">
+    <div class="colxl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="page-title-wrapper">
+            <div class="page-title-box">
+                <h4 class="page-title bold">公告管理</h4>
+            </div>
+            <div class="breadcrumb-list">
+                <ul>
+                    <li class="breadcrumb-link"><a th:href="@{admin}"><i class="fas fa-home mr-2"></i>首页</a></li>
+                    <li class="breadcrumb-link active">公告管理</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main content -->
+<section class="content">
+    <div class="card card-info card-header">
+            <form id="searchForm" class="needs-validation form-inline">
+                <div class="form-group">
+                    <label for="title">标题:</label>
+                    <input type="text" class="form-control m-2" id="title">
+                </div>
+                <div class="form-group">
+                    <label for="status">状态:</label>
+                    <select id="status" class="form-control m-2" required="">
+                        <option selected disabled>选择状态</option>
+                        <option value="1">正式</option>
+                        <option value="0">草稿</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary ml-3" type="submit">查询</button>
+                    <button class="btn btn-light ml-2" type="reset">重置</button>
+                </div>
+            </form>
+    </div>
+    <div class="card table-card card-body">
+        <div id="toolbar" class="btn-group">
+                <button id="btn_add" type="button" class="btn btn-primary">
+                    <span class="fa fa-plus" aria-hidden="true"></span>新增
+                </button>
+                <button id="btn_batch_delete" type="button" class="btn btn-danger">
+                    <span class="fa fa-trash" aria-hidden="true"></span>批量删除
+                </button>
+        </div>
+        <table class="table-sm" id="table"></table>
+    </div>
+</section>
+
+<script>
+    $(function () {
+        window.operateEvents = {
+            // 点击编辑
+            'click .btn_edit': function (e, value, row, index) {
+                editRow(row.id)
+            },
+            // 点击删除
+            'click .btn_del': function (e, value, row, index) {
+                deleteRow(row.id)
+            }
+        }
+        var columns = [
+            {checkbox: true},
+            {
+                field: 'title',
+                title: '标题',
+                align: "center"
+            },
+            {
+                field: 'createTime',
+                title: '创建日期',
+                align: "center",
+                formatter: function (value, row, index) {
+                    return new Date(value).Format('yyyy-MM-dd');
+                }
+            },
+            {
+                field: 'endTime',
+                title: '结束日期',
+                align: "center",
+                formatter: function (value, row, index) {
+                    return new Date(value).Format('yyyy-MM-dd');
+                }
+            },
+            {
+                field: 'status',
+                title: '状态',
+                align: "center",
+                formatter: function (value, row, index) {
+                    return row.status ? "正式" : "草稿";
+                }
+            },
+            {
+                field: 'operation',
+                title: '操作',
+                align: "center",
+                width: 200,
+                events: operateEvents,
+                formatter: operationFormatter
+            }];
+
+        function operationFormatter(value, row, index) {
+            var edit = '<button class="effect-btn btn btn-info mt-2 mr-2 icon-lg btn_edit"><i class="fas fa-edit"></i></button>';
+            var del = '<button class="effect-btn btn btn-danger mt-2 mr-2 icon-lg btn_del"><i class="fas fa-trash-alt"></i></button>';
+            return edit + del;
+        }
+
+        var options = {
+            id: "#table",
+            url: '/notice/page',
+            columns: columns,
+            toolbar: '#toolbar',
+            showRefresh: true,
+            queryParams: queryParams
+        }
+        Core.initTable(options);
+
+        function refreshTable() {
+            Core.refreshTable("#table")
+        }
+
+        // 查询参数
+        function queryParams(params) {
+            return {
+                pageNumber: params.pageNumber,
+                pageSize: params.pageSize,
+                title: $("#title").val(),
+                status:$("#status").val()
+            };
+        }
+
+        // 查询
+        $('#searchForm').submit(function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            refreshTable();
+        })
+
+        // 新增
+        $('#btn_add').on('click', function () {
+            window.location.href = "#notice/add"
+        })
+
+        // 编辑
+        function editRow(id) {
+            window.location.href = "#notice/edit?id=" + id
+        }
+
+        // 删除
+        function deleteRow(id) {
+            Core.confirm("确定删除？", function () {
+                Core.postAjax("/notice/remove", [id], function (data) {
+                    if (data.status === 200) {
+                        refreshTable();
+                    }
+                    layer.msg(data.msg);
+                })
+            })
+        }
+
+        // 批量删除
+        $("#btn_batch_delete").on('click', function () {
+            var checkedRows = Core.selectMutiData("#table");
+            if (checkedRows) {
+                Core.confirm("确定删除选中的" + checkedRows.length + "条记录？", function () {
+                    var ids = [];
+                    $.each(checkedRows, function (i, item) {
+                        ids.push(item.id);
+                    })
+                    var jsonStr = JSON.stringify(ids);
+                    Core.postAjax("/notice/remove", jsonStr, function (data) {
+                        if (data.status === 200) {
+                            refreshTable();
+                        }
+                        layer.msg(data.msg);
+                    }, function (err) {
+                        layer.msg(err)
+                    },"application/json; charset=UTF-8")
+                })
+            }
+        })
+
+    });
+
+</script>

@@ -1,0 +1,40 @@
+<websites>
+    <th:block th:each="category: ${categories}">
+        <th:block th:if="${#lists.isEmpty(category?.children)}" >
+            <div class="d-flex flex-fill align-items-center mb-4">
+                <h4 class="text-gray text-lg m-0"><i th:class="'site-tag '+${category?.icon}+' icon-lg mr-1'" th:id="${'term-'+category?.id}"></i>[[${category?.name}]]</h4>
+                <div class="flex-fill"></div>
+                <!--  <a class='btn-move text-xs' href=''>more+</a>-->
+            </div>
+            <div class="row io-mx-n2">
+                <!-- 网站-->
+                <div th:replace="web/card/sitecard::params(${category?.websites},${category?.type==1})"></div>
+                <!-- 文章-->
+                <div th:replace="web/card/postcard::params(${category?.websites},${category?.type==2})"></div>
+            </div>
+        </th:block>
+        <th:block th:unless="${#lists.isEmpty(category?.children)}" >
+            <h4 class="text-gray text-lg"><i th:class="'site-tag '+${category?.icon}+' icon-lg mr-1'" th:id="${'term-'+category?.id}"></i>[[${category?.name}]]</h4>
+            <!-- tab模式菜单 -->
+            <div class="d-flex flex-fill flex-tab align-items-center">
+                <div class='slider_menu mini_tab ajax-list-home' sliderTab="sliderTab" th:data-id="${category?.id}">
+                    <ul class="nav nav-pills tab-auto-scrollbar menu overflow-x-auto" role="tablist">
+                        <li th:each="cate,stat:${category?.children}" class="pagenumber nav-item" data-sidebar="1" data-postId="0" data-action="load_home_tab" data-taxonomy="favorites" th:data-id="${cate?.id}">
+                            <a th:id="${'term-'+category?.id+'-'+cate?.id}" th:class="'nav-link tab-noajax '+${stat.index==0? ' active load' : ''}" data-toggle="pill" th:href="${'#tab-'+category?.id+'-'+cate?.id}" th:data-link="${cate?.name}">[[${cate?.name}]]</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="flex-fill"></div>
+           <!--     <a class='btn-move tab-move text-xs ml-2' href=''>more+</a>-->
+            </div>
+            <!-- tab模式菜单 end -->
+            <div class="tab-content mt-4">
+                <!-- 网站-->
+                <div th:replace="web/tab/sitetab"></div>
+                <!-- 文章-->
+                <div th:replace="web/tab/posttab"></div>
+            </div>
+        </th:block>
+    </th:block>
+</websites>
+

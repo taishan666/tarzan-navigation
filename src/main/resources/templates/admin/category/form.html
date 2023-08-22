@@ -1,0 +1,52 @@
+<form id="categoryForm">
+    <input name="id" type="hidden" th:value="${category?.id}">
+    <input name="pid" type="hidden" th:value="${category?.pid}">
+    <div class="form-group row">
+        <label for="name" class="col-sm-3 col-form-label">上级分类:</label>
+        <div class="col-sm-9">
+            <input type="text" th:value="${category?.parentName}" name="parentName" class="form-control" id="parentName"
+                   placeholder="填写分类名称" readonly>
+            <div class="invalid-feedback">请填写上级分类</div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="name" class="col-sm-3 col-form-label">分类名称:</label>
+        <div class="col-sm-9">
+            <input type="text" th:value="${category?.name}" name="name" class="form-control" id="name"
+                   placeholder="填写分类名称" required>
+            <div class="invalid-feedback">请填写分类名称</div>
+        </div>
+    </div>
+    <div th:style="${category?.pid == 0 ? '' : 'display:none'}" class="form-group row  catalogFlag">
+        <label for="icon" class="col-sm-3 col-form-label">图标:</label>
+        <div class="col-sm-9">
+            <input type="text" th:value="${category?.icon}" name="icon" class="form-control" id="icon"
+                   placeholder="请填写图标" th:attr="required=${category?.pid == 0 ? 'required' : null}">
+            <div class="invalid-feedback">请填写图标</div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="type" class="col-sm-3 col-form-label">类型:</label>
+        <div class="col-sm-9">
+            <select id="type" class="form-control" name="type" required>
+                <option value="0" label="目录" th:if="${category?.pid == 0}" th:selected="${category?.type == 0}"></option>
+                <option value="1" label="网站" th:selected="${category?.type == 1}"></option>
+                <option value="2" label="文章" th:selected="${category?.type == 2}"></option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="sort" class="col-sm-3 col-form-label">分类排序:</label>
+        <div class="col-sm-9">
+            <input type="number"  th:value="${category?.sort}" name="sort" class="form-control" id="sort"
+                   placeholder="请填写分类排序" required>
+            <div class="invalid-feedback">请填写分类排序</div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    // 图标选择器
+    $(function () {
+        $('#icon').iconpicker({animation: false});
+    })
+</script>

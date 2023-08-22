@@ -1,0 +1,231 @@
+<div class="row">
+    <div class="colxl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="page-title-wrapper">
+            <div class="page-title-box">
+                <h4 class="page-title bold">失效网址</h4>
+            </div>
+            <div class="breadcrumb-list">
+                <ul>
+                    <li class="breadcrumb-link"><a th:href="@{admin}"><i class="fas fa-home mr-2"></i>首页</a></li>
+                    <li class="breadcrumb-link active">网站管理</li>
+                    <li class="breadcrumb-link active">失效网址</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main content -->
+<section class="content">
+    <div class="card card-info card-header">
+        <form id="searchForm" class="needs-validation form-inline" novalidate="">
+            <div class="form-group">
+                <label for="name">站点名称:</label>
+                <input type="text" class="form-control m-2" id="name" required="">
+            </div>
+            <div class="form-group">
+                <label for="url">站点链接:</label>
+                <input type="text" class="form-control m-2" id="url" required="">
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary ml-3" type="submit">查询</button>
+                <button class="btn btn-light ml-2" type="reset">重置</button>
+            </div>
+        </form>
+    </div>
+    <div class="card table-card card-body">
+        <div id="toolbar" class="btn-group">
+            <button id="btn_batch_delete" type="button" class="btn btn-danger">
+                <span class="fa fa-trash" aria-hidden="true"></span>批量删除
+            </button>
+        </div>
+        <table class="table-sm" id="table"></table>
+    </div>
+</section>
+
+<script>
+    $(function () {
+        window.operateEvents = {
+            // 点击恢复
+            'click .btn_restore': function (e, value, row, index) {
+                restoreRow(row.id)
+            },
+            // 点击删除
+            'click .btn_del': function (e, value, row, index) {
+                deleteRow(row.id)
+            },
+            // 点击预览
+            'click .btn_view': function (e, value, row, index) {
+                previewImg(row.img.base64)
+            }
+        }
+        const columns = [
+            {checkbox: true},
+            {
+                field: 'name',
+                title: '站点名称',
+                align: "center"
+            }, {
+                field: 'url',
+                title: '站点链接',
+                align: "center",
+                formatter: function (value, row, index) {
+                    return '<a href="' + value + '" target="_blank">'+value+'</a>'
+                }
+            }, {
+                field: 'description',
+                title: '站点描述',
+                align: "center",
+            }, {
+                field: 'img.base64',
+                title: '站长图片',
+                align: "center",
+                class: "link-pre",
+                events: operateEvents,
+                formatter: function (value, row, index) {
+                    return '<img src="' + value + '" style="height: 40px;" class="btn_view" referrerPolicy="no-referrer" />'
+                }
+            },
+            {
+                field: 'categoryName',
+                title: '所属分类',
+                align: "center",
+            },
+            {
+                field: 'status',
+                title: '状态',
+                align: "center",
+                formatter: function (value, row, index) {
+                    return value === 1 ? "正常" : "失效";
+                }
+            },
+            {
+                field: 'operation',
+                title: '操作',
+                align: "center",
+                width: 200,
+                events: operateEvents,
+                formatter: operationFormatter
+            }];
+        const onLoadSuccess = function () {	//在成功加载远程数据时触发
+            $("[name='switch']").bootstrapSwitch({
+                onText: "启用",      // 设置ON文本
+                offText: "禁用",    // 设置OFF文本
+                onColor: "success",// 设置ON文本颜色(info/success/warning/danger/primary)
+                offColor: "warning",  // 设置OFF文本颜色 (info/success/warning/danger/primary)
+                size: "small",    // 设置控件大小,从小到大  (mini/small/normal/large)
+                // 当开关状态改变时触发
+                onSwitchChange: function (event, state) {
+                    var status = state ? 1 : 0;
+                    var params = {id: this.value, status: status};
+                    var str = jQuery.param(params);
+                    Core.postAjax('/website/edit', str, function (data) {
+                        if (data.status === 200) {
+                            refreshTable();
+                        }
+                        layer.msg(data.msg);
+                    })
+                }
+            });
+        };
+
+        function operationFormatter(value, row, index) {
+            const restore = '<button class="effect-btn btn btn-info mt-2 mr-2 icon-lg btn_restore"><i class="fas fa-undo"></i></button>';
+            const del = '<button class="effect-btn btn btn-danger mt-2 mr-2 icon-lg btn_del"><i class="fas fa-trash-alt"></i></button>';
+            return  restore+del;
+        }
+
+        var options = {
+            id: "#table",
+            url: '/website/list',
+            columns: columns,
+            toolbar: '#toolbar',
+            showRefresh: true,
+            onLoadSuccess:onLoadSuccess,
+            queryParams: queryParams
+        }
+        Core.initTable(options);
+
+        function refreshTable() {
+            Core.refreshTable("#table")
+        }
+
+        // 查询参数
+        function queryParams(params) {
+            return {
+                pageNumber: params.pageNumber,
+                pageSize: params.pageSize,
+                name: $("#name").val(),
+                url: $("#url").val(),
+                status: 0
+            };
+        }
+
+        // 查询
+        $('#searchForm').submit(function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            refreshTable();
+        })
+
+        // 恢复
+        function restoreRow(id) {
+            Core.confirm("确定恢复？", function () {
+                var params = {id: id, status: 1};
+                var str = jQuery.param(params);
+                Core.postAjax('/website/edit', str, function (data) {
+                    if (data.status === 200) {
+                        refreshTable();
+                    }
+                    layer.msg(data.msg);
+                })
+            })
+        }
+
+        // 删除
+        function deleteRow(id) {
+            Core.confirm("确定删除？", function () {
+                Core.postAjax("/website/delete", {"id": id}, function (data) {
+                    if (data.status === 200) {
+                        refreshTable();
+                    }
+                    layer.msg(data.msg);
+                })
+            })
+        }
+
+        // 批量删除
+        $("#btn_batch_delete").on('click', function () {
+            var checkedRows = Core.selectMutiData("#table");
+            if (checkedRows) {
+                Core.confirm("确定删除选中的" + checkedRows.length + "条记录？", function () {
+                    var ids = [];
+                    $.each(checkedRows, function (i, item) {
+                        ids.push(item.id);
+                    })
+                    var jsonStr = JSON.stringify(ids);
+                    Core.postAjax("/website/batch/delete", jsonStr, function (data) {
+                        if (data.status === 200) {
+                            refreshTable();
+                        }
+                        layer.msg(data.msg);
+                    },function (err) {
+                        layer.msg(err)
+                    },"application/json; charset=UTF-8")
+                })
+            }
+        })
+
+    });
+    function previewImg(src) {
+        layer.open({
+            type: 1,
+            title: false,
+            closeBtn: 0,
+            area: '45%',
+            skin: 'layui-layer-nobg', //没有背景色
+            shadeClose: true,
+            content: '<img style="width: 100%" alt="link" src="' + src + '">'
+        });
+    }
+
+</script>

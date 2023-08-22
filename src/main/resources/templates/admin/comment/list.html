@@ -1,0 +1,272 @@
+<div class="row">
+    <div class="colxl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="page-title-wrapper">
+            <div class="page-title-box">
+                <h4 class="page-title bold">评论管理</h4>
+            </div>
+            <div class="breadcrumb-list">
+                <ul>
+                    <li class="breadcrumb-link"><a th:href="@{admin}"><i class="fas fa-home mr-2"></i>首页</a></li>
+                    <li class="breadcrumb-link active">留言管理</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main content -->
+<section class="content">
+    <div class="card card-info card-header">
+            <form id="searchForm" class="needs-validation form-inline" novalidate="">
+                <div class="form-group">
+                    <label for="status">状态:</label>
+                    <select id="status" class="form-control m-2" required="">
+                        <option selected disabled>选择状态</option>
+                        <option value="0">待审核</option>
+                        <option value="1">审核通过</option>
+                        <option value="2">审核失败</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-primary ml-3" type="submit">查询</button>
+                    <button class="btn btn-light ml-2" type="reset">重置</button>
+                </div>
+            </form>
+    </div>
+    <div class="card table-card card-body">
+        <div id="toolbar" class="btn-group">
+                <button id="btn_batch_delete" type="button" class="btn btn-danger">
+                    <span class="fa fa-trash" aria-hidden="true"></span>批量删除
+                </button>
+        </div>
+        <table class="table-sm" id="table"></table>
+    </div>
+</section>
+
+
+<!-- 表单模态框 -->
+<section id="formModalWrapper">
+    <div class="modal fade" id="formModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="formTitle">审核评论</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="formContent">
+                        <form id="commentForm">
+                            <input id="auditId" name="id" type="hidden">
+                            <input id="auditSid" name="sid" type="hidden">
+                            <div class="form-group row">
+                                <label for="status" class="col-sm-2 col-form-label">审核结果</label>
+                                <div class="col-sm-10">
+                                    <select name="status" class="form-control" required>
+                                        <option value="1">审核通过</option>
+                                        <option value="2">审核失败</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="status" class="col-sm-2 col-form-label">回复内容</label>
+                                <div class="col-sm-10">
+                                    <textarea id="replyArea" name="replyContent" class="form-control" rows="4"></textarea>
+                                    <div class="invalid-feedback">请填写回复内容</div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="saveOrUpdateBtn">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    $(function () {
+        window.operateEvents = {
+            // 点击审核
+            'click .btn_audit': function (e, value, row, index) {
+                auditComment(row.id, row.sid)
+            },
+            // 点击删除
+            'click .btn_del': function (e, value, row, index) {
+                deleteRow(row.id)
+            }
+        }
+        var columns = [
+            {checkbox: true},
+            {
+                field: 'nickname',
+                title: '作者',
+                align: "center"
+            }, {
+                field: 'email',
+                title: '邮箱',
+                align: "center"
+            }, {
+                field: 'ip',
+                title: 'ip',
+                align: "center",
+            },
+    /*        {
+                field: 'sid',
+                title: '文章/留言板',
+                align: "center",
+                formatter: function (value, row) {
+                    if (value == -1) {
+                        return '<span style="color: red">留言板</span>'
+                    } else {
+                        return '<span style="color: red">文章</span>'
+                     //   return '<span class="color-2c93fd">' + (row.article.title.length <= 15 ? row.article.title : (row.article.title.substring(0, 15) + '...')) + '</span>';
+                    }
+                }
+            },*/
+            {
+                field: 'content',
+                title: '内容',
+                align: "left",
+                width: 200,
+                formatter: function (value, row) {
+                    var rtn = value;
+                    if (row.replyContent != null) {
+                        rtn += '<div class="comment-parent"><b>原评：' + row.replyContent + '</b></div>'
+                    }
+                    return rtn;
+                }
+            }, {
+                field: 'status',
+                title: '状态',
+                align: "center",
+                formatter: function (value) {
+                    if (value === 0) {
+                        return '待审核'
+                    } else if (value === 1) {
+                        return '审核通过'
+                    } else if (value === 2) {
+                        return '审核失败'
+                    }
+                }
+            },
+            {
+                field: 'operation',
+                title: '操作',
+                align: "center",
+                width: 150,
+                events: operateEvents,
+                formatter: operationFormatter
+            }];
+
+        function operationFormatter(value, row, index) {
+            let color="btn-info";
+            if(row.status==0){
+                color="btn-warning"
+            }
+            const audit = '<button class="effect-btn btn '+color+' mt-2 mr-2 icon-lg btn_audit"><i class="fas fa-check"></i></button>';
+            const del = '<button class="effect-btn btn btn-danger mt-2 mr-2 icon-lg btn_del"><i class="fas fa-trash-alt"></i></button>';
+            return audit + del;
+        }
+
+        var options = {
+            id: "#table",
+            url: '/comment/list',
+            columns: columns,
+            toolbar: '#toolbar',
+            showRefresh: true,
+            escape: false,
+            queryParams: queryParams
+        }
+        Core.initTable(options);
+
+        function refreshTable() {
+            Core.refreshTable("#table")
+        }
+
+        // 查询参数
+        function queryParams(params) {
+            return {
+                pageNumber: params.pageNumber,
+                pageSize: params.pageSize,
+                status: $("#status").val()
+            };
+        }
+
+        // 查询
+        $('#searchForm').submit(function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            refreshTable();
+        })
+
+        // 删除
+        function deleteRow(id) {
+            Core.confirm("确定删除？", function () {
+                Core.postAjax("/comment/delete", {"id": id}, function (data) {
+                    if (data.status === 200) {
+                        refreshTable();
+                    }
+                    layer.msg(data.msg);
+                })
+            })
+        }
+
+        // 批量删除
+        $("#btn_batch_delete").on('click', function () {
+            var checkedRows = Core.selectMutiData("#table");
+            if (checkedRows) {
+                Core.confirm("确定删除选中的" + checkedRows.length + "条记录？", function () {
+                    const ids = [];
+                    $.each(checkedRows, function (i, item) {
+                        ids.push(item.id);
+                    })
+                    const jsonStr = JSON.stringify(ids);
+                    Core.postAjax("/comment/batch/delete",jsonStr, function (data) {
+                        if (data.status === 200) {
+                            refreshTable();
+                        }
+                        layer.msg(data.msg);
+                    },function (err) {
+                        layer.msg(err)
+                    },"application/json; charset=UTF-8")
+                })
+            }
+        })
+
+        // 保存或更新
+        $('#saveOrUpdateBtn').on('click', function () {
+            var $f = $('#commentForm');
+            var valid = $f[0].checkValidity();
+            var url = '/comment/audit';
+            if (valid) {
+                $f.addClass("was-validated")
+                Core.mask("#saveOrUpdateBtn");
+                Core.postAjax(url, $f.serialize(), function (data) {
+                    Core.unmask("#saveOrUpdateBtn");
+                    $f.removeClass("was-validated")
+                    if (data.status === 200) {
+                        $("#formModal").modal("hide");
+                        refreshTable();
+                    }
+                    layer.msg(data.msg);
+                }, function () {
+                    Core.unmask("#saveOrUpdateBtn");
+                })
+            }
+        })
+
+        /*审核*/
+        function auditComment(id,sid) {
+            $("#auditId").val(id);
+            $("#auditSid").val(sid);
+            $("#auditArea").val("");
+            $("#formModal").modal("show");
+        }
+
+    });
+
+</script>

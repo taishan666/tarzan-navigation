@@ -1,0 +1,87 @@
+server:
+  port: 80
+  http2:
+    enabled: true
+  undertow:
+    # 以下的配置会影响buffer,这些buffer会用于服务器连接的IO操作,有点类似netty的池化内存管理
+    buffer-size: 1024
+    # 是否分配的直接内存
+    direct-buffers: true
+    threads:
+      io: 16
+      worker: 256
+    url-charset: UTF-8
+  max-http-header-size: 1MB
+  compression:
+    enabled: true
+    minResponseSize: 1024
+    mime-types: application/json,application/xml,application/javascript,text/html,text/xml,text/plain,text/css
+  servlet:
+    encoding:
+      charset: UTF-8
+spring:
+  profiles:
+    active: dev
+  application:
+    name: tarzan-navigation
+  web:
+    resources:
+      cache:
+        cachecontrol:
+          max-age: 3600
+          no-store: false
+          no-transform: true
+          must-revalidate: true
+  cache:
+    type: ehcache
+    ehcache:
+      config: classpath:ehcache.xml
+  datasource:
+    druid:
+      initial-size: 1
+      min-idle: 3
+      max-active: 20
+      max-wait: 10000
+      filters: stat,wall,slf4j
+      stat-view-servlet:
+        enabled: true
+        reset-enable: false
+        url-pattern: /druid/*
+        allow:
+        deny:
+      filter:
+        wall:
+          config:
+            multi-statement-allow: true
+            comment-allow: true
+          enabled: true
+      validation-query: select 1
+      test-while-idle: true
+  #thymeleaf:
+   # cache: false
+    #mode: HTML
+    #prefix: file:${user.home}/.tarzan-cms/
+    #template-resolver-order: 1
+    #servlet:
+     # content-type: text/html
+    #encoding: UTF-8
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  data:
+    redis:
+      repositories:
+        enabled: false
+  aop:
+    proxy-target-class: true
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto
+  mapper-locations: classpath:mapper/**/*.xml,mapper/*.xml
+  type-aliases-package: com.tarzan.**.model
+

@@ -1,0 +1,50 @@
+<div id="sidebar" th:fragment="index(flag)" class="sticky sidebar-nav fade">
+    <div class="modal-dialog h-100  sidebar-nav-inner">
+        <div class="sidebar-logo border-bottom border-color">
+            <!-- logo -->
+            <div class="logo overflow-hidden">
+                <h1 class="text-hide position-absolute">泰山导航</h1>
+                <a href="/" class="logo-expanded">
+                    <img src="/web/images/logo.png" height="40" class="logo-light" th:alt="${SITE_CONFIG?.SITE_NAME}">
+                    <img src="/web/images/logo.png" height="40" class="logo-dark d-none" th:alt="${SITE_CONFIG?.SITE_NAME}">
+                </a>
+                <a href="/" class="logo-collapsed">
+                    <img src="/web/images/logo-collapsed.png" height="40" class="logo-light" th:alt="${SITE_CONFIG?.SITE_NAME}">
+                    <img src="/web/images/logo-collapsed.png" height="40" class="logo-dark d-none" th:alt="${SITE_CONFIG?.SITE_NAME}">
+                </a>
+            </div>
+            <!-- logo end -->
+        </div>
+        <div class="sidebar-menu flex-fill">
+            <div class="sidebar-scroll">
+                <div class="sidebar-menu-inner">
+                    <ul>
+                        <li class="sidebar-item" th:each="category : ${categories}">
+                            <a  th:href="${(flag?'':'/')+'#term-'+category.id}"  th:class="${flag?'smooth':''}" th:data-change="${flag?('#term-'+category.id):''}">
+                                <i th:class="${category?.icon}+' icon-fw icon-lg'"></i>
+                                <span>[[${category.name}]]</span>
+                            </a>
+                            <th:block th:unless="${#lists.isEmpty(category.children)}">
+                                <i class="iconfont icon-arrow-r-m sidebar-more text-sm"></i>
+                                <ul>
+                                    <li th:each="cate:${category.children}">
+                                        <a th:href="${(flag?'':'/')+'#term-'+category.id+'-'+cate?.id}" th:class="${flag?'smooth':''}"><span>[[${cate.name}]]</span></a>
+                                    </li>
+                                </ul>
+                            </th:block>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="border-top py-2 border-color">
+            <div class="flex-bottom">
+                <ul>
+                    <li id="menu-item-237" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-237 sidebar-item"><a href="/apply">
+                        <i class="iconfont icon-email icon-fw icon-lg"></i><span>网站提交</span></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

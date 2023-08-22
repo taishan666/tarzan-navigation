@@ -1,0 +1,258 @@
+
+<div class="row">
+    <div class="colxl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="page-title-wrapper">
+            <div class="page-title-box">
+                <h4 class="page-title bold">仪表盘</h4>
+            </div>
+            <div class="breadcrumb-list">
+                <ul>
+                    <li class="breadcrumb-link"><a th:href="@{admin}"><i class="fas fa-home mr-2"></i>主页</a></li>
+                    <li class="breadcrumb-link active">仪表盘</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Dashboard Start -->
+<div class="row">
+    <!-- Start Card-->
+    <div class="col-xl-3 col-lg-3 col-md-6">
+        <div class="card web-info-card">
+            <div class="card-body dd-flex align-items-center">
+                <div class="icon-info">
+                    <i class="fas fa-dharmachakra fa-4x"></i>
+                </div>
+                <div class="icon-info-text">
+                    <h5 class="web-title">网站数量</h5>
+                    <h4 class="web-card-title" th:text="${statistic.siteCount}"></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Start Card-->
+    <div class="col-xl-3 col-lg-3 col-md-6">
+        <div class="card web-info-card">
+            <div class="card-body dd-flex align-items-center">
+                <div class="icon-info">
+                    <i class="fas fa-link fa-4x"></i>
+                </div>
+                <div class="icon-info-text">
+                    <h5 class="web-title">友链数量</h5>
+                    <h4 class="web-card-title" th:text="${statistic.linkCount}"></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Start Card-->
+    <div class="col-xl-2 col-lg-2 col-md-6">
+        <div class="card web-info-card">
+            <div class="card-body dd-flex align-items-center">
+                <div class="icon-info">
+                    <i class="fa fa-comments fa-4x"></i>
+                </div>
+                <div class="icon-info-text">
+                    <h5 class="web-title">评论数量</h5>
+                    <h4 class="web-card-title" th:text="${statistic.commentCount}"></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Start Card-->
+    <div class="col-xl-2 col-lg-2 col-md-6">
+        <div class="card web-info-card">
+            <div class="card-body dd-flex align-items-center">
+                <div class="icon-info">
+                    <i class="fa fa-eye fa-4x"></i>
+                </div>
+                <div class="icon-info-text">
+                    <h5 class="web-title">访问次数</h5>
+                    <h4 class="web-card-title" th:text="${statistic.lookCount}"></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Start Card-->
+    <div class="col-xl-2 col-lg-2 col-md-6">
+        <div class="card web-info-card">
+            <div class="card-body dd-flex align-items-center">
+                <div class="icon-info">
+                    <i class="fa fa-users fa-4x"></i>
+                </div>
+                <div class="icon-info-text">
+                    <h5 class="web-title">访问人数</h5>
+                    <h4 class="web-card-title" th:text="${statistic.userCount}"></h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Area Spaline Chart -->
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"><!-- Area Spaline Chart -->
+        <div class="card chart-card">
+            <div class="card-header">
+                <h4>访问统计</h4>
+            </div>
+            <div class="card-body">
+                <div class="chart-holder">
+                    <div id="visitChart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--  map Chart -->
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="card chart-card">
+            <div class="card-header">
+                <h4>地区统计</h4>
+            </div>
+            <div class="card-body">
+                <div class="chart-holder">
+                    <div id="china" style="height: 600px;" ></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" th:inline="javascript">
+    const lookCountByDay = [[${statistic.lookCountByDay}]];
+    const userCountByDay = [[${statistic.userCountByDay}]];
+    const provUsers = [[${statistic.provUsers}]];
+    console.log(provUsers)
+</script>
+<script>
+    // 初始化echarts实例
+    const myEcharts = echarts.init(document.getElementById("china"));
+    const option = {
+        title: {  //标题样式
+            text: '中国地图',
+            x: "center",
+            textStyle: {
+                fontSize: 18,
+                color: "black"
+            },
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: function (params) {
+                console.log(params)
+                if (params.name) {
+                    return params.name + ' : ' + (isNaN(params.value) ? 0 : parseInt(params.value));
+                }
+            }
+        },
+        visualMap: {//视觉映射组件
+            top: 'bottom',
+            left: 'left',
+            min: 10,
+            max: 500000,
+            //text: ['High', 'Low'],
+            realtime: false,  //拖拽时，是否实时更新
+            calculable: true,  //是否显示拖拽用的手柄
+            inRange: {
+                color: ['lightskyblue', 'yellow', 'orangered']
+            }
+        },
+        series: [
+            {
+                name: '模拟数据',
+                type: 'map',
+                mapType: 'china',
+                roam: false,//是否开启鼠标缩放和平移漫游
+                itemStyle: {//地图区域的多边形 图形样式
+                    normal: {//是图形在默认状态下的样式
+                        label: {
+                            show: true,//是否显示标签
+                            textStyle: {
+                                color: "black"
+                            }
+                        }
+                    },
+                    zoom: 1.5,  //地图缩放比例,默认为1
+                    emphasis: {//是图形在高亮状态下的样式,比如在鼠标悬浮或者图例联动高亮时
+                        label: {show: true}
+                    }
+                },
+                top: "3%",//组件距离容器的距离
+                data: provUsers
+            }
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myEcharts.setOption(option);
+</script>
+
+<script>
+
+    $(function() {
+        visitChart();
+    });
+
+    /* Area Spaline Chart  */
+    function visitChart() {
+        const options = {
+            chart: {
+                height: 350,
+                type: 'area',
+                fontFamily: 'Poppins, sans-serif',
+                toolbar: {
+                    show: false
+                },
+                zoom: {
+                    enabled: false
+                },
+            },
+            dataLabels: {
+                enabled: false
+            },
+            stroke: {
+                curve: 'smooth'
+            },
+            series: [{
+                name: '近7日访问量',
+                data: Object.values(lookCountByDay)
+            }, {
+                name: '近7日用户量',
+                data: Object.values(userCountByDay)
+            }],
+            xaxis: {
+                type: 'datetime',
+                categories: Object.keys(lookCountByDay),
+                labels: {
+                    format: "yyyy-MM-dd",
+                    style: {
+                        colors: '#10163a',
+                        background: '#10163a',
+                        fontFamily: 'Poppins, sans-serif',
+                    }
+                }
+            },
+            yaxis: {
+                labels: {
+                    style: {
+                        color: '#10163a',
+                        fontFamily: 'Poppins, sans-serif',
+                    }
+                }
+            },
+            tooltip: {
+                x: {
+                    format: 'yyyy-MM-dd'
+                },
+            },
+            colors: ['#ffa000', '#11a0fd']
+        };
+
+        const chart = new ApexCharts(
+            document.querySelector("#visitChart"),
+            options
+        );
+
+        chart.render();
+    }
+
+</script>

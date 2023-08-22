@@ -1,0 +1,59 @@
+<form id="websiteForm">
+    <input name="id" type="hidden" th:value="${website?.id}">
+    <input id="imageId" name="imageId" type="hidden" th:value="${website?.imageId}">
+    <input name="origin" type="hidden" value="1">
+    <input  name="status" type="hidden" th:value="${website?.status}">
+    <div class="form-group row">
+        <label for="url" class="col-sm-3 col-form-label">站点链接:</label>
+        <div class="col-sm-9">
+            <input type="text" th:value="${website?.url}" name="url" class="form-control"
+                   id="url"
+                   placeholder="填写站点链接" required>
+            <div class="invalid-feedback">请填写站点链接</div>
+        </div>
+    </div>
+    <th:block  th:if="${website?.id!=null}">
+    <div class="form-group row">
+        <label for="name" class="col-sm-3 col-form-label">站点名称:</label>
+        <div class="col-sm-9">
+            <input type="text" th:value="${website?.name}" name="name" class="form-control" id="name"
+                   placeholder="填写站点名称" required>
+            <div class="invalid-feedback">请填写站点名称</div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="description" class="col-sm-3 col-form-label">站点描述:</label>
+        <div class="col-sm-9">
+            <input type="text" th:value="${website?.description}" name="description" class="form-control"
+                   id="description"
+                   placeholder="填写站点描述" >
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="img" class="col-sm-3 col-form-label">网站logo:</label>
+        <div class="upload-content">
+            <div class="content-img">
+                <div class="file"  id="filePicker" >
+                    <i  class="fa fa-plus"></i>
+                    <img th:src="${website?.img?.base64}" height="150px;" id="img" style="position: absolute;inset: 0px auto auto 0px;"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="email" class="col-sm-3 col-form-label">站长邮箱:</label>
+        <div class="col-sm-9">
+            <input type="text" th:value="${website?.email}" name="email" class="form-control"
+                   id="email" placeholder="填写站长邮箱">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="qq" class="col-sm-3 col-form-label">站长QQ:</label>
+        <div class="col-sm-9">
+            <input type="text" th:value="${website?.qq}" name="qq" class="form-control"
+                   id="qq" placeholder="填写站长QQ">
+        </div>
+    </div>
+    </th:block>
+</form>
+

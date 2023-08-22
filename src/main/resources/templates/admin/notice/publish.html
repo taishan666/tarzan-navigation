@@ -1,0 +1,203 @@
+<div class="row">
+    <div class="colxl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="page-title-wrapper">
+            <div class="page-title-box">
+                <h4 class="page-title bold">编辑公告</h4>
+            </div>
+            <div class="breadcrumb-list">
+                <ul>
+                    <li class="breadcrumb-link"><a th:href="@{admin}"><i class="fas fa-home mr-2"></i>首页</a></li>
+                    <li class="breadcrumb-link active">公告管理</li>
+                    <li class="breadcrumb-link active">编辑公告</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- From Start -->
+<div class="from-wrapper">
+    <form id="noticeForm" class="row">
+        <input th:value="${notice?.id}" type="hidden" name="id">
+        <input id="status" type="hidden" name="status">
+        <input id="noticeContent" type="hidden" name="content" th:value="${notice?.content}">
+        <div class="col-xl-8 col-lg-8 col-md-8 col-sm-8">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="title" name="title" th:value="${notice?.title}"
+                               placeholder="请输入公告标题">
+                    </div>
+                    <div class="form-group">
+                        <textarea  id="textEditor" th:text="${notice?.content}"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="form-group row">
+                            <label class="col-md-3 col-form-label">公告天数:</label>
+                            <div class="col-md-9">
+                                <input id="days" name="days" type="number" th:value="${notice?.days==null?7:notice?.days}">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-10 offset-sm-2">
+                                <button type="button" th:if="${notice?.id == null}" class="btn btn-primary"
+                                        onclick="addOrUpdate(1)">发布文章
+                                </button>
+                                <button type="button" th:if="${notice?.id == null}" class="btn btn-secondary"
+                                        onclick="addOrUpdate(0)">保存草稿
+                                </button>
+                                <button type="button" th:unless="${notice?.id == null}" class="btn btn-primary"
+                                        onclick="addOrUpdate(1)">发布更新
+                                </button>
+                                <button type="button" th:unless="${notice?.id == null}" class="btn btn-secondary"
+                                        onclick="addOrUpdate(0)">更新草稿
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    var content;
+    //自定义编辑器菜单
+    ice.editor("textEditor",function(e){
+        this.uploadUrl = '[[@{/image/editor/upload}]]';
+        this.pasteText = true;
+        this.screenshot = true;
+        this.screenshotUpload = true;
+        this.height='820px'; //高度
+        //第二步，自定义菜单，默认加载全部
+        this.menu = [
+            'backColor', //字体背景颜色
+            'fontSize', //字体大小
+            'foreColor', //字体颜色
+            'bold', //粗体
+            'italic', //斜体
+            'underline', //下划线
+            'strikeThrough', //删除线
+            'justifyLeft', //左对齐
+            'justifyCenter', //居中对齐
+            'justifyRight', //右对齐
+            'indent', //增加缩进
+            'outdent', //减少缩进
+            'insertOrderedList', //有序列表
+            'insertUnorderedList', //无序列表
+            'superscript', //上标
+            'subscript', //下标
+            'createLink', //创建连接
+            'unlink', //取消连接
+            'hr', //水平线
+            'face', //表格
+            'table', //表格
+           // 'files', //附件
+            'music', //音乐
+            'video', //视频
+            'insertImage', //图片
+            'removeFormat', //格式化样式
+            'paste', //富文本粘贴
+            'code', //源码
+            'line' //菜单分割线
+        ];
+        //关闭窗口最大化
+        this.maxWindow = false;
+        //下拉菜单类型
+        this.plugin({
+            menu:'代码段',
+            name:'codeLanguages',
+            dropdown:`
+				<div class="iceEditor-codeLanguages" style="padding:10px 20px;">
+					<select>
+						<option disabled selected><没有设置></option>
+						<option value ="html">HTML/XTML</option>
+						<option value ="css">CSS</option>
+						<option value ="js">JS</option>
+						<option value="php">PHP</option>
+						<option value="python">Python</option>
+						<option value="java">JAVA</option>
+						<option value="sql">SQL</option>
+						<option value="go">GO</option>
+						<option value="cpp">C++</option>
+						<option value="csharp">C#</option>
+						<option value="c">C</option>
+					</select>
+				</div>`,
+            success:function(e,z){
+                //获取content中的按钮
+                var select = e.getElementsByTagName('select')[0];
+                //设置点击事件
+                select.onchange=function(){
+                    //判断光标是否在pre标签中
+                    if(z.inNodeParent(z.range.getRangeAt(0).endContainer,'pre')){
+                        var pre = z.range.getRangeAt(0).endContainer.parentNode;
+                        if(pre.tagName == 'PRE'){
+                            pre.className = 'iceCode:'+select.value;
+                        }
+                        return;
+                    }
+                    var str = z.getSelectHTML().replace(/<\s*\/p\s*>/ig,"\n").replace(/<[^>]+>/g,'').replace(/\n/g,'<br>').trim();
+                    str = str.length?str:' ';
+                    z.element.focus();
+                    var range = z.range.getRangeAt(0);
+                    var frag = range.createContextualFragment('<pre class="iceCode:'+select.value+'">'+str+'</pre>');
+                    var lastNode = frag.firstChild.lastChild;
+                    range.insertNode(frag);
+                    range.setStart(lastNode,0);
+                    range.setEnd(lastNode,0);
+                    range.collapse();
+                    select.getElementsByTagName('option')[0].selected = true;
+                }
+            }
+        });
+        this.create();
+        content=this.getHTML();
+        this.inputCallback(function(html,text){
+             content=html;
+        });
+     //   this.setValue(html);
+    })
+
+    function addOrUpdate(status) {
+        if (validForm()) {
+            Core.confirm("确认保存公告？", function () {
+                $("#status").val(status);
+                $("#noticeContent").val(content);
+                console.log($("#noticeForm").serialize())
+                Core.postAjax("/notice/submit", $("#noticeForm").serialize(), function (data) {
+                    if (data.status === 200) {
+                        Core.load("#content", "notice/add");
+                    }
+                    layer.msg(data.msg)
+                })
+            })
+        }
+    }
+
+    function validForm() {
+        if ($("#title").val()) {
+            if (content) {
+                return true;
+            } else {
+                layer.msg("请输入公告内容！")
+                return false;
+            }
+        } else {
+            layer.msg("请输入标题！")
+            return false;
+        }
+
+    }
+</script>
+
+
+
+
+
+

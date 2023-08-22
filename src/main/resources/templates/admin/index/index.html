@@ -1,0 +1,150 @@
+<!DOCTYPE html><!--[if IE 8]>
+<html lang="en" class="ie8 no-js"><![endif]--><!--[if IE 9]>
+<html lang="en" class="ie9 no-js"><![endif]--><!--[if!IE]><!-->
+<!--<![endif]--><!-- Begin Head -->
+<head>
+<title>泰山导航-后台管理系统</title>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<meta name="author" content="tarzan">
+<meta name="MobileOptimized" content="320">
+<!--Start Style -->
+<link rel="stylesheet" type="text/css" th:href="@{/assets/libs/bootstrap/css/bootstrap.min.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/assets/libs/bootstrap-table/css/bootstrap-table.min.css}"/>
+<link rel="stylesheet" type="text/css" th:href="@{/assets/libs/bootstrap-switch/css/bootstrap-switch.min.css}"/>
+<link rel="stylesheet" type="text/css" th:href="@{/assets/libs/bootstrap-select/css/bootstrap-select.min.css}"/>
+<link rel="stylesheet" type="text/css" th:href="@{/assets/libs/ztree/css/ztree-bootstrap.css}"/>
+<link rel="stylesheet" type="text/css" th:href="@{/assets/libs/font-awesome/font-awesome.min.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/assets/libs/linecons/css/linecons.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/assets/libs/iconfont-iconpicker/css/iconpicker.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/assets/libs/icofont/icofont.min.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/assets/libs/treegrid/jquery.treegrid.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/assets/libs/apexcharts/apexcharts.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/assets/libs/uploader/css/webuploader.css}"/>
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/iconfont.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/font.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/style.css}">
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/uploadImg.css}">
+
+<!--<link rel="stylesheet" type="text/css" th:href="@{/admin/css/theme.css}">-->
+<!--<link rel="stylesheet" id="theme-change" type="text/css" href="#">-->
+</head>
+<body  onhashchange="handleHashChange()">
+
+<!-- 加载动画 -->
+<div class="loader">
+  <div class="spinner"><img th:src="@{/assets/img/loader.gif}" alt=""/></div>
+</div>
+<!-- Main Body -->
+<div class="page-wrapper">
+  <!-- Header Start -->
+  <navbar th:replace="admin/fragments/navbar :: navbar"></navbar>
+  <!-- Sidebar Start -->
+  <aside th:replace="admin/fragments/sidebar :: sidebar(${menuTree})"></aside>
+  <!-- Container Start -->
+  <div class="main-content">
+    <div class="col-sm-12" id="content"></div>
+    <!-- footer -->
+    <footer th:replace="admin/fragments/footer :: footer"></footer>
+  </div>
+
+</div>
+
+<!--<div id="style-switcher">
+  <div>
+    <ul class="colors">
+      <li>
+        <p class='colorchange' id='color'></p>
+      </li>
+      <li>
+        <p class='colorchange' id='color2'></p>
+      </li>
+      <li>
+        <p class='colorchange' id='color3'></p>
+      </li>
+      <li>
+        <p class='colorchange' id='color4'></p>
+      </li>
+      <li>
+        <p class='colorchange' id='color5'></p>
+      </li>
+      <li>
+        <p class='colorchange' id='style'></p>
+      </li>
+    </ul>
+  </div>
+  <div class="bottom"><a href="" class="settings"><i class="fa fa-cog" aria-hidden="true"></i></a></div>
+</div>-->
+<script th:src="@{/assets/libs/jquery/jquery.min.js}"></script>
+<script th:src="@{/assets/libs/popper/popper.min.js}"></script>
+<script th:src="@{/assets/libs/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/assets/libs/bootstrap-table/js/bootstrap-table.min.js}"></script>
+<script th:src="@{/assets/libs/bootstrap-table/js/bootstrap-table-zh-CN.min.js}"></script>
+<script th:src="@{/assets/libs/bootstrap-switch/js/bootstrap-switch.min.js}"></script>
+<script th:src="@{/assets/libs/bootstrap-select/js/bootstrap-select.min.js}"></script>
+<script th:src="@{/assets/libs/bootstrap-select/js/bootstrap-select-zh_CN.js}"></script>
+<script th:src="@{/assets/libs/iconfont-iconpicker/js/iconpicker.js}"></script>
+<script th:src="@{/assets/libs/layer/layer.js}"></script>
+<script th:src="@{/assets/libs/ztree/js/jquery.ztree.all.js}"></script>
+<script th:src="@{/assets/libs/treegrid/jquery.treegrid.min.js}"></script>
+<script th:src="@{/assets/libs/treegrid/jquery.treegrid.extension.js}"></script>
+<script th:src="@{/assets/libs/treegrid/tree.table.js}"></script>
+<script th:src="@{/assets/libs/iceEditor/iceEditor.min.js}"></script>
+<script th:src="@{/assets/libs/js-xss/xss.js}"></script>
+<script th:src="@{/assets/libs/apexcharts/apexcharts.min.js}"></script>
+<script th:src="@{/assets/libs/uploader/js/webuploader.js}"></script>
+<script th:src="@{/assets/js/custom.js}"></script>
+<script th:src="@{/assets/js/core.js}"></script>
+<script th:src="@{/assets/js/download.min.js}"></script>
+<script th:src="@{/assets/libs/echarts/echarts.js}"></script>
+<script th:src="@{/assets/libs/echarts/map/js/china.js}"></script>
+<script>
+  function getMessages(){
+    Core.postAjax("/matter/todo", {}, function (res) {
+      if (res.status === 200) {
+        if (res.data.total > 0) {
+          $("#message_num").text("你有"+res.data.total+"条新消息");
+          $("#notification-info").attr("class", "notification-info");
+          $("#comment-todo").text(res.data.toAuditComments);
+          $("#website-todo").text(res.data.toAuditWebsites);
+          $("#link-todo").text(res.data.toAuditLinks);
+        }else {
+          $("#message_num").text("你有0条新消息")
+          $("#notification-info").attr("class", "");
+        }
+      }
+    })
+  }
+  window.setInterval(function(){
+    getMessages();
+  }, 10000);
+
+</script>
+
+<!-- 声明项目上下文路径 -->
+<script type="text/javascript" th:inline="javascript">
+  ctx ='';
+</script>
+<script type="text/javascript" th:inline="javascript">
+  const activeName = 'active';
+  const defaultPageHash = '#dashboard';
+  const animationSpeed = 300;
+  $(function () {
+    handleHashChange()
+  });
+  function handleHashChange() {
+    let hash = location.hash;
+    hash = hash ? hash : defaultPageHash
+    const $href = $('.active-li > a[href="' + hash + '"]');
+    if(hash===defaultPageHash){
+      $href.parent().parent().find("li.active").removeClass(activeName);
+      $href.parent().addClass(activeName)
+    }
+    if ($href.length > 0 ) {
+      $href.parent().parent().slideDown(animationSpeed, function() {})
+    }
+    Core.load("#content", hash.replace('#', ''));
+  }
+</script>
+</body>
+</html>

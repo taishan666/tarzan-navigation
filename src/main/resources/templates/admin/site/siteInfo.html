@@ -1,0 +1,182 @@
+<div class="row">
+    <div class="colxl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="page-title-wrapper">
+            <div class="page-title-box">
+                <h4 class="page-title bold">基础信息</h4>
+            </div>
+            <div class="breadcrumb-list">
+                <ul>
+                    <li class="breadcrumb-link"><a th:href="@{admin}"><i class="fas fa-home mr-2"></i>首页</a></li>
+                    <li class="breadcrumb-link active">网站管理</li>
+                    <li class="breadcrumb-link active">基础信息</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main content -->
+<section class="content">
+ <div class="card card-body">
+     <form id="siteInfoForm">
+            <ul class="nav nav-tabs" id="myTab2" role="tablist">
+                <li class="nav-item"><a class="nav-link active" id="home-tab2" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">常规设置</a></li>
+                <li class="nav-item"><a class="nav-link" id="profile-tab19" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">SEO设置</a></li>
+                <li class="nav-item"><a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">其他设置</a></li>
+            </ul>
+            <div class="tab-content web-content2" id="myTabContent">
+                <div class="tab-pane fade show active" id="home" role="tabpanel">
+                    <div class="form-group row">
+                        <label for="SITE_NAME" class="col-sm-2 col-form-label">网站名称:</label>
+                        <div class="col-sm-10">
+                            <input type="text" th:value="${siteInfo?.SITE_NAME}" name="SITE_NAME" class="form-control"
+                                   id="SITE_NAME"
+                                   placeholder="填写网站名称" required>
+                            <div class="invalid-feedback">请填写网站名称</div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="img" class="col-sm-2 col-form-label">站长头像:</label>
+                        <input id="SITE_PERSON_PIC" name="SITE_PERSON_PIC" type="hidden" th:value="${siteInfo?.SITE_PERSON_PIC}">
+                        <div class="col-sm-10">
+                            <div class="upload-content">
+                                <div class="content-img"  style="text-align:left">
+                                    <div class="file"  id="filePicker">
+                                        <i  class="fa fa-plus"></i>
+                                        <img th:src="${siteInfo?.SITE_PERSON_PIC_BASE64}" height="150px;" id="img" style="position: absolute;inset: 0px auto auto 0px;"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="SITE_PERSON_NAME" class="col-sm-2 col-form-label">站长名称:</label>
+                        <div class="col-sm-10">
+                            <input type="text" th:value="${siteInfo?.SITE_PERSON_NAME}" name="SITE_PERSON_NAME"
+                                   class="form-control" id="SITE_PERSON_NAME"
+                                   placeholder="填写站长名称" required>
+                            <div class="invalid-feedback">请填写站长名称</div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="SITE_PERSON_DESC" class="col-sm-2 col-form-label">站长描述:</label>
+                        <div class="col-sm-10">
+                <textarea th:text="${siteInfo?.SITE_PERSON_DESC}" rows="2" type="text" class="form-control"
+                          id="SITE_PERSON_DESC" name="SITE_PERSON_DESC"></textarea>
+                            <div class="invalid-feedback">请填写站长描述</div>
+                        </div>
+                    </div>
+                    <!--           <div class="form-group row">
+                                  <label for="SITE_STATIC" class="col-sm-2 col-form-label">网站静态化:</label>
+                                  <div class="col-sm-10" align="left">
+                                      <input id="SITE_STATIC" name="SITE_STATIC" type="checkbox" th:checked="${#bools.isTrue(siteInfo?.SITE_STATIC)}">
+                                  </div>
+                              </div>-->
+                </div>
+                <div class="tab-pane fade" id="profile" role="tabpanel">
+                    <div class="form-group row">
+                        <label for="SITE_KWD" class="col-sm-2 col-form-label">网站关键字:</label>
+                        <div class="col-sm-10">
+            <textarea th:text="${siteInfo?.SITE_KWD}" rows="2" type="text" class="form-control" id="SITE_KWD"
+                      name="SITE_KWD"></textarea>
+                            <div class="invalid-feedback">请填写网站关键字</div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="SITE_DESC" class="col-sm-2 col-form-label">网站描述:</label>
+                        <div class="col-sm-10">
+            <textarea th:text="${siteInfo?.SITE_DESC}" rows="2" type="text" class="form-control" id="SITE_DESC"
+                      name="SITE_DESC"></textarea>
+                            <div class="invalid-feedback">请填写网站描述</div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="BAIDU_PUSH_URL" class="col-sm-2 col-form-label">百度推送地址:</label>
+                        <div class="col-sm-10">
+                            <input type="text" th:value="${siteInfo?.BAIDU_PUSH_URL}" name="BAIDU_PUSH_URL" class="form-control"
+                                   id="BAIDU_PUSH_URL"
+                                   placeholder="填写百度推送地址" required>
+                            <div class="invalid-feedback">请填写百度推送地址</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="contact" role="tabpanel">
+                    <div class="form-group row">
+                        <label for="STATISTICS_CODE" class="col-sm-2 col-form-label">统计代码:</label>
+                        <div class="col-sm-10">
+                <textarea th:text="${siteInfo?.STATISTICS_CODE}" rows="2" type="text" class="form-control" id="STATISTICS_CODE"
+                          name="STATISTICS_CODE"></textarea>
+                            <div class="invalid-feedback">请填写网站统计代码</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <button type="submit" id="btn_save" class="btn btn-info">保存配置</button>
+                </div>
+            </div>
+     </form>
+        </div>
+</section>
+
+<script>
+
+    $(function () {
+
+/*        $("#SITE_STATIC").bootstrapSwitch({
+            onText : "启用",      // 设置ON文本
+            offText : "禁用",    // 设置OFF文本
+            onSwitchChange : function(event, state) {
+                if(state==true){
+                    this.value="on";
+                }else{
+                    this.value="off";
+                }
+            }
+        });*/
+        // 初始化Web Uploader
+        var uploader = WebUploader.create({
+            // 选完文件后，是否自动上传。
+            auto: true,
+            // swf文件路径
+            swf: '/admin/img/Uploader.swf',
+            // 文件接收服务端。
+            server: '[[@{/image/upload}]]',
+            // 选择文件的按钮。可选。
+            // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+            pick: '#filePicker',
+            // 只允许选择图片文件。
+            accept: {
+                title: 'Images',
+                extensions: 'gif,jpg,jpeg,bmp,png,ico',
+                mimeTypes: 'image/*'
+            }
+        });
+
+        // 文件上传成功，给item添加成功class, 用样式标记上传成功。
+        uploader.on( 'uploadSuccess', function( file,data ) {
+            $("#SITE_PERSON_PIC").val(data.imageId);
+            $("#img").attr("src",data.base64);
+        });
+        // 文件上传失败，显示上传出错。
+        uploader.on( 'uploadError', function( file ) {
+            console.log('上传失败');
+        });
+
+        $('#btn_save').on('click', function () {
+            var $f = $('#siteInfoForm');
+            var valid = $f[0].checkValidity();
+           if (valid) {
+                $f.addClass("was-validated")
+                Core.mask("#btn_save");
+                Core.postAjax('/siteInfo/edit', $f.serialize(), function (data) {
+                    Core.unmask("#btn_save");
+                    layer.msg(data.msg);
+                    $f.removeClass("was-validated")
+                }, function () {
+                    Core.unmask("#btn_save");
+                })
+            }
+        })
+
+
+    })
+</script>

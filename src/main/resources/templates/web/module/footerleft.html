@@ -1,0 +1,7 @@
+<footer>
+    <div id="nav-tools" class="d-flex flex-column footernav">
+        <a  th:each="category:${categories}" th:href="${'#term-'+category?.id}" class="mybtn rounded-circle smooth" data-toggle="tooltip" data-placement="right" th:title="${category?.name}" th:data-original-title="${category?.name}">
+            <i th:class="${category?.icon}"></i>
+        </a>
+    </div>
+</footer>

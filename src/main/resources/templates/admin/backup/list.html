@@ -1,0 +1,208 @@
+<div class="row">
+    <div class="colxl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+        <div class="page-title-wrapper">
+            <div class="page-title-box">
+                <h4 class="page-title bold">数据备份</h4>
+            </div>
+            <div class="breadcrumb-list">
+                <ul>
+                    <li class="breadcrumb-link"><a th:href="@{admin}"><i class="fas fa-home mr-2"></i>首页</a></li>
+                    <li class="breadcrumb-link active">运维管理</li>
+                    <li class="breadcrumb-link active">数据备份</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main content -->
+<section class="content">
+    <div class="card table-card card-body">
+    <div id="toolbar" class="btn-group">
+                <button id="btn_add" type="button" class="btn btn-primary">
+                    <span class="fa fa-plus" aria-hidden="true"></span>备份
+                </button>
+        <button id="btn_import" type="button" class="btn btn-dark">
+            <span class="fa fa-upload" aria-hidden="true"></span>导入
+        </button>
+        </div>
+        <table class="table-sm" id="table"></table>
+    </div>
+</section>
+<!-- 表单模态框 -->
+<section id="formModalWrapper">
+    <div class="modal fade" id="formModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="formTitle"></h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="formContent">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Script Start -->
+<script>
+    $(function () {
+        window.operateEvents = {
+            // 点击恢复
+            'click .btn_rollback': function (e, value, row, index) {
+                rollback(row.fileName)
+            },
+            // 点击删除
+            'click .btn_del': function (e, value, row, index) {
+                deleteRow(row.fileName)
+            },
+            // 点击下载
+            'click .btn_download': function (e, value, row, index) {
+                download(row.fileName)
+            }
+        }
+        var columns = [
+            {
+                field: 'fileName',
+                title: '文件名称',
+                align: "center"
+            },
+            {
+                field: 'size',
+                title: '文件大小',
+                align: "center",
+                formatter: function (value) {
+                    const c = value / 1024;
+                    return Math.ceil(c)+'k';
+                }
+            },
+            {
+                field: 'createTime',
+                title: '创建时间',
+                align: "center"
+            },{
+                field: 'operation',
+                title: '操作',
+                align: "center",
+                width: 200,
+                events: operateEvents,
+                formatter: operationFormatter
+            }];
+
+
+        var options = {
+            id: "#table",
+            url: '/backup/list',
+            columns: columns,
+            toolbar: '#toolbar',
+            showRefresh: true,
+            queryParams: queryParams
+        }
+        Core.initTable(options);
+
+        function refreshTable() {
+            Core.refreshTable("#table")
+        }
+
+        function operationFormatter(value, row, index) {
+            var download = '<button class="effect-btn btn btn-info mt-2 mr-2 icon-lg btn_download"><i class="fas fa-download"></i></button>';
+            var rollback = '<button class="effect-btn btn btn-info mt-2 mr-2 icon-lg btn_rollback"><i class="fas fa-play"></i></button>';
+            var del = '<button class="effect-btn btn btn-danger mt-2 mr-2 icon-lg btn_del"><i class="fas fa-trash-alt"></i></button>';
+            return download+rollback + del;
+        }
+        // 查询参数
+        function queryParams(params) {
+            return {
+                pageNumber: params.pageNumber,
+                pageSize: params.pageSize,
+                fileName: $("#fileName").val()
+            };
+        }
+
+        // 查询
+        $('#searchForm').submit(function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            refreshTable();
+        })
+
+        // 备份
+        $("#btn_add").on('click', function () {
+                Core.confirm("确定备份数据记录？", function () {
+                    Core.postAjax("/backup/add", {}, function (data) {
+                        if (data.status === 200) {
+                            refreshTable();
+                        }
+                        layer.msg(data.msg);
+                    })
+                })
+        })
+
+        // 导入
+        $('#btn_import').on('click', function () {
+            Core.load("#formContent", "/backup/upload", function () {
+                $('#formTitle').text('sql文件导入')
+                $("#formModal").modal('show');
+            });
+        })
+
+        //只是在点击后初始化的时候生成
+        $("#formModal").on("shown.bs.modal", function () {
+            var uploader = WebUploader.create({
+                auto: true,
+                pick: {
+                    id: '#filePicker',
+                    label: '点击选择sql文件'
+                },
+                swf: '/admin/img/Uploader.swf',
+                server: '[[@{/backup/upload}]]',
+                accept: {
+                    title: 'sql',
+                    extensions: 'sql',
+                    mimeTypes: ' multipart/form-data'
+                },
+                disableGlobalDnd: true
+            });
+            uploader.on('uploadSuccess', function (file, data) {
+                layer.msg('上传成功');
+                $("#formModal").modal('hide');
+                refreshTable();
+            });
+            uploader.on('uploadError', function (file) {
+                layer.msg('上传失败');
+            });
+        })
+
+        // 删除
+        function deleteRow(fileName) {
+            Core.confirm("确定删除"+fileName+"？", function () {
+                Core.postAjax("/backup/delete", {"fileName": fileName}, function (data) {
+                    if (data.status === 200) {
+                        refreshTable();
+                    }
+                    layer.msg(data.msg);
+                })
+            })
+        }
+        // 下载
+        function download(fileName){
+            Core.confirm("确定下载"+fileName+"？", function () {
+                Core.postAjax("/backup/download", {"fileName": fileName}, function (data) {
+                    Core.download(data,fileName);
+                })
+            })
+        }
+
+        // 恢复
+        function rollback(fileName) {
+            Core.confirm("确定恢复"+fileName+"？", function () {
+                Core.postAjax("/backup/rollback", {"fileName": fileName}, function (data) {
+                    layer.msg(data.msg);
+                })
+            })
+        }
+    });
+</script>

@@ -1,0 +1,33 @@
+<div class="d-flex slider-menu-father mb-4">
+    <div class="slider_menu mini_tab into" slidertab="sliderTab">
+        <ul class="nav nav-pills tab-auto-scrollbar menu overflow-x-auto" role="tablist"><li class="anchor" style="position: absolute; width: 80px; height: 28px; left: 0px; opacity: 1;"></li>
+            <li class="pagenumber nav-item">
+                <a class="nav-link ajax-home-hot-list active load" data-toggle="pill" href="#ct-tab-sites-views0" data-action="load_hot_post" data-datas="{&quot;data&quot;:{&quot;title&quot;:&quot;热门网址&quot;,&quot;type&quot;:&quot;sites&quot;,&quot;order&quot;:&quot;date&quot;,&quot;num&quot;:&quot;12&quot;}}">热门网址</a>
+            </li>
+            <li class="pagenumber nav-item">
+                <a class="nav-link ajax-home-hot-list " data-toggle="pill" href="#ct-tab-sites-modified1" data-action="load_hot_post" data-datas="{&quot;data&quot;:{&quot;title&quot;:&quot;随机推荐&quot;,&quot;type&quot;:&quot;sites&quot;,&quot;order&quot;:&quot;date&quot;,&quot;num&quot;:&quot;12&quot;}}">随机推荐</a>
+            </li>
+            <li class="pagenumber nav-item">
+                <a class="nav-link ajax-home-hot-list " data-toggle="pill" href="#ct-tab-sites-date2" data-action="load_hot_post" data-datas="{&quot;data&quot;:{&quot;title&quot;:&quot;最新网址&quot;,&quot;type&quot;:&quot;sites&quot;,&quot;order&quot;:&quot;date&quot;,&quot;num&quot;:&quot;12&quot;}}">最新网址</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="tab-content">
+    <div id="ct-tab-sites-views0" class="tab-pane active">
+        <div class="row  ajax-list-body">
+            <!-- 网站-->
+            <div th:replace="web/card/minicard::params(${hotWebsites},true)"></div>
+        </div>
+    </div>
+    <div id="ct-tab-sites-modified1" class="tab-pane">
+        <div class="row  ajax-list-body position-relative">
+            <div class="col-lg-12 customize_nothing"><div class="nothing mb-4"><i class="iconfont icon-loading icon-spin mr-2"></i>加载中...</div></div>
+        </div>
+    </div>
+    <div id="ct-tab-sites-date2" class="tab-pane">
+        <div class="row  ajax-list-body position-relative">
+            <div class="col-lg-12 customize_nothing"><div class="nothing mb-4"><i class="iconfont icon-loading icon-spin mr-2"></i>加载中...</div></div>
+        </div>
+    </div>
+</div>
