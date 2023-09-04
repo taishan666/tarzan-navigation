@@ -8,12 +8,11 @@ import com.tarzan.nav.shiro.realm.UserRealm;
 import com.tarzan.nav.utils.ShiroAESKeyUtil;
 import org.apache.shiro.cache.ehcache.EhCacheManager;
 import org.apache.shiro.codec.Base64;
-import org.apache.shiro.config.ConfigurationException;
-import org.apache.shiro.io.ResourceUtils;
 import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.util.ThreadContext;
 import org.apache.shiro.web.mgt.CookieRememberMeManager;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.apache.shiro.web.servlet.SimpleCookie;
@@ -24,8 +23,6 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.Resource;
 import javax.servlet.Filter;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -73,7 +70,7 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setUnauthorizedUrl("/error/403");
         //自定义拦截器
         Map<String, Filter> filtersMap = new LinkedHashMap<>(1);
-        //限制同一帐号同时在线的个数。
+        //限制同一账号同时在线的个数。
         filtersMap.put("kickOut", kickoutSessionControlFilter());
         shiroFilterFactoryBean.setFilters(filtersMap);
         // 设置全局filter
@@ -84,7 +81,7 @@ public class ShiroConfig {
     /**
      * cookie对象;
      *
-     * @return
+     * @return SimpleCookie
      */
     public SimpleCookie rememberMeCookie() {
         //这个参数是cookie的名称，对应前端的checkbox的name = rememberMe
@@ -97,7 +94,7 @@ public class ShiroConfig {
     /**
      * cookie管理对象;记住我功能
      *
-     * @return
+     * @return CookieRememberMeManager
      */
     public CookieRememberMeManager rememberMeManager() {
         CookieRememberMeManager cookieRememberMeManager = new CookieRememberMeManager();
@@ -112,6 +109,8 @@ public class ShiroConfig {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         //设置realm.
         securityManager.setRealm(shiroRealm);
+        //加上这句代码手动绑定
+        ThreadContext.bind(securityManager);
         /*记住我*/
         securityManager.setRememberMeManager(rememberMeManager());
         // 自定义缓存实现 使用ehcache
@@ -126,7 +125,7 @@ public class ShiroConfig {
      * 使用代理方式;所以需要开启代码支持;
      *
      * @param securityManager
-     * @return
+     * @return AuthorizationAttributeSourceAdvisor
      */
     @Bean
     public AuthorizationAttributeSourceAdvisor authorizationAttributeSourceAdvisor(SecurityManager securityManager) {
@@ -148,19 +147,6 @@ public class ShiroConfig {
 
 
     /**
-     * 返回配置文件流 避免ehcache配置文件一直被占用，无法完全销毁项目重新部署
-     */
-    protected InputStream getCacheManagerConfigFileInputStream() {
-        String configFile = "classpath:ehcache/ehcache-shiro.xml";
-        try {
-            return ResourceUtils.getInputStreamForPath(configFile);
-        } catch (IOException e) {
-            throw new ConfigurationException(
-                    "Unable to obtain input stream for cacheManagerConfigFile [" + configFile + "]", e);
-        }
-    }
-
-    /**
      * shiro session的管理
      */
     @Bean
@@ -176,7 +162,7 @@ public class ShiroConfig {
     /**
      * 限制同一账号登录同时登录人数控制
      *
-     * @return
+     * @return KickOutSessionControlFilter
      */
     public KickOutSessionControlFilter kickoutSessionControlFilter() {
         KickOutSessionControlFilter kickoutSessionControlFilter = new KickOutSessionControlFilter();
