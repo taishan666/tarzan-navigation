@@ -35,28 +35,13 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(commonDataInterceptor).addPathPatterns("/**");
     }
 
-
-/*
-    @Bean
-    public ClassLoaderTemplateResolver localTemplateResolver() {
-        ClassLoaderTemplateResolver resolver = new ClassLoaderTemplateResolver();
-        resolver.setPrefix("templates/");
-        resolver.setSuffix(".html");
-        resolver.setTemplateMode(TemplateMode.HTML);
-        resolver.setCharacterEncoding("UTF-8");
-        resolver.setOrder(0);
-        resolver.setCheckExistence(true);
-        return resolver;
-    }
-*/
-
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 //是否发送Cookie
-               // .allowCredentials(true);
-                .allowedOrigins("*")
-               .allowedMethods("*")
+                .allowCredentials(true)
+                .allowedOriginPatterns("*")
+                .allowedMethods("*")
                 .allowedHeaders("*")
                 .exposedHeaders("Authorization", "Cache-Control", "Content-Type");
     }

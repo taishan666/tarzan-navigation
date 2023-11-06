@@ -151,7 +151,8 @@ var Core = (function () {
      * @param success
      */
     core.initTable = function (options, success) {
-        var tableOptions = $.extend({}, coreOptions.tableOptions, options);
+        const tableOptions = $.extend({}, coreOptions.tableOptions, options);
+        console.log(tableOptions)
         tableOptions.url = (ctx + tableOptions.url).replace('//', '/');
         $(tableOptions.id).bootstrapTable({
             url: tableOptions.url, //请求后台的URL（*）

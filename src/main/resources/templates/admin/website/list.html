@@ -256,6 +256,7 @@
 
         // 查询参数
         function queryParams(params) {
+            console.log(params)
             return {
                 pageNumber: params.pageNumber,
                 pageSize: params.pageSize,
@@ -317,6 +318,7 @@
                 $('#formTitle').text('编辑')
                 $("#formModal").modal('show');
             });
+            Core.initTable(options);
         }
 
         // 删除
@@ -324,7 +326,7 @@
             Core.confirm("确定删除？", function () {
                 Core.postAjax("/website/delete", {"id": id}, function (data) {
                     if (data.status === 200) {
-                        refreshTable();
+                        Core.initTable(options);
                     }
                     layer.msg(data.msg);
                 })

@@ -56,7 +56,7 @@ public class JsoupUtil {
                 title= titleEle.text();
             }else {
                 titleEle=doc.selectFirst("[property=og:title]");
-                title=titleEle.attr("content");
+                title=titleEle==null?"":titleEle.attr("content");
             }
         }
         return title;
