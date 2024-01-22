@@ -98,27 +98,27 @@
 <script th:src="@{/assets/js/download.min.js}"></script>
 <script th:src="@{/assets/libs/echarts/echarts.js}"></script>
 <script th:src="@{/assets/libs/echarts/map/js/china.js}"></script>
+<script th:src="@{/js/stomp.js}"></script>
+<script th:src="@{/js/sockjs.min.js}"></script>
 <script>
-  function getMessages(){
-    Core.postAjax("/matter/todo", {}, function (res) {
-      if (res.status === 200) {
-        if (res.data.total > 0) {
-          $("#message_num").text("你有"+res.data.total+"条新消息");
-          $("#notification-info").attr("class", "notification-info");
-          $("#comment-todo").text(res.data.toAuditComments);
-          $("#website-todo").text(res.data.toAuditWebsites);
-          $("#link-todo").text(res.data.toAuditLinks);
-        }else {
-          $("#message_num").text("你有0条新消息")
-          $("#notification-info").attr("class", "");
-        }
+  const socket = new SockJS('/simple');
+  stompClient = Stomp.over(socket);
+  stompClient.connect({}, function (frame) {
+    stompClient.subscribe('/topic/notification', function (response) {
+     // console.log(response.body);
+      const data=JSON.parse(response.body);
+      if (data.total > 0) {
+        $("#message_num").text("你有"+data.total+"条新消息");
+        $("#notification-info").attr("class", "notification-info");
+        $("#comment-todo").text(data.toAuditComments);
+        $("#website-todo").text(data.toAuditWebsites);
+        $("#link-todo").text(data.toAuditLinks);
+      }else {
+        $("#message_num").text("你有0条新消息")
+        $("#notification-info").attr("class", "");
       }
-    })
-  }
-  window.setInterval(function(){
-    getMessages();
-  }, 10000);
-
+    });
+  });
 </script>
 
 <!-- 声明项目上下文路径 -->

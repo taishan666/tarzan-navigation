@@ -21,26 +21,28 @@
 </div>
 </div>
 <script type="text/javascript">
-var stompClient = null;
-function setConnected(connected) {
-document.getElementById("connect").disabled = connected;
-document.getElementById("disconnect").disabled = !connected;
-document.getElementById("conversationDiv").style.visibility = connected ? 'visible' : 'hidden';
-$("#response").html();
-$("#callback").html();
-}
-function connect() {
-//var ws = new WebSocket('ws://localhost/simple');
-var socket = new SockJS('http://172.16.10.60/simple');
-stompClient = Stomp.over(socket);
-stompClient.connect({}, function (frame) {
-setConnected(true);
-console.log('Connected:' + frame);
-stompClient.subscribe('/topic/broadcast', function (response) {
-showResponse(JSON.parse(response.body).responseMessage);
-});
-});
-}
+    let stompClient = null;
+
+    function setConnected(connected) {
+        document.getElementById("connect").disabled = connected;
+        document.getElementById("disconnect").disabled = !connected;
+        document.getElementById("conversationDiv").style.visibility = connected ? 'visible' : 'hidden';
+        $("#response").html();
+        $("#callback").html();
+    }
+
+    function connect() {
+        //var ws = new WebSocket('ws://localhost/simple');
+        const socket = new SockJS('http://172.16.10.60/simple');
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+            setConnected(true);
+            console.log('Connected:' + frame);
+            stompClient.subscribe('/topic/broadcast1', function (response) {
+                showResponse(JSON.parse(response.body).responseMessage);
+            });
+        });
+    }
 function disconnect() {
 if (stompClient != null) {
 stompClient.disconnect();
