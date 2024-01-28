@@ -17,7 +17,7 @@
 <!-- Dashboard Start -->
 <div class="row">
     <!-- Start Card-->
-    <div class="col-xl-2 col-lg-2 col-md-6">
+    <div class="col-xl-3 col-lg-3 col-md-6">
         <div class="card web-info-card">
             <div class="card-body dd-flex align-items-center">
                 <div class="icon-info">
@@ -31,7 +31,7 @@
         </div>
     </div>
     <!-- Start Card-->
-    <div class="col-xl-2 col-lg-2 col-md-6">
+<!--    <div class="col-xl-2 col-lg-2 col-md-6">
         <div class="card web-info-card">
             <div class="card-body dd-flex align-items-center">
                 <div class="icon-info">
@@ -43,13 +43,13 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
     <!-- Start Card-->
-    <div class="col-xl-2 col-lg-2 col-md-6">
+    <div class="col-xl-3 col-lg-3 col-md-6">
         <div class="card web-info-card">
             <div class="card-body dd-flex align-items-center">
                 <div class="icon-info">
-                    <i class="fa fa-comments fa-4x"></i>
+                    <i class="fa fa-comments fa-2x"></i>
                 </div>
                 <div class="icon-info-text">
                     <h5 class="web-title">评论数量</h5>
@@ -112,7 +112,7 @@
             </div>
             <div class="card-body">
                 <div class="chart-holder">
-                    <div id="china" style="height: 600px;" ></div>
+                    <div id="china" style="height: 980px;" ></div>
                 </div>
             </div>
         </div>
@@ -124,6 +124,128 @@
     const provUsers = [[${statistic.provUsers}]];
 </script>
 <script>
+    // 初始化echarts实例
+    const myEcharts = echarts.init(document.getElementById("china"));
+    myEcharts.showLoading();
+    $.get('/assets/libs/echarts/china.json', function (geoJson) {
+        myEcharts.hideLoading();
+        echarts.registerMap('china', geoJson);
+        const option = {
+            title: {  //标题样式
+                text: '中国地图',
+                subtext: '数据来源网络',
+                x: "left",
+                textStyle: {
+                    fontSize: 18,
+                    color: "black"
+                },
+            },
+            toolbox: {
+                show: true,
+                orient: 'vertical',
+                left: 'right',
+                top: 'center',
+                feature: {
+                    dataView: {readOnly: false},
+                    restore: {},
+                    saveAsImage: {}
+                }
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: function (params) {
+                    console.log(params)
+                    if (params.name) {
+                        return params.name + ' : ' + (isNaN(params.value) ? 0 : parseInt(params.value));
+                    }
+                }
+            },
+            visualMap: {//视觉映射组件
+                min: 5,
+                max: 500,
+                //text: ['High', 'Low'],
+                type: 'piecewise',
+                pieces: [
+                    {min: 10000, max: 1000000, label: '大于等于10000人', color: '#372a28'},
+                    {min: 1000, max: 9999, label: '1000-9999人', color: '#4e160f'},
+                    {min: 500, max: 999, label: '500-999人', color: '#974236'},
+                    {min: 100, max: 499, label: '100-499人', color: '#ee7263'},
+                    {min: 1, max: 99, label: '1-99人', color: '#f5bba7'},
+                ],
+                realtime: false,  //拖拽时，是否实时更新
+                calculable: true,  //是否显示拖拽用的手柄
+                inRange: {
+                    color: ['lightskyblue', 'yellow', 'orangered']
+                }
+            },
+            series: [
+                {
+                    name: '省份-访客数据',
+                    type: 'map',
+                    mapType: 'china',
+                    roam: false,//是否开启鼠标缩放和平移漫游
+                    zoom: 1.3, // 设置缩放比例
+                    itemStyle: {//地图区域的多边形 图形样式
+                        normal: {//是图形在默认状态下的样式
+                            label: {
+                                show: true,//是否显示标签
+                                textStyle: {
+                                    color: "black"
+                                }
+                            }
+                        },
+                        emphasis: {//是图形在高亮状态下的样式,比如在鼠标悬浮或者图例联动高亮时
+                            label: {show: true}
+                        }
+                    },
+                    top: "12%",//组件距离容器的距离
+                    data: provUsers,
+                    // 自定义名称映射
+                    nameMap: {
+                        '黑龙江省': '黑龙江',
+                        '吉林省': '吉林',
+                        '辽宁省': '辽宁',
+                        '北京市': '北京',
+                        '天津市': '天津',
+                        '上海市': '上海',
+                        '河北省': '河北',
+                        '河南省': '河南',
+                        '山东省': '山东',
+                        '湖南省': '湖南',
+                        '浙江省': '浙江',
+                        '湖北省': '湖北',
+                        '四川省': '四川',
+                        '西藏自治区': '西藏',
+                        '青海省': '青海',
+                        '宁夏回族自治区': '宁夏',
+                        '重庆市': '重庆',
+                        '云南省': '云南',
+                        '贵州省': '贵州',
+                        '广西壮族自治区': '广西',
+                        '广东省': '广东',
+                        '内蒙古自治区': '内蒙古',
+                        '山西省': '山西',
+                        '江苏省': '江苏',
+                        '陕西省': '陕西',
+                        '甘肃省': '甘肃',
+                        '江西省': '江西',
+                        '海南省': '海南',
+                        '安徽省': '安徽',
+                        '福建省': '福建',
+                        '台湾省': '台湾',
+                        '香港特别行政区': '香港',
+                        '澳门特别行政区': '澳门',
+                        '新疆维吾尔自治区': '新疆',
+                    }
+                }
+            ]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myEcharts.setOption(option);
+    })
+
+</script>
+<!--<script>
     // 初始化echarts实例
     const myEcharts = echarts.init(document.getElementById("china"));
     const option = {
@@ -183,7 +305,7 @@
     };
     // 使用刚指定的配置项和数据显示图表。
     myEcharts.setOption(option);
-</script>
+</script>-->
 
 <script>
 
