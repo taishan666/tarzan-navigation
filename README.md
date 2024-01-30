@@ -1,4 +1,4 @@
-# tarzan-nav 导航网站
+# TARZAN-NAV 导航网站
 
 一个基于 Spring Boot、MyBatis-Plus、h2database、ehcache、Docker、websocket等技术栈实现的导航网站系统，采用主流的互联网技术架构、全新的UI设计、支持一键源码部署，拥有完整的仪表板、导航管理，用户管理、评论管理、友情链接、公告管理、运维管理等，代码完全开源，没有任何二次封装，是一个非常适合二次开发/实战的现代化导航项目👍 。
 
