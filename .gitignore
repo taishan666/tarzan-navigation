@@ -27,6 +27,7 @@ target/
 /.nb-gradle/
 build/
 /.idea/
+/.gitee/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
