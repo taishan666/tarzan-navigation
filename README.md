@@ -48,12 +48,7 @@
 
 #### 系统架构图
 
-![](https://cdn.tobebetterjavaer.com/paicoding/3da165adfcad0f03d40e13e941ed4afb.png)
-
-
-#### 业务架构图
-
-![](https://cdn.tobebetterjavaer.com/paicoding/main/paicoding-business.jpg)
+![输入图片说明](images/framework.png)
 
 
 #### 环境配置说明
