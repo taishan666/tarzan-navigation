@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.tarzan.nav.common.constant.CoreConst;
-import com.tarzan.nav.common.enums.NavigationTypeEnum;
 import com.tarzan.nav.modules.admin.model.biz.Comment;
 import com.tarzan.nav.modules.admin.model.biz.Link;
 import com.tarzan.nav.modules.admin.model.biz.Website;
@@ -22,17 +21,15 @@ import com.wf.captcha.base.Captcha;
 import com.wf.captcha.utils.CaptchaUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
+import org.apache.shiro.authz.annotation.RequiresAuthentication;
 import org.apache.shiro.subject.Subject;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
-import java.util.Collections;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
@@ -101,10 +98,10 @@ public class NavApiController {
     }
 
     @PostMapping("/comment/submit")
+    @RequiresAuthentication
     public ResponseVo saveComment(HttpServletRequest request, Comment comment) throws UnsupportedEncodingException {
-        if (StringUtils.isEmpty(comment.getNickname())) {
-            return ResultUtil.error("请输入昵称");
-        }
+        comment.setNickname(AuthUtil.getUsername());
+        comment.setEmail(AuthUtil.getEmail());
         String content = comment.getContent();
         if (!XssKillerUtil.isValid(content)) {
             return ResultUtil.error("内容不合法");

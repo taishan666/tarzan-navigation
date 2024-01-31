@@ -19,6 +19,10 @@ public enum ResponseStatus {
      */
     SUCCESS(200, "操作成功！"),
     /**
+     * 未鉴权
+     */
+    UNAUTHORIZED(401, "未鉴权！"),
+    /**
      * 无权限
      */
     FORBIDDEN(403, "您没有权限访问！"),

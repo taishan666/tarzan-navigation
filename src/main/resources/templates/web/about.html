@@ -133,21 +133,26 @@
 <script>
     $('#submit').click(function () {
         const $f = $('#commentform');
-        console.log($f.serializeArray())
         $.ajax({
-            type:"POST",	//提交方式
-            url:'/comment/submit',
+            type: "POST",	//提交方式
+            url: '/comment/submit',
             data: $f.serialize(),//将对象转为json字符串
             dataType: "json",   	//返回数据的格式
-            success:function (data) {
+            success: function (data) {
                 console.log(data)
-                if(data.status===200){
+                if (data.status === 200) {
                     successAlert(data.msg);
                     $("#comment_content").val("");
                     $("#nickname").val("");
                     $("#email").val("");
-                }else {
+                } else {
                     errorAlert(data.msg);
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                // 如果发生错误，可以在这里处理
+                if('Unauthorized'===errorThrown){
+                    window.location.href = '/login';
                 }
             },
         });

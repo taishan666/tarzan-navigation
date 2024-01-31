@@ -22,4 +22,11 @@ public class AuthUtil {
         }
         return  getUser().getUsername();
     }
+
+    public  static String  getEmail(){
+        if (getUser()==null){
+            return "";
+        }
+        return  getUser().getEmail();
+    }
 }

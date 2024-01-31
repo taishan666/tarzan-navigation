@@ -42,7 +42,7 @@ public class AppExceptionHandler {
     @ExceptionHandler(AuthorizationException.class)
     public String handleAuth(Exception e,HttpServletRequest request) {
         log.error("未鉴权异常: {}", e.getMessage(), e);
-        request.setAttribute("javax.servlet.error.status_code", ResponseStatus.FORBIDDEN.getCode());
+        request.setAttribute("javax.servlet.error.status_code", ResponseStatus.UNAUTHORIZED.getCode());
         return "forward:/error";
     }
 
