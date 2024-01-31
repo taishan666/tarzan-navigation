@@ -48,12 +48,7 @@
 
 #### 系统架构图
 
-![](https://cdn.tobebetterjavaer.com/paicoding/3da165adfcad0f03d40e13e941ed4afb.png)
-
-
-#### 业务架构图
-
-![](https://cdn.tobebetterjavaer.com/paicoding/main/paicoding-business.jpg)
+![输入图片说明](images/framework.png)
 
 
 #### 环境配置说明
@@ -133,7 +128,7 @@
 
 ### 搭建步骤
 
-## 1. 环境准备
+#### 1. 环境准备
 
 首先准备好基础的开发环境，如
 
@@ -142,11 +137,11 @@
 - git版本管理
 - 开发工具：建议idea，当然eclipse/vs也没有问题
 
-## 2. 项目启动
+#### 2. 项目启动
 
 当环境准备完毕之后，接下来就是下载项目，导入开发工具进行启动演示
 
-### 2.1 项目获取
+##### 2.1 项目获取
 
 本项目所有源码开源，因此您可以在github/gitee上免费获取
 
@@ -163,7 +158,7 @@ git clone git@gitee.com:taisan/tarzan-navigation.git
 
 - [https://gitee.com/taisan/tarzan-navigation/releases](https://gitee.com/taisan/tarzan-navigation/releases)
 
-### 2.2 项目导入
+##### 2.2 项目导入
 
 以IDEA开发工具为例
 
@@ -177,11 +172,11 @@ git clone git@gitee.com:taisan/tarzan-navigation.git
 ![](images/maven.png)
 
 
-### 2.3 配置修改
+##### 2.3 配置修改
 
 在正式启动项目之前，还有几个前置步骤需要执行一下
 
-#### 2.3.1 数据库准备
+###### 2.3.1 数据库准备
 
 本项目会使用数据库，因此在本机启动时，请先指定数据库；项目中默认的数据库名为 `paicoding`，可以通过修改配置文件中的`database.name`参数来替换为您喜欢的数据库名
 
@@ -212,7 +207,7 @@ spring:
 
 > 本项目提供了自动创建库表的功能，在项目启动之后，当库不存在时，会创建库；当表不存在时，会自动创建表，且会初始化一些测试数据
 
-#### 2.3.2 数据库配置
+###### 2.3.2 数据库配置
 
 接下来我们需要做的就是设置数据库的相关连接配置
 
@@ -223,18 +218,18 @@ spring:
 
 默认的环境选择是`dev`，可以通过下面两种方式进行环境切换
 
-### 2.4 启动
+##### 2.4 启动
 
 接下来就可以直接启动项目了
 
 进入启动类: `NavApplication`
 
-![](https://cdn.tobebetterjavaer.com/images/20240108/6238d17c93d640deb0e1123d02fa270d.png)
+![输入图片说明](images/startClass.png)
 
 
 启动完毕之后，将会在控制台看到如下输出
 
-![](https://cdn.tobebetterjavaer.com/images/20240108/3fddd6712f0846879b445d378813a15f.png)
+![输入图片说明](images/console.png)
 
 
 点击控制台中的链接进入首页, 默认首页为: [http://127.0.0.1:80](http://127.0.0.1:80)
