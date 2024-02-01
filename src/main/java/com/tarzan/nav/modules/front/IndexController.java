@@ -48,13 +48,11 @@ public class IndexController {
      */
     @GetMapping({"/","index","home"})
     public String home(Model model) {
-        long start=System.currentTimeMillis();
         siteLookService.asyncLook(0,WebUtil.getIP(), LookTypeConst.HOME);
         model.addAttribute("notices",noticeService.simpleList());
         model.addAttribute("categories",categoryService.treeLink());
         model.addAttribute("links",linkService.simpleList());
         model.addAttribute("hotWebsites",websiteService.hotList(NavigationTypeEnum.SITE,12));
-        System.out.println("耗时 "+(System.currentTimeMillis()-start)+" ms");
         return  CoreConst.WEB_PREFIX+"index";
     }
 
@@ -186,6 +184,13 @@ public class IndexController {
     public String douyin(Model model) {
         model.addAttribute("categories",categoryService.treeList());
         return  CoreConst.WEB_PREFIX+"douyin";
+    }
+
+    @GetMapping("/chatgpt")
+    public String chatgpt(Model model) {
+        siteLookService.asyncLook(0,WebUtil.getIP(), LookTypeConst.CHATGPT);
+        model.addAttribute("categories",categoryService.treeList());
+        return  CoreConst.WEB_PREFIX+"chatgpt";
     }
 
     /**

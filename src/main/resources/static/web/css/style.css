@@ -33,6 +33,77 @@ body {
     transition: background-color .3s
 }
 
+/*整体色系*/
+body {
+    /*正常色*/
+    --pai-brand-1-normal: #ff6900;
+    /*鼠标放上去后的颜色*/
+    --pai-brand-2-hover: #ff8721;
+    /*点击后激活后的颜色*/
+    --pai-brand-3-click: #f59e2f;
+    /*不可用的颜色*/
+    --pai-brand-4-disable: #d1a278;
+    /*备用色 非常深的颜色*/
+    --pai-brand-5-bak: #fe6617;
+    /*消息提醒点*/
+    --pai-brand-6-mq: #f85959;
+    --pai-brand-7-light: rgba(255, 105, 0, 0.15);
+    /*浅色时由上一个过度到下一个*/
+    --pai-brand-8-light: rgba(255, 105, 0, 0.35);
+    /*颜色白色*/
+    --pai-color-fff-normal: #fff;
+    /*浅灰色*/
+    --pai-color-999-gray: #999;
+    /*另外一种灰*/
+    --pai-color-3-gray: #8a919f;
+    /*另外一种灰 深一点*/
+    --pai-color-4-gray: #515767;
+    /*disable 的灰*/
+    --pai-color-5-gray: #ddd;
+    /*非常浅的灰*/
+    --pai-color-6-gray: #f3f5f8;
+    /*比上面更灰一点*/
+    --pai-color-7-gray: #eff3f9;
+    /*偏黑色*/
+    --pai-color-3-black: #212529;
+    /*背景色*/
+    --pai-bg-white-fff: #fff;
+    /*淡黄色*/
+    --pai-bg-normal-1: #fff3db;
+    --pai-bg-light-1: #eeeeee;
+    /*浅一点的颜色*/
+    --pai-bg-light-2: #f7f8fa;
+    /*背景色浅一点*/
+    --pai-bg-dark-1: #373d41;
+    /*主题色深一点*/
+    --pai-bg-dark-2: #2c3134;
+    /*主题色更深一点*/
+    --pai-bg-dark-3: #000000;
+    /*讯飞星火的左侧聊天背景色*/
+    --pai-bg-smart-chat: #f5f5f5;
+    /*横线的颜色*/
+    --pai-hr-color-1: #f0f0f0;
+    /*边框颜色*/
+    --pai-border-color-1: #d2d9e7;
+    /*字体*/
+    --pai-font-2: #515767;
+
+    /*边框*/
+    --color-canvas-default: transparent;
+    /*消息的宽度*/
+    --message-max-width: 80%;
+    /*左边宽度*/
+    --pai-sidebar-width: 360px;
+    /*卡片的阴影*/
+    --card-shadow: 0px 2px 4px 0px rgba(0,0,0,.05);
+    --window-height: calc(100vh - 170px);
+    --window-width: 90vw;
+    --window-content-width: calc(100% - var(--pai-sidebar-width));
+    --second: #e7f8ff;
+    /*外边距*/
+    margin: 0;
+}
+
 body,input,button,select,optgroup,
 option,textarea,blockquote,
 dd,dl,figure,form,pre,

@@ -55,6 +55,7 @@ public class NavApiController {
     private final HotNewsService hotNewsService;
     private final MailService mailService;
     private final UserService userService;
+    private final MatterService matterService;
 
     private static final String EMAIL_REGEX= "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX);
@@ -91,6 +92,7 @@ public class NavApiController {
             flag =websiteService.save(website);
         }
         if (flag) {
+            matterService.sendNotification();
             return ResultUtil.success("提交申请成功！");
         } else {
             return ResultUtil.error("提交申请失败！");
@@ -111,8 +113,9 @@ public class NavApiController {
         comment.setIp(IpUtil.getIpAddr(request));
         comment.setAvatar(imageService.letterAvatar(comment.getNickname()).getId());
         comment.setLocation(LocationService.getLocation(comment.getIp()));
-        boolean a = commentService.insertComment(comment);
-        if (a) {
+        boolean flag= commentService.insertComment(comment);
+        if (flag) {
+            matterService.sendNotification();
             return ResultUtil.success("评论提交成功,系统正在审核");
         } else {
             return ResultUtil.error("评论提交失败");
