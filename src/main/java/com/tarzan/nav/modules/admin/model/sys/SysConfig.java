@@ -1,9 +1,10 @@
 package com.tarzan.nav.modules.admin.model.sys;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.tarzan.nav.modules.admin.entity.sys.SysConfigEntity;
 import lombok.Data;
-import lombok.experimental.Accessors;
-
-import java.io.Serializable;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 /**
  * @author tarzan liu
@@ -11,30 +12,9 @@ import java.io.Serializable;
  * @date 2021年5月11日
  */
 @Data
-@Accessors(chain = true)
-public class SysConfig implements Serializable {
-
-
-    private Integer id;
-
-    /**
-     * key
-     */
-    private String sysKey;
-
-    /**
-     * value
-     */
-    private String sysValue;
-
-    /**
-     * 状态  1：有效 0：无效
-     */
-    private Integer status;
-
-    /**
-     * 备注
-     */
-    private String remark;
+@TableName("sys_config")
+@SuperBuilder
+@NoArgsConstructor
+public class SysConfig extends SysConfigEntity {
 
 }

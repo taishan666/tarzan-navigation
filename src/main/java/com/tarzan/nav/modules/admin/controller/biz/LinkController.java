@@ -40,7 +40,7 @@ public class LinkController {
 
     @GetMapping("/add")
     public String add(Model model) {
-        model.addAttribute("link", new Link().setStatus(1));
+        model.addAttribute("link", Link.builder().status(1).build());
         return CoreConst.ADMIN_PREFIX + "link/form";
     }
 

@@ -43,13 +43,8 @@ public class CoreConst {
      * h2默认table数
      */
     public static final int TABLE_NUM = 15;
-
     /**
-     * 是否安装
-     */
-    public static final AtomicBoolean IS_INSTALLED = new AtomicBoolean(false);
-    /**
-     * 是否注册
+     * 是否安装注册
      */
     public static final AtomicBoolean IS_REGISTERED = new AtomicBoolean(false);
     /**

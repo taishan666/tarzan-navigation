@@ -69,7 +69,7 @@ public class SysConfigService extends ServiceImpl<SysConfigMapper, SysConfig> {
         if (getOne(Wrappers.<SysConfig>lambdaQuery().eq(SysConfig::getSysKey, key)) != null) {
             return update(Wrappers.<SysConfig>lambdaUpdate().eq(SysConfig::getSysKey, key).set(SysConfig::getSysValue, value));
         } else {
-            return save(new SysConfig().setSysKey(key).setSysValue(value));
+            return save(SysConfig.builder().sysKey(key).sysValue(value).build());
         }
     }
 

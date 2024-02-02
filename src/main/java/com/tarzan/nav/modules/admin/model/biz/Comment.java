@@ -2,10 +2,8 @@ package com.tarzan.nav.modules.admin.model.biz;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.tarzan.nav.modules.admin.vo.base.BaseVo;
+import com.tarzan.nav.modules.admin.entity.biz.CommentEntity;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
 
 import java.util.List;
 
@@ -14,35 +12,9 @@ import java.util.List;
  * @since JDK1.8
  * @date 2021年5月11日
  */
-@EqualsAndHashCode(callSuper = true)
 @Data
-@Accessors(chain = true)
 @TableName("biz_comment")
-public class Comment extends BaseVo {
-
-    private Integer userId;
-    /** 业务id */
-    private Integer sid;
-    /** 父id */
-    private Integer pid;
-    /** 回复id */
-    private Integer replyId;
-    private String qq;
-    private String nickname;
-    private String avatar;
-    private String email;
-    private String url;
-    private Integer status;
-    private String ip;
-    private String lng;
-    private String lat;
-    private String address;
-    private String os;
-    private String osShortName;
-    private String browser;
-    private String browserShortName;
-    private String content;
-    private String location;
+public class Comment extends CommentEntity {
 
     @TableField(exist = false)
     private Long loveCount;

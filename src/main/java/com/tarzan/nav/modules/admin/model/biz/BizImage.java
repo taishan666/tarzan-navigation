@@ -1,30 +1,18 @@
 package com.tarzan.nav.modules.admin.model.biz;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import com.tarzan.nav.modules.admin.entity.biz.BizImageEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
-
-import java.util.Date;
+import lombok.experimental.SuperBuilder;
 
 /**
  * @author tarzan
  */
 @Data
-@Accessors(chain = true)
 @TableName("biz_image")
+@SuperBuilder
 @NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class BizImage {
-
-    private String id;
-    private String base64;
-    @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
+public class BizImage extends BizImageEntity {
 
 }

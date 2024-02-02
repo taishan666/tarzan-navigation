@@ -65,7 +65,7 @@ public class IndexController {
         siteLookService.asyncLook(0,WebUtil.getIP(), LookTypeConst.SEARCH);
         model.addAttribute("categories",categoryService.treeList());
         model.addAttribute("search",q);
-        List<Website> websites=websiteService.search(new Website().setName(q).setDescription(q),type);
+        List<Website> websites=websiteService.search(Website.builder().name(q).description(q).build(),type);
         model.addAttribute("websites",websites);
         model.addAttribute("type",type);
         return  CoreConst.WEB_PREFIX+"search";

@@ -98,6 +98,7 @@ public class SystemController {
         //注册
         boolean flag = userService.save(registerUser);
         if(flag){
+            CoreConst.IS_REGISTERED.set(true);
             return ResultUtil.success("注册成功！");
         }else {
             return ResultUtil.error("注册失败，请稍后再试！");

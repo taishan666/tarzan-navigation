@@ -42,9 +42,9 @@ spring:
       min-idle: 3
       max-active: 20
       max-wait: 10000
-      filters: stat,wall,slf4j
+      filters: stat,slf4j
       stat-view-servlet:
-        enabled: true
+        enabled: false
         reset-enable: false
         url-pattern: /druid/*
         allow:
@@ -54,17 +54,22 @@ spring:
           config:
             multi-statement-allow: true
             comment-allow: true
-          enabled: true
+          enabled: false
       validation-query: select 1
       test-while-idle: true
-  #thymeleaf:
-   # cache: false
-    #mode: HTML
+  thymeleaf:
+    cache: false
+    mode: HTML
     #prefix: file:${user.home}/.tarzan-cms/
     #template-resolver-order: 1
-    #servlet:
-     # content-type: text/html
-    #encoding: UTF-8
+    servlet:
+      content-type: text/html
+    encoding: UTF-8
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    open-in-view: false
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8

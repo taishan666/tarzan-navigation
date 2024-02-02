@@ -50,7 +50,7 @@ public class WebsiteController {
 
     @GetMapping("/add")
     public String add(Model model) {
-        model.addAttribute("website", new Website().setStatus(1));
+        model.addAttribute("website", Website.builder().status(1).build());
         return CoreConst.ADMIN_PREFIX + "website/form";
     }
 

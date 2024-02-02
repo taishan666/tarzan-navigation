@@ -75,7 +75,7 @@ public class ImageService extends ServiceImpl<ImageMapper, BizImage> {
         String md5 = DigestUtils.md5Hex(base64);
         BizImage oldImage=baseMapper.selectById(md5);
         if(Objects.isNull(oldImage)){
-            BizImage newImage=BizImage.builder().id(md5).base64(base64).build();
+            BizImage newImage= BizImage.builder().id(md5).base64(base64).build();
             baseMapper.insert(newImage);
             return newImage;
         }else {

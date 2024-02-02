@@ -1,7 +1,6 @@
 package com.tarzan.nav.common.listener;
 
 import com.tarzan.nav.common.props.TarzanProperties;
-import com.tarzan.nav.modules.admin.service.sys.UserService;
 import com.tarzan.nav.shiro.ShiroService;
 import com.tarzan.nav.utils.AppInstallTools;
 import lombok.AllArgsConstructor;
@@ -33,11 +32,10 @@ public class StartedListener implements ApplicationListener<ApplicationStartedEv
     private final AppInstallTools appInstallTools;
     private final ShiroService shiroService;
     private final TarzanProperties tarzanProperties;
-    private final UserService userService;
 
     @Override
     public void onApplicationEvent(@NonNull ApplicationStartedEvent event) {
-        appInstallTools.install();
+        appInstallTools.initData();
         shiroService.updatePermission();
         File backupDir=new File(tarzanProperties.getBackupDir());
         if(!backupDir.exists()){
@@ -46,15 +44,6 @@ public class StartedListener implements ApplicationListener<ApplicationStartedEv
                 log.error("系统文件夹生成失败");
             }
         }
-      /*  List<User> users= userService.list();
-        users.forEach(e->{
-            User user=new User();
-            user.setId(e.getId());
-            user.setUsername(e.getUsername());
-            user.setPassword("123456");
-            PasswordHelper.encryptPassword(user);
-            userService.updateById(user);
-        });*/
         printStartInfo(event);
     }
 
