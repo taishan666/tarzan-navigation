@@ -1,6 +1,7 @@
 package com.tarzan.nav.modules.admin.entity.sys;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.tarzan.nav.common.constant.TableConst;
 import com.tarzan.nav.modules.admin.vo.base.BaseVo;
 import lombok.Data;
 
@@ -14,7 +15,7 @@ import java.util.Date;
  */
 @Data
 @Entity
-@Table(name="sys_user")
+@Table(name= TableConst.USER)
 public class UserEntity extends BaseVo {
 
     /**

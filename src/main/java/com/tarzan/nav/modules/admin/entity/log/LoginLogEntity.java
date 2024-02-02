@@ -2,10 +2,9 @@ package com.tarzan.nav.modules.admin.entity.log;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.tarzan.nav.common.constant.TableConst;
 import com.tarzan.nav.utils.DateUtil;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -20,7 +19,7 @@ import java.util.Date;
  * @date 2021年07月20日 10:21:47
  */
 @Data
-@Table(name="sys_login_log")
+@Table(name= TableConst.LOGIN_LOG)
 @Entity
 public class LoginLogEntity implements Serializable {
 

@@ -2,8 +2,8 @@ package com.tarzan.nav.modules.admin.entity.log;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.tarzan.nav.common.constant.TableConst;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,7 +13,7 @@ import java.util.Date;
  * @author tarzan
  */
 @Data
-@Table(name="sys_log_error")
+@Table(name= TableConst.LOG_ERROR)
 @Entity
 public class LogErrorEntity implements Serializable {
 

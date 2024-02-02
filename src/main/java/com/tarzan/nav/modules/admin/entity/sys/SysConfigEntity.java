@@ -1,5 +1,6 @@
 package com.tarzan.nav.modules.admin.entity.sys;
 
+import com.tarzan.nav.common.constant.TableConst;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
@@ -14,7 +15,7 @@ import java.io.Serializable;
  */
 @Data
 @Entity
-@Table(name = "sys_config")
+@Table(name = TableConst.CONFIG)
 @SuperBuilder
 @NoArgsConstructor
 public class SysConfigEntity implements Serializable {

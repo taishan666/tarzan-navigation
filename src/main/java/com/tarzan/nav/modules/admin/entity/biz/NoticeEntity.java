@@ -1,5 +1,6 @@
 package com.tarzan.nav.modules.admin.entity.biz;
 
+import com.tarzan.nav.common.constant.TableConst;
 import com.tarzan.nav.modules.admin.vo.base.BaseVo;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -11,7 +12,7 @@ import java.util.Date;
  * @author TARZAN
  */
 @Data
-@Table(name="biz_notice")
+@Table(name= TableConst.NOTICE)
 @Entity
 public class NoticeEntity extends BaseVo {
 

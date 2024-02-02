@@ -2,6 +2,7 @@ package com.tarzan.nav.modules.admin.model.biz;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.tarzan.nav.common.constant.TableConst;
 import com.tarzan.nav.modules.admin.entity.biz.WebsiteEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,7 +15,7 @@ import lombok.experimental.SuperBuilder;
  * @date 2021年5月11日
  */
 @Data
-@TableName("biz_website")
+@TableName(TableConst.WEBSITE)
 @SuperBuilder
 @NoArgsConstructor
 public class Website extends WebsiteEntity {

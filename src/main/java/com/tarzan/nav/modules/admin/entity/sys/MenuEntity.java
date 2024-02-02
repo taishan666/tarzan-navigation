@@ -1,5 +1,6 @@
 package com.tarzan.nav.modules.admin.entity.sys;
 
+import com.tarzan.nav.common.constant.TableConst;
 import com.tarzan.nav.modules.admin.vo.base.BaseVo;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import javax.persistence.*;
  * @date 2021年5月11日
  */
 @Data
-@Table(name="sys_menu")
+@Table(name= TableConst.MENU)
 @Entity
 @SuperBuilder
 @NoArgsConstructor
