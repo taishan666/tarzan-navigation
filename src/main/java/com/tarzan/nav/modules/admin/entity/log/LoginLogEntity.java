@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -20,12 +21,16 @@ import java.util.Date;
  */
 @Data
 @TableName("sys_login_log")
+@Table(name="sys_login_log")
 @EqualsAndHashCode
-public class LoginLog implements Serializable {
+@Entity
+public class LoginLogEntity implements Serializable {
 
     /**
      * 主键id
      */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**

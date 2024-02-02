@@ -43,7 +43,7 @@ spring:
       min-idle: 3
       max-active: 20
       max-wait: 10000
-      filters: stat,wall,slf4j
+      filters: stat,slf4j
       stat-view-servlet:
         enabled: true
         reset-enable: false

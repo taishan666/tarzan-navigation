@@ -2,6 +2,7 @@ package com.tarzan.nav.modules.admin.service.biz;
 
 import cn.hutool.http.HttpUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.tarzan.nav.modules.admin.entity.biz.BizImageEntity;
 import com.tarzan.nav.modules.admin.mapper.biz.ImageMapper;
 import com.tarzan.nav.modules.admin.model.biz.BizImage;
 import com.tarzan.nav.utils.StringUtil;
@@ -18,12 +19,12 @@ import java.util.Objects;
  * @author tarzan
  */
 @Service
-public class ImageService extends ServiceImpl<ImageMapper, BizImage> {
+public class ImageService extends ServiceImpl<ImageMapper, BizImageEntity> {
 
     @Value("${server.port}")
     private Integer port;
 
-    public BizImage upload(String src){
+    public BizImageEntity upload(String src){
         if(StringUtil.isBlank(src)){
             src="http://localhost:"+port+"/favicon.ico,image/ico";
         }
@@ -32,7 +33,7 @@ public class ImageService extends ServiceImpl<ImageMapper, BizImage> {
        return uploadBase64(base64);
     }
 
-    public BizImage letterAvatar(String text){
+    public BizImageEntity letterAvatar(String text){
         char letter=text.toCharArray()[0];
         String bg = toRGB(Color.BLUE.getRGB());
         if(Character.isDigit(letter)){
@@ -71,9 +72,9 @@ public class ImageService extends ServiceImpl<ImageMapper, BizImage> {
     }
 
 
-    public BizImage uploadBase64(String base64){
+    public BizImageEntity uploadBase64(String base64){
         String md5 = DigestUtils.md5Hex(base64);
-        BizImage oldImage=baseMapper.selectById(md5);
+        BizImageEntity oldImage=baseMapper.selectById(md5);
         if(Objects.isNull(oldImage)){
             BizImage newImage=BizImage.builder().id(md5).base64(base64).build();
             baseMapper.insert(newImage);

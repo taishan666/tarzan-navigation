@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.tarzan.nav.common.constant.CoreConst;
+import com.tarzan.nav.modules.admin.entity.sys.UserEntity;
 import com.tarzan.nav.modules.admin.model.biz.Comment;
 import com.tarzan.nav.modules.admin.model.biz.Link;
 import com.tarzan.nav.modules.admin.model.biz.Website;
@@ -168,7 +169,7 @@ public class NavApiController {
         if ("lost_email_or_phone_token".equals(dto.getAction())) {
             Matcher matcher = EMAIL_PATTERN.matcher(dto.getEmail_phone());
             if(matcher.matches()){
-                User user=userService.lambdaQuery().eq(User::getEmail,dto.getEmail_phone()).last("limit 1").one();
+                UserEntity user=userService.lambdaQuery().eq(UserEntity::getEmail,dto.getEmail_phone()).last("limit 1").one();
                 if(Objects.nonNull(user)){
                     SpecCaptcha captcha = new SpecCaptcha(10, 10, 4);
                     captcha.setCharType(Captcha.TYPE_ONLY_NUMBER);
@@ -206,7 +207,7 @@ public class NavApiController {
                 updateUser.setEmail(dto.getEmail_phone());
                 PasswordHelper.encryptPassword(updateUser);
                 //修改密码
-                boolean flag = userService.lambdaUpdate().set(User::getPassword,updateUser.getPassword()).eq(User::getEmail,updateUser.getEmail()).update();
+                boolean flag = userService.lambdaUpdate().set(UserEntity::getPassword,updateUser.getPassword()).eq(UserEntity::getEmail,updateUser.getEmail()).update();
                 if(flag){
                     return ResultUtil.status(1,"密码修改成功！");
                 }else {

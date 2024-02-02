@@ -2,6 +2,7 @@ package com.tarzan.nav.modules.admin.controller.sys;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tarzan.nav.common.constant.CoreConst;
+import com.tarzan.nav.modules.admin.entity.sys.UserEntity;
 import com.tarzan.nav.modules.admin.model.sys.User;
 import com.tarzan.nav.modules.admin.service.sys.UserService;
 import com.tarzan.nav.modules.admin.vo.base.PageResultVo;
@@ -39,7 +40,7 @@ public class UserController {
     @PostMapping("/list")
     @ResponseBody
     public PageResultVo loadUsers(User user, Integer pageNumber, Integer pageSize) {
-        IPage<User> userPage = userService.selectUsers(user, pageNumber, pageSize);
+        IPage<UserEntity> userPage = userService.selectUsers(user, pageNumber, pageSize);
         return ResultUtil.table(userPage.getRecords(), userPage.getTotal());
     }
 

@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tarzan.nav.common.constant.CoreConst;
+import com.tarzan.nav.modules.admin.entity.biz.LinkEntity;
 import com.tarzan.nav.modules.admin.model.biz.Link;
 import com.tarzan.nav.modules.admin.mapper.biz.LinkMapper;
 import org.springframework.cache.annotation.CacheEvict;
@@ -21,15 +22,15 @@ import java.util.Objects;
  * @date 2021年5月11日
  */
 @Service
-public class LinkService extends ServiceImpl<LinkMapper, Link> {
+public class LinkService extends ServiceImpl<LinkMapper, LinkEntity> {
 
-    public IPage<Link> pageLinks(Link link, Integer pageNumber, Integer pageSize) {
-        IPage<Link> page = new Page<>(pageNumber, pageSize);
-        return page(page,Wrappers.<Link>lambdaQuery()
-                .like(StringUtils.isNotBlank(link.getName()), Link::getName, link.getName())
-                .like(StringUtils.isNotBlank(link.getUrl()), Link::getUrl, link.getUrl())
-                .eq(Objects.nonNull(link.getStatus()), Link::getStatus, link.getStatus())
-                .orderByDesc(Link::getCreateTime));
+    public IPage<LinkEntity> pageLinks(Link link, Integer pageNumber, Integer pageSize) {
+        IPage<LinkEntity> page = new Page<>(pageNumber, pageSize);
+        return page(page,Wrappers.<LinkEntity>lambdaQuery()
+                .like(StringUtils.isNotBlank(link.getName()), LinkEntity::getName, link.getName())
+                .like(StringUtils.isNotBlank(link.getUrl()), LinkEntity::getUrl, link.getUrl())
+                .eq(Objects.nonNull(link.getStatus()), LinkEntity::getStatus, link.getStatus())
+                .orderByDesc(LinkEntity::getCreateTime));
     }
 
     @CacheEvict(value = "link", allEntries = true)
@@ -38,11 +39,11 @@ public class LinkService extends ServiceImpl<LinkMapper, Link> {
     }
 
     @Cacheable(value = "link", key = "'list'")
-    public List<Link>  simpleList() {
-        return super.lambdaQuery().select(Link::getName,Link::getUrl).eq(Link::getStatus, CoreConst.STATUS_VALID).list();
+    public List<LinkEntity>  simpleList() {
+        return super.lambdaQuery().select(LinkEntity::getName,LinkEntity::getUrl).eq(LinkEntity::getStatus, CoreConst.STATUS_VALID).list();
     }
 
     public Long toAuditNum() {
-        return super.lambdaQuery().eq(Link::getStatus,CoreConst.ZERO).count();
+        return super.lambdaQuery().eq(LinkEntity::getStatus,CoreConst.ZERO).count();
     }
 }

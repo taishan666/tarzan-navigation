@@ -1,6 +1,6 @@
 package com.tarzan.nav.task;
 
-import com.tarzan.nav.modules.admin.model.biz.Website;
+import com.tarzan.nav.modules.admin.entity.biz.WebsiteEntity;
 import com.tarzan.nav.modules.admin.service.biz.WebsiteService;
 import com.tarzan.nav.utils.JsoupUtil;
 import lombok.AllArgsConstructor;
@@ -25,7 +25,7 @@ public class WebSiteTask {
 
   //  @Scheduled(cron = "0/59 * * * * ?")
     public  void brokenLinkCheck() {
-        List<Website> websites=websiteService.simpleList();
+        List<WebsiteEntity> websites=websiteService.simpleList();
         log.info("---------------------  start  -----------------------------");
         websites.forEach(e->{
             if(JsoupUtil.checkLinkDead("https:"+e.getUrl())){
@@ -38,7 +38,7 @@ public class WebSiteTask {
 
   //  @Scheduled(cron = "0/59 * * * * ?")
     public  void noCategoryCheck() {
-        List<Website> websites=websiteService.simpleList();
+        List<WebsiteEntity> websites=websiteService.simpleList();
         log.info("---------------------  start  -----------------------------");
         websites.forEach(e->{
             if(Objects.isNull(e.getCategoryId())){

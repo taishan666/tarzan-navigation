@@ -6,10 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -18,9 +15,10 @@ import java.util.Date;
  */
 @Data
 @TableName("sys_log_error")
+@Table(name="sys_log_error")
 @EqualsAndHashCode
 @Entity
-public class LogError implements Serializable {
+public class LogErrorEntity implements Serializable {
 
     /**
      * 主键id

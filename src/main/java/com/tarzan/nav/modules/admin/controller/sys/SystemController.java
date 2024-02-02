@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.tarzan.nav.common.constant.CoreConst;
 import com.tarzan.nav.common.enums.UserEnum;
 import com.tarzan.nav.common.event.LoginLogEvent;
+import com.tarzan.nav.modules.admin.entity.log.LoginLogEntity;
+import com.tarzan.nav.modules.admin.entity.sys.UserEntity;
 import com.tarzan.nav.modules.admin.model.log.LoginLog;
 import com.tarzan.nav.modules.admin.model.sys.User;
 import com.tarzan.nav.modules.admin.service.log.LoginLogService;
@@ -221,10 +223,10 @@ public class SystemController {
             String username = ((User) SecurityUtils.getSubject().getPrincipal()).getUsername();
             Serializable sessionId = SecurityUtils.getSubject().getSession().getId();
             userService.kickOut(sessionId, username);
-            LambdaQueryWrapper<LoginLog> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.select(LoginLog::getId).eq(LoginLog::getLoginName, username);
-            queryWrapper.orderByDesc(LoginLog::getCreateTime);
-            List<LoginLog> loginLogList = loginLogService.list(queryWrapper);
+            LambdaQueryWrapper<LoginLogEntity> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.select(LoginLogEntity::getId).eq(LoginLogEntity::getLoginName, username);
+            queryWrapper.orderByDesc(LoginLogEntity::getCreateTime);
+            List<LoginLogEntity> loginLogList = loginLogService.list(queryWrapper);
             if (CollectionUtils.isNotEmpty(loginLogList)) {
                 LoginLog loginLog =new LoginLog();
                 loginLog.setId(loginLogList.get(0).getId());
@@ -269,7 +271,7 @@ public class SystemController {
         if (!changePasswordVo.getNewPassword().equals(changePasswordVo.getConfirmNewPassword())) {
             return ResultUtil.error("两次密码输入不一致");
         }
-        User loginUser = userService.getById(((User) SecurityUtils.getSubject().getPrincipal()).getId());
+        UserEntity loginUser = userService.getById(((User) SecurityUtils.getSubject().getPrincipal()).getId());
         User newUser = BeanUtil.copy(loginUser, User.class);
         String sysOldPassword = loginUser.getPassword();
         newUser.setPassword(changePasswordVo.getOldPassword());

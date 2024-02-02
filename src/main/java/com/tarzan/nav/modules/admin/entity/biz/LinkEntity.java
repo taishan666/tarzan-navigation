@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import javax.persistence.*;
+
 /**
  * @author tarzan liu
  * @since JDK1.8
@@ -15,8 +17,13 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 @TableName("biz_link")
-public class Link extends BaseVo {
+@Table(name="biz_link")
+@Entity
+public class LinkEntity extends BaseVo {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     private String url;
     private String name;
     private String description;

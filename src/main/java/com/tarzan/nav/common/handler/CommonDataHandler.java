@@ -54,7 +54,8 @@ public class CommonDataHandler implements HandlerInterceptor {
                  mv.setViewName("admin/system/register");
                }
                 mv.addObject("SITE_CONFIG",sysConfigService.getInfo());
-                User user = (User) SecurityUtils.getSubject().getPrincipal();
+                Object principal=SecurityUtils.getSubject().getPrincipal();
+                User user = (User)principal ;
                 if(Objects.nonNull(user)){
                     mv.addObject("loginUser",user);
                 }

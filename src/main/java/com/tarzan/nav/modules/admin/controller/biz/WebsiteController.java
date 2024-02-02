@@ -2,6 +2,7 @@ package com.tarzan.nav.modules.admin.controller.biz;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tarzan.nav.common.constant.CoreConst;
+import com.tarzan.nav.modules.admin.entity.biz.WebsiteEntity;
 import com.tarzan.nav.modules.admin.model.biz.Category;
 import com.tarzan.nav.modules.admin.model.biz.Website;
 import com.tarzan.nav.modules.admin.service.biz.CategoryService;
@@ -122,7 +123,7 @@ public class WebsiteController {
     @ResponseBody
     @CacheEvict(value = {"website", "category"}, allEntries = true)
     public ResponseVo moveWebsite(@PathVariable("categoryId") Integer categoryId,@RequestBody List<Integer> ids) {
-        boolean flag = websiteService.lambdaUpdate().in(Website::getId,ids).set(Website::getCategoryId,categoryId).update();
+        boolean flag = websiteService.lambdaUpdate().in(WebsiteEntity::getId,ids).set(WebsiteEntity::getCategoryId,categoryId).update();
         if (flag) {
             return ResultUtil.success("移动分类成功成功");
         } else {
@@ -134,7 +135,7 @@ public class WebsiteController {
     @ResponseBody
     @CacheEvict(value = {"website", "category"}, allEntries = true)
     public ResponseVo copyWebsite(@PathVariable("categoryId") Integer categoryId,@RequestBody List<Integer> ids) {
-        List<Website> websites=websiteService.lambdaQuery().in(Website::getId,ids).list();
+        List<WebsiteEntity> websites=websiteService.lambdaQuery().in(WebsiteEntity::getId,ids).list();
         if(!CollectionUtils.isEmpty(websites)){
             websites.forEach(e->{
                 e.setId(null);

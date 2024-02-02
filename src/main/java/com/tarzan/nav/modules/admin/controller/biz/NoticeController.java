@@ -3,6 +3,7 @@ package com.tarzan.nav.modules.admin.controller.biz;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.tarzan.nav.common.constant.CoreConst;
+import com.tarzan.nav.modules.admin.entity.biz.NoticeEntity;
 import com.tarzan.nav.modules.admin.model.biz.Notice;
 import com.tarzan.nav.modules.admin.service.biz.NoticeService;
 import com.tarzan.nav.modules.admin.vo.base.PageResultVo;
@@ -67,11 +68,11 @@ public class NoticeController {
     @PostMapping("/page")
     @ResponseBody
     public PageResultVo page(Notice notice, Integer pageNumber, Integer pageSize) {
-        IPage<Notice> page = new Page<>(pageNumber, pageSize);
-        IPage<Notice> noticePage = noticeService.lambdaQuery().select(Notice::getId,Notice::getTitle,Notice::getCreateTime,Notice::getEndTime  ,Notice::getStatus)
-                .like(StringUtil.isNotBlank(notice.getTitle()),Notice::getTitle,notice.getTitle())
-                .eq(Objects.nonNull(notice.getStatus()),Notice::getStatus,notice.getStatus())
-                .orderByDesc(Notice::getCreateTime).page(page);
+        IPage<NoticeEntity> page = new Page<>(pageNumber, pageSize);
+        IPage<NoticeEntity> noticePage = noticeService.lambdaQuery().select(NoticeEntity::getId,NoticeEntity::getTitle,NoticeEntity::getCreateTime,NoticeEntity::getEndTime  ,NoticeEntity::getStatus)
+                .like(StringUtil.isNotBlank(notice.getTitle()),NoticeEntity::getTitle,notice.getTitle())
+                .eq(Objects.nonNull(notice.getStatus()),NoticeEntity::getStatus,notice.getStatus())
+                .orderByDesc(NoticeEntity::getCreateTime).page(page);
         return ResultUtil.table(noticePage.getRecords(), noticePage.getTotal());
     }
 

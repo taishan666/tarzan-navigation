@@ -1,13 +1,12 @@
 package com.tarzan.nav.modules.admin.entity.biz;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.tarzan.nav.modules.admin.vo.base.BaseVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import java.util.List;
+import javax.persistence.*;
 
 /**
  * @author tarzan liu
@@ -18,7 +17,12 @@ import java.util.List;
 @Data
 @Accessors(chain = true)
 @TableName("biz_category")
-public class Category extends BaseVo {
+
+public class CategoryEntity extends BaseVo {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     private Integer pid;
     private String name;
@@ -30,14 +34,5 @@ public class Category extends BaseVo {
      * 类型   0：目录   1：网站   2：文章
      */
     private Integer type;
-
-    @TableField(exist = false)
-    private String parentName;
-    @TableField(exist = false)
-    private Category parent;
-    @TableField(exist = false)
-    private List<Category> children;
-    @TableField(exist = false)
-    private List<Website> websites;
 
 }

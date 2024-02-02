@@ -1,13 +1,12 @@
 package com.tarzan.nav.modules.admin.entity.biz;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.tarzan.nav.modules.admin.vo.base.BaseVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import java.util.List;
+import javax.persistence.*;
 
 /**
  * @author tarzan liu
@@ -18,7 +17,13 @@ import java.util.List;
 @Data
 @Accessors(chain = true)
 @TableName("biz_comment")
-public class Comment extends BaseVo {
+@Table(name="biz_comment")
+@Entity
+public class CommentEntity extends BaseVo {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     private Integer userId;
     /** 业务id */
@@ -43,16 +48,5 @@ public class Comment extends BaseVo {
     private String browserShortName;
     private String content;
     private String location;
-
-    @TableField(exist = false)
-    private Long loveCount;
-    @TableField(exist = false)
-    private String replyName;
-    @TableField(exist = false)
-    private String replyContent;
-    @TableField(exist = false)
-    private List<Comment> children;
-    @TableField(exist = false)
-    private BizImage img;
 
 }

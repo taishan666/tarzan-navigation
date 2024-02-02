@@ -1,6 +1,7 @@
 package com.tarzan.nav.modules.admin.mapper.sys;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.tarzan.nav.modules.admin.entity.sys.MenuEntity;
 import com.tarzan.nav.modules.admin.model.sys.Menu;
 
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.Set;
  * @since JDK1.8
  * @date 2021年5月11日
  */
-public interface MenuMapper extends BaseMapper<Menu> {
+public interface MenuMapper extends BaseMapper<MenuEntity> {
 
     /**
      * 根据用户id查询权限集合

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tarzan.nav.common.constant.CoreConst;
+import com.tarzan.nav.modules.admin.entity.sys.SysConfigEntity;
 import com.tarzan.nav.modules.admin.mapper.sys.SysConfigMapper;
 import com.tarzan.nav.modules.admin.model.biz.BizImage;
 import com.tarzan.nav.modules.admin.model.sys.SysConfig;
@@ -27,15 +28,15 @@ import java.util.Objects;
  */
 @Service
 @AllArgsConstructor
-public class SysConfigService extends ServiceImpl<SysConfigMapper, SysConfig> {
+public class SysConfigService extends ServiceImpl<SysConfigMapper, SysConfigEntity> {
 
     private final ImageService imageService;
 
 
     private Map<String, String> selectAll() {
-        List<SysConfig> sysConfigs =list();
+        List<SysConfigEntity> sysConfigs =list();
         Map<String, String> map = new HashMap<>(sysConfigs.size());
-        for (SysConfig config : sysConfigs) {
+        for (SysConfigEntity config : sysConfigs) {
             map.put(config.getSysKey(), config.getSysValue());
         }
         return map;
@@ -66,8 +67,8 @@ public class SysConfigService extends ServiceImpl<SysConfigMapper, SysConfig> {
 
     @CacheEvict(value = "site", key = "'config'", allEntries = true)
     public boolean updateByKey(String key, String value) {
-        if (getOne(Wrappers.<SysConfig>lambdaQuery().eq(SysConfig::getSysKey, key)) != null) {
-            return update(Wrappers.<SysConfig>lambdaUpdate().eq(SysConfig::getSysKey, key).set(SysConfig::getSysValue, value));
+        if (getOne(Wrappers.<SysConfigEntity>lambdaQuery().eq(SysConfigEntity::getSysKey, key)) != null) {
+            return update(Wrappers.<SysConfigEntity>lambdaUpdate().eq(SysConfigEntity::getSysKey, key).set(SysConfigEntity::getSysValue, value));
         } else {
             return save(new SysConfig().setSysKey(key).setSysValue(value));
         }

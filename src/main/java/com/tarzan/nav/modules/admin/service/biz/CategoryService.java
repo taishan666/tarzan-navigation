@@ -3,9 +3,12 @@ package com.tarzan.nav.modules.admin.service.biz;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tarzan.nav.common.constant.CoreConst;
+import com.tarzan.nav.modules.admin.entity.biz.CategoryEntity;
+import com.tarzan.nav.modules.admin.entity.biz.WebsiteEntity;
 import com.tarzan.nav.modules.admin.mapper.biz.CategoryMapper;
 import com.tarzan.nav.modules.admin.model.biz.Category;
 import com.tarzan.nav.modules.admin.model.biz.Website;
+import com.tarzan.nav.utils.BeanUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -23,29 +26,30 @@ import java.util.stream.Collectors;
  */
 @Service
 @AllArgsConstructor
-public class CategoryService extends ServiceImpl<CategoryMapper, Category> {
+public class CategoryService extends ServiceImpl<CategoryMapper, CategoryEntity> {
 
     private final WebsiteService websiteService;
 
     @Cacheable(value = "category", key = "'list'")
     public List<Category> selectCategories(int status) {
-        return super.lambdaQuery().eq(Category::getStatus,status).orderByAsc(Category::getSort).list();
+        List<CategoryEntity> entities= super.lambdaQuery().eq(CategoryEntity::getStatus,status).orderByAsc(CategoryEntity::getSort).list();
+        return BeanUtil.copyList(entities,Category.class);
     }
 
     @Cacheable(value = "category", key = "'all'")
-    public List<Category> selectCategories() {
-        return super.lambdaQuery().orderByAsc(Category::getSort).list();
+    public List<CategoryEntity> selectCategories() {
+        return super.lambdaQuery().orderByAsc(CategoryEntity::getSort).list();
     }
 
     @Override
     @Cacheable(value = "category", key = "'count'")
     public long count() {
-        return super.lambdaQuery().eq(Category::getStatus, CoreConst.STATUS_VALID).count();
+        return super.lambdaQuery().eq(CategoryEntity::getStatus, CoreConst.STATUS_VALID).count();
     }
 
     public Category selectById(Integer id) {
-        Category category=getById(id);
-        category.setParent(getById(category.getPid()));
+        Category category= BeanUtil.copy(super.getById(id),Category.class);
+        category.setParent(BeanUtil.copy(super.getById(category.getPid()),Category.class));
         return category;
     }
 
@@ -83,14 +87,14 @@ public class CategoryService extends ServiceImpl<CategoryMapper, Category> {
         return topList;
     }
 
-    public List<Category> selectByPid(Integer pid) {
-        return super.lambdaQuery().eq(Category::getPid, pid).list();
+    public List<CategoryEntity> selectByPid(Integer pid) {
+        return super.lambdaQuery().eq(CategoryEntity::getPid, pid).list();
     }
 
 
     public boolean existWebsites(Integer id){
         if(!CoreConst.TOP_MENU_ID.equals(id)){
-            return websiteService.lambdaQuery().eq(Website::getCategoryId,id).count()!=0L;
+            return websiteService.lambdaQuery().eq(WebsiteEntity::getCategoryId,id).count()!=0L;
         }
        return false;
     }
@@ -98,10 +102,10 @@ public class CategoryService extends ServiceImpl<CategoryMapper, Category> {
     @Transactional(rollbackFor = Exception.class)
     public boolean updateStatus(Category bizCategory) {
         boolean flag= super.updateById(bizCategory);
-        List<Category> children=super.lambdaQuery().eq(Category::getPid,bizCategory.getId()).list();
+        List<CategoryEntity> children=super.lambdaQuery().eq(CategoryEntity::getPid,bizCategory.getId()).list();
         if(CollectionUtils.isNotEmpty(children)){
-            List<Integer> cateIds=children.stream().map(Category::getId).collect(Collectors.toList());
-            return super.lambdaUpdate().set(Category::getStatus,bizCategory.getStatus()).in(Category::getId,cateIds).update();
+            List<Integer> cateIds=children.stream().map(CategoryEntity::getId).collect(Collectors.toList());
+            return super.lambdaUpdate().set(CategoryEntity::getStatus,bizCategory.getStatus()).in(CategoryEntity::getId,cateIds).update();
         }
         return flag;
     }

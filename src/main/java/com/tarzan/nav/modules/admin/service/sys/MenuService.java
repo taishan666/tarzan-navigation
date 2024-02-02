@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tarzan.nav.common.constant.CoreConst;
+import com.tarzan.nav.modules.admin.entity.sys.MenuEntity;
 import com.tarzan.nav.modules.admin.mapper.sys.MenuMapper;
 import com.tarzan.nav.modules.admin.model.sys.Menu;
 import lombok.AllArgsConstructor;
@@ -12,7 +13,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -23,7 +27,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @AllArgsConstructor
-public class MenuService extends ServiceImpl<MenuMapper, Menu> {
+public class MenuService extends ServiceImpl<MenuMapper, MenuEntity> {
 
     private static final Pattern SLASH_PATTERN = Pattern.compile(StringPool.SLASH);
 
@@ -61,8 +65,8 @@ public class MenuService extends ServiceImpl<MenuMapper, Menu> {
 */
 
     @Cacheable(value = "menu", key = "'menus'")
-    public List<Menu> selectAllMenuName(Integer status) {
-        return  super.lambdaQuery().ne(Menu::getType,2).eq(Menu::getStatus,status).orderByAsc(Menu::getSort).list();
+    public List<MenuEntity> selectAllMenuName(Integer status) {
+        return  super.lambdaQuery().ne(MenuEntity::getType,2).eq(MenuEntity::getStatus,status).orderByAsc(MenuEntity::getSort).list();
     }
 
     public List<Menu> selectMenuByUserId(Integer userId) {

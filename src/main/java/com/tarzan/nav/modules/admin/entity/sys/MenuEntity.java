@@ -1,14 +1,11 @@
 package com.tarzan.nav.modules.admin.entity.sys;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.tarzan.nav.modules.admin.vo.base.BaseVo;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
+import javax.persistence.*;
 
 /**
  * @author tarzan liu
@@ -18,9 +15,13 @@ import java.util.List;
 @Data
 @Accessors(chain = true)
 @TableName("sys_menu")
-public class Menu implements Serializable {
+@Table(name="sys_menu")
+@Entity
+public class MenuEntity extends BaseVo {
 
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
 
@@ -68,12 +69,5 @@ public class Menu implements Serializable {
      */
     private Integer status;
 
-    @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Date updateTime;
-
-    @TableField(exist = false)
-    private List<Menu> children;
 
 }

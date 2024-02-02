@@ -1,88 +1,12 @@
 package com.tarzan.nav.modules.admin.model.log;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.tarzan.nav.modules.admin.entity.log.LogErrorEntity;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @author tarzan
  */
 @Data
-@TableName("sys_log_error")
-@EqualsAndHashCode
-@Entity
-public class LogError implements Serializable {
+public class LogError extends LogErrorEntity{
 
-    /**
-     * 主键id
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Long id;
-    /**
-     * 远程Ip
-     */
-    protected String remoteIp;
-    /**
-     * 用户代理
-     */
-    protected String userAgent;
-    /**
-     * 请求接口
-     */
-    protected String requestUri;
-    /**
-     * 方法
-     */
-    protected String method;
-    /**
-     * 方法类
-     */
-    protected String methodClass;
-    /**
-     * 方法名
-     */
-    protected String methodName;
-    /**
-     * 参数
-     */
-    protected String params;
-    /**
-     * 堆栈跟踪
-     */
-    private String stackTrace;
-    /**
-     * 异常名称
-     */
-    private String exceptionName;
-    /**
-     * 信息
-     */
-    private String message;
-    /**
-     * 文件名
-     */
-    private String fileName;
-    /**
-     * 错误行数
-     */
-    private Integer lineNumber;
-    /**
-     * 创建人
-     */
-    protected String createName;
-    /**
-     * 创建时间
-     */
-    @TableField(fill = FieldFill.INSERT)
-    protected Date createTime;
 }

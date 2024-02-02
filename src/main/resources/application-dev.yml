@@ -2,7 +2,7 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driverClassName: org.h2.Driver
-    url:  jdbc:h2:file:${user.home}/.tarzan-nav-test/db/tarzan-nav;MODE=MYSQL
+    url:  jdbc:h2:file:${user.home}/.tarzan-nav-3/db/tarzan-nav;MODE=MYSQL
     username: root
     password: 123456
   mail:
@@ -20,7 +20,7 @@ spring:
               required: true # 必须采用加密链接
   h2:
     console:
-      enabled: false
+      enabled: true
       settings:
         web-allow-others: false
       path: /h2-console

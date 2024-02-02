@@ -1,11 +1,14 @@
 package com.tarzan.nav.modules.admin.entity.biz;
 
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.tarzan.nav.modules.admin.vo.base.BaseVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import lombok.experimental.SuperBuilder;
+
+import javax.persistence.*;
 
 
 /**
@@ -17,8 +20,15 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 @TableName("biz_website")
-public class Website extends BaseVo {
+@Table(name="biz_website")
+@Entity
+@SuperBuilder
+@NoArgsConstructor
+public class WebsiteEntity extends BaseVo {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     private String url;
     private String name;
     private String description;
@@ -29,14 +39,5 @@ public class Website extends BaseVo {
     private Integer origin;
     private Integer categoryId;
     private String remark;
-
-    @TableField(exist = false)
-    private String flag;
-    @TableField(exist = false)
-    private BizImage img;
-    @TableField(exist = false)
-    private String categoryName;
-    @TableField(exist = false)
-    private String applyType;
 
 }

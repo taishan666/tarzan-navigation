@@ -1,5 +1,6 @@
 package com.tarzan.nav.modules.admin.entity.sys;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
@@ -14,8 +15,9 @@ import java.io.Serializable;
 @Data
 @Accessors(chain = true)
 @Entity
+@TableName("sys_config")
 @Table(name = "sys_config")
-public class SysConfig implements Serializable {
+public class SysConfigEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.tarzan.nav.modules.admin.entity.log.LoginLogEntity;
 import com.tarzan.nav.modules.admin.model.log.LoginLog;
 import com.tarzan.nav.modules.admin.service.log.LoginLogService;
 import com.tarzan.nav.modules.admin.vo.base.PageResultVo;
@@ -36,13 +37,13 @@ public class LogLoginController {
     @PostMapping("/list")
     @ResponseBody
     public PageResultVo list(LoginLog param, Integer pageNumber, Integer pageSize) {
-        IPage<LoginLog> page = new Page<>(pageNumber, pageSize);
-        LambdaQueryWrapper<LoginLog>  wrapper= Wrappers.lambdaQuery();
-        wrapper.like(StringUtils.isNotBlank(param.getLoginName()),LoginLog::getLoginName,param.getLoginName());
-        wrapper.like(StringUtils.isNotBlank(param.getPhone()),LoginLog::getPhone,param.getPhone());
-        wrapper.like(StringUtils.isNotBlank(param.getSourceIp()),LoginLog::getSourceIp,param.getSourceIp());
-        wrapper.orderByDesc(LoginLog::getCreateTime);
-        IPage<LoginLog> loginLogPage = loginLogService.page(page, wrapper);
+        IPage<LoginLogEntity> page = new Page<>(pageNumber, pageSize);
+        LambdaQueryWrapper<LoginLogEntity>  wrapper= Wrappers.lambdaQuery();
+        wrapper.like(StringUtils.isNotBlank(param.getLoginName()),LoginLogEntity::getLoginName,param.getLoginName());
+        wrapper.like(StringUtils.isNotBlank(param.getPhone()),LoginLogEntity::getPhone,param.getPhone());
+        wrapper.like(StringUtils.isNotBlank(param.getSourceIp()),LoginLogEntity::getSourceIp,param.getSourceIp());
+        wrapper.orderByDesc(LoginLogEntity::getCreateTime);
+        IPage<LoginLogEntity> loginLogPage = loginLogService.page(page, wrapper);
         return ResultUtil.table(loginLogPage.getRecords(), loginLogPage.getTotal());
     }
 

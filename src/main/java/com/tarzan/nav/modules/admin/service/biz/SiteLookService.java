@@ -10,10 +10,11 @@ import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.tarzan.nav.common.constant.CoreConst;
 import com.tarzan.nav.common.enums.NavigationTypeEnum;
+import com.tarzan.nav.modules.admin.entity.biz.SiteLookEntity;
+import com.tarzan.nav.modules.admin.entity.biz.WebsiteEntity;
 import com.tarzan.nav.modules.admin.mapper.biz.SiteLookMapper;
 import com.tarzan.nav.modules.admin.mapper.biz.WebsiteMapper;
 import com.tarzan.nav.modules.admin.model.biz.SiteLook;
-import com.tarzan.nav.modules.admin.model.biz.Website;
 import com.tarzan.nav.modules.network.LocationService;
 import com.tarzan.nav.utils.DateUtil;
 import com.tarzan.nav.utils.MapUtil;
@@ -32,7 +33,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
-public class SiteLookService extends ServiceImpl<SiteLookMapper, SiteLook> {
+public class SiteLookService extends ServiceImpl<SiteLookMapper, SiteLookEntity> {
 
     @Resource
     private  WebsiteMapper websiteMapper;
@@ -49,8 +50,8 @@ public class SiteLookService extends ServiceImpl<SiteLookMapper, SiteLook> {
 
     public Set<Integer> topSites(int num, NavigationTypeEnum typeEnum) {
         String type=Objects.isNull(typeEnum)?"":typeEnum.getName();
-        List<SiteLook> looks= super.lambdaQuery().ne(SiteLook::getSiteId, CoreConst.ZERO).eq(StringUtil.isNotBlank(type),SiteLook::getType,type).list();
-        Map<Integer,Long> lookMap=looks.stream().collect(Collectors.groupingBy(SiteLook::getSiteId,Collectors.counting()));
+        List<SiteLookEntity> looks= super.lambdaQuery().ne(SiteLookEntity::getSiteId, CoreConst.ZERO).eq(StringUtil.isNotBlank(type),SiteLookEntity::getType,type).list();
+        Map<Integer,Long> lookMap=looks.stream().collect(Collectors.groupingBy(SiteLookEntity::getSiteId,Collectors.counting()));
         return MapUtil.topNByValue(lookMap,num).keySet();
     }
 
@@ -81,7 +82,7 @@ public class SiteLookService extends ServiceImpl<SiteLookMapper, SiteLook> {
 
     @Async
     public void asyncLook(String url,String userIp,String type) {
-        Website site=websiteMapper.selectOne(Wrappers.<Website>lambdaQuery().select(Website::getId).eq(Website::getUrl,url).last("limit 1"));
+        WebsiteEntity site=websiteMapper.selectOne(Wrappers.<WebsiteEntity>lambdaQuery().select(WebsiteEntity::getId).eq(WebsiteEntity::getUrl,url).last("limit 1"));
         if(Objects.nonNull(site)){
             asyncLook(site.getId(),userIp,type);
         }

@@ -1,11 +1,10 @@
 package com.tarzan.nav.modules.admin.entity.sys;
 
 import com.baomidou.mybatisplus.annotation.*;
-import com.tarzan.nav.modules.admin.entity.biz.BizImage;
+import com.tarzan.nav.modules.admin.vo.base.BaseVo;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -17,7 +16,7 @@ import java.util.Date;
 @TableName("sys_user")
 @Entity
 @Table(name="sys_user")
-public class User implements Serializable {
+public class UserEntity extends BaseVo {
 
     /**
      * 用户id
@@ -77,18 +76,6 @@ public class User implements Serializable {
     private Integer status;
 
     /**
-     * 创建时间
-     */
-    @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
-
-    /**
-     * 更新时间
-     */
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Date updateTime;
-
-    /**
      * 最后登录时间
      */
     private Date lastLoginTime;
@@ -114,11 +101,6 @@ public class User implements Serializable {
     public String getCredentialsSalt() {
         return username + "tarzan.com" + salt;
     }
-
-
-    @TableField(exist = false)
-    @Column(insertable = false)
-    private BizImage img;
 
 
 }

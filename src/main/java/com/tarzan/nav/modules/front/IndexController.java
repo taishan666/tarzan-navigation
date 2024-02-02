@@ -3,6 +3,7 @@ package com.tarzan.nav.modules.front;
 import com.tarzan.nav.common.constant.CoreConst;
 import com.tarzan.nav.common.constant.LookTypeConst;
 import com.tarzan.nav.common.enums.NavigationTypeEnum;
+import com.tarzan.nav.modules.admin.entity.biz.WebsiteEntity;
 import com.tarzan.nav.modules.admin.model.biz.Category;
 import com.tarzan.nav.modules.admin.model.biz.Website;
 import com.tarzan.nav.modules.admin.service.biz.*;
@@ -65,7 +66,7 @@ public class IndexController {
         siteLookService.asyncLook(0,WebUtil.getIP(), LookTypeConst.SEARCH);
         model.addAttribute("categories",categoryService.treeList());
         model.addAttribute("search",q);
-        List<Website> websites=websiteService.search(new Website().setName(q).setDescription(q),type);
+        List<Website> websites=websiteService.search(Website.builder().name(q).description(q).build(),type);
         model.addAttribute("websites",websites);
         model.addAttribute("type",type);
         return  CoreConst.WEB_PREFIX+"search";
@@ -116,7 +117,7 @@ public class IndexController {
 
     @GetMapping("/site/{id}")
     public String apply(@PathVariable("id") Integer id) {
-        Website website=websiteService.get(id);
+        WebsiteEntity website=websiteService.get(id);
         siteLookService.asyncLook(id,WebUtil.getIP(), LookTypeConst.SITE);
         if(Objects.isNull(website)){
             return "forward:/";

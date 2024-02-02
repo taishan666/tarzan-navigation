@@ -2,6 +2,7 @@ package com.tarzan.nav.modules.admin.controller.biz;
 
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.tarzan.nav.common.constant.CoreConst;
+import com.tarzan.nav.modules.admin.entity.biz.CategoryEntity;
 import com.tarzan.nav.utils.ResultUtil;
 import com.tarzan.nav.modules.admin.model.biz.Category;
 import com.tarzan.nav.modules.admin.service.biz.CategoryService;
@@ -31,14 +32,14 @@ public class CategoryController {
 
     @PostMapping("list")
     @ResponseBody
-    public List<Category> loadCategory() {
+    public List<CategoryEntity> loadCategory() {
         return categoryService.selectCategories();
     }
 
     @GetMapping("/add")
     public String add(Model model) {
         Category bizCategory = new Category();
-        long count=categoryService.lambdaQuery().eq(Category::getPid,CoreConst.TOP_CATEGORY_ID).count();
+        long count=categoryService.lambdaQuery().eq(CategoryEntity::getPid,CoreConst.TOP_CATEGORY_ID).count();
         bizCategory.setSort((int) (count+1));
         bizCategory.setPid(CoreConst.TOP_CATEGORY_ID);
         bizCategory.setParentName(CoreConst.TOP_CATEGORY_NAME);
@@ -50,7 +51,7 @@ public class CategoryController {
     public String addChild(Model model,Integer pid) {
         Category bizCategory = new Category();
         bizCategory.setPid(pid);
-        long count=categoryService.lambdaQuery().eq(Category::getPid,pid).count();
+        long count=categoryService.lambdaQuery().eq(CategoryEntity::getPid,pid).count();
         bizCategory.setSort((int) (count+1));
         bizCategory.setPid(pid);
         bizCategory.setParentName(getCategoryName(pid));
@@ -132,7 +133,7 @@ public class CategoryController {
 
 
     private String getCategoryName(Integer id){
-        Category category=categoryService.getById(id);
+        CategoryEntity category=categoryService.getById(id);
         return category==null?"":category.getName();
     }
 

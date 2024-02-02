@@ -1,10 +1,7 @@
 package com.tarzan.nav.modules.admin.model.sys;
 
+import com.tarzan.nav.modules.admin.entity.sys.SysConfigEntity;
 import lombok.Data;
-import lombok.experimental.Accessors;
-
-import javax.persistence.*;
-import java.io.Serializable;
 
 /**
  * @author tarzan liu
@@ -12,33 +9,6 @@ import java.io.Serializable;
  * @date 2021年5月11日
  */
 @Data
-@Accessors(chain = true)
-@Entity
-@Table(name = "sys_config")
-public class SysConfig implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    /**
-     * key
-     */
-    private String sysKey;
-
-    /**
-     * value
-     */
-    private String sysValue;
-
-    /**
-     * 状态  1：有效 0：无效
-     */
-    private Integer status;
-
-    /**
-     * 备注
-     */
-    private String remark;
+public class SysConfig extends SysConfigEntity {
 
 }

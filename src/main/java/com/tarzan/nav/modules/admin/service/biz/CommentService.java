@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.tarzan.nav.common.constant.CoreConst;
+import com.tarzan.nav.modules.admin.entity.biz.BizImageEntity;
+import com.tarzan.nav.modules.admin.entity.biz.CommentEntity;
 import com.tarzan.nav.modules.admin.mapper.biz.CommentMapper;
 import com.tarzan.nav.modules.admin.model.biz.BizImage;
 import com.tarzan.nav.modules.admin.model.biz.Comment;
@@ -30,73 +32,70 @@ import java.util.stream.Collectors;
  */
 @Service
 @AllArgsConstructor
-public class CommentService extends ServiceImpl<CommentMapper, Comment> {
+public class CommentService extends ServiceImpl<CommentMapper, CommentEntity> {
 
     private final ImageService imageService;
 
     @CacheEvict(value = "comment", allEntries = true)
     public boolean deleteBatch(List<Integer> ids) {
-        return remove(Wrappers.<Comment>lambdaQuery().in(Comment::getId,ids).or().in(Comment::getPid,ids));
+        return remove(Wrappers.<CommentEntity>lambdaQuery().in(CommentEntity::getId,ids).or().in(CommentEntity::getPid,ids));
     }
 
     @Override
     @Cacheable(value = "comment", key = "'count'")
     public long count() {
-        return count(Wrappers.<Comment>lambdaQuery().eq(Comment::getStatus, CoreConst.STATUS_VALID));
+        return count(Wrappers.<CommentEntity>lambdaQuery().eq(CommentEntity::getStatus, CoreConst.STATUS_VALID));
     }
 
     public IPage<Comment> selectComments(CommentConditionVo vo, Integer pageNumber, Integer pageSize){
-        IPage<Comment> page = new Page<>(pageNumber, pageSize);
-        Comment comment= BeanUtil.copy(vo,Comment.class);
-        page=page(page,Wrappers.lambdaQuery(comment).orderByDesc(Comment::getCreateTime));
-        List<Comment> comments=page.getRecords();
-        if(CollectionUtils.isNotEmpty(comments)){
-            List<Integer> replyIds=comments.stream().map(Comment::getReplyId).collect(Collectors.toList());
-            List<Comment> replyComments=listByIds(replyIds);
-            Map<Integer,Comment> map=replyComments.stream().collect(Collectors.toMap(Comment::getId,e->e));
+        IPage<CommentEntity> page = new Page<>(pageNumber, pageSize);
+        CommentEntity comment= BeanUtil.copy(vo,CommentEntity.class);
+        page=page(page,Wrappers.lambdaQuery(comment).orderByDesc(CommentEntity::getCreateTime));
+        return this.wrapperPage(page);
+    }
+
+    private IPage<Comment> wrapperPage(IPage<CommentEntity> entityPage){
+        IPage<Comment> page=new Page<>(entityPage.getCurrent(),entityPage.getPages(),entityPage.getTotal());
+        page.setRecords(this.wrapper(entityPage.getRecords()));
+        return page;
+    }
+
+    private List<Comment> wrapper(List<CommentEntity> commentEntities){
+        if(CollectionUtils.isNotEmpty(commentEntities)){
+            List<Comment> comments=BeanUtil.copyList(commentEntities,Comment.class);
+            Set<String> imageIds=comments.stream().map(CommentEntity::getAvatar).collect(Collectors.toSet());
+            if(CollectionUtils.isNotEmpty(imageIds)){
+                List<BizImageEntity> images= imageService.listByIds(imageIds);
+                Map<String,BizImageEntity> map=images.stream().collect(Collectors.toMap(BizImageEntity::getId, e->e));
+                comments.forEach(e->e.setImg(BeanUtil.copy(map.get(e.getAvatar()),BizImage.class)));
+            }
+            List<Integer> replyIds=comments.stream().map(CommentEntity::getReplyId).collect(Collectors.toList());
+            List<CommentEntity> replyComments=listByIds(replyIds);
+            Map<Integer,CommentEntity> map=replyComments.stream().collect(Collectors.toMap(CommentEntity::getId,e->e));
             comments.forEach(e->{
-                Comment reply=map.get(e.getReplyId());
+                CommentEntity reply=map.get(e.getReplyId());
                 if(reply!=null){
                     e.setReplyName(reply.getNickname());
                     e.setReplyContent(reply.getContent());
                 }
             });
-            page.setRecords(this.wrapper(comments));
+            return comments;
         }
-        return page;
+        return Collections.emptyList();
     }
 
-    private List<Comment> wrapper(List<Comment> comments){
-        Set<String> imageIds=comments.stream().map(Comment::getAvatar).collect(Collectors.toSet());
-        if(CollectionUtils.isNotEmpty(imageIds)){
-            List<BizImage> images= imageService.listByIds(imageIds);
-            Map<String,BizImage> map=images.stream().collect(Collectors.toMap(BizImage::getId, e->e));
-            comments.forEach(e->e.setImg(map.get(e.getAvatar())));
-        }
-        return comments;
-    }
     public Long commentsBySidNum(Integer sid){
-        return super.lambdaQuery().eq(Comment::getSid,sid).eq(Comment::getStatus,CoreConst.STATUS_VALID).count();
+        return super.lambdaQuery().eq(CommentEntity::getSid,sid).eq(CommentEntity::getStatus,CoreConst.STATUS_VALID).count();
     }
     public List<Comment> commentsBySid(Integer sid){
         List<Comment> commentTree = Collections.emptyList();
-        List<Comment> comments=super.lambdaQuery().eq(Comment::getSid,sid).eq(Comment::getStatus,CoreConst.STATUS_VALID).orderByDesc(Comment::getCreateTime).list();
-        if(CollectionUtils.isNotEmpty(comments)){
-            this.wrapper(comments);
+        List<CommentEntity> commentEntities=super.lambdaQuery().eq(CommentEntity::getSid,sid).eq(CommentEntity::getStatus,CoreConst.STATUS_VALID).orderByDesc(CommentEntity::getCreateTime).list();
+        if(CollectionUtils.isNotEmpty(commentEntities)){
+            List<Comment> comments= this.wrapper(commentEntities);
             commentTree=comments.stream().filter(e->CoreConst.ZERO.equals(e.getPid())).collect(Collectors.toList());
-            Map<Integer,Comment> commentMap=comments.stream().collect(Collectors.toMap(Comment::getId,e->e));
             Map<Integer,List<Comment>> childMap=comments.stream().collect(Collectors.groupingBy(Comment::getPid));
             commentTree.forEach(e->{
                 List<Comment> childList=childMap.get(e.getId());
-                if(CollectionUtils.isNotEmpty(childList)){
-                    this.wrapper(childList);
-                    childList.forEach(c->{
-                        Comment reply = commentMap.get(c.getReplyId());
-                        if(Objects.nonNull(reply)){
-                            c.setReplyName(reply.getNickname());
-                        }
-                    });
-                }
                 e.setChildren(childList);
             });
         }
@@ -109,12 +108,12 @@ public class CommentService extends ServiceImpl<CommentMapper, Comment> {
     }
 
     @Cacheable(value = "comment", key = "'toAudit'")
-    public List<Comment> toAudit(int num) {
-       return super.lambdaQuery().select(Comment::getContent).eq(Comment::getStatus,CoreConst.STATUS_INVALID).last("limit "+num).list();
+    public List<CommentEntity> toAudit(int num) {
+       return super.lambdaQuery().select(CommentEntity::getContent).eq(CommentEntity::getStatus,CoreConst.STATUS_INVALID).last("limit "+num).list();
     }
 
     public Long toAuditNum() {
-        return super.lambdaQuery().eq(Comment::getStatus,CoreConst.STATUS_INVALID).count();
+        return super.lambdaQuery().eq(CommentEntity::getStatus,CoreConst.STATUS_INVALID).count();
     }
 
     @CacheEvict(value = "comment", allEntries = true)
