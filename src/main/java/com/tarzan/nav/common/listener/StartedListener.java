@@ -37,7 +37,7 @@ public class StartedListener implements ApplicationListener<ApplicationStartedEv
 
     @Override
     public void onApplicationEvent(@NonNull ApplicationStartedEvent event) {
-        appInstallTools.install();
+       // appInstallTools.install();
         shiroService.updatePermission();
         File backupDir=new File(tarzanProperties.getBackupDir());
         if(!backupDir.exists()){

@@ -1,7 +1,7 @@
-package com.tarzan.nav.modules.admin.model.sys;
+package com.tarzan.nav.modules.admin.entity.sys;
 
 import com.baomidou.mybatisplus.annotation.*;
-import com.tarzan.nav.modules.admin.model.biz.BizImage;
+import com.tarzan.nav.modules.admin.entity.biz.BizImage;
 import lombok.Data;
 
 import javax.persistence.*;

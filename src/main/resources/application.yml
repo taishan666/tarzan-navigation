@@ -19,6 +19,7 @@ server:
   servlet:
     encoding:
       charset: UTF-8
+
 spring:
   profiles:
     active: dev
@@ -54,17 +55,20 @@ spring:
           config:
             multi-statement-allow: true
             comment-allow: true
-          enabled: true
+          enabled: false
       validation-query: select 1
       test-while-idle: true
-  #thymeleaf:
-   # cache: false
-    #mode: HTML
+  jpa:
+    hibernate:
+      ddl-auto: update
+  thymeleaf:
+    cache: false
+    mode: HTML
     #prefix: file:${user.home}/.tarzan-cms/
     #template-resolver-order: 1
-    #servlet:
-     # content-type: text/html
-    #encoding: UTF-8
+    servlet:
+     content-type: text/html
+     encoding: UTF-8
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8

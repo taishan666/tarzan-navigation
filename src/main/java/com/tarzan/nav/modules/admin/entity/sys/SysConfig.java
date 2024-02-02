@@ -1,4 +1,4 @@
-package com.tarzan.nav.modules.admin.model.sys;
+package com.tarzan.nav.modules.admin.entity.sys;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

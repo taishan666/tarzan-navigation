@@ -1,4 +1,4 @@
-package com.tarzan.nav.modules.admin.model.biz;
+package com.tarzan.nav.modules.admin.entity.biz;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
