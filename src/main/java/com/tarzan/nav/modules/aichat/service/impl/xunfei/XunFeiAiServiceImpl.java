@@ -22,7 +22,7 @@ import java.util.function.BiConsumer;
  * 讯飞星火大模型
  * <a href="https://www.xfyun.cn/doc/spark/Web.html#_1-%E6%8E%A5%E5%8F%A3%E8%AF%B4%E6%98%8E"/>
  *
- * @author YiHui
+ * @author tarzan
  * @date 2023/6/12
  */
 @Slf4j

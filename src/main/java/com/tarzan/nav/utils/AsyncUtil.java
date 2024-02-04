@@ -27,7 +27,7 @@ import java.util.function.Supplier;
 /**
  * 异步工具类
  *
- * @author YiHui
+ * @author tarzan
  * @date 2023/6/12
  */
 @Slf4j

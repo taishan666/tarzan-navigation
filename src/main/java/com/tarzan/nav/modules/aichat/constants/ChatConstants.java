@@ -6,7 +6,7 @@ import com.tarzan.nav.modules.aichat.enums.AISourceEnum;
 import java.time.LocalDate;
 
 /**
- * @author YiHui
+ * @author tarzan
  * @date 2023/6/2
  */
 public final class ChatConstants {

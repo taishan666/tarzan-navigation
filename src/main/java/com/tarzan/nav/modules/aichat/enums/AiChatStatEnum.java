@@ -1,7 +1,7 @@
 package com.tarzan.nav.modules.aichat.enums;
 
 /**
- * @author YiHui
+ * @author tarzan
  * @date 2023/6/15
  */
 public enum AiChatStatEnum {

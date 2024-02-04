@@ -3,7 +3,7 @@ package com.tarzan.nav.websocket;
 /**
  * websocket 连接 状态
  *
- * @author YiHui
+ * @author tarzan
  * @date 2023/6/12
  */
 public enum WsConnectStateEnum {
