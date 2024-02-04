@@ -19,4 +19,6 @@ public interface TableConst {
     String NOTICE = "biz_notice";
     String SITE_LOOK = "biz_site_look";
     String WEBSITE = "biz_website";
+
+    String CHAT_ITEM = "chat_item";
 }

@@ -9,7 +9,7 @@ import java.util.Objects;
 /**
  * websocket 工具类
  *
- * @author caichengzhe
+ * @author tarzan
  * @version 1.0
  * @company 虎的一比有限责任公司
  * @copyright (c) 2021 Niubility Tiger Co.LTD.All rights reserved.
@@ -31,7 +31,7 @@ public class WebSocketUtil {
      * @param destination
      * @param data
      * @Return
-     * @author caichengzhe
+     * @author tarzan
      * @date 2021年07月08日 17:22:20
      */
     public static void broadcast(String destination, Object data) {
@@ -49,7 +49,7 @@ public class WebSocketUtil {
      * @param destination 订阅地址
      * @param data 数据
      * @Return
-     * @author caichengzhe
+     * @author tarzan
      * @date 2021年07月08日 17:25:13
      */
     public static void inform(String principal, String destination, Object data) {

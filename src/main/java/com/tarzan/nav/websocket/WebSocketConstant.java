@@ -5,7 +5,7 @@ import org.springframework.messaging.support.GenericMessage;
 /**
  * websocket 常量类
  *
- * @author caichengzhe
+ * @author tarzan
  * @version 1.0
  * @company 虎的一比有限责任公司
  * @copyright (c) 2021 Niubility Tiger Co.LTD.All rights reserved.

@@ -3,6 +3,9 @@ package com.tarzan.nav.utils;
 import com.tarzan.nav.modules.admin.model.sys.User;
 import org.apache.shiro.SecurityUtils;
 
+/**
+ * @author tarzan
+ */
 public class AuthUtil {
 
     public  static User  getUser(){

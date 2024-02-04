@@ -45,3 +45,10 @@ social:
       client-secret: 428ff220b5aa5704c55a8cf91f13aa4466258a6e7c357c7e30a5bca1d1cbe4e2
       redirect-uri: http://127.0.0.1/auth/oauth/callback/GITEE
 
+# 讯飞AI
+xunfei:
+  hostUrl: http://spark-api.xf-yun.com/v2.1/chat
+  domain: "generalv2"
+  appId:
+  apiKey:
+  apiSecret:
