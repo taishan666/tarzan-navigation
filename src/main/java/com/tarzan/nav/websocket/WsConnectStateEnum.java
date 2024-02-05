@@ -17,5 +17,4 @@ public enum WsConnectStateEnum {
     FAILED,
     // 已关闭
     CLOSED,
-    ;
 }

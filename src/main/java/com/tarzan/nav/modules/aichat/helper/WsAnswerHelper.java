@@ -1,7 +1,7 @@
 package com.tarzan.nav.modules.aichat.helper;
 
 import com.tarzan.nav.modules.aichat.enums.AISourceEnum;
-import com.tarzan.nav.modules.aichat.service.ChatFacade;
+import com.tarzan.nav.modules.aichat.ChatFacade;
 import com.tarzan.nav.modules.aichat.vo.ChatRecordsVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

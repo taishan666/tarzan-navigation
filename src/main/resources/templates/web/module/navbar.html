@@ -32,7 +32,7 @@
                     <li th:if="${loginUser==null}" class="nav-login ml-3 ml-md-4">
                         <a href="/login" title="登录"><i class="iconfont icon-user icon-lg"></i></a>
                     </li>
-                    <li th:unless="${loginUser==null}" class="nav-login-user dropdown ml-3 ml-md-4 show">
+                    <li th:if="${loginUser!=null}" class="nav-login-user dropdown ml-3 ml-md-4 show">
                         <a class="user-ico" href="#" data-toggle="dropdown" aria-expanded="true">
                             <img alt="" src="https://gravatar.loli.net/avatar/?s=96&amp;d=retro&amp;r=g" srcset="https://gravatar.loli.net/avatar/?s=192&amp;d=retro&amp;r=g 2x" class="avatar avatar-96 photo avatar-default" height="96" width="96" loading="lazy" decoding="async">
                         </a>

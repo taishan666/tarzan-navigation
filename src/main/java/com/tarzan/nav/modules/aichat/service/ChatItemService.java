@@ -20,6 +20,7 @@ import java.util.List;
 @Service
 public class ChatItemService extends ServiceImpl<ChatItemMapper, ChatItem> {
 
+    @Async
     public void pushChatItem(AISourceEnum source, Integer user, ChatItemVo item) {
         ChatItem chatItem = BeanUtil.copy(item,ChatItem.class);
         chatItem.setAiType(source.getCode());
@@ -27,7 +28,6 @@ public class ChatItemService extends ServiceImpl<ChatItemMapper, ChatItem> {
         super.save(chatItem);
     }
 
-    @Async
     public List<ChatItemVo> getChatHistory(AISourceEnum source,Integer userId,int num) {
         List<ChatItem> list = super.list(Wrappers.<ChatItem>lambdaQuery().eq(ChatItem::getUserId, userId).eq(ChatItem::getAiType, source.getCode()).orderByDesc(ChatItem::getAnswerTime).last("LIMIT " + num));
         if (CollectionUtils.isNotEmpty(list)) {

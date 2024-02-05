@@ -2,6 +2,7 @@ package com.tarzan.nav.websocket;
 
 import com.tarzan.nav.modules.aichat.enums.AISourceEnum;
 import com.tarzan.nav.modules.aichat.helper.WsAnswerHelper;
+import com.tarzan.nav.utils.AuthUtil;
 import com.tarzan.nav.utils.SpringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -61,11 +62,11 @@ public class AuthInChannelInterceptor implements ChannelInterceptor {
         if (StringUtils.equalsIgnoreCase(String.valueOf(message.getHeaders().get("simpMessageType")), "SUBSCRIBE")
                 && accessor != null && accessor.getUser() != null) {
             // 订阅成功，返回用户历史聊天记录； 从请求头中，获取具体选择的大数据模型
-          //  ReqInfoContext.addReqInfo((ReqInfoContext.ReqInfo) accessor.getUser());
+            AuthUtil.addReqInfo((AuthUtil.ReqInfo) accessor.getUser());
             String aiType = (String) ((Map) message.getHeaders().get("simpSessionAttributes")).get(WsAnswerHelper.AI_SOURCE_PARAM);
             AISourceEnum source = aiType == null ? null : AISourceEnum.valueOf(aiType);
             SpringUtil.getBean(WsAnswerHelper.class).sendMsgHistoryToUser(accessor.getUser().getName(), source);
-        //    ReqInfoContext.clear();
+            //AuthUtil.clear();
             return;
         }
         ChannelInterceptor.super.postSend(message, channel, sent);

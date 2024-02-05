@@ -56,4 +56,5 @@ public class CoreConst {
     public static final String JAR ="jar";
 
 
+    public static final String SESSION_KEY = "f-session";
 }

@@ -1,9 +1,10 @@
-package com.tarzan.nav.modules.aichat.service;
+package com.tarzan.nav.modules.aichat;
 
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.tarzan.nav.common.config.AiConfig;
 import com.tarzan.nav.modules.aichat.enums.AISourceEnum;
+import com.tarzan.nav.modules.aichat.service.ChatServiceFactory;
 import com.tarzan.nav.modules.aichat.service.impl.chatgpt.ChatGptIntegration;
 import com.tarzan.nav.modules.aichat.service.impl.xunfei.XunFeiIntegration;
 import com.tarzan.nav.modules.aichat.vo.ChatRecordsVo;
@@ -11,10 +12,10 @@ import com.tarzan.nav.utils.AuthUtil;
 import com.tarzan.nav.utils.SpringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.Resource;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -31,9 +32,9 @@ import java.util.function.Consumer;
 @Service
 public class ChatFacade {
 
-    @Autowired
+    @Resource
     private AiConfig aiConfig;
-    @Autowired
+    @Resource
     private ChatServiceFactory chatServiceFactory;
 
     /**
@@ -134,7 +135,7 @@ public class ChatFacade {
      * @return
      */
     public ChatRecordsVo chat(AISourceEnum source, String question) {
-        return chatServiceFactory.getChatService(source).chat(AuthUtil.getUserId(), question);
+        return chatServiceFactory.getChatService(source).chat(AuthUtil.getReqInfo().getUserId(), question);
     }
 
     /**
@@ -146,7 +147,7 @@ public class ChatFacade {
      */
     public ChatRecordsVo chat(AISourceEnum source, String question, Consumer<ChatRecordsVo> callback) {
         return chatServiceFactory.getChatService(source)
-                .chat(AuthUtil.getUserId(), question, callback);
+                .chat(AuthUtil.getReqInfo().getUserId(), question, callback);
     }
 
     /**
@@ -156,8 +157,9 @@ public class ChatFacade {
      * @param question
      */
     public ChatRecordsVo asyncChat(AISourceEnum source, String question, Consumer<ChatRecordsVo> callback) {
+        System.out.println(AuthUtil.getReqInfo());
         return chatServiceFactory.getChatService(source)
-                .asyncChat(AuthUtil.getUserId(), question, callback);
+                .asyncChat(AuthUtil.getReqInfo().getUserId(), question, callback);
     }
 
     /**
@@ -168,6 +170,6 @@ public class ChatFacade {
      */
     public ChatRecordsVo history(AISourceEnum source) {
         source = source == null ? getRecommendAiSource() : source;
-        return chatServiceFactory.getChatService(source).getChatHistory(AuthUtil.getUserId(), source);
+        return chatServiceFactory.getChatService(source).getChatHistory(AuthUtil.getReqInfo().getUserId(), source);
     }
 }

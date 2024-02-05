@@ -1,6 +1,7 @@
 package com.tarzan.nav.modules.aichat.service;
 
 import com.google.common.collect.Sets;
+import com.tarzan.nav.modules.aichat.ChatFacade;
 import com.tarzan.nav.modules.aichat.constants.ChatConstants;
 import com.tarzan.nav.modules.aichat.enums.AISourceEnum;
 import com.tarzan.nav.modules.aichat.enums.AiChatStatEnum;
@@ -82,28 +83,28 @@ public abstract class AbsChatService implements ChatService {
     }
 
     @Override
-    public ChatRecordsVo chat(Integer user, String question) {
+    public ChatRecordsVo chat(Integer userId, String question) {
         // 构建提问、返回的实体类，计算使用次数，最大次数
-        ChatRecordsVo res = initResVo(user, question);
+        ChatRecordsVo res = initResVo(userId, question);
         if (!res.hasQaCnt()) {
             return res;
         }
 
         // 执行提问
-        answer(user, res);
+        answer(userId, res);
         // 返回AI应答结果
         return res;
     }
 
     @Override
-    public ChatRecordsVo chat(Integer user, String question, Consumer<ChatRecordsVo> consumer) {
-        ChatRecordsVo res = initResVo(user, question);
+    public ChatRecordsVo chat(Integer userId, String question, Consumer<ChatRecordsVo> consumer) {
+        ChatRecordsVo res = initResVo(userId, question);
         if (!res.hasQaCnt()) {
             return res;
         }
 
         // 同步聊天时，直接返回结果
-        answer(user, res);
+        answer(userId, res);
         consumer.accept(res);
         return res;
     }
