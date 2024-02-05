@@ -159,7 +159,8 @@
 <script type='text/javascript' src='/web/js/bootstrap.min.js' id='bootstrap-js'></script>
 <script type='text/javascript' src='/web/js/theia-sticky-sidebar.min.js' id='sidebar-js'></script>
 <script type='text/javascript' src='/web/js/lazyload.min.js' id='lazyload-js'></script>
-<script th:src="@{/js/stomp.js}"></script>
+<script type='text/javascript' th:src="@{/js/stomp.js}"></script>
+<script type='text/javascript' th:src="@{/js/clipboard.min.js}"></script>
 <script type='text/javascript' id='appjs-js-extra'>
     const theme = {
         "formpostion": "top",
@@ -316,7 +317,7 @@
         let content = answer.answer;
         let time = answer.answerTime;
         let answerType = answer.answerType;
-        let chatId = answer.chatUid
+        let chatId = answer.chatUid;
         let appendLastChat = false;
         console.log("准备添加内容:", answer);
         // 如果 source 等于"CHAT_GPT_3_5"
@@ -412,7 +413,7 @@
 
     // 添加用户端消息
     function addClientMsg(messageContent, showLoading) {
-        const avatarUrl = user.photo;
+        const avatarUrl = 'https://i2.wp.com/gravatar.loli.net/avatar/?ssl=1';
         let loadingDiv = `
         <div class="home_chat-message-actions__loading">
             <div class="home_chat-message-action-loading__6ToUp">

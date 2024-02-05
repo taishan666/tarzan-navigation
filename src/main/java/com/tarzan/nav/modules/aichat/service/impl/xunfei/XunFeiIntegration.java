@@ -44,7 +44,7 @@ public class XunFeiIntegration {
 
     @PostConstruct
     public void init() {
-      //  okHttpClient = new OkHttpClient.Builder().build();
+        okHttpClient = new OkHttpClient.Builder().build();
     }
 
     public String buildXunFeiUrl() {

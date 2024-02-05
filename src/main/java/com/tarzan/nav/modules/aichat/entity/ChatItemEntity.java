@@ -1,4 +1,4 @@
-package com.tarzan.nav.modules.front.entity;
+package com.tarzan.nav.modules.aichat.entity;
 
 import com.tarzan.nav.common.constant.TableConst;
 import lombok.Data;
@@ -17,8 +17,8 @@ public class ChatItemEntity {
      * 唯一的聊天id，
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column(length = 50)
+    private String chatUid;
     /**
      * 用户id
      */
@@ -32,6 +32,7 @@ public class ChatItemEntity {
     /**
      * 提问的内容
      */
+    @Column(columnDefinition="text")
     private String question;
 
     /**
@@ -42,6 +43,7 @@ public class ChatItemEntity {
     /**
      * 回答内容
      */
+    @Column(columnDefinition="text")
     private String answer;
 
     /**

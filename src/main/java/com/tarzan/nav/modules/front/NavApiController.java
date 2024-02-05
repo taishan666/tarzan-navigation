@@ -28,7 +28,6 @@ import org.apache.shiro.subject.Subject;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.util.Objects;
@@ -245,6 +244,7 @@ public class NavApiController {
         registerUser.setEmail(dto.getEmail_phone());
         registerUser.setNickname(null);
         registerUser.setStatus(CoreConst.STATUS_VALID);
+        registerUser.setImageId(imageService.letterAvatar(username).getId());
         PasswordHelper.encryptPassword(registerUser);
         //注册
         boolean flag = userService.save(registerUser);
@@ -257,7 +257,7 @@ public class NavApiController {
     }
 
     @PostMapping("/login")
-    public ResponseVo login(LoginDTO dto, HttpServletResponse response) {
+    public ResponseVo login(LoginDTO dto) {
         UsernamePasswordToken token = new UsernamePasswordToken(dto.getUsername(), dto.getPassword());
         try {
             token.setRememberMe("forever".equals(dto.getRememberMe()));
@@ -278,7 +278,6 @@ public class NavApiController {
         }
         //后续处理
      //   loginProcess(request);
-        response.addCookie(SessionUtil.newCookie("f-session", AuthUtil.getUserId().toString()));
         return ResultUtil.vo(1,"登录成功！", JSON.parse("{goto:\"/\"}"));
     }
 

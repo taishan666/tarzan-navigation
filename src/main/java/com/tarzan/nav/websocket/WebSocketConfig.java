@@ -1,10 +1,8 @@
 package com.tarzan.nav.websocket;
 
-import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.messaging.Message;
-import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.messaging.support.ChannelInterceptor;
@@ -12,6 +10,8 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketTransportRegistration;
+import org.springframework.web.socket.server.HandshakeHandler;
+import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
 
 /**
  * web socket 配置类
@@ -38,16 +38,15 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         // 开启一个简单的基于内存的消息代理，前缀是/user的将消息会转发给消息代理 broker
         // 然后再由消息代理，将消息广播给当前连接的客户端
-        registry.enableSimpleBroker("/chat","/topic","/queue");
+        registry.enableSimpleBroker("/chat");
 
         // 表示配置一个或多个前缀，通过这些前缀过滤出需要被注解方法处理的消息。
         // 例如，前缀为 /app 的 destination 可以通过@MessageMapping注解的方法处理，
         // 而其他 destination （例如 /topic /queue）将被直接交给 broker 处理
         registry.setApplicationDestinationPrefixes("/app");
         // 客户端给服务端发消息的地址前缀 启用这个后@MessageMapping 不生效了
-        //  registry.setApplicationDestinationPrefixes("/server");
         //服务器到特定客户端的映射前缀
-        registry.setUserDestinationPrefix("/user");
+       // registry.setUserDestinationPrefix("/user");
     }
 
     /**
@@ -94,58 +93,44 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
 
     /**
-     * 方法描述: 入界通道拦截，此处用来进行身份验证与用户信息设置
+     * 配置接收消息的拦截器
      *
      * @param registration
-     * @Return
-     * @author caichengzhe
-     * @date 2021年07月08日 10:43:15
      */
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
-/*        registration.interceptors(new ChannelInterceptor() {
-            @Override
-            public Message<?> preSend(Message<?> message, MessageChannel channel) {
-                StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
-                if (StompCommand.CONNECT.equals(accessor.getCommand())) {
-                    String token = accessor.getFirstNativeHeader(WebSocketConstant.WEBSOCKET_HEADER_TOKEN);
-                    String userId = accessor.getFirstNativeHeader(WebSocketConstant.WEBSOCKET_HEADER_USER_ID);
-                    if (StringUtil.isAnyBlank(token, userId)) {
-                        return null;
-                    }
-                    //进行双重校验，两参数非空，且token中解析的用户id应于header传递的一致，否则视为非法请求
-                    //websocket此处不再进行登录功能，均采用jwttoken进行身份验证
-                    BladeUser bu = AuthUtil.getUser(token);
-                    if (Objects.isNull(bu) || !StringUtil.equals(String.valueOf(bu.getUserId()), userId)) {
-                        return null;
-                    }
-                    log.info("用户：" + bu.getRealName() + "; userId:" + bu.getUserId() + " 连接成功");
-                    accessor.setUser(() -> userId);
-                }
-                return message;
-            }
-        });*/
+        registration.interceptors(channelInInterceptor());
     }
 
-
     /**
-     * 方法描述: 出界通道拦截配置，此处用来进行日志信息收集
+     * 配置返回消息的拦截器
      *
      * @param registration
-     * @Return
-     * @author caichengzhe
-     * @date 2021年07月08日 10:44:06
      */
     @Override
     public void configureClientOutboundChannel(ChannelRegistration registration) {
-        registration.interceptors(new ChannelInterceptor() {
-            @Override
-            public void postSend(Message<?> message, MessageChannel channel, boolean sent) {
-                log.info("发出消息：" + JSON.toJSONString(message.getPayload()) + ";发送结果：" + (sent ? "成功" : "失败") + ";消息通道：" + channel);
-            }
-        });
+        registration.interceptors(channelOutInterceptor());
     }
 
+    @Bean
+    public HandshakeHandler handshakeHandler() {
+        return new AuthHandshakeHandler();
+    }
+
+    @Bean
+    public HttpSessionHandshakeInterceptor handshakeInterceptor() {
+        return new AuthHandshakeInterceptor();
+    }
+
+    @Bean
+    public ChannelInterceptor channelInInterceptor() {
+        return new AuthInChannelInterceptor();
+    }
+
+    @Bean
+    public ChannelInterceptor channelOutInterceptor() {
+        return new AuthOutChannelInterceptor();
+    }
 
 
 }

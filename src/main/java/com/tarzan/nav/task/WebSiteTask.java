@@ -42,7 +42,7 @@ public class WebSiteTask {
         log.info("---------------------  start  -----------------------------");
         websites.forEach(e->{
             if(Objects.isNull(e.getCategoryId())){
-                System.out.println(e.getId());
+                log.info(e.getId().toString());
                 websiteService.deleteBatch(Collections.singletonList(e.getId()));
             }
         });

@@ -6,7 +6,6 @@ import com.tarzan.nav.modules.aichat.enums.AISourceEnum;
 import com.tarzan.nav.modules.aichat.enums.AiChatStatEnum;
 import com.tarzan.nav.modules.aichat.vo.ChatItemVo;
 import com.tarzan.nav.modules.aichat.vo.ChatRecordsVo;
-import com.tarzan.nav.modules.front.ChatItemService;
 import com.tarzan.nav.utils.SpringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,8 +27,7 @@ import java.util.function.Consumer;
 @Slf4j
 @Service
 public abstract class AbsChatService implements ChatService {
-/*    @Autowired
-    private UserAiService userAiService;*/
+
     @Resource
     private ChatItemService chatItemService;
 
@@ -74,7 +72,7 @@ public abstract class AbsChatService implements ChatService {
             aiSource = source();
         }
         List<ChatItemVo> chats = chatItemService.getChatHistory(source(),userId,50);
-        chats.add(0, new ChatItemVo().initAnswer(String.format("开始你和派聪明(%s-大模型)的AI之旅吧!", aiSource.getName())));
+        chats.add(0, new ChatItemVo().initAnswer(String.format("开始你和泰聪明(%s-大模型)的AI之旅吧!", aiSource.getName())));
         ChatRecordsVo vo = new ChatRecordsVo();
         vo.setMaxCnt(getMaxQaCnt(userId));
         vo.setUsedCnt(queryUsedCnt(userId));

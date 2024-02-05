@@ -47,7 +47,11 @@ public class UserService extends ServiceImpl<UserMapper, User> {
 
 
     public User getByUsername(String username) {
-        return super.lambdaQuery().eq(User::getUsername, username).one();
+        User user= super.lambdaQuery().eq(User::getUsername, username).one();
+        if(Objects.nonNull(user)&& Objects.nonNull(user.getImageId())){
+            this.wrapper(user);
+        }
+        return user;
     }
 
     public boolean exists(String username) {

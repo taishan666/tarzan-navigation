@@ -27,7 +27,7 @@ public class WsAnswerHelper {
 
     public void sendMsgToUser(String session, String question) {
         ChatRecordsVo res = chatFacade.autoChat(question, vo -> response(session, vo));
-        log.info("AI直接返回：{}", res);
+        log.info("null AI直接返回：{}", res);
     }
 
     public void sendMsgToUser(AISourceEnum ai, String session, String question) {

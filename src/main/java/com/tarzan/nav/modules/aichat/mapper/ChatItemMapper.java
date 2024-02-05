@@ -1,7 +1,7 @@
-package com.tarzan.nav.modules.front.mapper;
+package com.tarzan.nav.modules.aichat.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.tarzan.nav.modules.front.model.ChatItem;
+import com.tarzan.nav.modules.aichat.model.ChatItem;
 
 /**
  * @author tarzan
