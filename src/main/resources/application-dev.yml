@@ -58,6 +58,7 @@ ai:
     - CHAT_GPT_4
     - TARZAN_AI
     - XUN_FEI_AI
+    - TONGYI_AI
 # chatgpt
 chatgpt:
   main: CHAT_GPT_3_5

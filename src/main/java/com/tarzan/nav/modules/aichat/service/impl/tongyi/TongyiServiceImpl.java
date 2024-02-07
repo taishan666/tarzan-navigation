@@ -34,7 +34,7 @@ public class TongyiServiceImpl extends AbsChatService {
 
     @Override
     public AISourceEnum source() {
-        return AISourceEnum.TONGYI;
+        return AISourceEnum.TONGYI_AI;
     }
 
     @Override

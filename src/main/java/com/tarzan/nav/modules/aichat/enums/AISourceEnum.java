@@ -27,7 +27,7 @@ public enum AISourceEnum {
     /**
      * 通义千问
      */
-    TONGYI(4, "通义千问"),
+    TONGYI_AI(4, "通义千问"),
     ;
 
     private String name;
