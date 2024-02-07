@@ -19,16 +19,15 @@ public enum AISourceEnum {
     /**
      * 泰聪明的模拟AI
      */
-    PAI_AI(2, "泰聪明"),
+    TARZAN_AI(2, "泰聪明"),
     /**
      * 讯飞
      */
-    XUN_FEI_AI(3,"讯飞") {
-        @Override
-        public boolean syncSupport() {
-            return false;
-        }
-    },
+    XUN_FEI_AI(3,"讯飞"),
+    /**
+     * 通义千问
+     */
+    TONGYI(4, "通义千问"),
     ;
 
     private String name;

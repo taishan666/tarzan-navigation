@@ -30,7 +30,7 @@ public class TarzanAiServiceImpl extends AbsChatService {
 
     @Override
     public AISourceEnum source() {
-        return AISourceEnum.PAI_AI;
+        return AISourceEnum.TARZAN_AI;
     }
 
     @Override

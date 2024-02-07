@@ -83,13 +83,13 @@ public class ChatFacade {
                     .getApiKey())) {
                 source = AISourceEnum.XUN_FEI_AI;
             } else {
-                source = AISourceEnum.PAI_AI;
+                source = AISourceEnum.TARZAN_AI;
             }
         } catch (Exception e) {
-            source = AISourceEnum.PAI_AI;
+            source = AISourceEnum.TARZAN_AI;
         }
 
-        if (source != AISourceEnum.PAI_AI && !aiConfig.getSource().contains(source)) {
+        if (source != AISourceEnum.TARZAN_AI && !aiConfig.getSource().contains(source)) {
             Set<AISourceEnum> totalExcepts = new HashSet<>(except);
             totalExcepts.add(source);
             return getRecommendAiSource(totalExcepts);

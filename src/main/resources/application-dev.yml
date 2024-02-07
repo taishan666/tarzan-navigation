@@ -56,7 +56,7 @@ ai:
   source: # 支持的AI模型
     - CHAT_GPT_3_5
     - CHAT_GPT_4
-    - PAI_AI
+    - TARZAN_AI
     - XUN_FEI_AI
 # chatgpt
 chatgpt:
