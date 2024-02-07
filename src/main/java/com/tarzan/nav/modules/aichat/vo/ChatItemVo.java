@@ -99,6 +99,18 @@ public class ChatItemVo implements Serializable, Cloneable {
         return this;
     }
 
+    public ChatItemVo stramAnswer(String answer) {
+        if (this.answer == null || this.answer.isEmpty()) {
+            this.answer = answer;
+            this.chatUid = UUID.randomUUID().toString().replaceAll("-", "");
+        } else {
+            this.answer = answer;
+        }
+        this.answerType = ChatAnswerTypeEnum.STREAM;
+        setAnswerTime();
+        return this;
+    }
+
     public ChatItemVo setAnswerTime() {
         this.answerTime = DateTimeFormatter.ofPattern("yyyy年MM月dd日 HH:mm:ss").format(LocalDateTime.now());
         return this;
