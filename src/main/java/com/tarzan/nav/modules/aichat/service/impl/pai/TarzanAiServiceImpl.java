@@ -65,6 +65,8 @@ public class TarzanAiServiceImpl extends AbsChatService {
                 }
             });
         }catch(ApiException|InputRequiredException|NoApiKeyException ex){
+            item.initAnswer("AI返回异常:" + ex.getMessage());
+            consumer.accept(AiChatStatEnum.ERROR, response);
             log.error(ex.getMessage());
         }
         return AiChatStatEnum.IGNORE;
