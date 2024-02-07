@@ -157,7 +157,6 @@ public class ChatFacade {
      * @param question
      */
     public ChatRecordsVo asyncChat(AISourceEnum source, String question, Consumer<ChatRecordsVo> callback) {
-        System.out.println(AuthUtil.getReqInfo());
         return chatServiceFactory.getChatService(source)
                 .asyncChat(AuthUtil.getReqInfo().getUserId(), question, callback);
     }

@@ -7,6 +7,7 @@ import com.alibaba.dashscope.aigc.generation.GenerationOutput;
 import com.alibaba.dashscope.exception.ApiException;
 import com.alibaba.dashscope.exception.InputRequiredException;
 import com.alibaba.dashscope.exception.NoApiKeyException;
+import com.tarzan.nav.common.constant.CoreConst;
 import com.tarzan.nav.modules.aichat.enums.AISourceEnum;
 import com.tarzan.nav.modules.aichat.enums.AiChatStatEnum;
 import com.tarzan.nav.modules.aichat.service.AbsChatService;
@@ -57,8 +58,7 @@ public class TarzanAiServiceImpl extends AbsChatService {
             result.blockingForEach(msg->{
                 GenerationOutput out= msg.getOutput();
                 item.stramAnswer(out.getText());
-                if("stop".equals(out.getFinishReason())){
-                    System.out.println("stop");
+                if(CoreConst.STOP.equals(out.getFinishReason())){
                     consumer.accept(AiChatStatEnum.END, response);
                 }else {
                     consumer.accept(AiChatStatEnum.FIRST, response);
