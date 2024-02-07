@@ -89,9 +89,11 @@
             <div class="window-header">
                 <div class="window-header-title">
                     <div class="name">
+                        <a href="/login?redirectTo=chatgpt">
                         <div class="window-header-main-title home_chat-body-title__5S8w4" th:if="${loginUser==null}">
-                            点击登录，体验泰聪明AI助手
+                           点击登录，体验泰聪明AI助手
                         </div>
+                        </a>
                         <div class="window-header-main-title home_chat-body-title__5S8w4" th:if="${loginUser!=null}">
                             [[${loginUser?.username}]]
                         </div>
@@ -102,9 +104,9 @@
                                    class="annotation"
                                    data-target="#registerModal"
                                    data-toggle="modal"
-                                >绑定二哥编程星球，提升每天对话次数</a>
+                                >关注洛阳泰山CSDN，提升每天对话次数</a>
                                 <span th:case="0" class="annotation">审核中</span>
-                                <span th:case="1" class="annotation">试用中，添加管理员微信 itwanger 催审核</span>
+                                <span th:case="1" class="annotation">试用中，添加管理员微信 vxhqqh 催审核</span>
                                 <div class="c-bubble-trigger com-verification" th:case="2">
                                     <i class="verified"></i>
                                 </div>
