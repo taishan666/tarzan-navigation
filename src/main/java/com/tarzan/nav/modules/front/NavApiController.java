@@ -1,6 +1,6 @@
 package com.tarzan.nav.modules.front;
 
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.tarzan.nav.common.constant.CoreConst;
@@ -163,6 +163,34 @@ public class NavApiController {
         return registerUser(request,dto);
     }
 
+
+    @PostMapping("/login")
+    public ResponseVo login(LoginDTO dto) {
+        UsernamePasswordToken token = new UsernamePasswordToken(dto.getUsername(), dto.getPassword());
+        try {
+            token.setRememberMe("forever".equals(dto.getRememberMe()));
+            Subject subject = SecurityUtils.getSubject();
+            subject.login(token);
+        } catch (ExcessiveAttemptsException e) {
+            // 密码输错次数达到上限
+            return ResultUtil.status(4,"密码输错次数达到上限，请30分钟后重试。");
+        } catch (UnknownAccountException e) {
+            // 未知账号
+            return ResultUtil.status(4,"用户账户不存在！");
+        } catch (LockedAccountException e) {
+            return ResultUtil.status(4,"用户已经被锁定不能登录，请联系管理员！");
+        } catch (AuthenticationException e) {
+            return ResultUtil.status(4,"用户名或者密码错误！");
+        }finally {
+            token.clear();
+        }
+        //后续处理
+     //   loginProcess(request);
+        JSONObject json=new JSONObject();
+        json.put("goto",dto.getRedirectTo());
+        return ResultUtil.vo(1,"登录成功！", json);
+    }
+
     @PostMapping("/lostpassword")
     public ResponseVo lostPassword(RegisterDTO dto) {
         if ("lost_email_or_phone_token".equals(dto.getAction())) {
@@ -189,29 +217,29 @@ public class NavApiController {
         String email=dto.getEmail_phone();
         if(StringUtil.isNotBlank(email)){
             String code=AUTH_CODE_ACHE.getIfPresent(email);
-                //判断验证码
-                if (Objects.isNull(code)||!code.equals(dto.getVerification_code())) {
-                    return ResultUtil.status(4,"验证码错误！");
+            //判断验证码
+            if (Objects.isNull(code)||!code.equals(dto.getVerification_code())) {
+                return ResultUtil.status(4,"验证码错误！");
+            }
+            String password = dto.getUser_pass();
+            String confirmPassword = dto.getUser_pass2();
+            //判断两次输入密码是否相等
+            if (confirmPassword != null && password != null) {
+                if (!confirmPassword.equals(password)) {
+                    return ResultUtil.status(4,"两次密码不一致！");
                 }
-                String password = dto.getUser_pass();
-                String confirmPassword = dto.getUser_pass2();
-                //判断两次输入密码是否相等
-                if (confirmPassword != null && password != null) {
-                    if (!confirmPassword.equals(password)) {
-                        return ResultUtil.status(4,"两次密码不一致！");
-                    }
-                }
-                User updateUser=new User();
-                updateUser.setPassword(password);
-                updateUser.setEmail(dto.getEmail_phone());
-                PasswordHelper.encryptPassword(updateUser);
-                //修改密码
-                boolean flag = userService.lambdaUpdate().set(User::getPassword,updateUser.getPassword()).eq(User::getEmail,updateUser.getEmail()).update();
-                if(flag){
-                    return ResultUtil.status(1,"密码修改成功！");
-                }else {
-                    return ResultUtil.status(4,"密码修改，请稍后再试！");
-                }
+            }
+            User updateUser=new User();
+            updateUser.setPassword(password);
+            updateUser.setEmail(dto.getEmail_phone());
+            PasswordHelper.encryptPassword(updateUser);
+            //修改密码
+            boolean flag = userService.lambdaUpdate().set(User::getPassword,updateUser.getPassword()).eq(User::getEmail,updateUser.getEmail()).update();
+            if(flag){
+                return ResultUtil.status(1,"密码修改成功！");
+            }else {
+                return ResultUtil.status(4,"密码修改，请稍后再试！");
+            }
         }
         return null;
     }
@@ -254,31 +282,6 @@ public class NavApiController {
             return ResultUtil.status(4,"注册失败，请稍后再试！");
         }
 
-    }
-
-    @PostMapping("/login")
-    public ResponseVo login(LoginDTO dto) {
-        UsernamePasswordToken token = new UsernamePasswordToken(dto.getUsername(), dto.getPassword());
-        try {
-            token.setRememberMe("forever".equals(dto.getRememberMe()));
-            Subject subject = SecurityUtils.getSubject();
-            subject.login(token);
-        } catch (ExcessiveAttemptsException e) {
-            // 密码输错次数达到上限
-            return ResultUtil.status(4,"密码输错次数达到上限，请30分钟后重试。");
-        } catch (UnknownAccountException e) {
-            // 未知账号
-            return ResultUtil.status(4,"用户账户不存在！");
-        } catch (LockedAccountException e) {
-            return ResultUtil.status(4,"用户已经被锁定不能登录，请联系管理员！");
-        } catch (AuthenticationException e) {
-            return ResultUtil.status(4,"用户名或者密码错误！");
-        }finally {
-            token.clear();
-        }
-        //后续处理
-     //   loginProcess(request);
-        return ResultUtil.vo(1,"登录成功！", JSON.parse("{goto:\"/\"}"));
     }
 
 

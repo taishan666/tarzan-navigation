@@ -61,7 +61,8 @@
                         <div class="content">
                             <div class="sign-header h4 mb-3 mb-md-4">欢迎回来</div>
                             <form method="post" action="" class="form-validate wp-user-form" id="wp_login_form">
-              <!--                  <input type="hidden" name="action" value="user_login" />-->
+                                <input type="hidden" name="redirectTo" th:value="${redirectTo}" />
+                                 <!-- <input type="hidden" name="action" value="user_login" />-->
                                 <div class="form-group mb-3">
                                     <input type="text" name="username" placeholder="用户名或邮箱" class="form-control">
                                 </div>
@@ -90,7 +91,8 @@
                                         <a href="#" title="QQ登录" class="open-login openlogin-qq-a"><i class="iconfont icon-qq"></i></a>
                                         <a href="#" title="微信登录" class="open-login openlogin-wechat-gzh-a qrcode-signin"><i class="iconfont icon-wechat"></i></a>
                                     </p>
-                                    <script type="text/javascript">let _state = "";
+                                  <!--  <script type="text/javascript">
+                                        let _state = "";
                                     $(document).on("click", ".qrcode-signin", function () {
                                     if ($("#user_agreement")[0] && !$("#user_agreement").is(":checked")) {
                                         ioPopupTips(2, localize.userAgreement);
@@ -141,7 +143,7 @@
                                         alert("请输入验证码～");
                                     }
                                     return false;
-                                });</script>
+                                });</script>-->
                                 </div>
                             </form>
                         </div>
@@ -340,7 +342,7 @@
     const theme = {
         "ajaxurl": "/login",
         "uri":"/login3",
-        "loginurl": "/",
+        "loginurl": "/about",
         "sitesName": "\u4e00\u4e3a\u5bfc\u822a",
         "addico": "https:\/\/nav.iowen.cn\/wp-content\/themes\/onenav\/images\/add.png",
         "order": "desc",

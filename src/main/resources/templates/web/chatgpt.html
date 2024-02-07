@@ -89,11 +89,14 @@
             <div class="window-header">
                 <div class="window-header-title">
                     <div class="name">
-                        <div class="window-header-main-title home_chat-body-title__5S8w4">
+                        <div class="window-header-main-title home_chat-body-title__5S8w4" th:if="${loginUser==null}">
                             点击登录，体验泰聪明AI助手
                         </div>
-                        <!--<div class="chat-annotation" th:if="${global.user != null}">
-                            <div th:switch="${global.user.starStatus.code}">
+                        <div class="window-header-main-title home_chat-body-title__5S8w4" th:if="${loginUser!=null}">
+                            [[${loginUser?.username}]]
+                        </div>
+                        <div class="chat-annotation" th:if="${loginUser != null}">
+                            <div th:switch="-1">
                                 <a th:case="-1"
                                    href="#"
                                    class="annotation"
@@ -106,7 +109,7 @@
                                     <i class="verified"></i>
                                 </div>
                             </div>
-                        </div>-->
+                        </div>
 
                     </div>
 

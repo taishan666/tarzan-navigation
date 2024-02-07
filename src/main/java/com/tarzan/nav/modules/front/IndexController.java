@@ -105,7 +105,8 @@ public class IndexController {
     }
 
     @GetMapping("/login")
-    public String login() {
+    public String login(String redirectTo,Model model) {
+        model.addAttribute("redirectTo",redirectTo==null?"/":"/"+redirectTo);
         return  CoreConst.WEB_PREFIX+"login";
     }
 
