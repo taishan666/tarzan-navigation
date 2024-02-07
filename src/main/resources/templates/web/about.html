@@ -152,7 +152,7 @@
             error: function (jqXHR, textStatus, errorThrown) {
                 // 如果发生错误，可以在这里处理
                 if('Unauthorized'===errorThrown){
-                    window.location.href = '/login';
+                    window.location.href = '/login?redirectTo=about';
                 }
             },
         });
