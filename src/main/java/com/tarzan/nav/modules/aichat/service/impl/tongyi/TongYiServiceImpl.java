@@ -28,14 +28,14 @@ import java.util.function.BiConsumer;
  */
 @Service
 @Slf4j
-public class TongyiServiceImpl extends AbsChatService {
+public class TongYiServiceImpl extends AbsChatService {
 
     @Value("${tongyi.apiKey}")
-    private String appKey;
+    private String apiKey;
 
     @Override
     public AISourceEnum source() {
-        return AISourceEnum.TONGYI_AI;
+        return AISourceEnum.TONG_YI_AI;
     }
 
     @Override
@@ -51,7 +51,7 @@ public class TongyiServiceImpl extends AbsChatService {
                 .builder()
                 .model(Conversation.Models.QWEN_MAX)
                 .prompt(item.getQuestion())
-                .apiKey(appKey)
+                .apiKey(apiKey)
                 .build();
         try {
             Flowable<ConversationResult> result = conversation.streamCall(param);

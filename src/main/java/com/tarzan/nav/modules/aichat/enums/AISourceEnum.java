@@ -23,12 +23,12 @@ public enum AISourceEnum {
     /**
      * 讯飞
      */
-    XUN_FEI_AI(3,"讯飞"),
+    XUN_FEI_AI(3,"讯飞星火"),
     /**
      * 通义千问
      */
-    TONGYI_AI(4, "通义千问"),
-    ;
+    TONG_YI_AI(4, "通义千问"),
+    YI_YAN_AI(5, "文心一言");
 
     private String name;
     private Integer code;
