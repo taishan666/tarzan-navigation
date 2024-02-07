@@ -14,6 +14,7 @@ import com.tarzan.nav.modules.aichat.vo.ChatItemVo;
 import com.tarzan.nav.modules.aichat.vo.ChatRecordsVo;
 import io.reactivex.Flowable;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.function.BiConsumer;
@@ -27,6 +28,9 @@ import java.util.function.BiConsumer;
 @Service
 @Slf4j
 public class TongyiServiceImpl extends AbsChatService {
+
+    @Value("${tongyi.apiKey}")
+    private String appKey;
 
     @Override
     public AISourceEnum source() {
@@ -46,7 +50,7 @@ public class TongyiServiceImpl extends AbsChatService {
                 .builder()
                 .model(Conversation.Models.QWEN_MAX)
                 .prompt(item.getQuestion())
-                .apiKey("sk-80611638022146a2bc9a1ec9b566cc54")
+                .apiKey(appKey)
                 .build();
         try {
             Flowable<ConversationResult> result = conversation.streamCall(param);
