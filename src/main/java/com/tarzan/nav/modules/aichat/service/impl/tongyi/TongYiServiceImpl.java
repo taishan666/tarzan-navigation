@@ -10,6 +10,7 @@ import com.alibaba.dashscope.exception.NoApiKeyException;
 import com.tarzan.nav.common.constant.CoreConst;
 import com.tarzan.nav.modules.aichat.enums.AISourceEnum;
 import com.tarzan.nav.modules.aichat.enums.AiChatStatEnum;
+import com.tarzan.nav.modules.aichat.enums.ChatAnswerTypeEnum;
 import com.tarzan.nav.modules.aichat.service.AbsChatService;
 import com.tarzan.nav.modules.aichat.vo.ChatItemVo;
 import com.tarzan.nav.modules.aichat.vo.ChatRecordsVo;
@@ -59,6 +60,7 @@ public class TongYiServiceImpl extends AbsChatService {
                 GenerationOutput out = msg.getOutput();
                 item.stramAnswer(out.getText());
                 if (CoreConst.STOP.equals(out.getFinishReason())) {
+                    item.setAnswerType(ChatAnswerTypeEnum.STREAM_END);
                     consumer.accept(AiChatStatEnum.END, response);
                 } else {
                     consumer.accept(AiChatStatEnum.FIRST, response);

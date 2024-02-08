@@ -2,6 +2,7 @@ package com.tarzan.nav.modules.aichat.service.impl.tai;
 
 import com.tarzan.nav.modules.aichat.enums.AISourceEnum;
 import com.tarzan.nav.modules.aichat.enums.AiChatStatEnum;
+import com.tarzan.nav.modules.aichat.enums.ChatAnswerTypeEnum;
 import com.tarzan.nav.modules.aichat.service.AbsChatService;
 import com.tarzan.nav.modules.aichat.vo.ChatItemVo;
 import com.tarzan.nav.modules.aichat.vo.ChatRecordsVo;
@@ -73,7 +74,7 @@ public class YiAiServiceImpl extends AbsChatService {
         try {
             chatResponse = HTTP_CLIENT.newCall(chatRequest).execute();
         } catch (IOException e) {
-            item.initAnswer("AI返回异常:" + chatResponse);
+            item.initAnswer("AI返回异常:" + e.getMessage());
             consumer.accept(AiChatStatEnum.ERROR, response);
         }
         if (chatResponse.isSuccessful()) {
@@ -85,6 +86,7 @@ public class YiAiServiceImpl extends AbsChatService {
                     JSONObject data = new JSONObject(line.substring(6));
                     item.appendAnswer(data.getString("result"));
                     if(data.getBoolean("is_end")){
+                        item.setAnswerType(ChatAnswerTypeEnum.STREAM_END);
                         consumer.accept(AiChatStatEnum.END, response);
                     }else {
                         consumer.accept(AiChatStatEnum.FIRST, response);

@@ -4,6 +4,7 @@ import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.tarzan.nav.common.config.AiConfig;
 import com.tarzan.nav.modules.aichat.enums.AISourceEnum;
+import com.tarzan.nav.modules.aichat.service.ChatService;
 import com.tarzan.nav.modules.aichat.service.ChatServiceFactory;
 import com.tarzan.nav.modules.aichat.service.impl.chatgpt.ChatGptIntegration;
 import com.tarzan.nav.modules.aichat.service.impl.xunfei.XunFeiIntegration;
@@ -157,8 +158,10 @@ public class ChatFacade {
      * @param question
      */
     public ChatRecordsVo asyncChat(AISourceEnum source, String question, Consumer<ChatRecordsVo> callback) {
-        return chatServiceFactory.getChatService(source)
-                .asyncChat(AuthUtil.getReqInfo().getUserId(), question, callback);
+        ChatService chatService=chatServiceFactory.getChatService(source);
+        AuthUtil.ReqInfo reqInfo=AuthUtil.getReqInfo();
+        Integer userId=reqInfo.getUserId();
+        return chatService.asyncChat(userId, question, callback);
     }
 
     /**
