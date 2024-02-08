@@ -42,9 +42,9 @@ spring:
       min-idle: 3
       max-active: 20
       max-wait: 10000
-      filters: stat,slf4j
+      filters: stat,wall,slf4j
       stat-view-servlet:
-        enabled: false
+        enabled: true
         reset-enable: false
         url-pattern: /druid/*
         allow:
@@ -54,7 +54,7 @@ spring:
           config:
             multi-statement-allow: true
             comment-allow: true
-          enabled: false
+          enabled: true
       validation-query: select 1
       test-while-idle: true
   thymeleaf:
