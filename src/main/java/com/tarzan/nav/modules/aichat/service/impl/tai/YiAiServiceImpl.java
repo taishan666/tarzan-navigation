@@ -1,4 +1,4 @@
-package com.tarzan.nav.modules.aichat.service.impl.pai;
+package com.tarzan.nav.modules.aichat.service.impl.tai;
 
 import com.tarzan.nav.modules.aichat.enums.AISourceEnum;
 import com.tarzan.nav.modules.aichat.enums.AiChatStatEnum;
