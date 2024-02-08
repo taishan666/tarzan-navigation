@@ -38,7 +38,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         // 开启一个简单的基于内存的消息代理，前缀是/user的将消息会转发给消息代理 broker
         // 然后再由消息代理，将消息广播给当前连接的客户端
-        registry.enableSimpleBroker("/chat");
+        registry.enableSimpleBroker("/chat","/topic");
 
         // 表示配置一个或多个前缀，通过这些前缀过滤出需要被注解方法处理的消息。
         // 例如，前缀为 /app 的 destination 可以通过@MessageMapping注解的方法处理，

@@ -32,7 +32,7 @@ public class MatterController {
         return ResultUtil.vo(matterService.todoItems());
     }
 
-    @MessageMapping("/server/test")
+    @MessageMapping("/app/test")
     @SendTo("/topic/broadcast")
     public String broadcast(String message) {
         log.info(message);
