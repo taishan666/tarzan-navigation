@@ -1,4 +1,4 @@
-package com.tarzan.nav.modules.aichat.service.impl.yiyan;
+package com.tarzan.nav.modules.aichat.service.impl.pai;
 
 import com.tarzan.nav.modules.aichat.enums.AISourceEnum;
 import com.tarzan.nav.modules.aichat.enums.AiChatStatEnum;
@@ -18,27 +18,27 @@ import java.util.Scanner;
 import java.util.function.BiConsumer;
 
 /**
- * 文心一言
+ * Yi-34B-Chat 是一款由零一万物（或通过猎户星空的合作）开发的大型语言模型，它是基于 Yi-34B 基座模型微调后专为对话和聊天场景优化的版本。
  *
  * @author tarzan
  * @date 2023/6/9
  */
 @Service
 @Slf4j
-public class YiYanServiceImpl extends AbsChatService {
+public class YiAiServiceImpl extends AbsChatService {
 
-    @Value("${yiyan.hostUrl}")
+    @Value("${yi.hostUrl}")
     private String hostUrl;
-    @Value("${yiyan.apiKey}")
+    @Value("${yi.apiKey}")
     private String apiKey;
-    @Value("${yiyan.apiSecret}")
+    @Value("${yi.apiSecret}")
     private String apiSecret;
 
     static final OkHttpClient HTTP_CLIENT = new OkHttpClient().newBuilder().build();
 
     @Override
     public AISourceEnum source() {
-        return AISourceEnum.YI_YAN_AI;
+        return AISourceEnum.YI_AI;
     }
 
     @Override
@@ -100,7 +100,7 @@ public class YiYanServiceImpl extends AbsChatService {
 
     @Override
     protected int getMaxQaCnt(Integer userId) {
-        return 10;
+        return 50;
     }
 
     private String getAccessToken() {

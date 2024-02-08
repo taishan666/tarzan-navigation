@@ -28,7 +28,8 @@ public enum AISourceEnum {
      * 通义千问
      */
     TONG_YI_AI(4, "通义千问"),
-    YI_YAN_AI(5, "文心一言");
+    YI_YAN_AI(5, "文心一言"),
+    YI_AI(6,"Yi-34B-Chat");
 
     private String name;
     private Integer code;

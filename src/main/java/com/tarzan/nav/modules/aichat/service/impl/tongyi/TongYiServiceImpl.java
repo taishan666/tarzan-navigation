@@ -74,6 +74,6 @@ public class TongYiServiceImpl extends AbsChatService {
 
     @Override
     protected int getMaxQaCnt(Integer userId) {
-        return 100;
+        return 10;
     }
 }

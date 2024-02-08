@@ -1,21 +1,13 @@
 package com.tarzan.nav.modules.aichat.service.impl.pai;
 
-import com.alibaba.dashscope.aigc.conversation.Conversation;
-import com.alibaba.dashscope.aigc.conversation.ConversationParam;
-import com.alibaba.dashscope.aigc.conversation.ConversationResult;
-import com.alibaba.dashscope.aigc.generation.GenerationOutput;
-import com.alibaba.dashscope.exception.ApiException;
-import com.alibaba.dashscope.exception.InputRequiredException;
-import com.alibaba.dashscope.exception.NoApiKeyException;
-import com.tarzan.nav.common.constant.CoreConst;
 import com.tarzan.nav.modules.aichat.enums.AISourceEnum;
 import com.tarzan.nav.modules.aichat.enums.AiChatStatEnum;
+import com.tarzan.nav.modules.aichat.enums.ChatAnswerTypeEnum;
 import com.tarzan.nav.modules.aichat.service.AbsChatService;
 import com.tarzan.nav.modules.aichat.vo.ChatItemVo;
 import com.tarzan.nav.modules.aichat.vo.ChatRecordsVo;
-import io.reactivex.Flowable;
+import com.tarzan.nav.utils.AsyncUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.function.BiConsumer;
@@ -30,8 +22,6 @@ import java.util.function.BiConsumer;
 @Slf4j
 public class TarzanAiServiceImpl extends AbsChatService {
 
-    @Value("${tongyi.apiKey}")
-    private String appKey;
 
     @Override
     public AISourceEnum source() {
@@ -46,34 +36,22 @@ public class TarzanAiServiceImpl extends AbsChatService {
     @Override
     public AiChatStatEnum doAsyncAnswer(Integer userId, ChatRecordsVo response, BiConsumer<AiChatStatEnum, ChatRecordsVo> consumer) {
         ChatItemVo item = response.getRecords().get(0);
-        Conversation conversation = new Conversation();
-        ConversationParam param = ConversationParam
-                .builder()
-                .model(Conversation.Models.QWEN_MAX)
-                .prompt(item.getQuestion())
-                .apiKey(appKey)
-                .build();
-        try{
-            Flowable<ConversationResult> result = conversation.streamCall(param);
-            result.blockingForEach(msg->{
-                GenerationOutput out= msg.getOutput();
-                item.stramAnswer(out.getText());
-                if(CoreConst.STOP.equals(out.getFinishReason())){
-                    consumer.accept(AiChatStatEnum.END, response);
-                }else {
-                    consumer.accept(AiChatStatEnum.FIRST, response);
-                }
-            });
-        }catch(ApiException|InputRequiredException|NoApiKeyException ex){
-            item.initAnswer("AI返回异常:" + ex.getMessage());
-            consumer.accept(AiChatStatEnum.ERROR, response);
-            log.error(ex.getMessage());
-        }
+        AsyncUtil.execute(() -> {
+            AsyncUtil.sleep(1000);
+            item.appendAnswer("\n" + qa(item.getQuestion()));
+            item.setAnswerType(ChatAnswerTypeEnum.STREAM_END);
+            consumer.accept(AiChatStatEnum.END, response);
+        });
         return AiChatStatEnum.IGNORE;
+    }
+
+    private String qa(String q) {
+        String ans = "洛阳泰山技术博客 https://tarzan.blog.csdn.net/";
+        return ans;
     }
 
     @Override
     protected int getMaxQaCnt(Integer userId) {
-        return 100;
+        return 10;
     }
 }

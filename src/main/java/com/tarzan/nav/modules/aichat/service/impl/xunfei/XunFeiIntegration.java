@@ -10,11 +10,11 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.Resource;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.net.URL;
@@ -36,7 +36,7 @@ import java.util.*;
 @Component
 public class XunFeiIntegration {
 
-    @Autowired
+    @Resource
     private XunFeiConfig xunFeiConfig;
 
     @Getter
