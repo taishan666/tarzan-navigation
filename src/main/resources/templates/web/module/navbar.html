@@ -30,7 +30,7 @@
             </div>
                 <ul class="nav navbar-menu text-xs order-1 order-md-2 position-relative">
                     <li th:if="${loginUser==null}" class="nav-login ml-3 ml-md-4">
-                        <a href="/login" title="登录"><i class="iconfont icon-user icon-lg"></i></a>
+                        <a id="login" href="/login" title="登录"><i class="iconfont icon-user icon-lg"></i></a>
                     </li>
                     <li th:if="${loginUser!=null}" class="nav-login-user dropdown ml-3 ml-md-4 show">
                         <a class="user-ico" href="#" data-toggle="dropdown" aria-expanded="true">
@@ -57,7 +57,11 @@
     <div class="placeholder"></div>
     <div th:replace="web/module/searchmodal"></div>
     <script>
-        function developing(){
+        let currentPath = window.location.pathname;
+        currentPath=currentPath.replace("/","")
+        $('#login').attr('href', '/login?redirectTo=' + currentPath);
+
+        function developing() {
             showAlert(JSON.parse('{"status":1,"msg":"功能正在开发中"}'));
         }
     </script>
