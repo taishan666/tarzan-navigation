@@ -39,9 +39,4 @@ public class MatterController {
         return "OK";
     }
 
-    @MessageMapping("/app/test")
-    public void broadcast1(String message) {
-        simpMessagingTemplate.convertAndSendToUser("5", "/chat/rsp", "666");
-    }
-
 }

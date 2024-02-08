@@ -4,12 +4,12 @@ import com.tarzan.nav.modules.aichat.enums.AISourceEnum;
 import com.tarzan.nav.modules.aichat.helper.WsAnswerHelper;
 import com.tarzan.nav.utils.AuthUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.Map;
 
 /**
@@ -21,7 +21,7 @@ import java.util.Map;
 @Slf4j
 @RestController
 public class ChatRestController {
-    @Autowired
+    @Resource
     private WsAnswerHelper answerHelper;
 
     /**
