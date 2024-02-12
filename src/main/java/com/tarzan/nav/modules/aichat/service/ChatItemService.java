@@ -1,5 +1,6 @@
 package com.tarzan.nav.modules.aichat.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -43,5 +44,10 @@ public class ChatItemService extends ServiceImpl<ChatItemMapper, ChatItem> {
 
     public int queryUsedCnt(AISourceEnum source, Integer userId) {
        return (int) super.count(Wrappers.<ChatItem>lambdaQuery().eq(ChatItem::getUserId,userId).eq(ChatItem::getAiType,source.getCode()));
+    }
+
+    public void lTrim(AISourceEnum source,Integer userId,int num) {
+        LambdaQueryWrapper wrapper=Wrappers.<ChatItem>lambdaQuery().eq(ChatItem::getUserId, userId).eq(ChatItem::getAiType, source.getCode()).orderByDesc(ChatItem::getAnswerTime).last("LIMIT " + num+","+100);
+        super.remove(wrapper);
     }
 }

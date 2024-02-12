@@ -2,11 +2,11 @@ package com.tarzan.nav.common.config;
 
 import com.tarzan.nav.common.handler.CommonDataHandler;
 import lombok.AllArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.core.task.AsyncTaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.web.servlet.config.annotation.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -46,7 +46,22 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .exposedHeaders("Authorization", "Cache-Control", "Content-Type");
     }
 
+    @Bean
+    public AsyncTaskExecutor taskExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        // Adjust these values based on your needs
+        executor.setCorePoolSize(5);
+        executor.setMaxPoolSize(10);
+        executor.setQueueCapacity(20);
+        executor.setThreadNamePrefix("mvc-async-task-");
+        executor.initialize();
+        return executor;
+    }
 
+    @Override
+    public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
+        configurer.setTaskExecutor(taskExecutor());
+    }
 
 
 }

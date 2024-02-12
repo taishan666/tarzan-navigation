@@ -194,6 +194,13 @@ public class IndexController {
         return  CoreConst.WEB_PREFIX+"chatgpt";
     }
 
+    @GetMapping("/chatai")
+    public String chatai(Model model) {
+        siteLookService.asyncLook(0,WebUtil.getIP(), LookTypeConst.CHATGPT);
+        model.addAttribute("categories",categoryService.treeList());
+        return  CoreConst.WEB_PREFIX+"chatai";
+    }
+
     /**
      * 登出
      *

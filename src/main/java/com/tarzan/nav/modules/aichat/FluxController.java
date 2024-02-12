@@ -6,7 +6,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -28,7 +28,7 @@ public class FluxController {
     private static final String CHAT_URL = "https://aip.baidubce.com/rpc/2.0/ai_custom/v1/wenxinworkshop/chat/eb-instant";
 
 
-    @GetMapping(path = "/event-stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @PostMapping(path = "/event-stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<String> helloWorld() throws IOException {
       /*  return Flux.fromArray("hello world".split(" "))
                 // 每个元素延迟500毫秒，以模拟逐字效果
@@ -42,12 +42,21 @@ public class FluxController {
         messagesArray.put(message);
         chatPayload.put("messages", messagesArray);
         chatPayload.put("stream", true);
+        StringBuffer answer=new StringBuffer();
         return WEB_CLIENT.post().uri("rpc/2.0/ai_custom/v1/wenxinworkshop/chat/eb-instant?access_token=" + getAccessToken()).contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(chatPayload.toString())
                 .retrieve()
                 .bodyToFlux(String.class)
                 // 可能需要其他流处理，比如map、filter等
-                .map(data -> JSON.parseObject(data).getString("result") + "###");
+                .map(data -> {
+                    String result=JSON.parseObject(data).getString("result");
+                    answer.append(result);
+                    return result;
+                }).doOnComplete(() -> {
+                    // 当Flux完成时，输出结束消息
+                    System.out.println("处理完毕，流已关闭。");
+                    System.out.println(answer);
+                });
     }
 
     private static final WebClient WEB_CLIENT = WebClient.builder().baseUrl("https://aip.baidubce.com").defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_STREAM_JSON_VALUE).build();
