@@ -78,10 +78,8 @@ public class XunFeiMsgListener extends WebSocketListener {
             item.stramAnswer(msg.toString());
             messageSink.next(chatRecord);
             if (responseData.endResponse()) {
-                // 最后一次返回结果时，打印一下剩余的tokens
-                XunFeiIntegration.UsageText tokens = pl.getUsage().getText();
-                log.info("使用tokens:\n" + tokens);
                 webSocket.close(1001, "会话结束");
+                messageSink.complete();
             }
         } else {
             item.initAnswer("AI返回异常:" + responseData.getHeader());

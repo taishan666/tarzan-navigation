@@ -117,7 +117,7 @@
                     <div class="window-header-sub-title">与泰聪明的 <span id="chatCnt">0</span> 条对话
                         <span class="info">以天为单位，无限期重置）</span></div>
                 </div>
-                <!-- 加一个下拉框，选项是 OpenAI 讯飞星火 泰聪明 -->
+                <!-- 加一个下拉框，-->
                 <div class="chat-type">
                     <select class="styled-dropdown" id="chat-type">
                         <option value="YI_34B_CHAT" >泰聪明</option>
@@ -164,6 +164,7 @@
 <script type='text/javascript' src='/web/js/bootstrap.min.js' id='bootstrap-js'></script>
 <script type='text/javascript' src='/web/js/theia-sticky-sidebar.min.js' id='sidebar-js'></script>
 <script type='text/javascript' src='/web/js/lazyload.min.js' id='lazyload-js'></script>
+<script type='text/javascript' src='/web/js/highlight.min.js' id='highlight-js'></script>
 <script type='text/javascript' th:src="@{/js/clipboard.min.js}"></script>
 <script type='text/javascript' id='appjs-js-extra'>
     const theme = {
@@ -233,15 +234,11 @@
     });
 
     function subscribe(res) {
-
         // 记录聊天次数
         $("#chatCnt").html(` ${res.usedCnt}/${res.maxCnt} `);
-
         const data = res.records;
-
         // 把 home_chat-message-actions__loading 的元素移除，不再显示 loading
         $(".home_chat-message-actions__loading").remove();
-
         if (data.length > 1) {
             // 返回历史全部信息
             chatContent.html('');
@@ -258,10 +255,10 @@
             appendServerMessage(data[0]);
         }
         //console.log(data[data.length - 1])
-        // 添加完消息后，除了流式持续返回这种场景，其他的恢复按钮的状态
+ /*       // 添加完消息后，除了流式持续返回这种场景，其他的恢复按钮的状态
         if (data[data.length - 1].answerType !== 'STREAM') {
             sendBtn.removeAttr("disabled");
-        }
+        }*/
     }
 
     function chatHistory(userId,aiType) {
@@ -377,13 +374,11 @@
                 return copyInput.innerText;
             }
         });
-
         clipboard.on('success', function (e) {
             // 复制成功
-            toastr.info("复制成功");
+            successAlert("复制成功");
             e.clearSelection();
         });
-
         clipboard.on('error', function (e) {
             console.log('复制失败');
         });
@@ -444,7 +439,7 @@
     function doSend() {
         const qa = inputField.val();
         if (qa.length > 512) {
-            toastr.info("提问长度请不要超过512字符哦~");
+            errorAlert("提问长度请不要超过512字符哦~");
             return;
         }
         let aiType =chatType.val();
