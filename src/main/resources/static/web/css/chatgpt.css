@@ -144,7 +144,7 @@
     color: var(--pai-brand-6-mq);
 }
 
-#chat-content {
+.message-content {
     overflow: auto;
     flex: 1 1;
     padding: 20px 20px 40px;

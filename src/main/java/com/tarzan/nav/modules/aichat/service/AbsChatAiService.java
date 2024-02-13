@@ -38,7 +38,6 @@ public abstract class AbsChatAiService implements ChatAiService {
             StringBuffer answer=new StringBuffer();
             return doAsyncAnswer(userId, res).doOnNext(e->answer.append(e.getRecords().get(0).getAnswer())).doOnComplete(() -> {
                 res.getRecords().get(0).setAnswer(answer.toString());
-                System.err.println(answer);
                 // 当Flux完成时
                 processAfterSuccessAnswered(userId,res);
             });
@@ -48,13 +47,15 @@ public abstract class AbsChatAiService implements ChatAiService {
 
     @Override
     public ChatRecordsVo getChatHistory(Integer userId) {
+        List<ChatItemVo> records=new ArrayList<>(51);
         List<ChatItemVo> chats = chatItemService.getChatHistory(source(),userId,50);
-        chats.add(0, new ChatItemVo().initAnswer(String.format("开始你和泰聪明(%s-大模型)的AI之旅吧!", source().getName())));
+        records.addAll(chats);
+        records.add(0, new ChatItemVo().initAnswer(String.format("开始你和泰聪明(%s-大模型)的AI之旅吧!", source().getName())));
         ChatRecordsVo vo = new ChatRecordsVo();
         vo.setMaxCnt(getMaxQaCnt(userId));
         vo.setUsedCnt(queryUsedCnt(userId));
         vo.setSource(source());
-        vo.setRecords(chats);
+        vo.setRecords(records);
         return vo;
     }
 
@@ -101,18 +102,6 @@ public abstract class AbsChatAiService implements ChatAiService {
     }
 
     /**
-     * 使用次数+1
-     *
-     * @param userId
-     * @return
-     */
-    protected Integer incrCnt(Integer userId) {
-        Integer cnt = chatItemService.queryUsedCnt(source(),userId)+1;
-        return cnt;
-    }
-
-
-    /**
      * 保存聊天记录
      */
     protected void recordChatItem(Integer userId, ChatItemVo item) {
@@ -126,7 +115,7 @@ public abstract class AbsChatAiService implements ChatAiService {
      * @return
      */
     protected int getMaxQaCnt(Integer userId) {
-        return chatItemService.getMaxChatCnt(userId);
+        return 100;
     }
 
     /**

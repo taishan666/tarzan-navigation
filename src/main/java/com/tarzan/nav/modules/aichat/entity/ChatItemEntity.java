@@ -3,7 +3,10 @@ package com.tarzan.nav.modules.aichat.entity;
 import com.tarzan.nav.common.constant.TableConst;
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /**
  * @author Lenovo

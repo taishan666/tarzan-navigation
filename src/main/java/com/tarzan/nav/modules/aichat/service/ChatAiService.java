@@ -30,7 +30,6 @@ public interface ChatAiService {
      * 查询聊天历史
      *
      * @param userId
-     * @param aiSource
      * @return
      */
     ChatRecordsVo getChatHistory(Integer userId);

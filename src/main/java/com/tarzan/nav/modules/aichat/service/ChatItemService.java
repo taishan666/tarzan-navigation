@@ -9,10 +9,14 @@ import com.tarzan.nav.modules.aichat.mapper.ChatItemMapper;
 import com.tarzan.nav.modules.aichat.model.ChatItem;
 import com.tarzan.nav.modules.aichat.vo.ChatItemVo;
 import com.tarzan.nav.utils.BeanUtil;
+import com.tarzan.nav.utils.DateUtil;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,6 +26,7 @@ import java.util.List;
 public class ChatItemService extends ServiceImpl<ChatItemMapper, ChatItem> {
 
     @Async
+    @CacheEvict(value = "chatItem", allEntries = true)
     public void pushChatItem(AISourceEnum source, Integer user, ChatItemVo item) {
         ChatItem chatItem = BeanUtil.copy(item,ChatItem.class);
         chatItem.setAiType(source.getCode());
@@ -29,6 +34,7 @@ public class ChatItemService extends ServiceImpl<ChatItemMapper, ChatItem> {
         super.save(chatItem);
     }
 
+    @Cacheable(value = "chatItem",key = "#source+'_'+#userId")
     public List<ChatItemVo> getChatHistory(AISourceEnum source,Integer userId,int num) {
         List<ChatItem> list = super.list(Wrappers.<ChatItem>lambdaQuery().eq(ChatItem::getUserId, userId).eq(ChatItem::getAiType, source.getCode()).orderByDesc(ChatItem::getAnswerTime).last("LIMIT " + num));
         if (CollectionUtils.isNotEmpty(list)) {
@@ -37,15 +43,13 @@ public class ChatItemService extends ServiceImpl<ChatItemMapper, ChatItem> {
         return new ArrayList<>(1);
     }
 
-    public int getMaxChatCnt(Integer userId) {
-        //todo
-        return 100;
-    }
-
     public int queryUsedCnt(AISourceEnum source, Integer userId) {
-       return (int) super.count(Wrappers.<ChatItem>lambdaQuery().eq(ChatItem::getUserId,userId).eq(ChatItem::getAiType,source.getCode()));
+        String dateStr=DateUtil.format(new Date(),DateUtil.chineseDtFormat);
+        LambdaQueryWrapper wrapper=Wrappers.<ChatItem>lambdaQuery().eq(ChatItem::getUserId,userId).eq(ChatItem::getAiType,source.getCode()).like(ChatItem::getQuestionTime,dateStr);
+       return (int) super.count(wrapper);
     }
 
+    @CacheEvict(value = "chatItem", allEntries = true)
     public void lTrim(AISourceEnum source,Integer userId,int num) {
         LambdaQueryWrapper wrapper=Wrappers.<ChatItem>lambdaQuery().eq(ChatItem::getUserId, userId).eq(ChatItem::getAiType, source.getCode()).orderByDesc(ChatItem::getAnswerTime).last("LIMIT " + num+","+100);
         super.remove(wrapper);

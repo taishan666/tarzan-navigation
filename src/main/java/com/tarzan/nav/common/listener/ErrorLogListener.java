@@ -27,6 +27,6 @@ public class ErrorLogListener {
     public void saveErrorLog(ErrorLogEvent event) {
         LogError logError  = (LogError)event.getSource();
         logError.setCreateName(AuthUtil.getUsername());
-        logErrorService.save(logError);
+      //  logErrorService.save(logError);
     }
 }

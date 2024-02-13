@@ -9,12 +9,9 @@ import lombok.Getter;
 @Getter
 public enum AISourceEnum {
     /**
-     * chatgpt 3.5
+     * chatgpt
      */
     CHAT_GPT_3_5(0, "chatGpt3.5"),
-    /**
-     * chatgpt 4
-     */
     CHAT_GPT_4(1, "chatGpt4"),
     /**
      * 泰聪明的模拟AI
@@ -28,8 +25,11 @@ public enum AISourceEnum {
      * 通义千问
      */
     TONG_YI_AI(4, "通义千问"),
-    YI_YAN_AI(5, "文心一言"),
-    YI_AI(6,"Yi-34B-Chat");
+    /**
+     * 文心一言
+     */
+    EB_INSTANT(5, "eb-instant"),
+    YI_34B_CHAT(6,"yi_34b_chat");
 
     private String name;
     private Integer code;

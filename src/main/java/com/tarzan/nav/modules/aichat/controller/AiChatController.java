@@ -25,13 +25,13 @@ public class AiChatController {
 
     @PostMapping(path = "/chat/{userId}/{aiType}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<ChatRecordsVo> chat(@PathVariable("userId")Integer userId, @PathVariable("aiType") String aiType, String qa) {
-        AISourceEnum source = aiType == null ? AISourceEnum.YI_AI : AISourceEnum.valueOf(aiType);
+        AISourceEnum source = aiType == null ? AISourceEnum.YI_34B_CHAT : AISourceEnum.valueOf(aiType);
        return  chatAiServiceFactory.getChatService(source).chatStream(userId,qa);
     }
 
     @GetMapping(path = "/chat/history/{userId}/{aiType}")
     public ChatRecordsVo getChatHistory(@PathVariable("userId")Integer userId, @PathVariable("aiType") String aiType) {
-        AISourceEnum source = aiType == null ? AISourceEnum.YI_AI : AISourceEnum.valueOf(aiType);
+        AISourceEnum source = aiType == null ? AISourceEnum.YI_34B_CHAT : AISourceEnum.valueOf(aiType);
         return  chatAiServiceFactory.getChatService(source).getChatHistory(userId);
     }
 }

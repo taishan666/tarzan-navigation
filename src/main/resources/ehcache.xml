@@ -142,5 +142,15 @@
            timeToIdleSeconds="0"
            statistics="false"/>
 
+    <!-- AI聊天记录 -->
+    <cache name="chatItem"
+           maxEntriesLocalHeap="1000"
+           overflowToDisk="false"
+           eternal="false"
+           diskPersistent="false"
+           timeToLiveSeconds="3600"
+           timeToIdleSeconds="1800"
+           statistics="false">
+    </cache>
 
 </ehcache>

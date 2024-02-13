@@ -1,7 +1,6 @@
 package com.tarzan.nav.websocket;
 
 import com.tarzan.nav.common.constant.CoreConst;
-import com.tarzan.nav.modules.aichat.helper.WsAnswerHelper;
 import com.tarzan.nav.utils.AuthUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.server.ServerHttpRequest;
@@ -35,12 +34,11 @@ public class AuthHandshakeInterceptor extends HttpSessionHandshakeInterceptor {
         log.info("准备开始握手了!");
         AuthUtil.ReqInfo reqInfo = new AuthUtil.ReqInfo();
         reqInfo.setUserId(AuthUtil.getUserId());
-     //   AuthUtil.addReqInfo(reqInfo);
+        AuthUtil.addReqInfo(reqInfo);
         if (AuthUtil.getUser() == null) {
             log.info("websocket 握手失败，请登录之后再试");
             return false;
         }
-        attributes.put(WsAnswerHelper.AI_SOURCE_PARAM, initAiSource(request.getURI().getPath()));
         attributes.put(CoreConst.SESSION_KEY,reqInfo);
         return true;
     }

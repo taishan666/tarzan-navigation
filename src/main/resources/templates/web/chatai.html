@@ -41,13 +41,12 @@
     <script type='text/javascript' id='jquery-js-after'>
         /* <![CDATA[ */
         function loadFunc(func) {
-            if (document.querySelectorAll('*')) {
+            if (document.all) {
                 window.attachEvent("onload", func);
             } else {
                 window.addEventListener("load", func, false);
             }
         }
-
         /* ]]> */
     </script>
     <style>.navbar-nav .menu-item-286 a {
@@ -113,7 +112,6 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
 
                     <div class="window-header-sub-title">与泰聪明的 <span id="chatCnt">0</span> 条对话
@@ -122,10 +120,10 @@
                 <!-- 加一个下拉框，选项是 OpenAI 讯飞星火 泰聪明 -->
                 <div class="chat-type">
                     <select class="styled-dropdown" id="chat-type">
-                        <option value="YI_AI" selected>泰聪明</option>
-                        <option value="XUN_FEI_AI">讯飞星火</option>
-                        <option value="TONG_YI_AI">通义千问</option>
-                        <option value="YI_YAN_AI">文心一言</option>
+                        <option value="YI_34B_CHAT" >泰聪明</option>
+                        <option value="XUN_FEI_AI" >讯飞星火</option>
+                        <option value="TONG_YI_AI" >通义千问</option>
+                        <option value="EB_INSTANT" >文心一言</option>
                     </select>
                 </div>
             </div>
@@ -196,6 +194,19 @@
     });
 </script>
 <script th:inline="javascript">
+    let hash = location.hash;
+    hash = hash ? hash : '#YI_34B_CHAT';
+    const chatType=$('#chat-type')
+    $('#chat-type option').each(function() {
+        // 检查当前option的value是否等于"option1"
+        let option='#'+$(this).val();
+        if ( option === hash) {
+            // 如果等于，设置该option为选中状态
+            $(this).prop('selected', true);
+            // 退出遍历
+            return false;
+        }
+    });
     const inputField = $("#input-field");
     const sendBtn = $("#send-btn"), sendBtnText = $(".button_icon-button-text__k3vob");
     const chatContent = $("#chat-content");
@@ -203,11 +214,25 @@
     const chatTitle = $(".window-header-main-title");
     const user = [[${loginUser}]];
     const isLogin = user !== null;
+    // 页面加载完成后，执行 initWs
+    $(function () {
+        if (isLogin) {
+            let aiType = chatType.val();
+            chatHistory(user.id,aiType);
+            inputField.removeAttr("disabled");
+            // 改变 inputField 的 placeholder
+            inputField.val("");
+            inputField.attr("placeholder", "可按回车发送");
+            sendBtnText.text("发送");
+            sendBtn.removeAttr("disabled");
+            // 改变 chatTitle 的内容
+            chatTitle.text(user.userName);
+        }else{
+            console.log("请先登录");
+        }
+    });
 
     function subscribe(res) {
-        // 解析 JSON 字符串
-
-        console.log("res:", res);
 
         // 记录聊天次数
         $("#chatCnt").html(` ${res.usedCnt}/${res.maxCnt} `);
@@ -239,9 +264,8 @@
         }
     }
 
-    function chatHistory() {
-        let aiType = $('#chat-type').val();
-        fetch(`/chat/history/${user.id}/${aiType}`) // 替换为你要请求的URL
+    function chatHistory(userId,aiType) {
+        fetch('/chat/history/'+userId+'/'+aiType) // 替换为你要请求的URL
             .then(response => {
                 // 检查响应状态码是否为200
                 if (!response.ok) {
@@ -250,7 +274,6 @@
                 return response.json(); // 将响应解析为JSON
             })
             .then(data => {
-                console.log(data); // 输出或处理JSON数据
                 subscribe(data);
             })
             .catch(error => {
@@ -258,28 +281,12 @@
             });
     }
 
-
-    // 页面加载完成后，执行 initWs
-    $(function () {
-        if (isLogin) {
-            chatHistory();
-            inputField.removeAttr("disabled");
-            // 改变 inputField 的 placeholder
-            inputField.val("");
-            inputField.attr("placeholder", "可按回车发送");
-            sendBtnText.text("发送");
-            sendBtn.removeAttr("disabled");
-            // 改变 chatTitle 的内容
-            chatTitle.text(user.userName);
-        }else{
-            console.log("请先登录");
-        }
-    });
-
-    $('#chat-type').change(function (e) {
+    chatType.change(function (e) {
         if (isLogin) {
             chatContent.html('');
-            chatHistory();
+            let aiType = chatType.val();
+            chatHistory(user.id,aiType);
+            window.location.href='#'+aiType;
         } else {
             console.log("请先登录");
         }
@@ -304,35 +311,20 @@
     function appendServerMessage(answer) {
         let content = answer.answer;
         let time = answer.answerTime;
-        let answerType = answer.answerType;
         let chatId = answer.chatUid;
         let appendLastChat = false;
-        console.log("准备添加内容:", answer);
-        // 如果 source 等于"CHAT_GPT_3_5"
-        if ("JSON" === answerType) {
-            // 需要对 body 的 JSON 字符串进行解析
-            const res = JSON.parse(content);
-            console.log("CHAT_GPT_3_5 res:", res);
-            if (res.length === 1) {
-                content = res[0].message.content;
-                console.log("CHAT_GPT_3_5 content escapeHtml before:", content);
-                content = prettyCode(content);
-                console.log("CHAT_GPT_3_5 content escapeHtml after:", content);
-            }
-        } else if ('STREAM' === answerType || 'STREAM_END' === answerType) {
-            const lastDiv = $(`#${chatId}`)
-            console.log("流式结果返回: ", content, lastDiv);
-            if (lastDiv.length > 0) {
-                // 对于流式返回的结果，找上一次的返回，进行结果的追加，手动将分隔符给干掉
-                content = prettyCode(content.replaceAll('$…$', ''));
-                lastDiv.append(content);
-                appendLastChat = true;
-            } else {
-                // 上一次没有输出过，则格式化文本，重新输出
-                content = prettyCode(content.replaceAll('$…$', ''));
-            }
+        //console.log("准备添加内容:", answer);
+        const lastDiv = $(`#${chatId}`)
+        //  console.log("流式结果返回: ", content, lastDiv);
+        if (lastDiv.length > 0) {
+            // 对于流式返回的结果，找上一次的返回，进行结果的追加，手动将分隔符给干掉
+            content = prettyCode(content.replaceAll('$…$', ''));
+            lastDiv.append(content);
+            appendLastChat = true;
+        } else {
+            // 上一次没有输出过，则格式化文本，重新输出
+            content = prettyCode(content.replaceAll('$…$', ''));
         }
-
         if (!appendLastChat) {
             let serverMsg = `
             <div class="home_chat-message__rdH_g server-msg">
@@ -358,12 +350,11 @@
                 </div>
             </div>
             `;
-
             chatContent.append(serverMsg);
         }
         // 高亮代码
-        chatContent.find('pre code').each(function (i, block) {
-            hljs.highlightBlock(block);
+         chatContent.find('pre code').each(function (i, block) {
+         hljs.highlightBlock(block);
         });
 
         // 添加完后滚动到底部
@@ -372,12 +363,11 @@
         copy();
     }
 
-
     // 复制功能
     function copy() {
         // 从 chatContent 中获取最后一个 chat-message
         const chatMessage = chatContent.children(".home_chat-message__rdH_g").last();
-        console.log("chatContent", chatMessage);
+      //  console.log("chatContent", chatMessage);
         // 从 chatMessage 找出复制按钮
         const copyBtn = chatMessage.find(".home_chat-message-top-action__wXKmA").get(0);
 
@@ -438,6 +428,7 @@
         scrollToBottom();
     }
 
+    // 添加分割线
     function addSplit() {
         let userMsg = `<div class="chat_split_hr"><span class="chat_split_txt">&nbsp;&nbsp;历史聊天分割线&nbsp;&nbsp;</span></div>`;
         chatContent.append(userMsg);
@@ -456,7 +447,7 @@
             toastr.info("提问长度请不要超过512字符哦~");
             return;
         }
-        let aiType = $('#chat-type').val();
+        let aiType =chatType.val();
         const data = new FormData();
         data.append('qa', qa);
         fetch(`/chat/${user.id}/${aiType}`, {

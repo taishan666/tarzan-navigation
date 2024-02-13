@@ -1,7 +1,7 @@
 package com.tarzan.nav.modules.aichat.service;
 
 import com.tarzan.nav.modules.aichat.enums.AISourceEnum;
-import com.tarzan.nav.modules.aichat.service.impl.yi.YiChatAiServiceImpl;
+import com.tarzan.nav.modules.aichat.service.impl.wenxin.YiChatAiServiceImpl;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;

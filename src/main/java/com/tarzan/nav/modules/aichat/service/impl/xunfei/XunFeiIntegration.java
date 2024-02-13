@@ -159,7 +159,7 @@ public class XunFeiIntegration {
          *
          * @return
          */
-        public boolean firstResonse() {
+        public boolean firstResponse() {
             return header != null && "0".equalsIgnoreCase(header.status);
         }
 

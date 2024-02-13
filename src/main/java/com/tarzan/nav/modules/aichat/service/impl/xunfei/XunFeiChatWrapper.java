@@ -1,6 +1,5 @@
 package com.tarzan.nav.modules.aichat.service.impl.xunfei;
 
-import com.tarzan.nav.modules.aichat.enums.AiChatStatEnum;
 import com.tarzan.nav.modules.aichat.vo.ChatItemVo;
 import com.tarzan.nav.modules.aichat.vo.ChatRecordsVo;
 import lombok.Data;
@@ -27,11 +26,11 @@ public class XunFeiChatWrapper {
 
     private ChatItemVo item;
 
-    public XunFeiChatWrapper(XunFeiIntegration xunFeiIntegration,String uid, ChatRecordsVo chatRes, BiConsumer<AiChatStatEnum, ChatRecordsVo> consumer) {
+    public XunFeiChatWrapper(XunFeiIntegration xunFeiIntegration,String uid, ChatRecordsVo chatRes) {
         client = xunFeiIntegration.getOkHttpClient();
         String url = xunFeiIntegration.buildXunFeiUrl();
         request = new Request.Builder().url(url).build();
-        listener = new XunFeiMsgListener(uid, chatRes, consumer);
+        listener = new XunFeiMsgListener(uid, chatRes);
     }
 
     /**
@@ -44,8 +43,8 @@ public class XunFeiChatWrapper {
     /**
      * 追加的提问, 主要是为了复用websocket的构造参数
      */
-    public void appendQuestion(String uid, ChatRecordsVo chatRes, BiConsumer<AiChatStatEnum, ChatRecordsVo> consumer) {
-        listener = new XunFeiMsgListener(uid, chatRes, consumer);
+    public void appendQuestion(String uid, ChatRecordsVo chatRes) {
+        listener = new XunFeiMsgListener(uid, chatRes);
         webSocket = client.newWebSocket(request, listener);
     }
 

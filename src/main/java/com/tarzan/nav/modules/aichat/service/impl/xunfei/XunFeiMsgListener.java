@@ -1,7 +1,5 @@
 package com.tarzan.nav.modules.aichat.service.impl.xunfei;
 
-import com.tarzan.nav.modules.aichat.enums.AiChatStatEnum;
-import com.tarzan.nav.modules.aichat.enums.ChatAnswerTypeEnum;
 import com.tarzan.nav.modules.aichat.vo.ChatItemVo;
 import com.tarzan.nav.modules.aichat.vo.ChatRecordsVo;
 import com.tarzan.nav.utils.SpringUtil;
@@ -12,9 +10,10 @@ import lombok.extern.slf4j.Slf4j;
 import okhttp3.Response;
 import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.FluxSink;
 
 import javax.validation.constraints.NotNull;
-import java.util.function.BiConsumer;
 
 /**
  * @author tarzan
@@ -30,16 +29,20 @@ public class XunFeiMsgListener extends WebSocketListener {
 
     private ChatRecordsVo chatRecord;
 
-    private BiConsumer<AiChatStatEnum, ChatRecordsVo> callback;
-
     private XunFeiIntegration xunFeiIntegration;
 
-    public XunFeiMsgListener(String user, ChatRecordsVo chatRecord, BiConsumer<AiChatStatEnum, ChatRecordsVo> callback) {
+    private  FluxSink<ChatRecordsVo> messageSink;
+    private  Flux<ChatRecordsVo> messageFlux;
+
+    public XunFeiMsgListener(String user, ChatRecordsVo chatRecord) {
         this.connectState = WsConnectStateEnum.INIT;
         this.user = user;
         this.chatRecord = chatRecord;
-        this.callback = callback;
         this.xunFeiIntegration= SpringUtil.getBean(XunFeiIntegration.class);
+        Flux<ChatRecordsVo> publisher = Flux.create(sink -> {
+            this.messageSink = sink;
+        });
+        this.messageFlux = publisher.publish().autoConnect();
     }
 
     /**
@@ -56,7 +59,6 @@ public class XunFeiMsgListener extends WebSocketListener {
     public void onOpen(WebSocket webSocket, Response response) {
         super.onOpen(webSocket, response);
         connectState = WsConnectStateEnum.CONNECTED;
-
         // 连接成功之后，发送消息
         webSocket.send(xunFeiIntegration.buildSendMsg(user, chatRecord.getRecords().get(0).getQuestion()));
     }
@@ -73,27 +75,21 @@ public class XunFeiMsgListener extends WebSocketListener {
             pl.getChoices().getText().forEach(s -> {
                 msg.append(s.getContent());
             });
-            item.appendAnswer(msg.toString());
-
-            if (responseData.firstResonse()) {
-                callback.accept(AiChatStatEnum.FIRST, chatRecord);
-            } else if (responseData.endResponse()) {
-                // 标记流式回答已完成
-                item.setAnswerType(ChatAnswerTypeEnum.STREAM_END);
+            item.stramAnswer(msg.toString());
+            messageSink.next(chatRecord);
+            if (responseData.endResponse()) {
                 // 最后一次返回结果时，打印一下剩余的tokens
                 XunFeiIntegration.UsageText tokens = pl.getUsage().getText();
                 log.info("使用tokens:\n" + tokens);
                 webSocket.close(1001, "会话结束");
-                callback.accept(AiChatStatEnum.END, chatRecord);
-            } else {
-                callback.accept(AiChatStatEnum.MID, chatRecord);
             }
         } else {
             item.initAnswer("AI返回异常:" + responseData.getHeader());
-            callback.accept(AiChatStatEnum.ERROR, chatRecord);
+            messageSink.next(chatRecord);
             webSocket.close(responseData.getHeader().getCode(), responseData.getHeader().getMessage());
         }
     }
+
 
     @Override
     public void onFailure(WebSocket webSocket, Throwable t, Response response) {
@@ -101,7 +97,7 @@ public class XunFeiMsgListener extends WebSocketListener {
         log.warn("websocket 连接失败! {}", response, t);
         connectState = WsConnectStateEnum.FAILED;
         chatRecord.getRecords().get(0).initAnswer("讯飞AI连接失败了!" + t.getMessage());
-        callback.accept(AiChatStatEnum.ERROR, chatRecord);
+        messageSink.next(chatRecord);
     }
 
     @Override
@@ -111,5 +107,9 @@ public class XunFeiMsgListener extends WebSocketListener {
             log.debug("连接中断! code={}, reason={}", code, reason);
         }
         connectState = WsConnectStateEnum.CLOSED;
+    }
+
+    public Flux<ChatRecordsVo> getMessageFlux() {
+        return messageFlux;
     }
 }

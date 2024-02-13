@@ -1,9 +1,6 @@
 package com.tarzan.nav.websocket;
 
-import com.tarzan.nav.modules.aichat.enums.AISourceEnum;
-import com.tarzan.nav.modules.aichat.helper.WsAnswerHelper;
 import com.tarzan.nav.utils.AuthUtil;
-import com.tarzan.nav.utils.SpringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.messaging.Message;
@@ -13,7 +10,6 @@ import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.messaging.support.MessageHeaderAccessor;
 
 import java.security.Principal;
-import java.util.Map;
 
 /**
  * 权限拦截器，消息发送前进行拦截
@@ -43,15 +39,6 @@ public class AuthInChannelInterceptor implements ChannelInterceptor {
 
         // 正常登录的用户，这个uid实际上应该是 ReqInfo 对象
         log.info("初始化用户标识：{}", uid);
-
-//        注意：这里注释的这种方案，适用于所有的客户端订阅相同的路径，然后请求头中添加用户身份标识，然后再 AuthHandshakeInterceptor 进行身份识别设置全局属性，AuthHandshakeHandler 这里来决定怎么进行转发
-//        if (destination.startsWith("/app")) {
-//            // 开始进行聊天时，进行身份校验; 路由转发
-//            String suffix = destination.substring("/chat".length());
-//            String prepareDestination = String.format("%s%s", suffix, uid.getName());
-//            accessor.setDestination(prepareDestination);
-//        }
-
         return ChannelInterceptor.super.preSend(message, channel);
     }
 
@@ -63,9 +50,6 @@ public class AuthInChannelInterceptor implements ChannelInterceptor {
                 && accessor != null && accessor.getUser() != null) {
             // 订阅成功，返回用户历史聊天记录； 从请求头中，获取具体选择的大数据模型
             AuthUtil.addReqInfo((AuthUtil.ReqInfo) accessor.getUser());
-            String aiType = (String) ((Map) message.getHeaders().get("simpSessionAttributes")).get(WsAnswerHelper.AI_SOURCE_PARAM);
-            AISourceEnum source = aiType == null ? null : AISourceEnum.valueOf(aiType);
-            SpringUtil.getBean(WsAnswerHelper.class).sendMsgHistoryToUser(accessor.getUser().getName(), source);
             //AuthUtil.clear();
             return;
         }
