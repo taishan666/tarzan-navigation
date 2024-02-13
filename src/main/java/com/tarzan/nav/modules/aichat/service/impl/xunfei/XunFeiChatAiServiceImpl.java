@@ -33,7 +33,10 @@ public class XunFeiChatAiServiceImpl extends AbsChatAiService {
        });
     }
 
-
+    @Override
+    protected int getMaxQaCnt(Integer userId) {
+        return xunFeiIntegration.getDayLimit();
+    }
 
 
 }

@@ -2,6 +2,7 @@ package com.tarzan.nav.modules.aichat.service.impl.wenxin;
 
 import com.tarzan.nav.modules.aichat.enums.AISourceEnum;
 import com.tarzan.nav.modules.aichat.vo.ChatRecordsVo;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
@@ -11,6 +12,8 @@ import reactor.core.publisher.Flux;
 @Service
 public class YiYanChatAiServiceImpl extends AbsWenXinAiService {
 
+    @Value("${wenxin.eb-instant.day-limit}")
+    private Integer dayLimit;
 
     @Override
     public AISourceEnum source() {
@@ -24,6 +27,7 @@ public class YiYanChatAiServiceImpl extends AbsWenXinAiService {
 
     @Override
     protected int getMaxQaCnt(Integer userId) {
-        return 50;
+        return dayLimit;
     }
+
 }

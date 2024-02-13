@@ -18,7 +18,7 @@ import javax.annotation.Resource;
  */
 @Slf4j
 @RestController
-public class AiChatController {
+public class ChatAiController {
 
     @Resource
     private ChatAiServiceFactory chatAiServiceFactory;

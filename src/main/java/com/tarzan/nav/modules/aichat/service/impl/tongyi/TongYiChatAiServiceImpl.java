@@ -26,6 +26,8 @@ public class TongYiChatAiServiceImpl extends AbsChatAiService {
 
     @Value("${tongyi.apiKey}")
     private String apiKey;
+    @Value("${tongyi.day-limit}")
+    private Integer dayLimit;
 
     @Override
     public AISourceEnum source() {
@@ -60,7 +62,7 @@ public class TongYiChatAiServiceImpl extends AbsChatAiService {
 
     @Override
     protected int getMaxQaCnt(Integer userId) {
-        return 20;
+        return dayLimit;
     }
 
 

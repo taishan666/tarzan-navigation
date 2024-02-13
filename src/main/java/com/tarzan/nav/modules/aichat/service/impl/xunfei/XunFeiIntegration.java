@@ -132,6 +132,9 @@ public class XunFeiIntegration {
         return JsonUtil.parse(text, ResponseData.class);
     }
 
+    public Integer getDayLimit(){
+        return xunFeiConfig.getDatLimit();
+    }
 
     @Component
     @ConfigurationProperties(prefix = "xunfei")
@@ -143,6 +146,7 @@ public class XunFeiIntegration {
         public String apiSecret = "";
         // 指定访问的领域,general指向V1.5版本 generalv2指向V2版本。注意：不同的取值对应的url也不一样！
         public String domain = "general";
+        public Integer datLimit = 10;
     }
 
     @Data
