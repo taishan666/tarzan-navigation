@@ -1,13 +1,13 @@
-package com.tarzan.nav.modules.aichat.service.impl.tai;
+package com.tarzan.nav.modules.aichat.service.impl.linkai;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.tarzan.nav.modules.aichat.enums.AISourceEnum;
 import com.tarzan.nav.modules.aichat.service.AbsChatAiService;
 import com.tarzan.nav.modules.aichat.vo.ChatItemVo;
 import com.tarzan.nav.modules.aichat.vo.ChatRecordsVo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -15,25 +15,26 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 
 /**
- * 泰聪明价值一个亿的AI
- *
  * @author tarzan
- * @date 2023/6/9
  */
 @Service
 @Slf4j
-public class TarzanAiServiceImpl extends AbsChatAiService {
+public abstract class AbsLinkAiService extends AbsChatAiService {
 
-    private final WebClient webClient= WebClient.builder().baseUrl("https://api.link-ai.chat").defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).build();
+    @Value("${linkai.apiCode}")
+    private String apiCode;
+    @Value("${linkai.apiKey}")
+    private String apiKey;
+    @Value("${linkai.baseUrl}")
+    private String baseUrl;
+    @Value("${linkai.chatUrl}")
+    private String chatUrl;
 
-    @Override
-    public AISourceEnum source() {
-        return AISourceEnum.TARZAN_AI;
+    public WebClient buildWebClient() {
+        return WebClient.builder().baseUrl(baseUrl).defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).build();
     }
 
-
-    @Override
-    public Flux<ChatRecordsVo> doAsyncAnswer(ChatRecordsVo vo) {
+    public Flux<ChatRecordsVo> doAsyncAnswer(ChatRecordsVo vo, String model) {
         ChatItemVo item = vo.getRecords().get(0);
         JSONObject params=new JSONObject();
         JSONArray messages=new JSONArray();
@@ -41,11 +42,12 @@ public class TarzanAiServiceImpl extends AbsChatAiService {
         message.put("role","user");
         message.put("content",item.getQuestion());
         messages.add(message);
-        params.put("app_code","3ab3Ei5H");
+        params.put("app_code",apiCode);
+        params.put("model",model);
         params.put("messages",messages);
         params.put("stream",true);
-        return webClient.post().uri("/v1/chat/completions")
-                .header("Authorization", "Bearer Link_OdSp0s7vitGnvkWigmTcfyUg5diyDvTIg1frolmt3Z")
+        return buildWebClient().post().uri(chatUrl)
+                .header("Authorization", "Bearer "+apiKey)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(params.toJSONString())
                 .retrieve()
@@ -65,13 +67,4 @@ public class TarzanAiServiceImpl extends AbsChatAiService {
     }
 
 
-    private String qa(String q) {
-        String ans = "洛阳泰山技术博客 https://tarzan.blog.csdn.net/";
-        return ans;
-    }
-
-    @Override
-    protected int getMaxQaCnt(Integer userId) {
-        return 10;
-    }
 }

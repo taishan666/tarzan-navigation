@@ -28,8 +28,6 @@ public abstract class AbsWenXinAiService extends AbsChatAiService {
     @Value("${wenxin.chatUrl}")
     private String chatUrl;
 
-
-
     public WebClient buildWebClient() {
         return WebClient.builder().baseUrl(baseUrl).defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).build();
     }

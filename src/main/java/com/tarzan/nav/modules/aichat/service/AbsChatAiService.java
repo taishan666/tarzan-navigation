@@ -117,7 +117,7 @@ public abstract class AbsChatAiService implements ChatAiService {
      * @return
      */
     protected int getMaxQaCnt(Integer userId) {
-        return 10;
+        return ChatConstants.MAX_CHATGPT_QAS_CNT;
     }
 
     /**

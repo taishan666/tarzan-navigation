@@ -20,7 +20,7 @@ public class XunFeiChatAiServiceImpl extends AbsChatAiService {
 
     @Override
     public AISourceEnum source() {
-        return AISourceEnum.XUN_FEI_AI;
+        return AISourceEnum.XUN_FEI_3_5;
     }
 
     @Override

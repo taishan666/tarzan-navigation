@@ -1,36 +1,12 @@
 package com.tarzan.nav.modules.aichat.constants;
 
 
-import com.tarzan.nav.modules.aichat.enums.AISourceEnum;
-
-import java.time.LocalDate;
-
 /**
  * @author tarzan
  * @date 2023/6/2
  */
 public final class ChatConstants {
-    /**
-     * 记录每个用户的使用次数
-     */
-    public static String getAiRateKey(AISourceEnum ai) {
-        return "chat.rates." + ai.name().toLowerCase();
-    }
 
-    public static String getAiRateKeyPerDay(AISourceEnum ai) {
-        return "chat.rates." + ai.name().toLowerCase() + "-" + LocalDate.now();
-    }
-
-    /**
-     * 聊天历史记录
-     *
-     * @param ai
-     * @param user
-     * @return
-     */
-    public static String getAiHistoryRecordsKey(AISourceEnum ai, Long user) {
-        return "chat.history." + ai.name().toLowerCase() + "." + user;
-    }
 
     /**
      * 每个用户的最大使用次数
@@ -48,10 +24,10 @@ public final class ChatConstants {
     public static final long QAS_TIME_INTERVAL = 20_000;
 
 
-    public static final String CHAT_REPLY_RECOMMEND = "请注册泰聪明之后再来体验吧，泰聪明官网： \n https://paicoding.com";
+    public static final String CHAT_REPLY_RECOMMEND = "请注册泰聪明之后再来体验吧，我的技术博客： \n https://tarzan.blog.csdn.net";
     public static final String CHAT_REPLY_BEGIN = "让我们开始体验ChatGPT的魅力吧~";
     public static final String CHAT_REPLY_OVER = "体验结束，让我们下次再见吧~";
-    public static final String CHAT_REPLY_CNT_OVER = "次数使用完了哦，勾搭一下群主，多申请点使用次数吧~\n微信：itwanger";
+    public static final String CHAT_REPLY_CNT_OVER = "次数使用完了哦，勾搭一下博主，多申请点使用次数吧~\n微信：vxhqqh";
 
 
     public static final String CHAT_REPLY_TIME_WAITING = "chatgpt还在努力回答中，请等待几秒之后再问一次吧....";

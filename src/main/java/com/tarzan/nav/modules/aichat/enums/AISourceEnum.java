@@ -8,28 +8,28 @@ import lombok.Getter;
  */
 @Getter
 public enum AISourceEnum {
-    /**
-     * chatgpt
-     */
-    CHAT_GPT_3_5(0, "chatGpt3.5"),
-    CHAT_GPT_4(1, "chatGpt4"),
-    /**
-     * 泰聪明的模拟AI
-     */
-    TARZAN_AI(2, "泰聪明"),
+
     /**
      * 讯飞
      */
-    XUN_FEI_AI(3,"讯飞星火"),
-    /**
-     * 通义千问
-     */
-    TONG_YI_AI(4, "通义千问"),
+    XUN_FEI_3_5(0,"讯飞星火3.5"),
+    TONG_YI_MAX(1, "通义千问MAX"),
     /**
      * 文心一言
      */
-    EB_INSTANT(5, "eb-instant"),
-    YI_34B_CHAT(6,"yi_34b_chat");
+    LLAMA_2_7B(2, "qianfan_chinese_llama_2_7b"),
+    YI_34B_CHAT(3,"yi_34b_chat"),
+    /**
+     * link ai
+     */
+    CHAT_GPT_3_5(4, "gpt-3.5-turbo"),
+    CHAT_GPT_3_5_16K(5, "gpt-3.5-turbo-16k"),
+    CHAT_GPT_4(6, "gpt-4"),
+    XUN_FEI_3(7,"xunfei"),
+    WEI_XIN_3_5(8,"wenxin"),
+    WEI_XIN_4(9,"wenxin-4"),
+    GEMINI(10,"gemini"),
+    GLM_4(11,"glm-4");
 
     private String name;
     private Integer code;
@@ -39,21 +39,5 @@ public enum AISourceEnum {
         this.name = name;
     }
 
-    /**
-     * 是否支持同步
-     *
-     * @return
-     */
-    public boolean syncSupport() {
-        return true;
-    }
 
-    /**
-     * 是否支持异步
-     *
-     * @return
-     */
-    public boolean asyncSupport() {
-        return true;
-    }
 }

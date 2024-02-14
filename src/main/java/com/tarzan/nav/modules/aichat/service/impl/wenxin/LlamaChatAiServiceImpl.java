@@ -10,19 +10,19 @@ import reactor.core.publisher.Flux;
  * @author tarzan
  */
 @Service
-public class YiYanChatAiServiceImpl extends AbsWenXinAiService {
+public class LlamaChatAiServiceImpl extends AbsWenXinAiService {
 
-    @Value("${wenxin.eb-instant.day-limit}")
+    @Value("${wenxin.llama.day-limit}")
     private Integer dayLimit;
 
     @Override
     public AISourceEnum source() {
-        return AISourceEnum.EB_INSTANT;
+        return AISourceEnum.LLAMA_2_7B;
     }
 
     @Override
     public Flux<ChatRecordsVo> doAsyncAnswer(ChatRecordsVo response) {
-        return super.doAsyncAnswer(response,"eb-instant");
+        return super.doAsyncAnswer(response,source().getName());
     }
 
     @Override

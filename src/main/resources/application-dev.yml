@@ -59,10 +59,17 @@ wenxin:
   baseUrl: https://aip.baidubce.com
   chatUrl: /rpc/2.0/ai_custom/v1/wenxinworkshop/chat
   yi_34b_chat:
-    day-limit: 30
-  eb-instant:
-     day-limit: 10
+    day-limit: 10
+  llama:
+     day-limit: 15
 #通义千问
 tongyi:
   apiKey: sk-80611638022146a2bc9a1ec9b566cc54
-  day-limit: 20
+  day-limit: 10
+linkai:
+  apiCode: 3ab3Ei5H
+  apiKey: Link_OdSp0s7vitGnvkWigmTcfyUg5diyDvTIg1frolmt3Z
+  baseUrl: https://api.link-ai.chat
+  chatUrl: /v1/chat/completions
+
+

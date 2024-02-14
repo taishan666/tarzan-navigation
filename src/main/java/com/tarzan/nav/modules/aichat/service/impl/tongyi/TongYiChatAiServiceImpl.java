@@ -31,9 +31,8 @@ public class TongYiChatAiServiceImpl extends AbsChatAiService {
 
     @Override
     public AISourceEnum source() {
-        return AISourceEnum.TONG_YI_AI;
+        return AISourceEnum.TONG_YI_MAX;
     }
-
 
     @Override
     public Flux<ChatRecordsVo> doAsyncAnswer(ChatRecordsVo response) {
