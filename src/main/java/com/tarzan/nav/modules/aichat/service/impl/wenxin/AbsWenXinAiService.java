@@ -1,11 +1,11 @@
 package com.tarzan.nav.modules.aichat.service.impl.wenxin;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.tarzan.nav.modules.aichat.service.AbsChatAiService;
 import com.tarzan.nav.modules.aichat.vo.ChatItemVo;
 import com.tarzan.nav.modules.aichat.vo.ChatRecordsVo;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -39,7 +39,7 @@ public abstract class AbsWenXinAiService extends AbsChatAiService {
         JSONObject message = new JSONObject();
         message.put("role", "user");
         message.put("content", item.getQuestion());
-        messagesArray.put(message);
+        messagesArray.add(message);
         chatPayload.put("messages", messagesArray);
         chatPayload.put("stream", true);
         return buildWebClient().post().uri(chatUrl+"/"+model+"?access_token=" + getAccessToken()).contentType(MediaType.APPLICATION_JSON)
