@@ -15,8 +15,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 /**
  * @author tarzan
  */
@@ -46,11 +44,9 @@ public class TongYiChatAiServiceImpl extends AbsChatAiService {
                 .build();
         try {
             Flowable<ConversationResult> result = conversation.streamCall(param);
-            AtomicReference<String> lastResult= new AtomicReference<>("");
             return Flux.from(result).map(data -> {
                 String text=data.getOutput().getText();
-                item.stramAnswer(text.replace(lastResult.get(),""));
-                lastResult.set(text);
+                item.streamAnswer(text);
                 return response;
             });
         } catch (NoApiKeyException | InputRequiredException e) {

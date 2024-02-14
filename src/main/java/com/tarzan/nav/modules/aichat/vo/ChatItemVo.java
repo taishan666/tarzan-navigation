@@ -1,11 +1,11 @@
 package com.tarzan.nav.modules.aichat.vo;
 
 import com.tarzan.nav.modules.aichat.enums.ChatAnswerTypeEnum;
+import com.tarzan.nav.modules.aichat.model.ChatItem;
 import com.tarzan.nav.utils.DateUtil;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
-import java.io.Serializable;
 import java.util.UUID;
 
 /**
@@ -16,37 +16,7 @@ import java.util.UUID;
  */
 @Data
 @Accessors(chain = true)
-public class ChatItemVo implements Serializable, Cloneable {
-    private static final long serialVersionUID = 7230339040247758226L;
-    /**
-     * 唯一的聊天id，不要求存在，主要用于简化流式输出时，前端对返回结果的处理
-     */
-    private String chatUid;
-
-    /**
-     * 提问的内容
-     */
-    private String question;
-
-    /**
-     * 提问的时间点
-     */
-    private String questionTime;
-
-    /**
-     * 回答内容
-     */
-    private String answer;
-
-    /**
-     * 回答的时间点
-     */
-    private String answerTime;
-
-    /**
-     * 回答的内容类型，文本、JSON 字符串
-     */
-    private ChatAnswerTypeEnum answerType;
+public class ChatItemVo extends ChatItem {
 
     /**
      * 记录问题及记录时间
@@ -55,8 +25,8 @@ public class ChatItemVo implements Serializable, Cloneable {
      * @return
      */
     public ChatItemVo initQuestion(String question) {
-        this.question = question;
-        this.questionTime = DateUtil.getNewFormatDateString(DateUtil.now());
+        super.setQuestion(question);
+        super.setQuestionTime(DateUtil.now());
         return this;
     }
 
@@ -67,15 +37,15 @@ public class ChatItemVo implements Serializable, Cloneable {
      * @return
      */
     public ChatItemVo initAnswer(String answer) {
-        this.answer = answer;
-        this.answerType = ChatAnswerTypeEnum.JSON;
+        this.setAnswer(answer);
+        this.setAnswerType(ChatAnswerTypeEnum.JSON);
         setAnswerTime();
         return this;
     }
 
     public ChatItemVo initAnswer(String answer, ChatAnswerTypeEnum answerType) {
-        this.answer = answer;
-        this.answerType = answerType;
+        this.setAnswer(answer);
+        this.setAnswerType(answerType);
         setAnswerTime();
         return this;
     }
@@ -87,39 +57,33 @@ public class ChatItemVo implements Serializable, Cloneable {
      * @return
      */
     public ChatItemVo appendAnswer(String answer) {
-        if (this.answer == null || this.answer.isEmpty()) {
-            this.answer = answer;
-            this.chatUid = UUID.randomUUID().toString().replaceAll("-", "");
+        if (super.getAnswer() == null || super.getAnswer().isEmpty()) {
+            super.setAnswer(answer);
+            super.setChatUid(UUID.randomUUID().toString().replaceAll("-", ""));
         } else {
-            this.answer += answer;
+            String lastAnswer=super.getAnswer();
+            super.setAnswer(lastAnswer+answer);
         }
-        this.answerType = ChatAnswerTypeEnum.STREAM;
+        this.setAnswerType(ChatAnswerTypeEnum.STREAM);
         setAnswerTime();
         return this;
     }
 
-    public ChatItemVo stramAnswer(String answer) {
-        if (this.answer == null || this.answer.isEmpty()) {
-            this.answer = answer;
-            this.chatUid = UUID.randomUUID().toString().replaceAll("-", "");
+    public ChatItemVo streamAnswer(String answer) {
+        if (super.getAnswer() == null || super.getAnswer().isEmpty()) {
+            super.setAnswer(answer);
+            super.setChatUid(UUID.randomUUID().toString().replaceAll("-", ""));
         } else {
-            this.answer = answer;
+            super.setAnswer(answer);
         }
-        this.answerType = ChatAnswerTypeEnum.STREAM;
+        this.setAnswerType(ChatAnswerTypeEnum.STREAM);
         setAnswerTime();
         return this;
     }
 
     public ChatItemVo setAnswerTime() {
-        this.answerTime = DateUtil.getNewFormatDateString(DateUtil.now());
+        this.setAnswerTime(DateUtil.now());
         return this;
     }
 
-    @Override
-    public ChatItemVo clone() {
-        ChatItemVo item = new ChatItemVo();
-        item.question = question;
-        item.questionTime = questionTime;
-        return item;
-    }
 }

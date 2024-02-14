@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 /**
  * @author Lenovo
@@ -41,7 +42,7 @@ public class ChatItemEntity {
     /**
      * 提问的时间点
      */
-    private String questionTime;
+    private Date questionTime;
 
     /**
      * 回答内容
@@ -52,7 +53,7 @@ public class ChatItemEntity {
     /**
      * 回答的时间点
      */
-    private String answerTime;
+    private Date answerTime;
 
     /**
      * 回答的内容类型，文本、JSON 字符串

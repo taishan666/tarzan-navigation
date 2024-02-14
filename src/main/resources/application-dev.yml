@@ -20,9 +20,9 @@ spring:
               required: true # 必须采用加密链接
   h2:
     console:
-      enabled: false
+      enabled: true
       settings:
-        web-allow-others: false
+        web-allow-others: true
       path: /h2-console
 tarzan:
   shiro-key: ${user.home}/.tarzan-nav/shiro_key.pub

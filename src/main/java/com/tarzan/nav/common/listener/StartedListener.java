@@ -1,6 +1,7 @@
 package com.tarzan.nav.common.listener;
 
 import com.tarzan.nav.common.props.TarzanProperties;
+import com.tarzan.nav.modules.aichat.service.ChatItemService;
 import com.tarzan.nav.shiro.ShiroService;
 import com.tarzan.nav.utils.AppInstallTools;
 import lombok.AllArgsConstructor;
@@ -32,6 +33,7 @@ public class StartedListener implements ApplicationListener<ApplicationStartedEv
     private final AppInstallTools appInstallTools;
     private final ShiroService shiroService;
     private final TarzanProperties tarzanProperties;
+    private final ChatItemService chatItemService;
 
     @Override
     public void onApplicationEvent(@NonNull ApplicationStartedEvent event) {
@@ -44,6 +46,7 @@ public class StartedListener implements ApplicationListener<ApplicationStartedEv
                 log.error("系统文件夹生成失败");
             }
         }
+       // chatItemService.remove(null);
         printStartInfo(event);
     }
 

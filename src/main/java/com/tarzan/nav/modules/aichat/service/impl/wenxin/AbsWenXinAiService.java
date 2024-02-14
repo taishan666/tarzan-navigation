@@ -48,7 +48,7 @@ public abstract class AbsWenXinAiService extends AbsChatAiService {
                 .bodyToFlux(String.class)
                 .map(data -> {
                     String result = JSON.parseObject(data).getString("result");
-                    item.stramAnswer(result);
+                    item.appendAnswer(result);
                     return response;
                 });
     }

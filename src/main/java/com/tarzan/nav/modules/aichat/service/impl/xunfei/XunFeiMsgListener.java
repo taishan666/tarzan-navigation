@@ -72,7 +72,7 @@ public class XunFeiMsgListener extends WebSocketListener {
             pl.getChoices().getText().forEach(s -> {
                 msg.append(s.getContent());
             });
-            item.stramAnswer(msg.toString());
+            item.appendAnswer(msg.toString());
             messageSink.next(chatRecord);
             if (responseData.endResponse()) {
                 webSocket.close(1001, "会话结束");

@@ -6,7 +6,6 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 聊天记录
@@ -37,18 +36,6 @@ public class ChatRecordsVo implements Serializable, Cloneable {
      * 聊天记录，最新的在前面；最多返回50条
      */
     private List<ChatItemVo> records;
-
-    @Override
-    public ChatRecordsVo clone() {
-        ChatRecordsVo vo = new ChatRecordsVo();
-        vo.source = source;
-        vo.maxCnt = maxCnt;
-        vo.usedCnt = usedCnt;
-        if (records != null) {
-            vo.setRecords(records.stream().map(ChatItemVo::clone).collect(Collectors.toList()));
-        }
-        return vo;
-    }
 
     /**
      * 判断是否拥有提问次数

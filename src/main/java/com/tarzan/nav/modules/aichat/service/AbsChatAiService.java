@@ -35,13 +35,11 @@ public abstract class AbsChatAiService implements ChatAiService {
             res.getRecords().get(0).initAnswer(String.format(ChatConstants.SENSITIVE_QUESTION, sensitiveWord));
             return Flux.just(res);
         } else {
-            StringBuffer answer=new StringBuffer();
+         //   StringBuffer answer=new StringBuffer();
             return doAsyncAnswer(res)
-                    .doOnNext(e ->{
-                        answer.append(e.getRecords().get(0).getAnswer());
-                    })
+                  //  .doOnNext(e ->{answer.append(e.getRecords().get(0).getAnswer());})
                     .doOnComplete(() -> {
-                        res.getRecords().get(0).setAnswer(answer.toString());
+                     //   res.getRecords().get(0).setAnswer(answer.toString());
                         // 当Flux完成时
                         processAfterSuccessAnswered(userId, res);
                     });
@@ -66,7 +64,6 @@ public abstract class AbsChatAiService implements ChatAiService {
     /**
      * 异步返回结果
      *
-     * @param userId
      * @param response 保存提问 & 返回的结果，最终会返回给前端用户
      * @return 返回的会话状态，控制是否需要将结果直接返回给前端
      */
