@@ -310,8 +310,10 @@
             return '<pre><code class="' + p1 + '">' + escapeHtml(p2) + '</code></pre>';
         });
         content=content.replace(/`([^`]+)`/gs, function (match, p1, p2) {
-            console.log(p1)
             return '<code>' + p1 + '</code>';
+        });
+        content=content.replace(/^- /gm, function (match, p1, p2) {
+            return '<li>' + p1 + '</li>';
         });
         return content;
     }
