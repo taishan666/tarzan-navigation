@@ -27,7 +27,7 @@ public class LlamaChatAiServiceImpl extends AbsWenXinAiService {
 
     @Override
     protected int getMaxQaCnt(Integer userId) {
-        return dayLimit;
+        return dayLimit==null?super.getMaxQaCnt(userId):dayLimit;
     }
 
 }
