@@ -31,6 +31,7 @@ public class LinkController {
 
     private final LinkService linkService;
 
+
     @PostMapping("list")
     @ResponseBody
     public PageResultVo loadLinks(Link link, Integer pageNumber, Integer pageSize) {

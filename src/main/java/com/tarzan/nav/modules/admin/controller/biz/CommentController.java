@@ -3,6 +3,7 @@ package com.tarzan.nav.modules.admin.controller.biz;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.tarzan.nav.modules.admin.model.biz.Comment;
 import com.tarzan.nav.modules.admin.service.biz.CommentService;
+import com.tarzan.nav.modules.admin.service.biz.MatterService;
 import com.tarzan.nav.modules.admin.vo.CommentConditionVo;
 import com.tarzan.nav.modules.admin.vo.base.PageResultVo;
 import com.tarzan.nav.modules.admin.vo.base.ResponseVo;
@@ -29,6 +30,7 @@ import java.util.List;
 public class CommentController {
 
     private final CommentService commentService;
+    private final MatterService matterService;
 
     @PostMapping("list")
     public PageResultVo list(CommentConditionVo vo, Integer pageNumber, Integer pageSize) {
@@ -55,6 +57,7 @@ public class CommentController {
     public ResponseVo audit(Comment bizComment, String replyContent) {
         boolean flag = commentService.audit(bizComment,replyContent);
         if (flag) {
+            matterService.sendNotification();
             return ResultUtil.success("审核成功");
         } else {
             return ResultUtil.error("审核失败");

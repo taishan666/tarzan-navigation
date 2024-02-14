@@ -230,13 +230,14 @@
 <script type='text/javascript' id='appjs-js-after'>
     $(document).ready(function(){if($("#search-text")[0]){$("#search-text").focus();}});
 </script>
-<!--<script type='text/javascript' src='https://nav.iowen.cn/wp-content/themes/onenav/inc/postviews/postviews-cache.js?ver=6.2' id='wp-postviews-cache-js'></script>-->
 <script>
     function currentType(data) {
         const t = $(data).data('type');
         $('input[name="applyType"]').val(t);
         if(t=='link'){
             $('.tg-sites-category').hide();
+        }else{
+            $('.tg-sites-category').show();
         }
     };
 </script>

@@ -166,26 +166,26 @@ public class NavApiController {
 
     @PostMapping("/login")
     public ResponseVo login(LoginDTO dto) {
-        UsernamePasswordToken token = new UsernamePasswordToken(dto.getUsername(), dto.getPassword());
-        try {
+        Subject subject = SecurityUtils.getSubject();
+        if (!subject.isAuthenticated()) {
+            UsernamePasswordToken token = new UsernamePasswordToken(dto.getUsername(), dto.getPassword());
             token.setRememberMe("forever".equals(dto.getRememberMe()));
-            Subject subject = SecurityUtils.getSubject();
-            subject.login(token);
-        } catch (ExcessiveAttemptsException e) {
-            // 密码输错次数达到上限
-            return ResultUtil.status(4,"密码输错次数达到上限，请30分钟后重试。");
-        } catch (UnknownAccountException e) {
-            // 未知账号
-            return ResultUtil.status(4,"用户账户不存在！");
-        } catch (LockedAccountException e) {
-            return ResultUtil.status(4,"用户已经被锁定不能登录，请联系管理员！");
-        } catch (AuthenticationException e) {
-            return ResultUtil.status(4,"用户名或者密码错误！");
-        }finally {
-            token.clear();
+            try {
+                subject.login(token);
+            } catch (ExcessiveAttemptsException e) {
+                // 密码输错次数达到上限
+                return ResultUtil.status(4,"密码输错次数达到上限，请30分钟后重试。");
+            } catch (UnknownAccountException e) {
+                // 未知账号
+                return ResultUtil.status(4,"用户账户不存在！");
+            } catch (LockedAccountException e) {
+                return ResultUtil.status(4,"用户已经被锁定不能登录，请联系管理员！");
+            } catch (AuthenticationException e) {
+                return ResultUtil.status(4,"用户名或者密码错误！");
+            }finally {
+                token.clear();
+            }
         }
-        //后续处理
-     //   loginProcess(request);
         JSONObject json=new JSONObject();
         json.put("goto",dto.getRedirectTo());
         return ResultUtil.vo(1,"登录成功！", json);
