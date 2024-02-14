@@ -44,32 +44,6 @@ social:
       client-id: 5b693811f8229e38146f2c482e3f4e4dfbdf2b496d494698b6308d6f35dcb2e0
       client-secret: 428ff220b5aa5704c55a8cf91f13aa4466258a6e7c357c7e30a5bca1d1cbe4e2
       redirect-uri: http://127.0.0.1/auth/oauth/callback/GITEE
-# 讯飞AI
-xunfei:
-  hostUrl: https://spark-api.xf-yun.com/v3.5/chat
-  domain: "generalv3.5"
-  appId: 5cf48f5c
-  apiKey: b52cb7b745c2e8d6ca28e89470c5f378
-  apiSecret: 60da6df9693e5b8af6bd32f77c4df3c3
-  day-limit: 10
-# 文心ai
-wenxin:
-  apiKey: gHzGfwbSyTMxcKKZKHb5YAL8
-  apiSecret: UYj7Q42COR16724LXcL2577Hd1FNEqpH
-  baseUrl: https://aip.baidubce.com
-  chatUrl: /rpc/2.0/ai_custom/v1/wenxinworkshop/chat
-  yi_34b_chat:
-    day-limit: 15
-  llama:
-     day-limit: 5
-#通义千问
-tongyi:
-  apiKey: sk-80611638022146a2bc9a1ec9b566cc54
-  day-limit: 10
-linkai:
-  apiCode: 3ab3Ei5H
-  apiKey: Link_OdSp0s7vitGnvkWigmTcfyUg5diyDvTIg1frolmt3Z
-  baseUrl: https://api.link-ai.chat
-  chatUrl: /v1/chat/completions
+
 
 
