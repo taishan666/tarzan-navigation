@@ -37,7 +37,9 @@ public abstract class AbsChatAiService implements ChatAiService {
         } else {
             StringBuffer answer=new StringBuffer();
             return doAsyncAnswer(res)
-                    .doOnNext(e -> answer.append(e.getRecords().get(0).getAnswer()))
+                    .doOnNext(e ->{
+                        answer.append(e.getRecords().get(0).getAnswer());
+                    })
                     .doOnComplete(() -> {
                         res.getRecords().get(0).setAnswer(answer.toString());
                         // 当Flux完成时

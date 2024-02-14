@@ -61,6 +61,8 @@ public abstract class AbsLinkAiService extends AbsChatAiService {
                         JSONObject delta=choice.getJSONObject("delta");
                         String content=delta.getString("content");
                         item.stramAnswer(content);
+                    }else {
+                        item.stramAnswer("");
                     }
                     return vo;
                 });

@@ -1,12 +1,11 @@
 package com.tarzan.nav.modules.aichat.vo;
 
 import com.tarzan.nav.modules.aichat.enums.ChatAnswerTypeEnum;
+import com.tarzan.nav.utils.DateUtil;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 /**
@@ -57,7 +56,7 @@ public class ChatItemVo implements Serializable, Cloneable {
      */
     public ChatItemVo initQuestion(String question) {
         this.question = question;
-        this.questionTime = DateTimeFormatter.ofPattern("yyyy年MM月dd日 HH:mm:ss").format(LocalDateTime.now());
+        this.questionTime = DateUtil.getNewFormatDateString(DateUtil.now());
         return this;
     }
 
@@ -69,7 +68,7 @@ public class ChatItemVo implements Serializable, Cloneable {
      */
     public ChatItemVo initAnswer(String answer) {
         this.answer = answer;
-        this.answerType = ChatAnswerTypeEnum.TEXT;
+        this.answerType = ChatAnswerTypeEnum.JSON;
         setAnswerTime();
         return this;
     }
@@ -112,7 +111,7 @@ public class ChatItemVo implements Serializable, Cloneable {
     }
 
     public ChatItemVo setAnswerTime() {
-        this.answerTime = DateTimeFormatter.ofPattern("yyyy年MM月dd日 HH:mm:ss").format(LocalDateTime.now());
+        this.answerTime = DateUtil.getNewFormatDateString(DateUtil.now());
         return this;
     }
 

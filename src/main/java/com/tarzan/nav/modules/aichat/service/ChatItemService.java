@@ -45,7 +45,7 @@ public class ChatItemService extends ServiceImpl<ChatItemMapper, ChatItem> {
 
     @Cacheable(value = "chatItem",key = "'usedcnt_'+#source+'_'+#userId")
     public int queryUsedCnt(AISourceEnum source, Integer userId) {
-        String dateStr=DateUtil.format(new Date(),DateUtil.chineseDtFormat);
+        String dateStr=DateUtil.format(new Date(),DateUtil.webFormat);
         LambdaQueryWrapper wrapper=Wrappers.<ChatItem>lambdaQuery().eq(ChatItem::getUserId,userId).eq(ChatItem::getAiType,source.getCode()).like(ChatItem::getQuestionTime,dateStr);
        return (int) super.count(wrapper);
     }
