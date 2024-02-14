@@ -363,7 +363,7 @@
 
         // 添加完后滚动到底部
         scrollToBottom();
-
+        // 复制功能
         copy();
     }
 
@@ -459,10 +459,8 @@
                 if (!response.body || !response.body.getReader) {
                     throw new Error('Response does not support streaming');
                 }
-
                 const reader = response.body.getReader();
                 let buffer = '';
-
                 return new ReadableStream({
                     start(controller) {
                         function readChunk() {
@@ -470,6 +468,7 @@
                                 if (done) {
                                     controller.close();
                                     sendBtn.removeAttr("disabled");
+                                    chatType.prop('disabled', false);
                                     return;
                                 }
 
@@ -486,19 +485,18 @@
                                 readChunk(); // 继续读取下一块数据
                             });
                         }
+                        function processEvent(eventStr) {
+                            if (eventStr !== '') {
+                                // console.log('Received data:', eventStr);
+                                let event = eventStr.replace(/^data:/, '');
+                                let data = JSON.parse(event);
+                                subscribe(data);
+                            }
+                        }
                         readChunk();
                     },
                 });
             });
-
-        function processEvent(eventStr) {
-            if (eventStr !== '') {
-               // console.log('Received data:', eventStr);
-                let event = eventStr.replace(/^data:/, '');
-                let data = JSON.parse(event);
-                subscribe(data);
-            }
-        }
 
         // 清空 textarea
         inputField.val("");
@@ -507,6 +505,7 @@
 
         // 将 button 设为禁用，防止用户连续点击
         sendBtn.attr("disabled", true);
+        chatType.prop('disabled', true);
     }
 
     sendBtn.click(function () {
