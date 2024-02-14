@@ -26,11 +26,11 @@ public class XunFeiChatWrapper {
 
     private ChatItemVo item;
 
-    public XunFeiChatWrapper(XunFeiIntegration xunFeiIntegration,String uid, ChatRecordsVo chatRes) {
+    public XunFeiChatWrapper(XunFeiIntegration xunFeiIntegration,ChatRecordsVo chatRes) {
         client = xunFeiIntegration.getOkHttpClient();
         String url = xunFeiIntegration.buildXunFeiUrl();
         request = new Request.Builder().url(url).build();
-        listener = new XunFeiMsgListener(uid, chatRes);
+        listener = new XunFeiMsgListener(chatRes);
     }
 
     /**
@@ -43,8 +43,8 @@ public class XunFeiChatWrapper {
     /**
      * 追加的提问, 主要是为了复用websocket的构造参数
      */
-    public void appendQuestion(String uid, ChatRecordsVo chatRes) {
-        listener = new XunFeiMsgListener(uid, chatRes);
+    public void appendQuestion(ChatRecordsVo chatRes) {
+        listener = new XunFeiMsgListener(chatRes);
         webSocket = client.newWebSocket(request, listener);
     }
 

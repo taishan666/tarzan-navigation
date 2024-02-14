@@ -25,8 +25,6 @@ public class XunFeiMsgListener extends WebSocketListener {
 
     private volatile WsConnectStateEnum connectState;
 
-    private String user;
-
     private ChatRecordsVo chatRecord;
 
     private XunFeiIntegration xunFeiIntegration;
@@ -34,9 +32,8 @@ public class XunFeiMsgListener extends WebSocketListener {
     private  FluxSink<ChatRecordsVo> messageSink;
     private  Flux<ChatRecordsVo> messageFlux;
 
-    public XunFeiMsgListener(String user, ChatRecordsVo chatRecord) {
+    public XunFeiMsgListener(ChatRecordsVo chatRecord) {
         this.connectState = WsConnectStateEnum.INIT;
-        this.user = user;
         this.chatRecord = chatRecord;
         this.xunFeiIntegration= SpringUtil.getBean(XunFeiIntegration.class);
         Flux<ChatRecordsVo> publisher = Flux.create(sink -> {
@@ -60,7 +57,7 @@ public class XunFeiMsgListener extends WebSocketListener {
         super.onOpen(webSocket, response);
         connectState = WsConnectStateEnum.CONNECTED;
         // 连接成功之后，发送消息
-        webSocket.send(xunFeiIntegration.buildSendMsg(user, chatRecord.getRecords().get(0).getQuestion()));
+        webSocket.send(xunFeiIntegration.buildSendMsg(chatRecord.getRecords().get(0).getQuestion()));
     }
 
     @Override

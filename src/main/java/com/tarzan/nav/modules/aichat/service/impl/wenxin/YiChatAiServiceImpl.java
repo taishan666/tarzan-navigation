@@ -21,8 +21,8 @@ public class YiChatAiServiceImpl extends AbsWenXinAiService {
     }
 
     @Override
-    public Flux<ChatRecordsVo> doAsyncAnswer(Integer userId, ChatRecordsVo response) {
-        return super.doAsyncAnswer(userId,response,"yi_34b_chat");
+    public Flux<ChatRecordsVo> doAsyncAnswer(ChatRecordsVo response) {
+        return super.doAsyncAnswer(response,"yi_34b_chat");
     }
 
     @Override

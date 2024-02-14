@@ -10,6 +10,9 @@ import java.io.PrintWriter;
 import java.util.Objects;
 
 
+/**
+ * @author tarzan
+ */
 @Component
 public class ErrorLogPublisher {
 

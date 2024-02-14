@@ -24,8 +24,8 @@ public class XunFeiChatAiServiceImpl extends AbsChatAiService {
     }
 
     @Override
-    public Flux<ChatRecordsVo> doAsyncAnswer(Integer userId, ChatRecordsVo response) {
-        XunFeiChatWrapper chat = new XunFeiChatWrapper(xunFeiIntegration,String.valueOf(userId), response);
+    public Flux<ChatRecordsVo> doAsyncAnswer(ChatRecordsVo response) {
+        XunFeiChatWrapper chat = new XunFeiChatWrapper(xunFeiIntegration,response);
         chat.initAndQuestion();
        return chat.getListener().getMessageFlux();
     }

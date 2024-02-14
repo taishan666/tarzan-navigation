@@ -50,7 +50,7 @@ public class AppExceptionHandler {
     public String handleException(Exception e, HttpServletRequest request) {
         log.error("异常: {}", e.getMessage(), e);
         request.setAttribute("javax.servlet.error.status_code", ResponseStatus.ERROR.getCode());
-        ErrorLogPublisher.publishEvent(e, UrlUtil.getPath(Objects.requireNonNull(WebUtil.getRequest()).getRequestURI()));
+      //  ErrorLogPublisher.publishEvent(e, UrlUtil.getPath(Objects.requireNonNull(WebUtil.getRequest()).getRequestURI()));
         return "forward:/error";
     }
 

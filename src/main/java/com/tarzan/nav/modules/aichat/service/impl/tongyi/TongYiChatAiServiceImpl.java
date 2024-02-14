@@ -36,7 +36,7 @@ public class TongYiChatAiServiceImpl extends AbsChatAiService {
 
 
     @Override
-    public Flux<ChatRecordsVo> doAsyncAnswer(Integer userId, ChatRecordsVo response) {
+    public Flux<ChatRecordsVo> doAsyncAnswer(ChatRecordsVo response) {
         ChatItemVo item = response.getRecords().get(0);
         Conversation conversation = new Conversation();
         ConversationParam param = ConversationParam

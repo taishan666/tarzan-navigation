@@ -97,7 +97,7 @@ public class XunFeiIntegration {
         return httpUrl.toString();
     }
 
-    public String buildSendMsg(String uid, String question) {
+    public String buildSendMsg(String question) {
         JSONObject frame = new JSONObject();
         JSONObject header = new JSONObject();
         JSONObject chat = new JSONObject();
@@ -109,7 +109,7 @@ public class XunFeiIntegration {
 
         //填充header
         header.put("app_id", xunFeiConfig.appId);
-        header.put("uid", uid);
+        header.put("uid", UUID.randomUUID().toString().substring(0, 10));
         //填充parameter
         chat.put("domain", xunFeiConfig.domain);
         chat.put("random_threshold", 0);

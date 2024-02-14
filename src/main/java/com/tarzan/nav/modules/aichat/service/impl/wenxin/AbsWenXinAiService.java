@@ -31,10 +31,10 @@ public abstract class AbsWenXinAiService extends AbsChatAiService {
 
 
     public WebClient buildWebClient() {
-        return WebClient.builder().baseUrl(baseUrl).defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_STREAM_JSON_VALUE).build();
+        return WebClient.builder().baseUrl(baseUrl).defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).build();
     }
 
-    public Flux<ChatRecordsVo> doAsyncAnswer(Integer userId, ChatRecordsVo response,String model) {
+    public Flux<ChatRecordsVo> doAsyncAnswer(ChatRecordsVo response, String model) {
         ChatItemVo item = response.getRecords().get(0);
         JSONObject chatPayload = new JSONObject();
         JSONArray messagesArray = new JSONArray();
@@ -44,15 +44,12 @@ public abstract class AbsWenXinAiService extends AbsChatAiService {
         messagesArray.put(message);
         chatPayload.put("messages", messagesArray);
         chatPayload.put("stream", true);
-        StringBuffer answer=new StringBuffer();
         return buildWebClient().post().uri(chatUrl+"/"+model+"?access_token=" + getAccessToken()).contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(chatPayload.toString())
                 .retrieve()
                 .bodyToFlux(String.class)
-                //  .filter(data-> StringUtil.isNotBlank(data))
                 .map(data -> {
                     String result = JSON.parseObject(data).getString("result");
-                    answer.append(result);
                     item.stramAnswer(result);
                     return response;
                 });
