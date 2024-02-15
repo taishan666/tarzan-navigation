@@ -37,15 +37,13 @@ public class ChatItemVo extends ChatItem {
      * @return
      */
     public ChatItemVo initAnswer(String answer) {
-        this.setAnswer(answer);
-        this.setAnswerType(ChatAnswerTypeEnum.JSON);
-        setAnswerTime();
-        return this;
+       return initAnswer(answer,ChatAnswerTypeEnum.JSON);
     }
 
     public ChatItemVo initAnswer(String answer, ChatAnswerTypeEnum answerType) {
         this.setAnswer(answer);
         this.setAnswerType(answerType);
+        super.setChatUid(UUID.randomUUID().toString().replaceAll("-", ""));
         setAnswerTime();
         return this;
     }

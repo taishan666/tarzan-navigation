@@ -332,6 +332,7 @@
             chatContent.append(serverMsg);
             lastDiv = $(`#${chatId}`);
         }
+        console.log(content);
         content = markedHtml(content);
         lastDiv.html(content);
         // 高亮代码
