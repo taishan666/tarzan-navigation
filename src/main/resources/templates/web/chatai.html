@@ -167,12 +167,13 @@
     </div>
 </div>
 <footer th:replace="web/module/footer"></footer>
+<script type='text/javascript' src='/web/js/marked.min.js' id='marked-js'></script>
 <script type='text/javascript' src='/web/js/popper.min.js' id='popper-js'></script>
 <script type='text/javascript' src='/web/js/bootstrap.min.js' id='bootstrap-js'></script>
 <script type='text/javascript' src='/web/js/theia-sticky-sidebar.min.js' id='sidebar-js'></script>
 <script type='text/javascript' src='/web/js/lazyload.min.js' id='lazyload-js'></script>
 <script type='text/javascript' src='/web/js/highlight.min.js' id='highlight-js'></script>
-<script type='text/javascript' th:src="@{/js/clipboard.min.js}"></script>
+<script type='text/javascript' src="/web/js/clipboard.min.js"></script>
 <script type='text/javascript' id='appjs-js-extra'>
     const theme = {
         "formpostion": "top",
@@ -261,11 +262,6 @@
         } else {
             appendServerMessage(data[0]);
         }
-        //console.log(data[data.length - 1])
- /*       // 添加完消息后，除了流式持续返回这种场景，其他的恢复按钮的状态
-        if (data[data.length - 1].answerType !== 'STREAM') {
-            sendBtn.removeAttr("disabled");
-        }*/
     }
 
     function chatHistory(userId,aiType) {
@@ -296,26 +292,8 @@
         }
     });
 
-    function escapeHtml(unsafe) {
-        return unsafe
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-    }
-
-    function prettyCode(content) {
-        content=content.replace(/```(\w*)\s*([\s\S]*?)```/gs, function (match, p1, p2) {
-            return '<pre><code class="' + p1 + '">' + escapeHtml(p2) + '</code></pre>';
-        });
-        content=content.replace(/`([^`]+)`/gs, function (match, p1, p2) {
-            return '<code>' + p1 + '</code>';
-        });
-        content=content.replace(/^- /gm, function (match, p1, p2) {
-            return '<li>' + p1 + '</li>';
-        });
-        return content;
+    function markedHtml(markdownText) {
+        return  marked.parse(markdownText);
     }
 
     // 添加服务器端消息
@@ -323,21 +301,10 @@
         let content = answer.answer;
         const time = answer.answerTime;
         const chatId = answer.chatUid;
-        let appendLastChat = false;
         //console.log("准备添加内容:", answer);
-        const lastDiv = $(`#${chatId}`)
-        //  console.log("流式结果返回: ", content, lastDiv);
-        if (lastDiv.length > 0) {
-            // 对于流式返回的结果，找上一次的返回，进行结果的追加，手动将分隔符给干掉
-            content = prettyCode(content.replaceAll('$…$', ''));
-            lastDiv.html(content);
-            appendLastChat = true;
-        } else {
-            // 上一次没有输出过，则格式化文本，重新输出
-            content = prettyCode(content.replaceAll('$…$', ''));
-        }
-
-        if (!appendLastChat) {
+        let lastDiv = $(`#${chatId}`)
+        //    console.log("流式结果返回: ", content, lastDiv);
+        if (lastDiv.length ==0) {
             let serverMsg = `
             <div class="home_chat-message__rdH_g server-msg">
                 <div class="home_chat-message-container__plj_e">
@@ -353,7 +320,7 @@
                             <div class="home_chat-message-top-action__wXKmA">复制</div>
                         </div>
                         <div class="markdown-body">
-                            <p id="${chatId}">${content}</p>
+                            <p id="${chatId}"></p>
                         </div>
                     </div>
                     <div class="home_chat-message-actions__nrHd1">
@@ -363,12 +330,14 @@
             </div>
             `;
             chatContent.append(serverMsg);
+            lastDiv = $(`#${chatId}`);
         }
+        content = markedHtml(content);
+        lastDiv.html(content);
         // 高亮代码
-         chatContent.find('pre code').each(function (i, block) {
-           hljs.highlightBlock(block);
+        chatContent.find('pre code').each(function (i, block) {
+            hljs.highlightBlock(block);
         });
-
         // 添加完后滚动到底部
         scrollToBottom();
         // 复制功能

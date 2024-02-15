@@ -34,7 +34,7 @@ public class ChatItemService extends ServiceImpl<ChatItemMapper, ChatItem> {
 
     @Cacheable(value = "chatItem",key = "#source+'_'+#userId")
     public List<ChatItemVo> getChatHistory(AISourceEnum source,Integer userId,int num) {
-        List<ChatItem> list = super.list(Wrappers.<ChatItem>lambdaQuery().eq(ChatItem::getUserId, userId).eq(ChatItem::getAiType, source.getCode()).orderByAsc(ChatItem::getQuestionTime).last("LIMIT " + num));
+        List<ChatItem> list = super.list(Wrappers.<ChatItem>lambdaQuery().eq(ChatItem::getUserId, userId).eq(ChatItem::getAiType, source.getCode()).orderByDesc(ChatItem::getQuestionTime).last("LIMIT " + num));
         if (CollectionUtils.isNotEmpty(list)) {
             return BeanUtil.copyList(list, ChatItemVo.class);
         }
