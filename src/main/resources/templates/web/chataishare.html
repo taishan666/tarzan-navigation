@@ -87,8 +87,7 @@
             <div class="window-header">
                 <div class="window-header-title">
                     <div class="name">
-                        <div class="window-header-main-title home_chat-body-title__5S8w4">
-                            [[${loginUser?.username}]] 分享的对话内容:
+                        <div id="chat-share-title" class="window-header-main-title home_chat-body-title__5S8w4">
                         </div>
                     </div>
                 </div>
@@ -155,6 +154,7 @@
                 return response.json(); // 将响应解析为JSON
             })
             .then(data => {
+                $("#chat-share-title").html(data.username+" 分享的对话内容:");
                 subscribe(data);
             })
             .catch(error => {
@@ -163,7 +163,6 @@
     }
 
     function subscribe(data) {
-        console.log(data)
         // 把 home_chat-message-actions__loading 的元素移除，不再显示 loading
         $(".home_chat-message-actions__loading").remove();
         addClientMsg(data.question, false);
@@ -213,8 +212,6 @@
          chatContent.find('pre code').each(function (i, block) {
              hljs.highlightBlock(block);
          });
-        // 添加完后滚动到底部
-        scrollToBottom();
     }
 
     // 添加用户端消息
@@ -252,14 +249,8 @@
     `;
 
         chatContent.append(userMsg);
-        // 添加完后滚动到底部
-        scrollToBottom();
     }
 
-    // 滚动到底部
-    function scrollToBottom() {
-        chatContent.scrollTop(chatContent[0].scrollHeight);
-    }
 
 </script>
 </body>

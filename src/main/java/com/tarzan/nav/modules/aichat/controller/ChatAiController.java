@@ -1,5 +1,7 @@
 package com.tarzan.nav.modules.aichat.controller;
 
+import com.tarzan.nav.modules.admin.model.sys.User;
+import com.tarzan.nav.modules.admin.service.sys.UserService;
 import com.tarzan.nav.modules.aichat.enums.AISourceEnum;
 import com.tarzan.nav.modules.aichat.model.ChatItem;
 import com.tarzan.nav.modules.aichat.service.ChatAiServiceFactory;
@@ -26,6 +28,8 @@ public class ChatAiController {
     private ChatAiServiceFactory chatAiServiceFactory;
     @Resource
     private ChatItemService chatItemService;
+    @Resource
+    private UserService userService;
 
     @PostMapping(path = "/chat/{userId}/{aiType}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<ChatRecordsVo> chat(@PathVariable("userId")Integer userId, @PathVariable("aiType") String aiType, String qa) {
@@ -41,6 +45,9 @@ public class ChatAiController {
 
     @GetMapping(path = "/chat/{chatUid}")
     public ChatItem chatShare(@PathVariable("chatUid")String chatUid) {
-        return  chatItemService.getChatByUid(chatUid);
+        ChatItem chatItem=  chatItemService.getChatByUid(chatUid);
+        User user=userService.getById(chatItem.getUserId());
+        chatItem.setUsername(user==null?"未知用户":user.getUsername());
+        return chatItem;
     }
 }
