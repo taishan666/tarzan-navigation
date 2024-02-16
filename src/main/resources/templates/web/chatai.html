@@ -83,8 +83,8 @@
 <sidebar th:replace="web/module/sidebar::index(false)"></sidebar>
 <div class="main-content flex-fill" style="height: 100%">
     <nav th:replace="web/module/navbar::banner(false)"></nav>
-    <div id="content" class="container my-3 my-md-4" style="height: 85%">
-        <div class="chat-main" style="width:95%">
+    <div id="content" class="container my-2 my-md-3" style="height: 85%">
+        <div class="chat-main" style="width:100%">
             <div class="window-header">
                 <div class="window-header-title">
                     <div class="name">
@@ -166,6 +166,32 @@
         </div>
     </div>
 </div>
+<div class="modal fade search-modal" id="chat-share-modal">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div id="search" class="s-search mx-auto my-4">
+                    <div  class="super-search-fm">
+                        <input type="text" id="chat-share-link" class="form-control smart-tips search-key" style="height: 50px;font-size: 1pc" readonly>
+                        <button id="link-copy" style="color: white;width: 80px;">复制链接</button>
+                    </div>
+                </div>
+            </div>
+            <div style="position: absolute;bottom: -40px;width: 100%;text-align: center;"><a href="javascript:" data-dismiss="modal"><i class="iconfont icon-close-circle icon-2x" style="color: #fff;"></i></a></div>
+        </div>
+       <!-- <div class="modal-content">
+            <div class="modal-body">
+                <div id="search" class="s-search mx-auto my-4">
+                    <form action="https://s.taobao.com/search?q=%s%" method="get" target="_blank" class="super-search-fm">
+                        <input type="text" id="m_search-text" class="form-control smart-tips search-key" zhannei="" autocomplete="off" placeholder="淘宝" style="outline:0" data-status="true">
+                        <button type="submit" id="btn_search_popover"><i class="iconfont icon-search"></i></button>
+                    </form>
+                </div>
+            </div>
+            <div style="position: absolute;bottom: -40px;width: 100%;text-align: center;"><a href="javascript:" data-dismiss="modal"><i class="iconfont icon-close-circle icon-2x" style="color: #fff;"></i></a></div>
+        </div>-->
+    </div>
+</div>
 <footer th:replace="web/module/footer"></footer>
 <script type='text/javascript' src='/web/js/marked.min.js' id='marked-js'></script>
 <script type='text/javascript' src='/web/js/popper.min.js' id='popper-js'></script>
@@ -223,7 +249,6 @@
     const chatTitle = $(".window-header-main-title");
     const user = [[${loginUser}]];
     const isLogin = user !== null;
-    // 页面加载完成后，执行 initWs
     $(function () {
         if (isLogin) {
             let aiType = chatType.val();
@@ -303,7 +328,8 @@
         const chatId = answer.chatUid;
         //console.log("准备添加内容:", answer);
         let lastDiv = $(`#${chatId}`)
-        //    console.log("流式结果返回: ", content, lastDiv);
+        console.log("流式结果返回: ");
+        console.log(content);
         if (lastDiv.length ==0) {
             let serverMsg = `
             <div class="home_chat-message__rdH_g server-msg">
@@ -317,7 +343,8 @@
                     </div>
                     <div class="home_chat-message-item__hDEOq">
                         <div class="home_chat-message-top-actions__PfOzb">
-                            <div class="home_chat-message-top-action__wXKmA">复制</div>
+                            <div class="home_chat-message-top-action__wXKmA share">分享</div>
+                            <div class="home_chat-message-top-action__wXKmA copy">复制</div>
                         </div>
                         <div class="markdown-body">
                             <p id="${chatId}"></p>
@@ -332,7 +359,6 @@
             chatContent.append(serverMsg);
             lastDiv = $(`#${chatId}`);
         }
-        console.log(content);
         content = markedHtml(content);
         lastDiv.html(content);
         // 高亮代码
@@ -343,28 +369,53 @@
         scrollToBottom();
         // 复制功能
         copy();
+        // 分享功能
+        share(chatId);
     }
+    const linkCopyBtn = $("#chat-share-modal").find("#link-copy").get(0);
+    const clipboard = new ClipboardJS(linkCopyBtn, {
+        text: function (trigger) {
+            return $("#chat-share-link").val();
+        }
+    });
+    copyClipboard(clipboard);
+    // 功能
+    function share(chatId) {
+        // 从 chatContent 中获取最后一个 chat-message
+        const chatMessage = chatContent.children(".home_chat-message__rdH_g").last();
+        const shareBtn = chatMessage.find(".home_chat-message-top-action__wXKmA.share").get(0);
+        const shareLink=chatMessage.prop('baseURI')+"/share/"+chatId;
+        $(shareBtn).on('click', function() {
+            $("#chat-share-link").val(shareLink);
+            $("#chat-share-modal").modal("show");
+        });
+    }
+
 
     // 复制功能
     function copy() {
         // 从 chatContent 中获取最后一个 chat-message
         const chatMessage = chatContent.children(".home_chat-message__rdH_g").last();
-      //  console.log("chatContent", chatMessage);
         // 从 chatMessage 找出复制按钮
-        const copyBtn = chatMessage.find(".home_chat-message-top-action__wXKmA").get(0);
-
+        const copyBtn = chatMessage.find(".home_chat-message-top-action__wXKmA.copy").get(0);
         const clipboard = new ClipboardJS(copyBtn, {
             text: function (trigger) {
                 let copyInput = chatMessage.find('.markdown-body').get(0);
                 return copyInput.innerText;
             }
         });
+        copyClipboard(clipboard);
+
+    }
+
+    function copyClipboard(clipboard) {
         clipboard.on('success', function (e) {
             // 复制成功
             successAlert("复制成功");
             e.clearSelection();
         });
         clipboard.on('error', function (e) {
+            console.log(e);
             console.log('复制失败');
         });
     }

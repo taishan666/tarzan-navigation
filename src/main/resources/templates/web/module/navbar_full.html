@@ -1,0 +1,83 @@
+<div  class="header-nav">
+    <div id="header" class="page-header sticky">
+        <div class="navbar navbar-expand-md">
+            <div class="container-fluid p-0 position-relative">
+                <div class="position-absolute w-100 text-center">
+                    <a href="/" class="navbar-brand d-md-none m-0" th:title="${SITE_CONFIG?.SITE_NAME}">
+                        <img src="/web/images/logo.png" class="logo-light" th:alt="${SITE_CONFIG?.SITE_NAME}" height="30">
+                        <img src="/web/images/logo.png" class="logo-dark d-none" th:alt="${SITE_CONFIG?.SITE_NAME}" height="30">
+                    </a>
+                </div>
+                <div class="nav-item d-md-none mobile-menu py-2 position-relative">
+                    <a href="javascript:" id="sidebar-switch" data-toggle="modal" data-target="#sidebar">
+                        <i class="iconfont icon-classification icon-lg"></i>
+                    </a>
+                </div>
+                <div class="collapse navbar-collapse order-2 order-md-1">
+                    <!-- logo -->
+                    <div class="logo overflow-hidden">
+                        <h1 class="text-hide position-absolute">泰山导航</h1>
+                        <a href="/" class="logo-expanded">
+                            <img src="/web/images/logo.png" height="40" class="logo-light" th:alt="${SITE_CONFIG?.SITE_NAME}">
+                            <img src="/web/images/logo.png" height="40" class="logo-dark d-none" th:alt="${SITE_CONFIG?.SITE_NAME}">
+                        </a>
+                    </div>
+                    <!-- logo end -->
+               <!-- <div class="header-mini-btn">
+                    <label>
+                        <input id="mini-button" type="checkbox" checked="checked">
+                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <path class="line&#45;&#45;1" d="M0 40h62c18 0 18-20-17 5L31 55"></path>
+                            <path class="line&#45;&#45;2" d="M0 50h80"></path>
+                            <path class="line&#45;&#45;3" d="M0 60h62c18 0 18 20-17-5L31 45"></path>
+                        </svg>
+                    </label>
+                </div>-->
+            <!--    <ul class="navbar-nav navbar-top site-menu mr-4">
+                    <li id="menu-item-about" class="menu-item menu-item-type-post_type menu-item-object-page">
+                        <a href="/about"><i class="iconfont icon-point icon-fw icon-lg"></i><span>关于</span></a>
+                    </li>
+                    <li id="menu-item-chatgpt" class="menu-item menu-item-type-post_type menu-item-object-page">
+                        <a href="/chatai"><i class="iconfont icon-wechat icon-fw icon-lg" ></i><span>泰聪明</span></a>
+                    </li>
+                </ul>-->
+            </div>
+    <!--            <ul class="nav navbar-menu text-xs order-1 order-md-2 position-relative">
+                    <li th:if="${loginUser==null}" class="nav-login ml-3 ml-md-4">
+                        <a id="login" href="/login" title="登录"><i class="iconfont icon-user icon-lg"></i></a>
+                    </li>
+                    <li th:if="${loginUser!=null}" class="nav-login-user dropdown ml-3 ml-md-4 show">
+                        <a class="user-ico" href="#" data-toggle="dropdown" aria-expanded="true">
+                            <img alt="" src="https://gravatar.loli.net/avatar/?s=96&amp;d=retro&amp;r=g" srcset="https://gravatar.loli.net/avatar/?s=192&amp;d=retro&amp;r=g 2x" class="avatar avatar-96 photo avatar-default" height="96" width="96" loading="lazy" decoding="async">
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right text-center" style="min-width:auto">
+                            <a class="dropdown-item" href="/user/settings" onclick="developing(); return false"><i class="iconfont mr-2 icon-user"></i>个人中心</a>
+                            <a class="dropdown-item" href="/user/settings" onclick="developing(); return false"><i class="iconfont mr-2 icon-business"></i>用户信息</a>
+                            <a class="dropdown-item" href="/user/sites" onclick="developing(); return false"><i class="iconfont mr-2 icon-category"></i>网址管理</a>
+                            <a class="dropdown-item" href="/user/stars" onclick="developing(); return false"><i class="iconfont mr-2 icon-heart"></i>我的收藏</a>
+                            <a class="dropdown-item" href="/user/security" onclick="developing(); return false"><i class="iconfont mr-2 icon-statement"></i>安全设置</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/user/bookmark" onclick="developing(); return false"><i class="iconfont mr-2 icon-tags"></i>我的书签</a>
+                            <a class="dropdown-item nofx" href="/logout"><i class="iconfont mr-2 icon-close-circle"></i>安全退出</a>
+                        </div>
+                    </li>
+            &lt;!&ndash;        <li class="nav-search ml-3 ml-md-4">
+                        <a href="javascript:" data-toggle="modal" data-target="#search-modal"><i class="iconfont icon-search icon-lg"></i></a>
+                    </li>&ndash;&gt;
+                </ul>-->
+            </div>
+        </div>
+    </div>
+    <div class="placeholder"></div>
+    <div th:replace="web/module/searchmodal"></div>
+    <script>
+        let currentPath = window.location.pathname;
+        currentPath=currentPath.replace("/","")
+        $('#login').attr('href', '/login?redirectTo=' + currentPath);
+
+        function developing() {
+            showAlert(JSON.parse('{"status":1,"msg":"功能正在开发中"}'));
+        }
+    </script>
+</div>
+

@@ -726,7 +726,7 @@ try {
 	};
 }
 
-function Sizzle( selector, context, results, seed ) {
+function Sizzle(selector) {
 	var m, i, elem, nid, match, groups, newSelector,
 		newContext = context && context.ownerDocument,
 
@@ -1491,7 +1491,7 @@ setDocument = Sizzle.setDocument = function( node ) {
 };
 
 Sizzle.matches = function( expr, elements ) {
-	return Sizzle( expr, null, null, elements );
+	return Sizzle(expr);
 };
 
 Sizzle.matchesSelector = function( elem, expr ) {
@@ -1520,7 +1520,7 @@ Sizzle.matchesSelector = function( elem, expr ) {
 		}
 	}
 
-	return Sizzle( expr, document, null, [ elem ] ).length > 0;
+	return Sizzle(expr).length > 0;
 };
 
 Sizzle.contains = function( context, elem ) {
@@ -1969,7 +1969,7 @@ Expr = Sizzle.selectors = {
 
 		"has": markFunction(function( selector ) {
 			return function( elem ) {
-				return Sizzle( selector, elem ).length > 0;
+				return Sizzle(selector).length > 0;
 			};
 		}),
 
@@ -2310,7 +2310,7 @@ function multipleContexts( selector, contexts, results ) {
 	var i = 0,
 		len = contexts.length;
 	for ( ; i < len; i++ ) {
-		Sizzle( selector, contexts[i], results );
+		Sizzle(selector);
 	}
 	return results;
 }

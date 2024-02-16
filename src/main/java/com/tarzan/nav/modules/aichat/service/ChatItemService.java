@@ -43,8 +43,6 @@ public class ChatItemService extends ServiceImpl<ChatItemMapper, ChatItem> {
 
     @Cacheable(value = "chatItem",key = "'usedcnt_'+#source+'_'+#userId")
     public int queryUsedCnt(AISourceEnum source, Integer userId) {
-      //  String dateStr=DateUtil.format(new Date(),DateUtil.webFormat);
-       // LambdaQueryWrapper wrapper=Wrappers.<ChatItem>lambdaQuery().eq(ChatItem::getUserId,userId).eq(ChatItem::getAiType,source.getCode()).like(ChatItem::getQuestionTime,dateStr);
        return  baseMapper.getTodayUsedCnt(source.getCode(),userId);
     }
 
@@ -52,5 +50,9 @@ public class ChatItemService extends ServiceImpl<ChatItemMapper, ChatItem> {
     public void lTrim(AISourceEnum source,Integer userId,int num) {
         LambdaQueryWrapper wrapper=Wrappers.<ChatItem>lambdaQuery().eq(ChatItem::getUserId, userId).eq(ChatItem::getAiType, source.getCode()).orderByDesc(ChatItem::getAnswerTime).last("LIMIT " + num+","+100);
         super.remove(wrapper);
+    }
+
+    public ChatItem getChatByUid(String chatUid) {
+       return super.getOne(Wrappers.<ChatItem>lambdaQuery().eq(ChatItem::getChatUid, chatUid));
     }
 }

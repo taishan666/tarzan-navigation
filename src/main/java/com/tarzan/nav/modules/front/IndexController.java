@@ -194,6 +194,12 @@ public class IndexController {
         return  CoreConst.WEB_PREFIX+"chatai";
     }
 
+    @GetMapping(path = "/chatai/share/{chatUid}")
+    public String chatShare(@PathVariable("chatUid")String chatUid,Model model) {
+        model.addAttribute("chatUid",chatUid);
+        return  CoreConst.WEB_PREFIX+"chataishare";
+    }
+
     /**
      * 登出
      *
