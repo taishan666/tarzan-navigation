@@ -1,6 +1,5 @@
 package com.tarzan.nav.modules.aichat.vo;
 
-import com.tarzan.nav.modules.aichat.enums.ChatAnswerTypeEnum;
 import com.tarzan.nav.modules.aichat.model.ChatItem;
 import com.tarzan.nav.utils.DateUtil;
 import lombok.Data;
@@ -37,33 +36,31 @@ public class ChatItemVo extends ChatItem {
      * @return
      */
     public ChatItemVo initAnswer(String answer) {
-       return initAnswer(answer,ChatAnswerTypeEnum.JSON);
-    }
-
-    public ChatItemVo initAnswer(String answer, ChatAnswerTypeEnum answerType) {
         this.setAnswer(answer);
-        this.setAnswerType(answerType);
         super.setChatUid(UUID.randomUUID().toString().replaceAll("-", ""));
-        setAnswerTime();
+        this.setAnswerTime(DateUtil.now());
         return this;
     }
 
-    /**
+/*
+    */
+/**
      * 流式的追加返回
      *
      * @param answer
      * @return
-     */
+     *//*
+
     public ChatItemVo appendAnswer(String answer) {
         if (super.getAnswer() == null || super.getAnswer().isEmpty()) {
             super.setAnswer(answer);
             super.setChatUid(UUID.randomUUID().toString().replaceAll("-", ""));
         } else {
-            String lastAnswer=super.getAnswer();
-            super.setAnswer(lastAnswer+answer);
+           // String lastAnswer=super.getAnswer();
+            super.setAnswer(answer);
         }
         this.setAnswerType(ChatAnswerTypeEnum.STREAM);
-        setAnswerTime();
+        this.setAnswerTime(DateUtil.now());
         return this;
     }
 
@@ -75,13 +72,10 @@ public class ChatItemVo extends ChatItem {
             super.setAnswer(answer);
         }
         this.setAnswerType(ChatAnswerTypeEnum.STREAM);
-        setAnswerTime();
-        return this;
-    }
-
-    public ChatItemVo setAnswerTime() {
         this.setAnswerTime(DateUtil.now());
         return this;
     }
+*/
+
 
 }

@@ -7,13 +7,14 @@ import com.alibaba.dashscope.exception.InputRequiredException;
 import com.alibaba.dashscope.exception.NoApiKeyException;
 import com.tarzan.nav.modules.aichat.enums.AISourceEnum;
 import com.tarzan.nav.modules.aichat.service.AbsChatAiService;
-import com.tarzan.nav.modules.aichat.vo.ChatItemVo;
-import com.tarzan.nav.modules.aichat.vo.ChatRecordsVo;
+import com.tarzan.nav.modules.aichat.vo.ChatAnswerVo;
 import io.reactivex.Flowable;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * @author tarzan
@@ -33,26 +34,27 @@ public class TongYiChatAiServiceImpl extends AbsChatAiService {
     }
 
     @Override
-    public Flux<ChatRecordsVo> doAsyncAnswer(ChatRecordsVo response) {
-        ChatItemVo item = response.getRecords().get(0);
+    public Flux<ChatAnswerVo> doAsyncAnswer(String question,ChatAnswerVo answerVo) {
         Conversation conversation = new Conversation();
         ConversationParam param = ConversationParam
                 .builder()
                 .model(Conversation.Models.QWEN_MAX)
-                .prompt(item.getQuestion())
+                .prompt(question)
                 .apiKey(apiKey)
                 .build();
         try {
             Flowable<ConversationResult> result = conversation.streamCall(param);
+            AtomicReference<String> lastResult= new AtomicReference<>("");
             return Flux.from(result).map(data -> {
                 String text=data.getOutput().getText();
-                item.streamAnswer(text);
-                return response;
+                answerVo.setAnswer(text.replace(lastResult.get(),""));
+                lastResult.set(text);
+                return answerVo;
             });
         } catch (NoApiKeyException | InputRequiredException e) {
             log.error(e.getMessage());
         }
-        return Flux.just(response);
+        return Flux.just(answerVo);
     }
 
     @Override

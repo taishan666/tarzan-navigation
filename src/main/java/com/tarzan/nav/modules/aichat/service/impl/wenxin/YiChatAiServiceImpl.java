@@ -1,7 +1,7 @@
 package com.tarzan.nav.modules.aichat.service.impl.wenxin;
 
 import com.tarzan.nav.modules.aichat.enums.AISourceEnum;
-import com.tarzan.nav.modules.aichat.vo.ChatRecordsVo;
+import com.tarzan.nav.modules.aichat.vo.ChatAnswerVo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -20,10 +20,6 @@ public class YiChatAiServiceImpl extends AbsWenXinAiService {
         return AISourceEnum.YI_34B_CHAT;
     }
 
-    @Override
-    public Flux<ChatRecordsVo> doAsyncAnswer(ChatRecordsVo response) {
-        return super.doAsyncAnswer(response,source().getName());
-    }
 
     @Override
     protected int getMaxQaCnt(Integer userId) {

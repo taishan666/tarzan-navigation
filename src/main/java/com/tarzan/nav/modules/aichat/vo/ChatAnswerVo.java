@@ -4,7 +4,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Date;
 
 /**
  * 聊天记录
@@ -14,23 +14,28 @@ import java.util.List;
  */
 @Data
 @Accessors(chain = true)
-public class ChatRecordsVo implements Serializable, Cloneable {
+public class ChatAnswerVo implements Serializable, Cloneable {
     private static final long serialVersionUID = -2666259615985932920L;
 
     /**
      * 当前用户最多可问答的次数
      */
-    private int maxCnt;
+    private Integer maxCnt;
 
     /**
      * 使用的次数
      */
-    private int usedCnt;
+    private Integer usedCnt;
+
+
+    private String chatUid;
+
+    private String answer;
 
     /**
-     * 聊天记录，最新的在前面；最多返回50条
+     * 回答的时间点
      */
-    private List<ChatItemVo> records;
+    private Date answerTime;
 
     /**
      * 判断是否拥有提问次数

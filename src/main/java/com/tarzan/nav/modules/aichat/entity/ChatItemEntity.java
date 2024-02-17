@@ -55,9 +55,4 @@ public class ChatItemEntity {
      */
     private Date answerTime;
 
-    /**
-     * 回答的内容类型，文本、JSON 字符串
-     */
-    @Column(name = "answer_type")
-    private Integer answer_type;
 }

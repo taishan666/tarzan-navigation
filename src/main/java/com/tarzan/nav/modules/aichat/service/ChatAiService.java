@@ -1,6 +1,7 @@
 package com.tarzan.nav.modules.aichat.service;
 
 import com.tarzan.nav.modules.aichat.enums.AISourceEnum;
+import com.tarzan.nav.modules.aichat.vo.ChatAnswerVo;
 import com.tarzan.nav.modules.aichat.vo.ChatRecordsVo;
 import reactor.core.publisher.Flux;
 
@@ -23,7 +24,7 @@ public interface ChatAiService {
      * @param userId
      * @return {@link Flux<String>}
      */
-    Flux<ChatRecordsVo> chatStream(Integer userId,String msg);
+    Flux<ChatAnswerVo> chatStream(Integer userId, String msg);
 
 
     /**

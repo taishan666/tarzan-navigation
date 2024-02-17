@@ -4,8 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.tarzan.nav.modules.aichat.service.AbsChatAiService;
-import com.tarzan.nav.modules.aichat.vo.ChatItemVo;
-import com.tarzan.nav.modules.aichat.vo.ChatRecordsVo;
+import com.tarzan.nav.modules.aichat.vo.ChatAnswerVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -34,13 +33,14 @@ public abstract class AbsLinkAiService extends AbsChatAiService {
         return WebClient.builder().baseUrl(baseUrl).defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).build();
     }
 
-    public Flux<ChatRecordsVo> doAsyncAnswer(ChatRecordsVo vo, String model) {
-        ChatItemVo item = vo.getRecords().get(0);
+    @Override
+    public Flux<ChatAnswerVo> doAsyncAnswer(String question,ChatAnswerVo answerVo) {
+        String model=source().getName();
         JSONObject params=new JSONObject();
         JSONArray messages=new JSONArray();
         JSONObject message=new JSONObject();
         message.put("role","user");
-        message.put("content",item.getQuestion());
+        message.put("content",question);
         messages.add(message);
         params.put("app_code",apiCode);
         params.put("model",model);
@@ -59,8 +59,8 @@ public abstract class AbsLinkAiService extends AbsChatAiService {
                     JSONObject choice=choices.getJSONObject(0);
                     JSONObject delta=choice.getJSONObject("delta");
                     String content=delta.getString("content");
-                    item.appendAnswer(content==null?"":content);
-                    return vo;
+                    answerVo.setAnswer(content==null?"":content);
+                    return answerVo;
                 });
     }
 

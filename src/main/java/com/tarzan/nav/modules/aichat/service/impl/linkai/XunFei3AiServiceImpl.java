@@ -10,10 +10,6 @@ import reactor.core.publisher.Flux;
  */
 @Service
 public class XunFei3AiServiceImpl extends AbsLinkAiService {
-    @Override
-    public Flux<ChatRecordsVo> doAsyncAnswer(ChatRecordsVo response) {
-        return super.doAsyncAnswer(response,source().getName());
-    }
 
     @Override
     public AISourceEnum source() {

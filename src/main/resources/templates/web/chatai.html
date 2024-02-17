@@ -266,27 +266,16 @@
         }
     });
 
-    function subscribe(res) {
+    function subscribe(res,content) {
         // 记录聊天次数
         $("#chatCnt").html(` ${res.usedCnt}/${res.maxCnt} `);
         const data = res.records;
         // 把 home_chat-message-actions__loading 的元素移除，不再显示 loading
         $(".home_chat-message-actions__loading").remove();
-        if (data.length > 1) {
-            // 返回历史全部信息
-            chatContent.html('');
-            for (let i = data.length - 1; i >= 0; i--) {
-                if (data[i].question) {
-                    addClientMsg(data[i].question, false);
-                }
-                if (i === 0) {
-                    addSplit();
-                }
-                appendServerMessage(data[i]);
-            }
-        } else {
-            appendServerMessage(data[0]);
-        }
+        const chatId = res.chatUid;
+        const time = res.answerTime;
+        console.log("res:",res);
+        appendServerMsg(chatId,content,time);
     }
 
     function chatHistory(userId,aiType) {
@@ -298,8 +287,26 @@
                 }
                 return response.json(); // 将响应解析为JSON
             })
-            .then(data => {
-                subscribe(data);
+            .then(res => {
+                // 记录聊天次数
+                $("#chatCnt").html(` ${res.usedCnt}/${res.maxCnt} `);
+                const data = res.records;
+                // 把 home_chat-message-actions__loading 的元素移除，不再显示 loading
+                $(".home_chat-message-actions__loading").remove();
+                // 返回历史全部信息
+                chatContent.html('');
+                for (let i = data.length - 1; i >= 0; i--) {
+                    if (data[i].question) {
+                        addClientMsg(data[i].question, false);
+                    }
+                    if (i === 0) {
+                        addSplit();
+                    }
+                    const chatId = data[i].chatUid;
+                    let content = data[i].answer;
+                    const time = data[i].answerTime;
+                    appendServerMsg(chatId,content,time);
+                }
             })
             .catch(error => {
                 console.error('There has been a problem with your fetch operation:', error);
@@ -322,15 +329,11 @@
     }
 
     // 添加服务器端消息
-    function appendServerMessage(answer) {
-        let content = answer.answer;
-        const time = answer.answerTime;
-        const chatId = answer.chatUid;
+    function appendServerMsg(chatId,content,time) {
         //console.log("准备添加内容:", answer);
-        let lastDiv = $(`#${chatId}`)
-        console.log("流式结果返回: ");
-        console.log(content);
-        if (lastDiv.length ==0) {
+        let answerDiv = $(`#${chatId}`)
+       // console.log("流式结果返回: ",content);
+        if (answerDiv.length ==0) {
             let serverMsg = `
             <div class="home_chat-message__rdH_g server-msg">
                 <div class="home_chat-message-container__plj_e">
@@ -346,8 +349,7 @@
                             <div class="home_chat-message-top-action__wXKmA share">分享</div>
                             <div class="home_chat-message-top-action__wXKmA copy">复制</div>
                         </div>
-                        <div class="markdown-body">
-                            <p id="${chatId}"></p>
+                        <div id="${chatId}" class="markdown-body">
                         </div>
                     </div>
                     <div class="home_chat-message-actions__nrHd1">
@@ -357,13 +359,13 @@
             </div>
             `;
             chatContent.append(serverMsg);
-            lastDiv = $(`#${chatId}`);
+            answerDiv = $(`#${chatId}`);
         }
         content = markedHtml(content);
-        lastDiv.html(content);
-        // 高亮代码
-        chatContent.find('pre code').each(function (i, block) {
-            hljs.highlightBlock(block);
+        answerDiv.html(content);
+           // 高亮代码
+        answerDiv.find('pre code').each(function (i, block) {
+          hljs.highlightBlock(block);
         });
         // 添加完后滚动到底部
         scrollToBottom();
@@ -372,6 +374,7 @@
         // 分享功能
         share(chatId);
     }
+
     const linkCopyBtn = $("#chat-share-modal").find("#link-copy").get(0);
     const clipboard = new ClipboardJS(linkCopyBtn, {
         text: function (trigger) {
@@ -453,7 +456,6 @@
             </div>
         </div>
     `;
-
         chatContent.append(userMsg);
         // 添加完后滚动到底部
         scrollToBottom();
@@ -474,8 +476,8 @@
 
     function doSend() {
         const qa = inputField.val();
-        if (qa.length > 512) {
-            errorAlert("提问长度请不要超过512字符哦~");
+        if (qa.length > 1024) {
+            errorAlert("提问长度请不要超过1024字符哦~");
             return;
         }
         let aiType =chatType.val();
@@ -490,6 +492,7 @@
                 }
                 const reader = response.body.getReader();
                 let buffer = '';
+                let fullAnswer = '';
                 return new ReadableStream({
                     start(controller) {
                         function readChunk() {
@@ -500,10 +503,8 @@
                                     chatType.prop('disabled', false);
                                     return;
                                 }
-
                                 const chunk = new TextDecoder().decode(value);
                                 buffer += chunk;
-
                                 // 分割并处理每一行
                                 const lines = buffer.split('\n');
                                 for (let i = 0; i < lines.length - 1; i++) {
@@ -516,10 +517,10 @@
                         }
                         function processEvent(eventStr) {
                             if (eventStr !== '') {
-                                // console.log('Received data:', eventStr);
                                 let event = eventStr.replace(/^data:/, '');
-                                let data = JSON.parse(event);
-                                subscribe(data);
+                                let res = JSON.parse(event);
+                                fullAnswer=fullAnswer+res.answer;
+                                subscribe(res,fullAnswer);
                             }
                         }
                         readChunk();

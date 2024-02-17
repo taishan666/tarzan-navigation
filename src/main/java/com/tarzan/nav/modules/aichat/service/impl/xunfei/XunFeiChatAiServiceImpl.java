@@ -2,7 +2,7 @@ package com.tarzan.nav.modules.aichat.service.impl.xunfei;
 
 import com.tarzan.nav.modules.aichat.enums.AISourceEnum;
 import com.tarzan.nav.modules.aichat.service.AbsChatAiService;
-import com.tarzan.nav.modules.aichat.vo.ChatRecordsVo;
+import com.tarzan.nav.modules.aichat.vo.ChatAnswerVo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -26,8 +26,8 @@ public class XunFeiChatAiServiceImpl extends AbsChatAiService {
     }
 
     @Override
-    public Flux<ChatRecordsVo> doAsyncAnswer(ChatRecordsVo response) {
-        XunFeiChatWrapper chat = new XunFeiChatWrapper(xunFeiIntegration,response);
+    public Flux<ChatAnswerVo> doAsyncAnswer(String question,ChatAnswerVo answerVo) {
+        XunFeiChatWrapper chat = new XunFeiChatWrapper(xunFeiIntegration,question,answerVo);
         chat.initAndQuestion();
        return chat.getListener().getMessageFlux();
     }

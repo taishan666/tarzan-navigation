@@ -4,8 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.tarzan.nav.modules.aichat.service.AbsChatAiService;
-import com.tarzan.nav.modules.aichat.vo.ChatItemVo;
-import com.tarzan.nav.modules.aichat.vo.ChatRecordsVo;
+import com.tarzan.nav.modules.aichat.vo.ChatAnswerVo;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -31,14 +30,14 @@ public abstract class AbsWenXinAiService extends AbsChatAiService {
     public WebClient buildWebClient() {
         return WebClient.builder().baseUrl(baseUrl).defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).build();
     }
-
-    public Flux<ChatRecordsVo> doAsyncAnswer(ChatRecordsVo response, String model) {
-        ChatItemVo item = response.getRecords().get(0);
+    @Override
+    public Flux<ChatAnswerVo> doAsyncAnswer(String question, ChatAnswerVo response) {
+        String model=source().getName();
         JSONObject chatPayload = new JSONObject();
         JSONArray messagesArray = new JSONArray();
         JSONObject message = new JSONObject();
         message.put("role", "user");
-        message.put("content", item.getQuestion());
+        message.put("content", question);
         messagesArray.add(message);
         chatPayload.put("messages", messagesArray);
         chatPayload.put("stream", true);
@@ -48,7 +47,7 @@ public abstract class AbsWenXinAiService extends AbsChatAiService {
                 .bodyToFlux(String.class)
                 .map(data -> {
                     String result = JSON.parseObject(data).getString("result");
-                    item.appendAnswer(result);
+                    response.setAnswer(result);
                     return response;
                 });
     }

@@ -15,10 +15,6 @@ public class WenXin4AiServiceImpl extends AbsLinkAiService {
     @Value("${linkai.wenxin4.day-limit}")
     private Integer dayLimit;
 
-    @Override
-    public Flux<ChatRecordsVo> doAsyncAnswer(ChatRecordsVo response) {
-        return super.doAsyncAnswer(response,source().getName());
-    }
 
     @Override
     public AISourceEnum source() {

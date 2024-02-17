@@ -1,7 +1,6 @@
 package com.tarzan.nav.modules.aichat.service.impl.xunfei;
 
-import com.tarzan.nav.modules.aichat.vo.ChatItemVo;
-import com.tarzan.nav.modules.aichat.vo.ChatRecordsVo;
+import com.tarzan.nav.modules.aichat.vo.ChatAnswerVo;
 import com.tarzan.nav.utils.SpringUtil;
 import com.tarzan.nav.websocket.WsConnectStateEnum;
 import lombok.Getter;
@@ -25,18 +24,21 @@ public class XunFeiMsgListener extends WebSocketListener {
 
     private volatile WsConnectStateEnum connectState;
 
-    private ChatRecordsVo chatRecord;
+    private ChatAnswerVo chatAnswer;
 
     private XunFeiIntegration xunFeiIntegration;
 
-    private  FluxSink<ChatRecordsVo> messageSink;
-    private  Flux<ChatRecordsVo> messageFlux;
+    private String question;
 
-    public XunFeiMsgListener(ChatRecordsVo chatRecord) {
+    private  FluxSink<ChatAnswerVo> messageSink;
+    private  Flux<ChatAnswerVo> messageFlux;
+
+    public XunFeiMsgListener(String question,ChatAnswerVo chatAnswer) {
         this.connectState = WsConnectStateEnum.INIT;
-        this.chatRecord = chatRecord;
+        this.chatAnswer = chatAnswer;
+        this.question=question;
         this.xunFeiIntegration= SpringUtil.getBean(XunFeiIntegration.class);
-        Flux<ChatRecordsVo> publisher = Flux.create(sink -> {
+        Flux<ChatAnswerVo> publisher = Flux.create(sink -> {
             this.messageSink = sink;
         });
         this.messageFlux = publisher.publish().autoConnect();
@@ -57,13 +59,12 @@ public class XunFeiMsgListener extends WebSocketListener {
         super.onOpen(webSocket, response);
         connectState = WsConnectStateEnum.CONNECTED;
         // 连接成功之后，发送消息
-        webSocket.send(xunFeiIntegration.buildSendMsg(chatRecord.getRecords().get(0).getQuestion()));
+        webSocket.send(xunFeiIntegration.buildSendMsg(question));
     }
 
     @Override
     public void onMessage(@NotNull WebSocket webSocket, @NotNull String text) {
         super.onMessage(webSocket, text);
-        ChatItemVo item = chatRecord.getRecords().get(0);
         XunFeiIntegration.ResponseData responseData = xunFeiIntegration.parse2response(text);
         if (responseData.successReturn()) {
             // 成功获取到结果
@@ -72,15 +73,15 @@ public class XunFeiMsgListener extends WebSocketListener {
             pl.getChoices().getText().forEach(s -> {
                 msg.append(s.getContent());
             });
-            item.appendAnswer(msg.toString());
-            messageSink.next(chatRecord);
+            chatAnswer.setAnswer(msg.toString());
+            messageSink.next(chatAnswer);
             if (responseData.endResponse()) {
                 webSocket.close(1001, "会话结束");
                 messageSink.complete();
             }
         } else {
-            item.initAnswer("AI返回异常:" + responseData.getHeader());
-            messageSink.next(chatRecord);
+            chatAnswer.setAnswer("AI返回异常:" + responseData.getHeader());
+            messageSink.next(chatAnswer);
             webSocket.close(responseData.getHeader().getCode(), responseData.getHeader().getMessage());
         }
     }
@@ -91,8 +92,8 @@ public class XunFeiMsgListener extends WebSocketListener {
         super.onFailure(webSocket, t, response);
         log.warn("websocket 连接失败! {}", response, t);
         connectState = WsConnectStateEnum.FAILED;
-        chatRecord.getRecords().get(0).initAnswer("讯飞AI连接失败了!" + t.getMessage());
-        messageSink.next(chatRecord);
+        chatAnswer.setAnswer("讯飞AI连接失败了!" + t.getMessage());
+        messageSink.next(chatAnswer);
     }
 
     @Override
@@ -104,7 +105,7 @@ public class XunFeiMsgListener extends WebSocketListener {
         connectState = WsConnectStateEnum.CLOSED;
     }
 
-    public Flux<ChatRecordsVo> getMessageFlux() {
+    public Flux<ChatAnswerVo> getMessageFlux() {
         return messageFlux;
     }
 }

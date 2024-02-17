@@ -21,11 +21,6 @@ public class Gpt4AiServiceImpl extends AbsLinkAiService {
     }
 
     @Override
-    public Flux<ChatRecordsVo> doAsyncAnswer(ChatRecordsVo response) {
-        return super.doAsyncAnswer(response,source().getName());
-    }
-
-    @Override
     protected int getMaxQaCnt(Integer userId) {
         return dayLimit==null?super.getMaxQaCnt(userId):dayLimit;
     }

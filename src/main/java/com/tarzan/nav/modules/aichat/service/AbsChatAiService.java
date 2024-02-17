@@ -1,17 +1,17 @@
 package com.tarzan.nav.modules.aichat.service;
 
 import com.tarzan.nav.modules.aichat.constants.ChatConstants;
+import com.tarzan.nav.modules.aichat.vo.ChatAnswerVo;
 import com.tarzan.nav.modules.aichat.vo.ChatItemVo;
 import com.tarzan.nav.modules.aichat.vo.ChatRecordsVo;
+import com.tarzan.nav.utils.DateUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import reactor.core.publisher.Flux;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author tarzan
@@ -24,22 +24,23 @@ public abstract class AbsChatAiService implements ChatAiService {
     private ChatItemService chatItemService;
 
     @Override
-    public Flux<ChatRecordsVo> chatStream(Integer userId,String question) {
-        ChatRecordsVo res = initResVo(userId, question);
-        if (!res.hasQaCnt()) {
-            return Flux.just(res);
+    public Flux<ChatAnswerVo> chatStream(Integer userId, String question) {
+        ChatAnswerVo answerVo=initAnswerVo(userId);
+        if (!answerVo.hasQaCnt()) {
+            return Flux.just(answerVo);
         }
         List<String> sensitiveWord = new ArrayList<>();
         if (!CollectionUtils.isEmpty(sensitiveWord)) {
             // 包含敏感词的提问，直接返回异常
-            res.getRecords().get(0).initAnswer(String.format(ChatConstants.SENSITIVE_QUESTION, sensitiveWord));
-            return Flux.just(res);
+            answerVo.setAnswer(String.format(ChatConstants.SENSITIVE_QUESTION, sensitiveWord));
+            return Flux.just(answerVo);
         } else {
-         //   StringBuffer answer=new StringBuffer();
-            return doAsyncAnswer(res)
-                  //  .doOnNext(e ->{answer.append(e.getRecords().get(0).getAnswer());})
+            StringBuffer fullAnswer=new StringBuffer();
+            return doAsyncAnswer(question,answerVo)
+                    .doOnNext(e -> fullAnswer.append(e.getAnswer()))
                     .doOnComplete(() -> {
-                     //   res.getRecords().get(0).setAnswer(answer.toString());
+                        answerVo.setUsedCnt(answerVo.getUsedCnt()+1);
+                        ChatRecordsVo res = initResVo(userId, question,answerVo,fullAnswer.toString());
                         // 当Flux完成时
                         processAfterSuccessAnswered(userId, res);
                     });
@@ -56,32 +57,42 @@ public abstract class AbsChatAiService implements ChatAiService {
         ChatRecordsVo vo = new ChatRecordsVo();
         vo.setMaxCnt(getMaxQaCnt(userId));
         vo.setUsedCnt(queryUsedCnt(userId));
-        vo.setSource(source());
         vo.setRecords(records);
         return vo;
     }
 
     /**
      * 异步返回结果
-     *
+     * @param question 问题
      * @param response 保存提问 & 返回的结果，最终会返回给前端用户
      * @return 返回的会话状态，控制是否需要将结果直接返回给前端
      */
-    public abstract Flux<ChatRecordsVo> doAsyncAnswer(ChatRecordsVo response);
+    public abstract Flux<ChatAnswerVo> doAsyncAnswer(String question,ChatAnswerVo response);
 
-    private ChatRecordsVo initResVo(Integer userId, String question) {
-        ChatRecordsVo res = new ChatRecordsVo();
-        res.setSource(source());
+    private ChatAnswerVo initAnswerVo(Integer userId) {
+        ChatAnswerVo res = new ChatAnswerVo();
         int maxCnt = getMaxQaCnt(userId);
         int usedCnt = queryUsedCnt(userId);
         res.setMaxCnt(maxCnt);
         res.setUsedCnt(usedCnt);
-
-        ChatItemVo item = new ChatItemVo().initQuestion(question);
+        res.setChatUid(UUID.randomUUID().toString().replaceAll("-", ""));
+        res.setAnswerTime(DateUtil.now());
         if (!res.hasQaCnt()) {
             //次数已经使用完毕
-            item.initAnswer(ChatConstants.TOKEN_OVER);
+            res.setAnswer(ChatConstants.TOKEN_OVER);
         }
+        return res;
+    }
+
+    private ChatRecordsVo initResVo(Integer userId, String question, ChatAnswerVo answerVo,String fullAnswer) {
+        ChatRecordsVo res = new ChatRecordsVo();
+        res.setMaxCnt(answerVo.getMaxCnt());
+        res.setUsedCnt(answerVo.getUsedCnt());
+        ChatItemVo item = new ChatItemVo().initQuestion(question);
+        item.setChatUid(answerVo.getChatUid());
+        item.setUserId(userId);
+        item.setAnswer(fullAnswer);
+        item.setAnswerTime(answerVo.getAnswerTime());
         res.setRecords(Arrays.asList(item));
         return res;
     }
@@ -93,14 +104,13 @@ public abstract class AbsChatAiService implements ChatAiService {
      * @param response
      */
     protected void processAfterSuccessAnswered(Integer userId, ChatRecordsVo response) {
-        // 回答成功，保存聊天记录，剩余次数-1
-        response.setUsedCnt(response.getUsedCnt()+1);
         recordChatItem(userId, response.getRecords().get(0));
         if (response.getUsedCnt() > ChatConstants.MAX_HISTORY_RECORD_ITEMS) {
             // 最多保存五百条历史聊天记录
             chatItemService.lTrim(source(),userId,ChatConstants.MAX_HISTORY_RECORD_ITEMS);
         }
     }
+
 
     /**
      * 保存聊天记录
