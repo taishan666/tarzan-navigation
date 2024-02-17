@@ -269,12 +269,11 @@
     function subscribe(res,content) {
         // 记录聊天次数
         $("#chatCnt").html(` ${res.usedCnt}/${res.maxCnt} `);
-        const data = res.records;
         // 把 home_chat-message-actions__loading 的元素移除，不再显示 loading
         $(".home_chat-message-actions__loading").remove();
         const chatId = res.chatUid;
         const time = res.answerTime;
-        console.log("res:",res);
+       // console.log("res:",res);
         appendServerMsg(chatId,content,time);
     }
 
@@ -496,7 +495,7 @@
                 return new ReadableStream({
                     start(controller) {
                         function readChunk() {
-                            return reader.read().then(({done, value}) => {
+                            return reader.read().then(async ({done, value}) => {
                                 if (done) {
                                     controller.close();
                                     sendBtn.removeAttr("disabled");
@@ -508,19 +507,27 @@
                                 // 分割并处理每一行
                                 const lines = buffer.split('\n');
                                 for (let i = 0; i < lines.length - 1; i++) {
-                                    processEvent(lines[i]);
+                                    const eventStr = lines[i];
+                                    if (eventStr !== '') {
+                                        let event = eventStr.replace(/^data:/, '');
+                                        let res = JSON.parse(event);
+                                        await printCharacters(res);
+                                    }
                                 }
                                 buffer = lines[lines.length - 1]; // 保留未完整的一行
 
-                                readChunk(); // 继续读取下一块数据
+                                await readChunk(); // 继续读取下一块数据
                             });
                         }
-                        function processEvent(eventStr) {
-                            if (eventStr !== '') {
-                                let event = eventStr.replace(/^data:/, '');
-                                let res = JSON.parse(event);
-                                fullAnswer=fullAnswer+res.answer;
-                                subscribe(res,fullAnswer);
+                        async function printCharacters(res) {
+                            let sentence =res.answer;
+                            for (let word of sentence.split('')) {
+                                await new Promise(resolve => setTimeout(() => {
+                                    fullAnswer=fullAnswer+word;
+                                    //console.warn(word);
+                                    subscribe(res,fullAnswer);
+                                    resolve();
+                                }, 25));
                             }
                         }
                         readChunk();

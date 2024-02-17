@@ -1,6 +1,7 @@
 package com.tarzan.nav.common.listener;
 
 import com.tarzan.nav.common.props.TarzanProperties;
+import com.tarzan.nav.modules.aichat.service.ChatItemService;
 import com.tarzan.nav.shiro.ShiroService;
 import com.tarzan.nav.utils.AppInstallTools;
 import lombok.AllArgsConstructor;
@@ -8,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.lang.NonNull;
@@ -26,12 +26,13 @@ import java.net.UnknownHostException;
 @Slf4j
 @Component
 @AllArgsConstructor
-@Order(Ordered.LOWEST_PRECEDENCE)
+@Order
 public class StartedListener implements ApplicationListener<ApplicationStartedEvent> {
 
     private final AppInstallTools appInstallTools;
     private final ShiroService shiroService;
     private final TarzanProperties tarzanProperties;
+    private final ChatItemService chatItemService;
 
     @Override
     public void onApplicationEvent(@NonNull ApplicationStartedEvent event) {
@@ -44,6 +45,7 @@ public class StartedListener implements ApplicationListener<ApplicationStartedEv
                 log.error("系统文件夹生成失败");
             }
         }
+        chatItemService.remove(null);
         printStartInfo(event);
     }
 

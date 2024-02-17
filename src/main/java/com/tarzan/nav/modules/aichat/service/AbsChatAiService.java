@@ -11,7 +11,10 @@ import org.springframework.util.CollectionUtils;
 import reactor.core.publisher.Flux;
 
 import javax.annotation.Resource;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author tarzan
@@ -38,10 +41,20 @@ public abstract class AbsChatAiService implements ChatAiService {
             StringBuffer fullAnswer=new StringBuffer();
             return doAsyncAnswer(question,answerVo)
                     .doOnNext(e -> fullAnswer.append(e.getAnswer()))
+    /*                .map(data -> {
+                        String result = data.getAnswer();
+                        // 将返回的结果逐字返回
+                        return Stream.of(result.split(""))
+                                .map(CharSequence::toString)
+                                .collect(Collectors.toList());
+                    }).flatMapIterable(Function.identity()).map(e->{
+                        answerVo.setAnswer(e);
+                        return answerVo;
+                    }).delayElements(Duration.ofMillis(100))*/
                     .doOnComplete(() -> {
+                        // 当Flux完成时
                         answerVo.setUsedCnt(answerVo.getUsedCnt()+1);
                         ChatRecordsVo res = initResVo(userId, question,answerVo,fullAnswer.toString());
-                        // 当Flux完成时
                         processAfterSuccessAnswered(userId, res);
                     });
         }

@@ -45,4 +45,5 @@ public class ChatAnswerVo implements Serializable, Cloneable {
     public boolean hasQaCnt() {
         return maxCnt > usedCnt;
     }
+
 }

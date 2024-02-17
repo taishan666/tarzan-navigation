@@ -30,8 +30,9 @@ public abstract class AbsWenXinAiService extends AbsChatAiService {
     public WebClient buildWebClient() {
         return WebClient.builder().baseUrl(baseUrl).defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE).build();
     }
+
     @Override
-    public Flux<ChatAnswerVo> doAsyncAnswer(String question, ChatAnswerVo response) {
+    public Flux<ChatAnswerVo> doAsyncAnswer(String question, ChatAnswerVo answerVo) {
         String model=source().getName();
         JSONObject chatPayload = new JSONObject();
         JSONArray messagesArray = new JSONArray();
@@ -47,8 +48,8 @@ public abstract class AbsWenXinAiService extends AbsChatAiService {
                 .bodyToFlux(String.class)
                 .map(data -> {
                     String result = JSON.parseObject(data).getString("result");
-                    response.setAnswer(result);
-                    return response;
+                    answerVo.setAnswer(result);
+                    return answerVo;
                 });
     }
 
