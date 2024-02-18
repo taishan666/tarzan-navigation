@@ -37,13 +37,14 @@ public abstract class AbsChatAiService implements ChatAiService {
             answerVo.setAnswer(String.format(ChatConstants.SENSITIVE_QUESTION, sensitiveWord));
             return Flux.just(answerVo);
         }
-        ChatItem answeredChat=chatItemService.getSameQuestion(source(),question);
+        ChatItem answeredChat=chatItemService.getSameQuestionBefore(source(),question,1);
         if(Objects.nonNull(answeredChat)){
-          String answered=answeredChat.getAnswer();
+            String answered=answeredChat.getAnswer();
+            String[] lines=answered.split("/n");
+            return Flux.fromArray(lines).map(line-> answerVo.setAnswer(line));
         }
-        StringBuffer fullAnswer=new StringBuffer();
-        answerVo.setAnswer("请稍候，正在处理您的请求...");
         Flux<ChatAnswerVo> waitMessageFlux = Flux.just(answerVo);
+        StringBuffer fullAnswer=new StringBuffer();
         Flux<ChatAnswerVo> responseFlux=doAsyncAnswer(question,answerVo)
                 .timeout(Duration.ofSeconds(15))
                 .doOnNext(e -> fullAnswer.append(e.getAnswer()))

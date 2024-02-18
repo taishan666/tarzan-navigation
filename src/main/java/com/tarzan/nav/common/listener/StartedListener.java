@@ -45,7 +45,7 @@ public class StartedListener implements ApplicationListener<ApplicationStartedEv
                 log.error("系统文件夹生成失败");
             }
         }
-        chatItemService.remove(null);
+      //  chatItemService.remove(null);
         printStartInfo(event);
     }
 
