@@ -493,56 +493,58 @@
             method: 'POST',
             body: data, // 你的POST数据
         }).then(response => {
-                if (!response.body || !response.body.getReader) {
-                    throw new Error('Response does not support streaming');
-                }
-                const reader = response.body.getReader();
-                let dataLine = '';
-                let fullAnswer = '';
-                let isStart=true;
-                return new ReadableStream({
-                    start(controller) {
-                        function readChunk() {
-                            return reader.read().then(async ({done, value}) => {
-                                if (done) {
-                                    controller.close();
-                                    sendBtn.removeAttr("disabled");
-                                    chatType.prop('disabled', false);
-                                    return;
-                                }
-                                const chunk = new TextDecoder().decode(value);
-                                dataLine += chunk.replace(/^data:/, '');
-                                if(dataLine.includes('\n')){
-                                    let res = JSON.parse(dataLine);
-                                    dataLine='';
+            if (!response.body || !response.body.getReader) {
+                throw new Error('Response does not support streaming');
+            }
+            const reader = response.body.getReader();
+            let buffer = '';
+            let fullAnswer = '';
+            let isStart=true;
+            return new ReadableStream({
+                start(controller) {
+                    function readChunk() {
+                        return reader.read().then(async ({done, value}) => {
+                            if (done) {
+                                controller.close();
+                                sendBtn.removeAttr("disabled");
+                                chatType.prop('disabled', false);
+                                return;
+                            }
+                            const chunk = new TextDecoder().decode(value);
+                            buffer += chunk;
+                            // 分割并处理每一行
+                            const lines = buffer.split('\n');
+                            for (let i = 0; i < lines.length - 1; i++) {
+                                const eventStr = lines[i];
+                                if (eventStr !== '') {
+                                    let event = eventStr.replace(/^data:/, '');
+                                    let res = JSON.parse(event);
                                     await printCharacters(res);
                                     if(isStart){
                                         fullAnswer='';
                                         isStart=false;
                                     }
                                 }
-                                await readChunk(); // 继续读取下一块数据
-                            });
-                        }
-                        async function printCharacters(res) {
-                            let sentence =res.answer;
-                            if(sentence.length>0){
-                                for (let word of sentence.split('')) {
-                                    await new Promise(resolve => setTimeout(() => {
-                                        fullAnswer=fullAnswer+word;
-                                        subscribe(res,fullAnswer);
-                                        resolve();
-                                    }, 25));
-                                }
-                            }else{
-                                fullAnswer=fullAnswer+sentence;
-                                subscribe(res,fullAnswer);
                             }
+                            buffer = lines[lines.length - 1]; // 保留未完整的一行
+
+                            await readChunk(); // 继续读取下一块数据
+                        });
+                    }
+                    async function printCharacters(res) {
+                        let sentence =res.answer;
+                        for (let word of sentence.split('')) {
+                            await new Promise(resolve => setTimeout(() => {
+                                fullAnswer=fullAnswer+word;
+                                subscribe(res,fullAnswer);
+                                resolve();
+                            }, 25));
                         }
-                        readChunk();
-                    },
-                });
+                    }
+                    readChunk();
+                },
             });
+        });
 
         // 清空 textarea
         inputField.val("");
