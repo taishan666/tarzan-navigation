@@ -263,11 +263,8 @@
             inputField.attr("placeholder", "可按回车发送");
             sendBtnText.text("发送");
             let aiType = chatType.val();
-            chatHistory(user.id,aiType);
-            inputField.removeAttr("disabled");
-            sendBtn.removeAttr("disabled");
-
-        }else{
+            chatHistory(user.id, aiType);
+        } else {
             console.log("请先登录");
         }
     });
@@ -285,6 +282,7 @@
     }
 
     async function chatHistory(userId, aiType) {
+        chatDisabled();
         await fetch('/chat/history/' + userId + '/' + aiType) // 替换为你要请求的URL
             .then(response => {
                 // 检查响应状态码是否为200
@@ -313,10 +311,12 @@
                     const time = data[i].answerTime;
                     appendServerMsg(chatId, content, time);
                 }
+
             })
             .catch(error => {
                 console.error('There has been a problem with your fetch operation:', error);
             });
+        chatNormal();
     }
 
     chatType.change(function (e) {
@@ -480,13 +480,30 @@
         chatContent.scrollTop(chatContent[0].scrollHeight);
     }
 
+    function chatDisabled() {
+        // 将 button 设为禁用，防止用户连续点击
+        inputField.attr("disabled", true);
+        sendBtn.attr("disabled", true);
+        chatType.prop('disabled', true);
+    }
+
+    function chatNormal(){
+        inputField.removeAttr("disabled");
+        sendBtn.removeAttr("disabled");
+        chatType.prop('disabled', false);
+    }
+
     function doSend() {
         const qa = inputField.val();
         if (qa.length > 1024) {
             errorAlert("提问长度请不要超过1024字符哦~");
             return;
         }
-        let aiType =chatType.val();
+        addClientMsg(qa.replace(/\n/g, "<br/>"), true);
+        // 清空 textarea
+        inputField.val("");
+        chatDisabled();
+        let aiType = chatType.val();
         const data = new FormData();
         data.append('qa', qa);
         fetch(`/chat/${user.id}/${aiType}`, {
@@ -494,20 +511,20 @@
             body: data, // 你的POST数据
         }).then(response => {
             if (!response.body || !response.body.getReader) {
+                chatNormal();
                 throw new Error('Response does not support streaming');
             }
             const reader = response.body.getReader();
             let buffer = '';
             let fullAnswer = '';
-            let isStart=true;
+            let isStart = true;
             return new ReadableStream({
                 start(controller) {
                     function readChunk() {
                         return reader.read().then(async ({done, value}) => {
                             if (done) {
                                 controller.close();
-                                sendBtn.removeAttr("disabled");
-                                chatType.prop('disabled', false);
+                                chatNormal();
                                 return;
                             }
                             const chunk = new TextDecoder().decode(value);
@@ -520,40 +537,31 @@
                                     let event = eventStr.replace(/^data:/, '');
                                     let res = JSON.parse(event);
                                     await printCharacters(res);
-                                    if(isStart){
-                                        fullAnswer='';
-                                        isStart=false;
+                                    if (isStart) {
+                                        fullAnswer = '';
+                                        isStart = false;
                                     }
                                 }
                             }
                             buffer = lines[lines.length - 1]; // 保留未完整的一行
-
                             await readChunk(); // 继续读取下一块数据
                         });
                     }
                     async function printCharacters(res) {
-                        let sentence =res.answer;
+                        let sentence = res.answer;
                         for (let word of sentence.split('')) {
                             await new Promise(resolve => setTimeout(() => {
-                                fullAnswer=fullAnswer+word;
-                                subscribe(res,fullAnswer);
+                                fullAnswer = fullAnswer + word;
+                                subscribe(res, fullAnswer);
                                 resolve();
                             }, 25));
                         }
                     }
+                    console.log(3)
                     readChunk();
                 },
             });
         });
-
-        // 清空 textarea
-        inputField.val("");
-
-        addClientMsg(qa.replace(/\n/g, "<br/>"), true);
-
-        // 将 button 设为禁用，防止用户连续点击
-        sendBtn.attr("disabled", true);
-        chatType.prop('disabled', true);
     }
 
     sendBtn.click(function () {
