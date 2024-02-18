@@ -189,7 +189,7 @@ public class IndexController {
 
     @GetMapping("/chatai")
     public String chatai(Model model) {
-        siteLookService.asyncLook(0,WebUtil.getIP(), LookTypeConst.CHATGPT);
+        siteLookService.asyncLook(0,WebUtil.getIP(), LookTypeConst.CHATAI);
         model.addAttribute("categories",categoryService.treeList());
         return  CoreConst.WEB_PREFIX+"chatai";
     }

@@ -8,7 +8,7 @@ public interface LookTypeConst {
     String SITE = "site";
     String HOME = "home";
     String ABOUT = "about";
-    String CHATGPT = "chatgpt";
+    String CHATAI = "chatai";
     String BOOKMARK="bookmark";
     String NOTICE="notice";
     String APPLY="apply";
