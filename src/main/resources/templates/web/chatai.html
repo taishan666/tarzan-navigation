@@ -499,6 +499,7 @@
                 const reader = response.body.getReader();
                 let dataLine = '';
                 let fullAnswer = '';
+                let isStart=true;
                 return new ReadableStream({
                     start(controller) {
                         function readChunk() {
@@ -510,11 +511,15 @@
                                     return;
                                 }
                                 const chunk = new TextDecoder().decode(value);
-                                dataLine += chunk.replace(/^data:/, '');;
+                                dataLine += chunk.replace(/^data:/, '');
                                 if(dataLine.includes('\n')){
                                     let res = JSON.parse(dataLine);
                                     dataLine='';
                                     await printCharacters(res);
+                                    if(isStart){
+                                        fullAnswer='';
+                                        isStart=false;
+                                    }
                                 }
                                 await readChunk(); // 继续读取下一块数据
                             });

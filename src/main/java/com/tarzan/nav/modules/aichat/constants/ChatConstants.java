@@ -33,7 +33,7 @@ public final class ChatConstants {
     public static final String CHAT_REPLY_CNT_OVER = "次数使用完了哦，勾搭一下博主，多申请点使用次数吧~\n微信：vxhqqh";
 
 
-    public static final String CHAT_REPLY_TIME_WAITING = "chatgpt还在努力回答中，请等待几秒之后再问一次吧....";
+    public static final String CHAT_REPLY_TIME_WAITING = "抱歉，服务器暂时无法响应，请稍后再试...";
     public static final String CHAT_REPLY_QAS_TOO_FAST = "提问太频繁了，喝一杯咖啡，暂缓一下...";
 
 
@@ -42,7 +42,7 @@ public final class ChatConstants {
     /**
      * 异步聊天时返回得提示文案
      */
-    public static final String ASYNC_CHAT_TIP = "泰聪明正在努力回答中, 耐心等待一下吧...";
+    public static final String ASYNC_CHAT_TIP = "请稍候，正在处理您的请求...";
 
 
     public static final String SENSITIVE_QUESTION = "提问中包含敏感词:%s，请微信联系我「vxhqqh」加入白名单!";
