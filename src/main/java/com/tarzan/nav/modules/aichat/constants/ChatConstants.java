@@ -23,6 +23,9 @@ public final class ChatConstants {
      */
     public static final long QAS_TIME_INTERVAL = 20_000;
 
+    public static final String STOP = "stop";
+    public static final String IS_END = "is_end";
+
 
     public static final String CHAT_REPLY_RECOMMEND = "请注册泰聪明之后再来体验吧，我的技术博客： \n https://tarzan.blog.csdn.net";
     public static final String CHAT_REPLY_BEGIN = "让我们开始体验ChatGPT的魅力吧~";

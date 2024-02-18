@@ -11,6 +11,7 @@ import org.springframework.util.CollectionUtils;
 import reactor.core.publisher.Flux;
 
 import javax.annotation.Resource;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -39,28 +40,66 @@ public abstract class AbsChatAiService implements ChatAiService {
             return Flux.just(answerVo);
         } else {
             StringBuffer fullAnswer=new StringBuffer();
-            return doAsyncAnswer(question,answerVo)
+            answerVo.setAnswer("请稍候，正在处理您的请求...");
+            Flux<ChatAnswerVo> waitMessageFlux = Flux.just(answerVo);
+            Flux<ChatAnswerVo> responseFlux=doAsyncAnswer(question,answerVo)
+                    .timeout(Duration.ofSeconds(15))
                     .doOnNext(e -> fullAnswer.append(e.getAnswer()))
-    /*                .map(data -> {
-                        String result = data.getAnswer();
-                        // 将返回的结果逐字返回
-                        return Stream.of(result.split(""))
-                                .map(CharSequence::toString)
-                                .collect(Collectors.toList());
-                    }).flatMapIterable(Function.identity()).map(e->{
-                        answerVo.setAnswer(e);
-                        return answerVo;
-                    }).delayElements(Duration.ofMillis(100))*/
                     .doOnComplete(() -> {
                         // 当Flux完成时
-                        answerVo.setUsedCnt(answerVo.getUsedCnt()+1);
                         ChatRecordsVo res = initResVo(userId, question,answerVo,fullAnswer.toString());
                         processAfterSuccessAnswered(userId, res);
+                    })
+                   .onErrorResume(e -> {
+                          answerVo.setAnswer("抱歉，服务器暂时无法响应，请稍后再试...");
+                        return Flux.just(answerVo);
                     });
+          return  waitMessageFlux.concatWith(responseFlux);
+
         }
     }
 
+    public Flux<ChatAnswerVo> chatStream1(Integer userId, String question) {
+        ChatAnswerVo answerVo=initAnswerVo(userId);
+        if (!answerVo.hasQaCnt()) {
+            return Flux.just(answerVo);
+        }
+        List<String> sensitiveWord = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(sensitiveWord)) {
+            // 包含敏感词的提问，直接返回异常
+            answerVo.setAnswer(String.format(ChatConstants.SENSITIVE_QUESTION, sensitiveWord));
+            return Flux.just(answerVo);
+        } else {
+            StringBuffer fullAnswer=new StringBuffer();
+            answerVo.setAnswer("请稍候，正在处理您的请求...");
+            Flux<ChatAnswerVo> waitMessageFlux = Flux.just(answerVo);
+            Flux<ChatAnswerVo> responseFlux=doAsyncAnswer(question,answerVo)
+                    .timeout(Duration.ofSeconds(15))
+                    .doOnNext(e -> fullAnswer.append(e.getAnswer()))
+                    /*                .map(data -> {
+                                        String result = data.getAnswer();
+                                        // 将返回的结果逐字返回
+                                        return Stream.of(result.split(""))
+                                                .map(CharSequence::toString)
+                                                .collect(Collectors.toList());
+                                    }).flatMapIterable(Function.identity()).map(e->{
+                                        answerVo.setAnswer(e);
+                                        return answerVo;
+                                    }).delayElements(Duration.ofMillis(100))*/
+                    .doOnComplete(() -> {
+                        // 当Flux完成时
+                        ChatRecordsVo res = initResVo(userId, question,answerVo,fullAnswer.toString());
+                        processAfterSuccessAnswered(userId, res);
 
+                    })
+                    .onErrorResume(e -> {
+                        answerVo.setAnswer("抱歉，服务器暂时无法响应，请稍后再试...");
+                        return Flux.just(answerVo);
+                    });
+            return  waitMessageFlux.concatWith(responseFlux);
+
+        }
+    }
     @Override
     public ChatRecordsVo getChatHistory(Integer userId) {
         List<ChatItemVo> records=new ArrayList<>(51);

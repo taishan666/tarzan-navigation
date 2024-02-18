@@ -5,6 +5,7 @@ import com.alibaba.dashscope.aigc.conversation.ConversationParam;
 import com.alibaba.dashscope.aigc.conversation.ConversationResult;
 import com.alibaba.dashscope.exception.InputRequiredException;
 import com.alibaba.dashscope.exception.NoApiKeyException;
+import com.tarzan.nav.modules.aichat.constants.ChatConstants;
 import com.tarzan.nav.modules.aichat.enums.AISourceEnum;
 import com.tarzan.nav.modules.aichat.service.AbsChatAiService;
 import com.tarzan.nav.modules.aichat.vo.ChatAnswerVo;
@@ -46,6 +47,9 @@ public class TongYiChatAiServiceImpl extends AbsChatAiService {
             Flowable<ConversationResult> result = conversation.streamCall(param);
             AtomicReference<String> lastResult= new AtomicReference<>("");
             return Flux.from(result).map(data -> {
+                if(ChatConstants.STOP.equals(data.getOutput().getFinishReason())){
+                    answerVo.setUsedCnt(answerVo.getUsedCnt()+1);
+                }
                 String text=data.getOutput().getText();
                 answerVo.setAnswer(text.replace(lastResult.get(),""));
                 lastResult.set(text);

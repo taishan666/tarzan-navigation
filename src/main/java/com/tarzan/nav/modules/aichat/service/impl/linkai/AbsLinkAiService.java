@@ -3,6 +3,7 @@ package com.tarzan.nav.modules.aichat.service.impl.linkai;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.tarzan.nav.modules.aichat.constants.ChatConstants;
 import com.tarzan.nav.modules.aichat.service.AbsChatAiService;
 import com.tarzan.nav.modules.aichat.vo.ChatAnswerVo;
 import lombok.extern.slf4j.Slf4j;
@@ -54,12 +55,16 @@ public abstract class AbsLinkAiService extends AbsChatAiService {
                 .bodyToFlux(String.class)
                 .filter(data-> !"[DONE]".equals(data))
                 .map(response -> {
+                    System.err.println(response);
                     JSONObject data = JSON.parseObject(response);
                     JSONArray choices = data.getJSONArray("choices");
                     JSONObject choice=choices.getJSONObject(0);
                     JSONObject delta=choice.getJSONObject("delta");
                     String content=delta.getString("content");
                     answerVo.setAnswer(content==null?"":content);
+                    if(ChatConstants.STOP.equals(choice.getString("finish_reason"))){
+                        answerVo.setUsedCnt(answerVo.getUsedCnt()+1);
+                    }
                     return answerVo;
                 });
     }

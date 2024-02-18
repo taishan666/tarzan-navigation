@@ -34,8 +34,8 @@
     <meta name='robots' content='max-image-preview:large'/>
     <link rel='stylesheet' id='iconfont-css' href='/web/css/iconfont.min.css' type='text/css' media='all'/>
     <link rel='stylesheet' id='bootstrap-css' href='/web/css/bootstrap.min.css' type='text/css' media='all'/>
-    <link rel='stylesheet' id='swiper-css' href='/web/css/swiper-bundle.min.css' type='text/css' media='all'/>
     <link rel='stylesheet' id='style-css' href='/web/css/style.min.css' type='text/css' media='all'/>
+    <link rel='stylesheet' id='swiper-css' href='/web/css/swiper-bundle.min.css' type='text/css' media='all'/>
     <link rel='stylesheet' id='chatgpt-css' href='/web/css/chatgpt.min.css' type='text/css' media='all'/>
     <script type='text/javascript' src='/web/js/jquery.min.js' id='jquery-js'></script>
     <script type='text/javascript' id='jquery-js-after'>
@@ -70,6 +70,12 @@
 
     .io-black-mode .navbar-nav .menu-item-286 a i {
         color: #fff;
+    }
+
+    .markdown-body p a {
+        color: #007bff;
+        text-decoration: none;
+        background-color: transparent
     }
 
     @media (min-width: 768px) {
@@ -251,22 +257,23 @@
     const isLogin = user !== null;
     $(function () {
         if (isLogin) {
-            let aiType = chatType.val();
-            chatHistory(user.id,aiType);
-            inputField.removeAttr("disabled");
-            // 改变 inputField 的 placeholder
+            // 改变 chatTitle 的内容
+            chatTitle.text(user.userName);
             inputField.val("");
             inputField.attr("placeholder", "可按回车发送");
             sendBtnText.text("发送");
+            let aiType = chatType.val();
+            chatHistory(user.id,aiType);
+            inputField.removeAttr("disabled");
             sendBtn.removeAttr("disabled");
-            // 改变 chatTitle 的内容
-            chatTitle.text(user.userName);
+
         }else{
             console.log("请先登录");
         }
     });
 
     function subscribe(res,content) {
+       // console.log("content",content);
         // 记录聊天次数
         $("#chatCnt").html(` ${res.usedCnt}/${res.maxCnt} `);
         // 把 home_chat-message-actions__loading 的元素移除，不再显示 loading
@@ -277,8 +284,8 @@
         appendServerMsg(chatId,content,time);
     }
 
-    function chatHistory(userId,aiType) {
-        fetch('/chat/history/'+userId+'/'+aiType) // 替换为你要请求的URL
+    async function chatHistory(userId, aiType) {
+        await fetch('/chat/history/' + userId + '/' + aiType) // 替换为你要请求的URL
             .then(response => {
                 // 检查响应状态码是否为200
                 if (!response.ok) {
@@ -304,7 +311,7 @@
                     const chatId = data[i].chatUid;
                     let content = data[i].answer;
                     const time = data[i].answerTime;
-                    appendServerMsg(chatId,content,time);
+                    appendServerMsg(chatId, content, time);
                 }
             })
             .catch(error => {
@@ -490,7 +497,7 @@
                     throw new Error('Response does not support streaming');
                 }
                 const reader = response.body.getReader();
-                let buffer = '';
+                let dataLine = '';
                 let fullAnswer = '';
                 return new ReadableStream({
                     start(controller) {
@@ -503,31 +510,28 @@
                                     return;
                                 }
                                 const chunk = new TextDecoder().decode(value);
-                                buffer += chunk;
-                                // 分割并处理每一行
-                                const lines = buffer.split('\n');
-                                for (let i = 0; i < lines.length - 1; i++) {
-                                    const eventStr = lines[i];
-                                    if (eventStr !== '') {
-                                        let event = eventStr.replace(/^data:/, '');
-                                        let res = JSON.parse(event);
-                                        await printCharacters(res);
-                                    }
+                                dataLine += chunk.replace(/^data:/, '');;
+                                if(dataLine.includes('\n')){
+                                    let res = JSON.parse(dataLine);
+                                    dataLine='';
+                                    await printCharacters(res);
                                 }
-                                buffer = lines[lines.length - 1]; // 保留未完整的一行
-
                                 await readChunk(); // 继续读取下一块数据
                             });
                         }
                         async function printCharacters(res) {
                             let sentence =res.answer;
-                            for (let word of sentence.split('')) {
-                                await new Promise(resolve => setTimeout(() => {
-                                    fullAnswer=fullAnswer+word;
-                                    //console.warn(word);
-                                    subscribe(res,fullAnswer);
-                                    resolve();
-                                }, 25));
+                            if(sentence.length>0){
+                                for (let word of sentence.split('')) {
+                                    await new Promise(resolve => setTimeout(() => {
+                                        fullAnswer=fullAnswer+word;
+                                        subscribe(res,fullAnswer);
+                                        resolve();
+                                    }, 25));
+                                }
+                            }else{
+                                fullAnswer=fullAnswer+sentence;
+                                subscribe(res,fullAnswer);
                             }
                         }
                         readChunk();

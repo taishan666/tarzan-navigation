@@ -77,6 +77,7 @@ public class XunFeiMsgListener extends WebSocketListener {
             messageSink.next(chatAnswer);
             if (responseData.endResponse()) {
                 webSocket.close(1001, "会话结束");
+                chatAnswer.setUsedCnt(chatAnswer.getUsedCnt() + 1);
                 messageSink.complete();
             }
         } else {

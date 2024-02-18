@@ -32,12 +32,4 @@ public class ChatRecordsVo implements Serializable, Cloneable {
      */
     private List<ChatItemVo> records;
 
-    /**
-     * 判断是否拥有提问次数
-     *
-     * @return true 表示拥有提问次数
-     */
-    public boolean hasQaCnt() {
-        return maxCnt > usedCnt;
-    }
 }

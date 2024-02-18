@@ -3,6 +3,7 @@ package com.tarzan.nav.modules.aichat.service.impl.wenxin;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.tarzan.nav.modules.aichat.constants.ChatConstants;
 import com.tarzan.nav.modules.aichat.service.AbsChatAiService;
 import com.tarzan.nav.modules.aichat.vo.ChatAnswerVo;
 import org.springframework.beans.factory.annotation.Value;
@@ -47,8 +48,12 @@ public abstract class AbsWenXinAiService extends AbsChatAiService {
                 .retrieve()
                 .bodyToFlux(String.class)
                 .map(data -> {
-                    String result = JSON.parseObject(data).getString("result");
+                    JSONObject object=JSON.parseObject(data);
+                    String result = object.getString("result");
                     answerVo.setAnswer(result);
+                    if(object.getBoolean(ChatConstants.IS_END)){
+                        answerVo.setUsedCnt(answerVo.getUsedCnt()+1);
+                    }
                     return answerVo;
                 });
     }

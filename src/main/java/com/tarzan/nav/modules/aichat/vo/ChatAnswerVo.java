@@ -17,6 +17,8 @@ import java.util.Date;
 public class ChatAnswerVo implements Serializable, Cloneable {
     private static final long serialVersionUID = -2666259615985932920L;
 
+
+
     /**
      * 当前用户最多可问答的次数
      */
