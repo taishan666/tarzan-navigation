@@ -336,7 +336,6 @@
 
     // 添加服务器端消息
     function appendServerMsg(chatId,content,time) {
-        //console.log("准备添加内容:", answer);
         let answerDiv = $(`#${chatId}`)
        // console.log("流式结果返回: ",content);
         if (answerDiv.length ==0) {
@@ -375,29 +374,28 @@
         });
         // 添加完后滚动到底部
         scrollToBottom();
-        // 复制功能
-        copy();
-        // 分享功能
-        share(chatId);
     }
 
-    const linkCopyBtn = $("#chat-share-modal").find("#link-copy").get(0);
-    const clipboard = new ClipboardJS(linkCopyBtn, {
-        text: function (trigger) {
-            return $("#chat-share-link").val();
-        }
-    });
-    copyClipboard(clipboard);
+
     // 功能
-    function share(chatId) {
+    function share() {
         // 从 chatContent 中获取最后一个 chat-message
         const chatMessage = chatContent.children(".home_chat-message__rdH_g").last();
         const shareBtn = chatMessage.find(".home_chat-message-top-action__wXKmA.share").get(0);
+        const chatBody = chatMessage.find(".markdown-body").get(0);
+        const chatId=$(chatBody).attr("id");
         const shareLink=chatMessage.prop('baseURI')+"/share/"+chatId;
         $(shareBtn).on('click', function() {
             $("#chat-share-link").val(shareLink);
             $("#chat-share-modal").modal("show");
         });
+        const linkCopyBtn = $("#chat-share-modal").find("#link-copy").get(0);
+        const clipboard = new ClipboardJS(linkCopyBtn, {
+            text: function (trigger) {
+                return $("#chat-share-link").val();
+            }
+        });
+        copyClipboard(clipboard);
     }
 
 
@@ -414,7 +412,6 @@
             }
         });
         copyClipboard(clipboard);
-
     }
 
     function copyClipboard(clipboard) {
@@ -424,7 +421,6 @@
             e.clearSelection();
         });
         clipboard.on('error', function (e) {
-            console.log(e);
             console.log('复制失败');
         });
     }
@@ -525,6 +521,10 @@
                             if (done) {
                                 controller.close();
                                 chatNormal();
+                                // 复制功能
+                                copy();
+                                // 分享功能
+                                share();
                                 return;
                             }
                             const chunk = new TextDecoder().decode(value);
@@ -557,7 +557,6 @@
                             }, 25));
                         }
                     }
-                    console.log(3)
                     readChunk();
                 },
             });
