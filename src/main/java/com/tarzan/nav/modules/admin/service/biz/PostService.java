@@ -10,19 +10,29 @@ import com.tarzan.nav.modules.admin.model.biz.Website;
 import com.tarzan.nav.modules.admin.vo.CsdnArticleVO;
 import com.tarzan.nav.utils.JsoupUtil;
 import com.tarzan.nav.utils.StringUtil;
-import lombok.AllArgsConstructor;
 import org.jsoup.nodes.Document;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import javax.annotation.Resource;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
+/**
+ * @author tarzan
+ */
 @Service
-@AllArgsConstructor
 public class PostService {
 
     private final static String POST_API="https://blog.csdn.net/community/home-api/v1/get-business-list?businessType=blog";
 
-    private final ImageService imageService;
+    @Resource
+    private ImageService imageService;
+
+    @Value("${csdn.cookies}")
+    private String cookies;
 
     public  Website getPost(String url){
         if(StringUtil.isNotBlank(url)){
@@ -67,7 +77,11 @@ public class PostService {
     }
 
     private CsdnArticleVO getArticle(String username,String articleId){
-        String result= HttpUtil.get(POST_API+"&size=100&page=1&&username="+username);
+        String url=POST_API+"&size=100&page=1&&username="+username;
+        String result= HttpUtil.createGet(url)
+                .cookie(cookies)
+                .execute().body();;
+        System.err.println(result);
         JSONObject json= JSON.parseObject(result);
         if(json.getInteger("code")==200){
             JSONObject data= json.getJSONObject("data");
