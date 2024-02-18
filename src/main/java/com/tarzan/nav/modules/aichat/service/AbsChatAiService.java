@@ -1,6 +1,7 @@
 package com.tarzan.nav.modules.aichat.service;
 
 import com.tarzan.nav.modules.aichat.constants.ChatConstants;
+import com.tarzan.nav.modules.aichat.model.ChatItem;
 import com.tarzan.nav.modules.aichat.vo.ChatAnswerVo;
 import com.tarzan.nav.modules.aichat.vo.ChatItemVo;
 import com.tarzan.nav.modules.aichat.vo.ChatRecordsVo;
@@ -12,10 +13,7 @@ import reactor.core.publisher.Flux;
 
 import javax.annotation.Resource;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author tarzan
@@ -34,29 +32,32 @@ public abstract class AbsChatAiService implements ChatAiService {
             return Flux.just(answerVo);
         }
         List<String> sensitiveWord = new ArrayList<>();
-        if (!CollectionUtils.isEmpty(sensitiveWord)) {
+        if(!CollectionUtils.isEmpty(sensitiveWord)) {
             // 包含敏感词的提问，直接返回异常
             answerVo.setAnswer(String.format(ChatConstants.SENSITIVE_QUESTION, sensitiveWord));
             return Flux.just(answerVo);
-        } else {
-            StringBuffer fullAnswer=new StringBuffer();
-            answerVo.setAnswer("请稍候，正在处理您的请求...");
-            Flux<ChatAnswerVo> waitMessageFlux = Flux.just(answerVo);
-            Flux<ChatAnswerVo> responseFlux=doAsyncAnswer(question,answerVo)
-                    .timeout(Duration.ofSeconds(15))
-                    .doOnNext(e -> fullAnswer.append(e.getAnswer()))
-                    .doOnComplete(() -> {
-                        // 当Flux完成时
-                        ChatRecordsVo res = initResVo(userId, question,answerVo,fullAnswer.toString());
-                        processAfterSuccessAnswered(userId, res);
-                    })
-                   .onErrorResume(e -> {
-                          answerVo.setAnswer(ChatConstants.CHAT_REPLY_TIME_WAITING);
-                        return Flux.just(answerVo);
-                    });
-          return  waitMessageFlux.concatWith(responseFlux);
-
         }
+        ChatItem answeredChat=chatItemService.getSameQuestion(source(),question);
+        if(Objects.nonNull(answeredChat)){
+          String answered=answeredChat.getAnswer();
+        }
+        StringBuffer fullAnswer=new StringBuffer();
+        answerVo.setAnswer("请稍候，正在处理您的请求...");
+        Flux<ChatAnswerVo> waitMessageFlux = Flux.just(answerVo);
+        Flux<ChatAnswerVo> responseFlux=doAsyncAnswer(question,answerVo)
+                .timeout(Duration.ofSeconds(15))
+                .doOnNext(e -> fullAnswer.append(e.getAnswer()))
+                .doOnComplete(() -> {
+                    // 当Flux完成时
+                    ChatRecordsVo res = initResVo(userId, question,answerVo,fullAnswer.toString());
+                    processAfterSuccessAnswered(userId, res);
+                })
+                .onErrorResume(e -> {
+                    answerVo.setAnswer(ChatConstants.CHAT_REPLY_TIME_WAITING);
+                    return Flux.just(answerVo);
+                });
+        return  waitMessageFlux.concatWith(responseFlux);
+
     }
 
     @Override

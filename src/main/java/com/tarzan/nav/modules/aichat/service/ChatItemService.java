@@ -55,4 +55,8 @@ public class ChatItemService extends ServiceImpl<ChatItemMapper, ChatItem> {
     public ChatItem getChatByUid(String chatUid) {
        return super.getOne(Wrappers.<ChatItem>lambdaQuery().eq(ChatItem::getChatUid, chatUid));
     }
+
+    public ChatItem getSameQuestion(AISourceEnum source,String question) {
+       return super.getOne(Wrappers.<ChatItem>lambdaQuery().eq(ChatItem::getQuestion, question).eq(ChatItem::getAiType, source.getCode()).orderByDesc(ChatItem::getAnswerTime).last("LIMIT 1"));
+    }
 }
