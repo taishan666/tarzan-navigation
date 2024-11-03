@@ -38,7 +38,7 @@ public class AppInstallTools {
                 String txt = FileCopyUtils.copyToString(in);
                 jdbcTemplate.execute(txt);
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error(e.getMessage());
             }
             log.info("初始化数据完毕");
         }

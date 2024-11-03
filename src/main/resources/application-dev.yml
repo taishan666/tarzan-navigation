@@ -45,5 +45,39 @@ social:
       client-secret: 428ff220b5aa5704c55a8cf91f13aa4466258a6e7c357c7e30a5bca1d1cbe4e2
       redirect-uri: http://127.0.0.1/auth/oauth/callback/GITEE
 
+csdn:
+  cookies:
 
-
+# 讯飞AI
+xunfei:
+  hostUrl: https://spark-api.xf-yun.com/v3.5/chat
+  domain: "generalv3.5"
+  appId:
+  apiKey:
+  apiSecret:
+  day-limit: 10
+# 文心ai
+wenxin:
+  apiKey:
+  apiSecret:
+  baseUrl: https://aip.baidubce.com
+  chatUrl: /rpc/2.0/ai_custom/v1/wenxinworkshop/chat
+  yi_34b_chat:
+    day-limit: 15
+  llama:
+    day-limit: 5
+#通义千问
+tongyi:
+  apiKey:
+  day-limit: 10
+linkai:
+  signInUrl:
+  accessToken:
+  apiCode:
+  apiKey:
+  baseUrl: https://api.link-ai.chat
+  chatUrl: /v1/chat/completions
+  gpt4:
+   day-limit: 1
+  wenxin4:
+    day-limit: 1
