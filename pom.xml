@@ -223,6 +223,7 @@
             <version>1.18.26</version>
             <optional>true</optional>
         </dependency>
+        <!-- h2database -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>

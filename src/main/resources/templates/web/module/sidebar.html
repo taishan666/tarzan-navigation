@@ -20,7 +20,7 @@
                 <div class="sidebar-menu-inner">
                     <ul>
                         <li class="sidebar-item" th:each="category : ${categories}">
-                            <a  th:href="${(flag?'':'/')+'#term-'+category.id}"  th:class="${flag?'smooth':''}" th:data-change="${flag?('#term-'+category.id):''}">
+                            <a  th:href="${(flag?'':'/')+'#term-'+category.id}"  th:class="${flag?'smooth':''}" >
                                 <i th:class="${category?.icon}+' icon-fw icon-lg'"></i>
                                 <span>[[${category.name}]]</span>
                             </a>

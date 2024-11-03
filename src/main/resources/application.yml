@@ -27,7 +27,7 @@ spring:
   web:
     resources:
       cache:
-        cachecontrol:
+        cache control:
           max-age: 3600
           no-store: false
           no-transform: true
@@ -42,7 +42,7 @@ spring:
       min-idle: 3
       max-active: 20
       max-wait: 10000
-      filters: stat,wall,slf4j
+      filters: stat,slf4j
       stat-view-servlet:
         enabled: true
         reset-enable: false
@@ -54,7 +54,7 @@ spring:
           config:
             multi-statement-allow: true
             comment-allow: true
-          enabled: true
+          enabled: false
       validation-query: select 1
       test-while-idle: true
   thymeleaf:
@@ -70,6 +70,7 @@ spring:
       ddl-auto: update
     show-sql: true
     open-in-view: false
+
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8

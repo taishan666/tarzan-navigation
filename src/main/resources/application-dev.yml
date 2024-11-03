@@ -90,3 +90,9 @@ xunfei:
   apiSecret:
 tongyi:
   apiKey:
+
+# 百度
+yiyan:
+  hostUrl: https://spark-api.xf-yun.com/v3.5/chat
+  apiKey:
+  apiSecret:
